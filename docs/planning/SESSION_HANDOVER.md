@@ -1,91 +1,74 @@
 # AngelEye — Session Handover (Session 5 → Session 6)
 
 **Date**: 2026-03-15
-**Status**: Wave 4 merged. Wave 5 planned, ready to build.
+**Status**: Wave 5 complete. Wave 6 fully planned — two parallel campaigns ready to build.
 
 ## Session 6 Start Prompt
 
-> Read the AngelEye handover at `~/dev/ad/apps/angeleye/docs/planning/SESSION_HANDOVER.md`. Launch the Wave 5 agent prompts below in sequence: B007, then B010.
+> Read the AngelEye handover at ~/dev/ad/apps/angeleye/docs/planning/SESSION_HANDOVER.md.
+> Two Wave 6 campaigns are ready. Start with hardening (correctness bugs first), then UI.
+> Use Ralphy build mode: fire agents per IMPLEMENTATION_PLAN.md work units.
 
 ---
 
-## What Was Done This Session
+## What Was Done (Waves 4 + 5)
 
-### Wave 4 complete — merged to main (160 tests)
-
-P01 workspace delete, P02 observer column headers, P03 session label fallback. All done. Commit: `9fe1c3d`
-
-- **P01**: ✕ delete button on workspace cards; orphaned sessions return to inbox
-- **P02**: Sticky column header row in ObserverView — SESSION / LAST ACTIVITY / WHEN / IDLE
-- **P03**: `sessionLabel()` now: `name ?? project ?? project_dir basename ?? UUID[:8]`
-
-### Stale branches deleted
-
-`angeleye-wave2` and `angeleye-wave3` local branches removed.
+- Wave 4: workspace delete, observer column headers, session label fallback
+- Wave 5: transcript backfill (POST /api/backfill, 650 sessions imported), /angeleye:context skill, Settings page Run Backfill button
+- Wave 6 audits: deep test quality audit, deep code quality audit, deep design analysis — all findings documented in wave 6 planning folders
 
 ---
 
-## Wave 5: Transcript Backfill + Context Skill — PLANNED, ready to build
+## Wave 6: Two Campaigns
 
-AGENTS.md at: `docs/planning/angeleye-wave5-backfill/AGENTS.md`
-Work is in main repo (no worktree needed — no risky structural changes).
+### Campaign 1 — Hardening
 
-| Unit | What                    | Files touched                                       |
-| ---- | ----------------------- | --------------------------------------------------- |
-| B007 | Transcript backfill     | server/src/services/angeleye-data.ts + new route    |
-| B010 | /angeleye:context skill | .claude/skills/angeleye-context.md (new skill file) |
+AGENTS.md: docs/planning/angeleye-wave6-hardening/AGENTS.md
+PLAN: docs/planning/angeleye-wave6-hardening/IMPLEMENTATION_PLAN.md
 
----
+**Correctness bugs (do these first — they are latent data loss):**
 
-## B007 Agent Prompt
+- H01: Write queue halts permanently on any error (add .catch to chain)
+- H02: Non-atomic registry writes (write to .tmp then rename)
 
----
+**Code quality:**
 
-You are implementing B007 for AngelEye wave 5.
-Read AGENTS.md at /Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-wave5-backfill/AGENTS.md first.
-Repo: /Users/davidcruwys/dev/ad/apps/angeleye/
+- H03: Extract session-helpers.ts (sessionLabel/timeAgo/statusDot duplicated in two views)
+- H04: Fix initAngelEyeDirs — await at startup, remove from per-request hooks
+- H05: Validate workspace_id on PATCH /sessions
 
-Implement transcript backfill: scan ~/.claude/projects/ JSONL files, populate the AngelEye registry for sessions not already known.
+**Test quality (behaviour tests hiding real failure modes):**
 
-Done when: POST /api/backfill scans and imports transcript sessions, tests cover the happy path + already-known skip, typecheck + lint + 160+ tests all pass.
+- T01: Backfill actually writes events to disk (most critical missing test)
+- T02: getSessionEvents handles malformed JSONL line
+- T03: GET /sessions sorted newest-first
+- T04: Hook without session_id → session-unknown.jsonl
+- T05: PATCH /sessions rejects non-array tags
+- T06: Rewrite non-deterministic backfill route test
 
----
+### Campaign 2 — UI Polish
 
-## B010 Agent Prompt
+AGENTS.md: docs/planning/angeleye-wave6-ui/AGENTS.md
+PLAN: docs/planning/angeleye-wave6-ui/IMPLEMENTATION_PLAN.md
 
----
-
-You are implementing B010 for AngelEye wave 5.
-Read AGENTS.md at /Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-wave5-backfill/AGENTS.md first.
-Repo: /Users/davidcruwys/dev/ad/apps/angeleye/
-
-Implement the /angeleye:context skill: a Claude Code skill that fetches session events from AngelEye and assembles a structured context block for pasting into a new conversation.
-
-Done when: the skill file exists, fetches real data from the running AngelEye server, and formats a useful context block. Typecheck + lint + all tests still pass.
-
----
-
-## After B007/B010
-
-Commit: `feat: wave 5 — transcript backfill + context skill`
-Push to origin.
-
-Then Wave 6 candidates (from deferred backlog):
-
-- B012: Ambient intelligence / skill suggester (prompt frequency pattern miner)
-- B011: /angeleye:publish skill (Nano Banana / FliDeck integration)
+- UI01: Remove ContentPanel p-6 (highest impact — makes views edge-to-edge)
+- UI02: CSS variable corrections + surface-mid + border-raised + muted-foreground temperature
+- UI03: Observer focused row bg-primary/10 → bg-surface-mid
+- UI04: Observer column header bg-surface
+- UI05: Organiser inbox/workspace visual split
 
 ---
 
 ## Key Technical Facts
 
 Ports: Client 5050, Server 5051
-Test isolation: `_setDataDir(tmpDir)` resets paths + write queue
-Response helpers: `apiSuccess(res, data)` and `apiFailure(res, msg, code)` — NOT apiError
-Client reads: `response.data.sessions[]`, `response.data.workspaces[]`, `response.data.events[]`
-Data dir: `~/.claude/angeleye/` (registry.json, workspaces.json, sessions/, archive/)
-Claude projects dir: `~/.claude/projects/<project-hash>/<session-uuid>.jsonl`
-160 tests currently passing (116 server / 44 client)
-AngelEyeSource type already has `'transcript'` variant — ready to use
+Test isolation: \_setDataDir(tmpDir) resets paths + write queue
+Response helpers: apiSuccess(res, data) and apiFailure(res, msg, code) — NOT apiError
+Client reads: response.data.sessions[], response.data.workspaces[], response.data.events[]
+Data dir: ~/.claude/angeleye/ (registry.json, workspaces.json, sessions/, archive/)
+165 tests currently passing (121 server / 44 client)
+Backlog: 15/15 done | 4 deferred (B011, B012, B013, B014)
+
+**Architectural note for Wave 7**: Split angeleye-data.ts into registry.service.ts + workspace.service.ts + backfill.service.ts before building B012 ambient intelligence. The write queue is a module-level singleton and B012 will add a 6th responsibility to the file.
 
 **Handover written**: 2026-03-15
