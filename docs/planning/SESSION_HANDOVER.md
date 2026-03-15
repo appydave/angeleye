@@ -1,161 +1,92 @@
-# AngelEye — Session Handover (Session 3 → Session 4)
+# AngelEye — Session Handover (Session 4 → Session 5)
 
 **Date**: 2026-03-15
-**Status**: Wave 2 complete. Wave 3 in progress (W01 running in background).
+**Status**: Wave 3 complete. Merged to main. 160 tests passing.
 
-## Session 4 Start Prompt
+## Session 5 Start Prompt
 
-> Read the AngelEye handover at `~/dev/ad/apps/angeleye/docs/planning/SESSION_HANDOVER.md`, W01 is confirmed complete (116 tests passing). Start by launching the W02 agent prompt below.
+> Read the AngelEye handover at `~/dev/ad/apps/angeleye/docs/planning/SESSION_HANDOVER.md`. Wave 3 is merged. Start Wave 4 — B007 transcript reader or B010 context skill (see prompts below).
 
 ## What Was Done This Session
 
-### Git cleanup
+### Wave 3: Organiser View — COMPLETE (merged to main)
 
-- Created `.gitignore` (node_modules excluded permanently)
-- All wave 1 code committed for the first time: `feat: wave 1 — AppyStack foundation + AngelEye hook pipeline`
+160 tests passing (116 server / 44 client). All 4 units done.
 
-### Wave 2: Hardening — COMPLETE (merged to main)
-
-150 tests passing (106 server / 44 client). All 6 units done.
+| Unit                 | Status |
+| -------------------- | ------ |
+| W01-workspace-api    | DONE   |
+| W02-organiser-ui     | DONE   |
+| W03-drag-assign      | DONE   |
+| W04-folder-inference | DONE   |
 
 Key changes:
 
-- `angeleye-data.ts`: added `_setDataDir(dir)` for test isolation (resets paths + write queue)
-- New test files: angeleye-data.test.ts (13), hooks.test.ts (14), sessions.test.ts (13)
-- New endpoint: PATCH /api/sessions/:id (name/tags/workspace_id)
-- Bugs fixed: ObserverView unhandled fetch rejections; env.test.ts wrong port numbers
+- `angeleye-data.ts`: added `readWorkspaces`, `writeWorkspaces`, `createWorkspace`, `updateWorkspace`, `deleteWorkspace`
+- `server/src/routes/workspaces.ts`: GET/POST/PATCH/DELETE `/api/workspaces`
+- `client/src/views/OrganiserView.tsx`: full two-column Organiser with inbox, workspace cards, click-to-assign, dnd-kit drag-to-assign, folder inference badge
+- Worktree removed: `angeleye-wave3`
 
-### Wave 3: Organiser View — IN PROGRESS
+## Wave 4 Preview (next session)
 
-Worktree: `/Users/davidcruwys/dev/ad/apps/angeleye-wave3/` (branch: angeleye-wave3)
-dnd-kit installed: @dnd-kit/core, @dnd-kit/sortable, @dnd-kit/utilities
+Two backlog items remain:
 
-| Unit                 | Status                     |
-| -------------------- | -------------------------- |
-| W01-workspace-api    | RUNNING (background agent) |
-| W02-organiser-ui     | Pending                    |
-| W03-drag-assign      | Pending                    |
-| W04-folder-inference | Pending                    |
+- **B007**: Transcript reader — scan `~/.claude/projects/`, parse JSONL, backfill registry
+- **B010**: `/angeleye:context` skill — assemble session history for Claude analysis
 
-## W01 — What It Builds
-
-Functions in angeleye-data.ts: readWorkspaces, writeWorkspaces, createWorkspace, updateWorkspace, deleteWorkspace
-
-Routes in server/src/routes/workspaces.ts:
-
-- GET /api/workspaces
-- POST /api/workspaces (body: { name })
-- PATCH /api/workspaces/:id (body: { name?, tags? })
-- DELETE /api/workspaces/:id → 204
-
-10 tests in server/src/routes/workspaces.test.ts
-
-## W02 Agent Prompt
-
-Launch this after W01 is confirmed passing:
+### B007 Agent Prompt
 
 ---
 
-You are implementing W02-organiser-ui for AngelEye wave 3.
-Read AGENTS.md at /Users/davidcruwys/dev/ad/apps/angeleye-wave3/docs/planning/angeleye-wave3-organiser/AGENTS.md first.
-Worktree: /Users/davidcruwys/dev/ad/apps/angeleye-wave3/
+You are implementing B007-transcript-reader for AngelEye.
+Worktree: /Users/davidcruwys/dev/ad/apps/angeleye/
+Read CLAUDE.md and shared/src/angeleye.ts first.
 
-Replace stub at client/src/views/OrganiserView.tsx with functional Organiser.
+Goal: scan `~/.claude/projects/` for JSONL session files, parse tool use events, and backfill the session registry with sessions not already present.
 
-Read first:
+Implementation:
 
-- client/src/views/ObserverView.tsx (patterns, styling)
-- client/src/styles/index.css (CSS variables)
-- shared/src/angeleye.ts (types)
-- server/src/routes/workspaces.ts (API)
-- server/src/routes/sessions.ts (PATCH for assignment)
+- New function `scanTranscripts()` in `server/src/services/angeleye-data.ts`
+- New route: `POST /api/transcripts/scan` → calls scanTranscripts(), returns `{ added: number, skipped: number }`
+- JSONL line shape: `{ type: string, session_id?: string, cwd?: string, ... }` — extract session_id, cwd as project_dir
+- Only backfill sessions not already in registry.json (match by session_id)
+- Add 6 tests in `server/src/routes/transcripts.test.ts`
 
-Layout (two-column):
-
-- Left: INBOX — sessions with workspace_id null, sorted by last_active desc
-- Right: WORKSPACES — one card per workspace with its sessions inside
-- Top: "ORGANISER" heading + "+ New Workspace" button (inline input on click)
-
-Session card shows: project name (or name if set), idle time, status dot
-Workspace card shows: workspace name, session count, session list
-
-Click-to-assign: each inbox session has "→ Assign" button → dropdown of workspaces → PATCH /api/sessions/:id { workspace_id }
-Create workspace: "+ New Workspace" → inline text input → POST /api/workspaces → update local state
-
-Rules:
-
-- All fetch must have .catch(() => {})
-- Fetch on mount only, no polling
-- Warm dark palette (bg-background, bg-surface, border-border, text-primary, font-bebas for headings)
-- No Socket.io in OrganiserView
-
-## Done when: view renders real data, create workspace works, click-to-assign works, typecheck + lint clean.
-
-## W03 Agent Prompt
-
-Launch after W02 confirmed:
+Done when: route exists, scan adds new sessions, skips existing, 6 tests pass, typecheck + lint clean.
 
 ---
 
-You are implementing W03-drag-assign for AngelEye wave 3.
-Read AGENTS.md at /Users/davidcruwys/dev/ad/apps/angeleye-wave3/docs/planning/angeleye-wave3-organiser/AGENTS.md first.
-Worktree: /Users/davidcruwys/dev/ad/apps/angeleye-wave3/
-
-Add drag-to-assign to OrganiserView (dnd-kit already installed).
-Read client/src/views/OrganiserView.tsx first.
-
-Pattern:
-
-- DraggableSession: useDraggable({ id: session.session_id }) from @dnd-kit/core
-- DroppableZone: useDroppable({ id }) — id is workspace id OR 'inbox'
-- DndContext wraps everything; handleDragEnd: PATCH /api/sessions/:id { workspace_id: targetId (null for inbox) }
-- Optimistic state update immediately on drop
-- Visual: isDragging → opacity-50; isOver → ring-1 ring-primary
-
-## Done when: drag inbox→workspace, workspace→workspace, workspace→inbox all work. typecheck + lint clean.
-
-## W04 Agent Prompt
-
-Launch after W03 confirmed:
+### B010 Agent Prompt
 
 ---
 
-You are implementing W04-folder-inference for AngelEye wave 3.
-Read AGENTS.md at /Users/davidcruwys/dev/ad/apps/angeleye-wave3/docs/planning/angeleye-wave3-organiser/AGENTS.md first.
-Worktree: /Users/davidcruwys/dev/ad/apps/angeleye-wave3/
+You are implementing B010-context-skill for AngelEye.
+Worktree: /Users/davidcruwys/dev/ad/apps/angeleye/
+Read CLAUDE.md and the angeleye-name-session skill at ~/.claude/skills/angeleye-name-session.md first.
 
-Add folder inference badge to inbox session cards.
-Read client/src/views/OrganiserView.tsx first.
+Goal: create a new skill at `~/.claude/skills/angeleye-context.md` that assembles recent session context into a structured block for Claude analysis.
 
-Logic: inferWorkspace(session, workspaces) — fuzzy match last 3 segments of session.project_dir against workspace names (case-insensitive substring match either direction).
+Skill triggers: "angeleye context", "session context", "what have I been working on"
 
-Show badge if: match found AND 'inference:dismissed' not in session.tags.
-Badge: "Looks like [WorkspaceName]?" with [✓] [✗] buttons (text-xs, subtle)
-✓: PATCH session { workspace_id: ws.id }
-✗: PATCH session { tags: [...session.tags, 'inference:dismissed'] }
+Output block includes:
 
-## Done when: badge appears, confirm assigns, dismiss hides. typecheck + lint clean.
+- Active sessions (last 24h) with project_dir, name, tags, workspace
+- Workspace assignments
+- Recent hook events (last 20 per session, from JSONL)
 
-## Final Steps After W04
+Skill calls: GET /api/sessions + GET /api/workspaces + optionally GET /api/sessions/:id/events
+Output: formatted markdown block the user can paste into any Claude conversation.
 
-1. cd /Users/davidcruwys/dev/ad/apps/angeleye-wave3 && npm test (should be 160+ passing)
-2. npm run typecheck && npm run lint
-3. git add -A && git commit -m "feat: wave 3 — Organiser view with workspaces, drag-to-assign, folder inference"
-4. git merge angeleye-wave3 --no-ff -m "merge: wave 3 organiser view"
-5. git worktree remove ../angeleye-wave3
-6. Update BACKLOG: B008 → Done, B009 → Done
+Done when: skill file exists, skill fires in Claude Code, output is readable and useful.
+
+---
 
 ## Key Technical Facts
 
 Ports: Client 5050, Server 5051
-Test isolation: \_setDataDir(tmpDir) resets paths + write queue
-Response helpers: apiSuccess(res, data) and apiFailure(res, msg, code) — NOT apiError
-Client reads: response.data.sessions[], response.data.workspaces[], response.data.events[]
-Worktree: /Users/davidcruwys/dev/ad/apps/angeleye-wave3/
-
-## Wave 4 Preview (after wave 3)
-
-- B007: Transcript reader — scan ~/.claude/projects/, parse JSONL, backfill registry
-- B010: /angeleye:context skill — assemble session history for Claude analysis
+Test isolation: `_setDataDir(tmpDir)` resets paths + write queue
+Response helpers: `apiSuccess(res, data)` and `apiFailure(res, msg, code)` — NOT apiError
+Client reads: `response.data.sessions[]`, `response.data.workspaces[]`, `response.data.events[]`
+Data dir: `~/.claude/angeleye/` (registry.json, workspaces.json, sessions/, archive/)
 
 **Handover written**: 2026-03-15
