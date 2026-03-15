@@ -1,0 +1,39 @@
+@import 'tailwindcss';
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+@source "../";
+
+@theme {
+  /* Fonts */
+  --font-family-bebas: 'Bebas Neue', sans-serif;
+
+  /* Background layers — warm dark (AWB palette adapted) */
+  --color-background: #0f0d0c;
+  --color-surface: #1a1614;
+  --color-surface-hover: #231f1c;
+
+  /* Borders — AWB primary-dark */
+  --color-border: #342d2d;
+
+  /* Primary — AWB primary-light (warm beige) */
+  --color-primary: #ccba9d;
+  --color-primary-foreground: #0f0d0c;
+
+  /* Foreground */
+  --color-foreground: #e8ddd0;
+  --color-muted-foreground: #879294;
+
+  /* Accent — AWB secondary */
+  --color-accent: #95a19f;
+
+  /* Destructive */
+  --color-destructive: #ff3131;
+  --color-destructive-foreground: #e8ddd0;
+}
+
+body {
+  margin: 0;
+  background-color: #0f0d0c;
+  color: #e8ddd0;
+  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
+}
