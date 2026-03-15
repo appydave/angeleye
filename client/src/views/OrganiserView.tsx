@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { DndContext, useDraggable, useDroppable } from '@dnd-kit/core';
 import type { DragEndEvent } from '@dnd-kit/core';
 import type { RegistryEntry, WorkspaceEntry } from '@appystack/shared';
+import { sessionLabel, statusDot, timeAgo } from '../utils/session-helpers';
 
 // ─── Folder Inference ─────────────────────────────────────────────────────────
 
@@ -20,32 +21,6 @@ function inferWorkspace(
       )
     ) ?? null
   );
-}
-
-// ─── Helpers ─────────────────────────────────────────────────────────────────
-
-function timeAgo(isoString: string): string {
-  const secs = Math.floor((Date.now() - new Date(isoString).getTime()) / 1000);
-  if (secs < 60) return `${secs}s ago`;
-  if (secs < 3600) return `${Math.floor(secs / 60)}m ago`;
-  return `${Math.floor(secs / 3600)}h ago`;
-}
-
-function sessionLabel(entry: RegistryEntry): string {
-  if (entry.name) return entry.name;
-  if (entry.project) return entry.project;
-  if (entry.project_dir) {
-    const base = entry.project_dir.split('/').filter(Boolean).pop();
-    if (base) return base;
-  }
-  return entry.session_id?.slice(0, 8) ?? 'unknown';
-}
-
-function statusDot(isoString: string): { symbol: string; className: string } {
-  const secs = Math.floor((Date.now() - new Date(isoString).getTime()) / 1000);
-  if (secs < 30) return { symbol: '●', className: 'text-green-500' };
-  if (secs < 120) return { symbol: '●', className: 'text-amber-400' };
-  return { symbol: '○', className: 'text-muted-foreground' };
 }
 
 // ─── Draggable Session ────────────────────────────────────────────────────────
@@ -469,7 +444,7 @@ export default function OrganiserView() {
                 {workspaces.length} workspace{workspaces.length !== 1 ? 's' : ''}
               </span>
             </div>
-            <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-3">
+            <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-3 bg-surface">
               {workspaces.length === 0 && (
                 <div className="flex items-center justify-center h-24 text-muted-foreground text-sm">
                   No workspaces yet — create one above.

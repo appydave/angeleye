@@ -130,17 +130,18 @@ function cleanupPort(port: number | string): void {
 // test files import this module. Tests use supertest with app directly.
 if (!env.isTest) {
   cleanupPort(env.PORT);
-  initAngelEyeDirs()
-    .then(() => {
+  (async () => {
+    try {
+      await initAngelEyeDirs();
       logger.info('AngelEye dirs initialised');
-    })
-    .catch((err: unknown) => {
+    } catch (err: unknown) {
       logger.error({ err }, 'Failed to initialise AngelEye dirs');
+    }
+    httpServer.listen(env.PORT, () => {
+      logger.info(`Server running on http://localhost:${env.PORT}`);
+      logger.info(`Client URL: ${env.CLIENT_URL}`);
     });
-  httpServer.listen(env.PORT, () => {
-    logger.info(`Server running on http://localhost:${env.PORT}`);
-    logger.info(`Client URL: ${env.CLIENT_URL}`);
-  });
+  })();
 }
 
 // Graceful shutdown

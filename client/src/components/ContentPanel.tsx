@@ -13,7 +13,7 @@ export default function ContentPanel() {
   const { activeView } = useNav();
   const View = viewMap[activeView] ?? viewMap['observer'];
   return (
-    <main className="flex-1 overflow-y-auto p-6 bg-background">
+    <main className="flex-1 overflow-hidden bg-background flex flex-col">
       <View />
     </main>
   );

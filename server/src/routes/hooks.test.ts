@@ -6,7 +6,7 @@ import request from 'supertest';
 import express from 'express';
 import type { AngelEyeEvent, RegistryEntry } from '@appystack/shared';
 import { SOCKET_EVENTS } from '@appystack/shared';
-import { _setDataDir } from '../services/angeleye-data.js';
+import { _setDataDir, initAngelEyeDirs } from '../services/angeleye-data.js';
 import { createHooksRouter } from './hooks.js';
 
 const mockIo = { emit: vi.fn() };
@@ -17,6 +17,7 @@ let app: express.Express;
 beforeEach(async () => {
   testDir = await mkdtemp(join(tmpdir(), 'angeleye-hooks-test-'));
   _setDataDir(testDir);
+  await initAngelEyeDirs();
   mockIo.emit.mockClear();
   app = express();
   app.use(express.json());
@@ -344,6 +345,29 @@ describe('hook_event_name field in body', () => {
     // Registry created (only session_start path does full create)
     const registry = await readRegistry();
     expect(registry['ses-override-1']?.project).toBe('overrideapp');
+  });
+});
+
+// ── Missing session_id falls back to 'unknown' ────────────────────────────────
+
+describe('POST /hooks/UserPromptSubmit — missing session_id', () => {
+  it('writes to session-unknown.jsonl when session_id is missing', async () => {
+    // initAngelEyeDirs is needed because hooks.ts no longer calls it on startup
+    await initAngelEyeDirs();
+
+    const res = await request(app).post('/hooks/UserPromptSubmit').send({
+      cwd: '/projects/anon-app',
+      prompt: 'What is this?',
+      // no session_id field
+    });
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({ continue: true });
+
+    // The session file must be session-unknown.jsonl
+    const events = await readSessionEvents('unknown');
+    expect(events.length).toBeGreaterThanOrEqual(1);
+    expect(events[0]?.session_id).toBe('unknown');
   });
 });
 

@@ -2,29 +2,30 @@
 
 **Goal**: Close the visual gap between AngelEye and the AWB mock design language
 **Started**: 2026-03-15
+**Completed**: 2026-03-15
 **Target**: Surface layer system, correct typography temperature, edge-to-edge views
 
 ## Summary
 
-- Total: 5 | Complete: 0 | In Progress: 0 | Pending: 5 | Failed: 0
+- Total: 5 | Complete: 5 | In Progress: 0 | Pending: 0 | Failed: 0
 
 ## Pending
-
-- [ ] UI01 — Remove ContentPanel p-6: change p-6 to edge-to-edge layout (highest impact, 5 min)
-- [ ] UI02 — CSS variable corrections: surface, surface-mid (new), border, border-raised (new), muted-foreground temperature fix
-- [ ] UI03 — Observer focused row: replace bg-primary/10 with bg-surface-mid; keep border-l-2 border-l-primary
-- [ ] UI04 — Observer column header: add bg-surface to header row so it sits above data rows visually
-- [ ] UI05 — Organiser split: inbox scroll area bg-background, workspaces scroll area bg-surface (directional visual coding)
 
 ## In Progress
 
 ## Complete
 
+- [x] UI01 — Remove ContentPanel p-6: changed to overflow-hidden flex flex-col (views now edge-to-edge)
+- [x] UI02 — CSS variable corrections: 4 existing vars warmed, surface-mid + border-raised added as new Tailwind utilities
+- [x] UI03 — Observer focused row: bg-primary/10 → bg-surface-mid; border-l-2 border-l-primary preserved
+- [x] UI04 — Observer column header: bg-surface added to SESSION/LAST ACTIVITY/WHEN/IDLE header row
+- [x] UI05 — Organiser split: workspaces panel gets bg-surface; inbox inherits bg-background by default
+
 ## Failed / Needs Retry
 
 ## Notes & Decisions
 
-- UI01 is independent and highest-impact — do it first and screenshot before/after
-- UI02 must be done before UI03/UI04/UI05 since they depend on the new CSS variables
-- No font changes in this wave — DM Sans/DM Mono is a separate decision
-- Run node scripts/screenshot.mjs after each unit to verify visually
+- UI02 dependency confirmed: bg-surface-mid and bg-surface utilities live before UI03/UI04/UI05 ran
+- Tailwind v4 @theme block auto-generates utilities from --color-\* variables — no separate mapping needed
+- UI05 left panel: DroppableZone already had no bg class, inheriting background correctly — no change needed
+- Final: 173 tests passing (129 server + 44 client), typecheck clean, lint clean

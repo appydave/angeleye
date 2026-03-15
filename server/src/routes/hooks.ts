@@ -3,12 +3,7 @@ import type { Server } from 'socket.io';
 import type { AngelEyeEvent, AngelEyeEventType } from '@appystack/shared';
 import { SOCKET_EVENTS } from '@appystack/shared';
 import { logger } from '../config/logger.js';
-import {
-  initAngelEyeDirs,
-  writeEvent,
-  updateRegistry,
-  archiveSession,
-} from '../services/angeleye-data.js';
+import { writeEvent, updateRegistry, archiveSession } from '../services/angeleye-data.js';
 
 const EVENT_MAP: Record<string, AngelEyeEventType> = {
   SessionStart: 'session_start',
@@ -124,7 +119,6 @@ export function createHooksRouter(io: Server): Router {
         }
       }
 
-      await initAngelEyeDirs();
       await writeEvent(event);
 
       if (eventType === 'session_start') {

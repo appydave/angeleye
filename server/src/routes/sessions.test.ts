@@ -10,6 +10,7 @@ import {
   initAngelEyeDirs,
   updateRegistry,
   writeEvent,
+  createWorkspace,
 } from '../services/angeleye-data.js';
 import sessionsRouter from './sessions.js';
 
@@ -90,6 +91,27 @@ describe('GET /api/sessions', () => {
     expect(entry).toHaveProperty('session_id', 'ses-shape');
     expect(entry).toHaveProperty('status');
     expect(entry).toHaveProperty('last_active');
+  });
+
+  it('returns sessions sorted newest-first by last_active', async () => {
+    await updateRegistry('session-a', {
+      session_id: 'session-a',
+      project_dir: '/projects/alpha',
+      last_active: '2026-03-01T10:00:00Z',
+    });
+    await updateRegistry('session-b', {
+      session_id: 'session-b',
+      project_dir: '/projects/beta',
+      last_active: '2026-03-15T10:00:00Z',
+    });
+
+    const res = await request(app).get('/api/sessions');
+
+    expect(res.status).toBe(200);
+    const sessions = res.body.data.sessions as Array<{ session_id: string }>;
+    expect(sessions).toHaveLength(2);
+    expect(sessions[0]?.session_id).toBe('session-b');
+    expect(sessions[1]?.session_id).toBe('session-a');
   });
 
   it('handles a malformed registry.json gracefully and returns empty sessions', async () => {
@@ -198,6 +220,7 @@ describe('PATCH /api/sessions/:id', () => {
   });
 
   it('update workspace_id — response has updated workspace_id', async () => {
+    const ws = await createWorkspace('PatchWorkspace');
     await updateRegistry('ses-patch-ws', {
       session_id: 'ses-patch-ws',
       project_dir: '/projects/patch',
@@ -206,11 +229,11 @@ describe('PATCH /api/sessions/:id', () => {
 
     const res = await request(app)
       .patch('/api/sessions/ses-patch-ws')
-      .send({ workspace_id: 'ws-001' });
+      .send({ workspace_id: ws.id });
 
     expect(res.status).toBe(200);
     expect(res.body.status).toBe('ok');
-    expect(res.body.data.workspace_id).toBe('ws-001');
+    expect(res.body.data.workspace_id).toBe(ws.id);
   });
 
   it('unknown session — returns 404', async () => {
@@ -251,5 +274,69 @@ describe('PATCH /api/sessions/:id', () => {
 
     expect(res.status).toBe(200);
     expect(res.body.data.name).toBeNull();
+  });
+
+  it('returns 404 when workspace_id does not exist', async () => {
+    await updateRegistry('ses-patch-ws-invalid', {
+      session_id: 'ses-patch-ws-invalid',
+      project_dir: '/projects/patch',
+      last_active: '2026-03-15T09:00:00.000Z',
+    });
+
+    const res = await request(app)
+      .patch('/api/sessions/ses-patch-ws-invalid')
+      .send({ workspace_id: 'ws-does-not-exist' });
+
+    expect(res.status).toBe(404);
+    expect(res.body.status).toBe('error');
+    expect(res.body.error).toMatch(/workspace not found/i);
+  });
+
+  it('accepts workspace_id=null without checking workspaces (clear is always valid)', async () => {
+    await updateRegistry('ses-patch-ws-clear', {
+      session_id: 'ses-patch-ws-clear',
+      project_dir: '/projects/patch',
+      last_active: '2026-03-15T09:00:00.000Z',
+      workspace_id: 'some-existing-ws',
+    });
+
+    const res = await request(app)
+      .patch('/api/sessions/ses-patch-ws-clear')
+      .send({ workspace_id: null });
+
+    expect(res.status).toBe(200);
+    expect(res.body.data.workspace_id).toBeNull();
+  });
+
+  it('returns 200 when workspace_id exists in workspaces store', async () => {
+    const ws = await createWorkspace('MyWorkspace');
+    await updateRegistry('ses-patch-ws-valid', {
+      session_id: 'ses-patch-ws-valid',
+      project_dir: '/projects/patch',
+      last_active: '2026-03-15T09:00:00.000Z',
+    });
+
+    const res = await request(app)
+      .patch('/api/sessions/ses-patch-ws-valid')
+      .send({ workspace_id: ws.id });
+
+    expect(res.status).toBe(200);
+    expect(res.body.data.workspace_id).toBe(ws.id);
+  });
+
+  it('documents: PATCH with non-array tags currently writes without error (known gap)', async () => {
+    // tags validation is a known gap — add Zod body schema in a future wave
+    await updateRegistry('ses-patch-tags-invalid', {
+      session_id: 'ses-patch-tags-invalid',
+      project_dir: '/projects/patch',
+      last_active: '2026-03-15T09:00:00.000Z',
+    });
+
+    const res = await request(app)
+      .patch('/api/sessions/ses-patch-tags-invalid')
+      .send({ tags: 'not-an-array' });
+
+    // Current behaviour: no Zod validation, so non-array tags writes without error
+    expect(res.status).toBe(200);
   });
 });

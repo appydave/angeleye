@@ -1,74 +1,120 @@
-# AngelEye — Session Handover (Session 5 → Session 6)
+# AngelEye — Session Handover (Session 6 → Session 7)
 
 **Date**: 2026-03-15
-**Status**: Wave 5 complete. Wave 6 fully planned — two parallel campaigns ready to build.
+**Status**: Wave 6 complete (hardening + minor UI). Mochaccino design exploration done. Design direction chosen. Ready for Wave 7.
 
-## Session 6 Start Prompt
+## Session 7 Start Prompt
 
 > Read the AngelEye handover at ~/dev/ad/apps/angeleye/docs/planning/SESSION_HANDOVER.md.
-> Two Wave 6 campaigns are ready. Start with hardening (correctness bugs first), then UI.
-> Use Ralphy build mode: fire agents per IMPLEMENTATION_PLAN.md work units.
+> Wave 7 has two campaigns: UI redesign (linen design system) and ambient intelligence groundwork.
+> Start with UI — use Ralphy extend mode to plan Wave 7a from the v2-linen mochaccino direction.
 
 ---
 
-## What Was Done (Waves 4 + 5)
+## What Was Done This Session
 
-- Wave 4: workspace delete, observer column headers, session label fallback
-- Wave 5: transcript backfill (POST /api/backfill, 650 sessions imported), /angeleye:context skill, Settings page Run Backfill button
-- Wave 6 audits: deep test quality audit, deep code quality audit, deep design analysis — all findings documented in wave 6 planning folders
+### Wave 6 Hardening — Complete (11/11)
 
----
+- H01: Write queue halt fixed (`.catch()` on chain)
+- H02: Atomic registry writes (tmp + rename pattern)
+- H03: session-helpers.ts extracted from ObserverView + OrganiserView
+- H04: `initAngelEyeDirs()` now properly awaited at startup (was fire-and-forget)
+- H05: workspace_id validated on PATCH /sessions (returns 404 if workspace doesn't exist)
+- T01–T06: 8 new behaviour tests; total now 173 (129 server + 44 client)
 
-## Wave 6: Two Campaigns
+### Wave 6 UI — Shipped (minor)
 
-### Campaign 1 — Hardening
+- ContentPanel p-6 removed (edge-to-edge layout)
+- CSS variable palette warmed; surface-mid + border-raised added
+- Observer focused row: bg-surface-mid; column header: bg-surface
+- Organiser: workspaces panel bg-surface
 
-AGENTS.md: docs/planning/angeleye-wave6-hardening/AGENTS.md
-PLAN: docs/planning/angeleye-wave6-hardening/IMPLEMENTATION_PLAN.md
+### Mochaccino Design Exploration
 
-**Correctness bugs (do these first — they are latent data loss):**
-
-- H01: Write queue halts permanently on any error (add .catch to chain)
-- H02: Non-atomic registry writes (write to .tmp then rename)
-
-**Code quality:**
-
-- H03: Extract session-helpers.ts (sessionLabel/timeAgo/statusDot duplicated in two views)
-- H04: Fix initAngelEyeDirs — await at startup, remove from per-request hooks
-- H05: Validate workspace_id on PATCH /sessions
-
-**Test quality (behaviour tests hiding real failure modes):**
-
-- T01: Backfill actually writes events to disk (most critical missing test)
-- T02: getSessionEvents handles malformed JSONL line
-- T03: GET /sessions sorted newest-first
-- T04: Hook without session_id → session-unknown.jsonl
-- T05: PATCH /sessions rejects non-array tags
-- T06: Rewrite non-deterministic backfill route test
-
-### Campaign 2 — UI Polish
-
-AGENTS.md: docs/planning/angeleye-wave6-ui/AGENTS.md
-PLAN: docs/planning/angeleye-wave6-ui/IMPLEMENTATION_PLAN.md
-
-- UI01: Remove ContentPanel p-6 (highest impact — makes views edge-to-edge)
-- UI02: CSS variable corrections + surface-mid + border-raised + muted-foreground temperature
-- UI03: Observer focused row bg-primary/10 → bg-surface-mid
-- UI04: Observer column header bg-surface
-- UI05: Organiser inbox/workspace visual split
+- 5 design variants generated for Observer + Organiser
+- Gallery at `.mochaccino/index.html` (serve with `python3 -m http.server 7701` from `.mochaccino/`)
+- **User chose: v2-linen** — floating cards on warm linen canvas, dark column header, amber accent
 
 ---
 
-## Key Technical Facts
+## Design Direction: v2-linen
 
-Ports: Client 5050, Server 5051
-Test isolation: \_setDataDir(tmpDir) resets paths + write queue
-Response helpers: apiSuccess(res, data) and apiFailure(res, msg, code) — NOT apiError
-Client reads: response.data.sessions[], response.data.workspaces[], response.data.events[]
-Data dir: ~/.claude/angeleye/ (registry.json, workspaces.json, sessions/, archive/)
-165 tests currently passing (121 server / 44 client)
-Backlog: 15/15 done | 4 deferred (B011, B012, B013, B014)
+The chosen design to implement in Wave 7a. Key characteristics:
 
-**Architectural note for Wave 7**: Split angeleye-data.ts into registry.service.ts + workspace.service.ts + backfill.service.ts before building B012 ambient intelligence. The write queue is a module-level singleton and B012 will add a 6th responsibility to the file.
+- Canvas: `#e8e0d4` (warm linen)
+- Session cards: `#f5f1eb` (white-ish floating above canvas), border + box-shadow
+- Column header: `#2a2018` (dark — structural weight)
+- Sidebar: same linen canvas (light sidebar — NOT dark)
+- Header: light, border-bottom
+- Primary accent: `#c8841a` (real amber — replaces current `#ccba9d` beige)
+- Active session: amber left border 3px on card
+- Human session name: italic amber text below project name
+- Status: `active` pill (amber bg + dark text) vs `ended` (muted border + muted text)
+- Reference: `.mochaccino/designs/v2-linen/observer.html` and `organiser.html`
+
+**What this means for the current app:**
+
+- The entire dark theme (`#0f0d0c` background) needs to change to light
+- Sidebar switches from dark to linen (big change)
+- Header switches from dark to light
+- Primary color `#ccba9d` → `#c8841a`
+- Session rows become floating cards with border + shadow
+- Font: keep Bebas Neue for logo; body font should move toward `system-ui` or DM Sans (not pure monospace)
+
+---
+
+## Remaining Backlog
+
+| ID   | Item                                            | Priority                    |
+| ---- | ----------------------------------------------- | --------------------------- |
+| B011 | /angeleye:publish skill (Nano Banana / FliDeck) | Medium                      |
+| B012 | Ambient intelligence / skill suggester          | High — the flagship feature |
+| B013 | Paperclip/OpenClaw adapter                      | Low                         |
+| B014 | Supabase cold archive                           | Low / maybe never           |
+
+**Before B012**: Split `angeleye-data.ts` into:
+
+- `registry.service.ts`
+- `workspace.service.ts`
+- `backfill.service.ts`
+  The write queue is a module-level singleton and B012 adds a 6th responsibility. Do the split first.
+
+---
+
+## Wave 7 Plan
+
+### Wave 7a — UI: Implement v2-linen
+
+Full visual redesign of the app. Component changes, not just CSS variables:
+
+- `index.css`: New linen palette, light sidebar, amber primary
+- `Header.tsx`: Light header, border-bottom, amber ANGELEYE branding
+- `Sidebar.tsx`: Switch to linen bg, amber active state
+- `SidebarGroup.tsx`: Group separator lines (AWB style)
+- `ContentPanel.tsx`: Already edge-to-edge from Wave 6
+- `ObserverView.tsx`: Session rows → cards (border + shadow), column header dark
+- `OrganiserView.tsx`: Inbox/workspace panels in linen
+
+### Wave 7b — Refactor: Split angeleye-data.ts
+
+Prerequisite for B012. Extract into 3 service files.
+
+### Wave 7c — B012: Ambient Intelligence
+
+Prompt frequency pattern miner → skill suggester. The flagship feature.
+
+---
+
+## Key Technical Facts (carry forward)
+
+- Ports: Client 5050, Server 5051
+- Test isolation: `_setDataDir(tmpDir)` in beforeEach
+- Response helpers: `apiSuccess(res, data)` and `apiFailure(res, msg, code)` — NOT apiError
+- Client reads: `response.data.sessions[]`, `response.data.workspaces[]`, `response.data.events[]`
+- Data dir: `~/.claude/angeleye/` (registry.json, workspaces.json, sessions/, archive/)
+- 173 tests passing (129 server / 44 client) as of Wave 6 completion
+- AGENTS.md for Wave 7: inherit from `angeleye-wave6-hardening/AGENTS.md`
+
+---
 
 **Handover written**: 2026-03-15

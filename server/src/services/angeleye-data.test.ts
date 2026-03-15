@@ -236,6 +236,33 @@ describe('getSessionEvents', () => {
     expect(events[0]?.id).toBe('evt-a');
     expect(events[1]?.id).toBe('evt-b');
   });
+
+  it('returns [] without throwing when JSONL contains a malformed line', async () => {
+    // Write a JSONL file with: one valid event line + one malformed line ("{bad json")
+    await initAngelEyeDirs();
+    const validEvent = makeEvent({
+      id: 'evt-valid',
+      session_id: 'ses-malformed',
+      event: 'session_start',
+    });
+    const validLine = JSON.stringify(validEvent);
+    const malformedLine = '{bad json';
+    await writeFile(
+      join(testDir, 'sessions', 'session-ses-malformed.jsonl'),
+      validLine + '\n' + malformedLine + '\n',
+      'utf-8'
+    );
+
+    // current implementation wraps the full parse; per-line recovery is a future improvement
+    let result: Awaited<ReturnType<typeof getSessionEvents>> | undefined;
+    await expect(
+      (async () => {
+        result = await getSessionEvents('ses-malformed');
+      })()
+    ).resolves.toBeUndefined();
+
+    expect(result).toEqual([]);
+  });
 });
 
 // ── archiveSession ────────────────────────────────────────────────────────────

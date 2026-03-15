@@ -1,7 +1,12 @@
 import { Router } from 'express';
 import { apiSuccess, apiFailure } from '../helpers/response.js';
 import { logger } from '../config/logger.js';
-import { readRegistry, getSessionEvents, updateRegistry } from '../services/angeleye-data.js';
+import {
+  readRegistry,
+  getSessionEvents,
+  updateRegistry,
+  readWorkspaces,
+} from '../services/angeleye-data.js';
 import type { RegistryEntry } from '@appystack/shared';
 
 const router = Router();
@@ -46,6 +51,13 @@ router.patch('/api/sessions/:id', async (req, res, next) => {
     if (name !== undefined) updates.name = name;
     if (tags !== undefined) updates.tags = tags;
     if (workspace_id !== undefined) updates.workspace_id = workspace_id;
+    if (updates.workspace_id !== null && updates.workspace_id !== undefined) {
+      const workspaces = await readWorkspaces();
+      const exists = workspaces.some((w) => w.id === updates.workspace_id);
+      if (!exists) {
+        return apiFailure(res, 'Workspace not found', 404);
+      }
+    }
     await updateRegistry(id, updates);
     const registry = await readRegistry();
     const entry = registry[id];

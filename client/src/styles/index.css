@@ -9,11 +9,13 @@
 
   /* Background layers — warm dark (AWB palette adapted) */
   --color-background: #0f0d0c;
-  --color-surface: #1a1614;
-  --color-surface-hover: #231f1c;
+  --color-surface: #181412;
+  --color-surface-mid: #201b18; /* active row backgrounds, card inners */
+  --color-surface-hover: #271f1b;
 
   /* Borders — AWB primary-dark */
-  --color-border: #342d2d;
+  --color-border: #2d2622;
+  --color-border-raised: #3d3430; /* card/hover border escalation */
 
   /* Primary — AWB primary-light (warm beige) */
   --color-primary: #ccba9d;
@@ -21,7 +23,7 @@
 
   /* Foreground */
   --color-foreground: #e8ddd0;
-  --color-muted-foreground: #879294;
+  --color-muted-foreground: #7a6e62;
 
   /* Accent — AWB secondary */
   --color-accent: #95a19f;

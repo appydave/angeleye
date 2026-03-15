@@ -74,7 +74,11 @@ export async function readRegistry(): Promise<Registry> {
 let writeQueue: Promise<void> = Promise.resolve();
 
 export function updateRegistry(sessionId: string, updates: Partial<RegistryEntry>): Promise<void> {
-  writeQueue = writeQueue.then(() => _doUpdateRegistry(sessionId, updates));
+  writeQueue = writeQueue
+    .then(() => _doUpdateRegistry(sessionId, updates))
+    .catch((err) => {
+      logger.error({ err, sessionId }, 'Registry write failed — queue continues');
+    });
   return writeQueue;
 }
 
@@ -111,7 +115,9 @@ async function _doUpdateRegistry(
       ...updates,
     } as RegistryEntry;
 
-    await writeFile(_registryPath(), JSON.stringify(registry, null, 2), 'utf-8');
+    const tmp = _registryPath() + '.tmp';
+    await writeFile(tmp, JSON.stringify(registry, null, 2), 'utf-8');
+    await rename(tmp, _registryPath());
   } catch (err) {
     logger.error({ err, sessionId }, 'Failed to update registry');
     throw err;
@@ -163,7 +169,9 @@ export async function readWorkspaces(): Promise<WorkspaceEntry[]> {
 
 export async function writeWorkspaces(workspaces: WorkspaceEntry[]): Promise<void> {
   try {
-    await writeFile(_workspacesPath(), JSON.stringify({ workspaces }, null, 2), 'utf-8');
+    const tmp = _workspacesPath() + '.tmp';
+    await writeFile(tmp, JSON.stringify({ workspaces }, null, 2), 'utf-8');
+    await rename(tmp, _workspacesPath());
   } catch (err) {
     logger.error({ err }, 'Failed to write workspaces.json');
     throw err;

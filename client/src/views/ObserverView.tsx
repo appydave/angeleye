@@ -7,35 +7,12 @@ import type {
   ClientToServerEvents,
 } from '@appystack/shared';
 import { SOCKET_EVENTS } from '@appystack/shared';
+import { sessionLabel, statusDot, timeAgo } from '../utils/session-helpers';
 
 // Connect once outside component to avoid reconnecting on re-renders
 const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io('/', { path: '/socket.io' });
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
-
-function timeAgo(isoString: string): string {
-  const secs = Math.floor((Date.now() - new Date(isoString).getTime()) / 1000);
-  if (secs < 60) return `${secs}s ago`;
-  if (secs < 3600) return `${Math.floor(secs / 60)}m ago`;
-  return `${Math.floor(secs / 3600)}h ago`;
-}
-
-function sessionLabel(entry: RegistryEntry): string {
-  if (entry.name) return entry.name;
-  if (entry.project) return entry.project;
-  if (entry.project_dir) {
-    const base = entry.project_dir.split('/').filter(Boolean).pop();
-    if (base) return base;
-  }
-  return entry.session_id?.slice(0, 8) ?? 'unknown';
-}
-
-function statusDot(isoString: string): { symbol: string; className: string } {
-  const secs = Math.floor((Date.now() - new Date(isoString).getTime()) / 1000);
-  if (secs < 30) return { symbol: '●', className: 'text-green-500' };
-  if (secs < 120) return { symbol: '●', className: 'text-amber-400' };
-  return { symbol: '○', className: 'text-muted-foreground' };
-}
 
 function eventSummary(event: AngelEyeEvent): string {
   switch (event.event) {
@@ -251,7 +228,7 @@ export default function ObserverView() {
       </div>
 
       {/* Column Header Row */}
-      <div className="flex items-center gap-3 px-4 py-1 border-b border-border shrink-0">
+      <div className="flex items-center gap-3 px-4 py-1 border-b border-border shrink-0 bg-surface">
         <span className="w-4 shrink-0" />
         <span className="font-bebas tracking-wider text-muted-foreground text-xs w-32 shrink-0">
           SESSION
@@ -284,7 +261,7 @@ export default function ObserverView() {
               onClick={() => handleRowClick(s.entry.session_id)}
               className={[
                 'flex items-center gap-3 px-4 py-2 cursor-pointer border-b border-border hover:bg-surface-hover transition-colors text-sm',
-                isFocused ? 'bg-primary/10 border-l-2 border-l-primary' : '',
+                isFocused ? 'bg-surface-mid border-l-2 border-l-primary' : '',
               ].join(' ')}
             >
               {/* Status dot */}

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mochaccino — AngelEye Design Gallery</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #f0ebe2;
+    color: #2a2018;
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    min-height: 100vh;
+  }
+  .header {
+    background: #1a1512;
+    padding: 24px 40px;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+  }
+  .header-title {
+    color: #c8841a;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .header-sub {
+    color: #6a5e52;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+  .header-badge {
+    margin-left: auto;
+    background: #c8841a;
+    color: #1a1512;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .banner {
+    background: #e8e0d4;
+    border-bottom: 1px solid #d4ccc0;
+    padding: 8px 40px;
+    font-size: 11px;
+    color: #8a7a68;
+    letter-spacing: 0.04em;
+  }
+  .gallery {
+    padding: 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+    gap: 28px;
+  }
+  .card {
+    background: #faf7f3;
+    border: 1px solid #d4ccc0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(42,32,24,0.08);
+    transition: box-shadow 0.15s, transform 0.15s;
+  }
+  .card:hover {
+    box-shadow: 0 4px 16px rgba(42,32,24,0.14);
+    transform: translateY(-2px);
+  }
+  .card-header {
+    background: #2a2018;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .card-num {
+    color: #c8841a;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+    min-width: 32px;
+  }
+  .card-title {
+    color: #f0ebe2;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .card-tagline {
+    color: #8a7a68;
+    font-size: 12px;
+    margin-top: 2px;
+  }
+  .card-body {
+    padding: 16px 20px;
+  }
+  .card-desc {
+    font-size: 13px;
+    color: #5a4e42;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .card-links {
+    display: flex;
+    gap: 10px;
+  }
+  .link-btn {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: background 0.12s;
+  }
+  .link-primary {
+    background: #c8841a;
+    color: #fff;
+  }
+  .link-primary:hover { background: #b07018; }
+  .link-secondary {
+    background: #ede7de;
+    color: #2a2018;
+    border: 1px solid #d4ccc0;
+  }
+  .link-secondary:hover { background: #e4ddd4; }
+  .palette {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 1px solid rgba(0,0,0,0.08);
+  }
+</style>
+</head>
+<body>
+<div class="header">
+  <span class="header-title">AngelEye</span>
+  <span class="header-sub">Design Gallery — Mochaccino</span>
+  <span class="header-badge">5 variants</span>
+</div>
+<div class="banner">Mochaccino — angeleye — 2026-03-15 — light-dominant design exploration</div>
+<div class="gallery">
+
+  <div class="card">
+    <div class="card-header">
+      <span class="card-num">1</span>
+      <div>
+        <div class="card-title">Paper</div>
+        <div class="card-tagline">Warm parchment + dark sidebar</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="palette">
+        <div class="swatch" style="background:#f2ece4"></div>
+        <div class="swatch" style="background:#faf7f3"></div>
+        <div class="swatch" style="background:#1c1714"></div>
+        <div class="swatch" style="background:#c8841a"></div>
+        <div class="swatch" style="background:#2a2018"></div>
+        <div class="swatch" style="background:#8a7a6a"></div>
+      </div>
+      <p class="card-desc">A well-designed document. Warm parchment as the main canvas, dark sidebar as the one intentional dark zone. Sessions feel like entries in an operations log. Amber accent for active state only.</p>
+      <div class="card-links">
+        <a href="designs/v1-paper/observer.html" class="link-btn link-primary">Observer →</a>
+        <a href="designs/v1-paper/organiser.html" class="link-btn link-secondary">Organiser →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="card-num">2</span>
+      <div>
+        <div class="card-title">Linen</div>
+        <div class="card-tagline">Floating cards on warm linen canvas</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="palette">
+        <div class="swatch" style="background:#e8e0d4"></div>
+        <div class="swatch" style="background:#f5f1eb"></div>
+        <div class="swatch" style="background:#2a2018"></div>
+        <div class="swatch" style="background:#c8841a"></div>
+        <div class="swatch" style="background:#ddd6cc"></div>
+        <div class="swatch" style="background:#7a6e5e"></div>
+      </div>
+      <p class="card-desc">Sessions float as white cards above a richer linen canvas. The card/background elevation is the design. Dark column header for structural weight. Inspired by AWB Workflow Cards.</p>
+      <div class="card-links">
+        <a href="designs/v2-linen/observer.html" class="link-btn link-primary">Observer →</a>
+        <a href="designs/v2-linen/organiser.html" class="link-btn link-secondary">Organiser →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="card-num">3</span>
+      <div>
+        <div class="card-title">Continuity</div>
+        <div class="card-tagline">Dark nav + warm cream content</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="palette">
+        <div class="swatch" style="background:#1a1512"></div>
+        <div class="swatch" style="background:#f0ebe2"></div>
+        <div class="swatch" style="background:#c8841a"></div>
+        <div class="swatch" style="background:#e8e0d4"></div>
+        <div class="swatch" style="background:#2a2018"></div>
+        <div class="swatch" style="background:#8a7a68"></div>
+      </div>
+      <p class="card-desc">Dark sidebar as navigation home, warm cream as the content world. The split is intentional — you live in the dark nav but work in the light. Directly inspired by AWB Continuity variant.</p>
+      <div class="card-links">
+        <a href="designs/v3-continuity/observer.html" class="link-btn link-primary">Observer →</a>
+        <a href="designs/v3-continuity/organiser.html" class="link-btn link-secondary">Organiser →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="card-num">4</span>
+      <div>
+        <div class="card-title">Cockpit Light</div>
+        <div class="card-tagline">Active sessions render dark — live instruments</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="palette">
+        <div class="swatch" style="background:#f0ebe4"></div>
+        <div class="swatch" style="background:#2a2018"></div>
+        <div class="swatch" style="background:#c8841a"></div>
+        <div class="swatch" style="background:#1a1512"></div>
+        <div class="swatch" style="background:#f0ebe4" style="border:1px solid #d4ccc0"></div>
+        <div class="swatch" style="background:#8a7a68"></div>
+      </div>
+      <p class="card-desc">Light canvas overall — but active sessions render as dark rows. Like lit instruments on an operations panel. Ended sessions fade into the background. Dark = live, light = history.</p>
+      <div class="card-links">
+        <a href="designs/v4-cockpit-light/observer.html" class="link-btn link-primary">Observer →</a>
+        <a href="designs/v4-cockpit-light/organiser.html" class="link-btn link-secondary">Organiser →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="card-num">5</span>
+      <div>
+        <div class="card-title">Brief</div>
+        <div class="card-tagline">Typography as the interface</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="palette">
+        <div class="swatch" style="background:#f5f1eb"></div>
+        <div class="swatch" style="background:#f0ebe2"></div>
+        <div class="swatch" style="background:#1a1410"></div>
+        <div class="swatch" style="background:#c8841a"></div>
+        <div class="swatch" style="background:#fef3e2"></div>
+        <div class="swatch" style="background:#9a8a78"></div>
+      </div>
+      <p class="card-desc">Maximum typographic clarity. No cards, no chrome. Session names are the hero — large, bold, dominant. An amber rule divides live from history. Inspired by AWB Brief variant.</p>
+      <div class="card-links">
+        <a href="designs/v5-brief/observer.html" class="link-btn link-primary">Observer →</a>
+        <a href="designs/v5-brief/organiser.html" class="link-btn link-secondary">Organiser →</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
