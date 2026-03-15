@@ -5,6 +5,9 @@ import { logger } from '../config/logger.js';
 
 const router = Router();
 
+// SECURITY: do NOT accept a user-supplied dir from req.body — backfillTranscripts() scans
+// the filesystem. The dir must always be the server-side default (~/.claude/projects).
+// If this route ever needs to accept a custom path, validate it is within homedir() first.
 router.post('/', async (_req, res) => {
   try {
     const result = await backfillTranscripts();
