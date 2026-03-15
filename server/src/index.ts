@@ -41,8 +41,8 @@ app.use(cors({ origin: env.CLIENT_URL }));
 app.use(express.json());
 app.use(requestLogger);
 
-// Rate limiting — apply before all routes
-app.use(apiLimiter);
+// Rate limiting — /api/* only; hooks are internal machine events and must not be throttled
+app.use('/api', apiLimiter);
 
 // Routes
 app.use(healthRouter);
