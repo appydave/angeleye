@@ -1,12 +1,9 @@
 # Project Backlog — AngelEye
 
 **Last updated**: 2026-03-15
-**Total**: 15 | Pending: 2 | In Progress: 0 | Done: 13 | Deferred: 4 | Rejected: 0
+**Total**: 15 | Pending: 0 | In Progress: 0 | Done: 15 | Deferred: 4 | Rejected: 0
 
 ## Pending
-
-- [ ] B007 — Transcript reader: scan ~/.claude/projects/, parse existing JSONL sessions | Priority: medium
-- [ ] B010 — /angeleye:context skill (assemble session context block for Claude analysis) | Priority: medium
 
 ## In Progress
 
@@ -25,6 +22,8 @@
 - [x] B017 — Test coverage: sessions.ts route tests | Completed: angeleye-wave2-hardening
 - [x] B018 — Fix stale App.test.tsx (DemoPage test IDs removed, AppShell assertions added) | Completed: angeleye-wave2-hardening
 - [x] B019 — Workspace CRUD API (GET/POST/PATCH/DELETE /api/workspaces) + 10 tests | Completed: angeleye-wave-3
+- [x] B007 — Transcript reader: scan ~/.claude/projects/, parse existing JSONL sessions | Completed: angeleye-wave5-backfill
+- [x] B010 — /angeleye:context skill (assemble session context block for Claude analysis) | Completed: angeleye-wave5-backfill
 
 ## Deferred
 
