@@ -5,29 +5,53 @@ import { join } from 'node:path';
 import type { AngelEyeEvent, Registry, RegistryEntry } from '@appystack/shared';
 import { logger } from '../config/logger.js';
 
-export const ANGELEYE_DIR = join(homedir(), '.claude', 'angeleye');
-export const SESSIONS_DIR = join(ANGELEYE_DIR, 'sessions');
-export const ARCHIVE_DIR = join(ANGELEYE_DIR, 'archive');
-export const REGISTRY_PATH = join(ANGELEYE_DIR, 'registry.json');
-export const WORKSPACES_PATH = join(ANGELEYE_DIR, 'workspaces.json');
+// Module-level base dir — overridable via _setDataDir (test-only)
+let _baseDir: string = join(homedir(), '.claude', 'angeleye');
+
+function _sessionsDir(): string {
+  return join(_baseDir, 'sessions');
+}
+function _archiveDir(): string {
+  return join(_baseDir, 'archive');
+}
+function _registryPath(): string {
+  return join(_baseDir, 'registry.json');
+}
+function _workspacesPath(): string {
+  return join(_baseDir, 'workspaces.json');
+}
+
+/**
+ * Override the base data directory. Intended for tests only — prefix signals test-only usage.
+ * Also resets the write queue so tests start clean.
+ */
+export function _setDataDir(dir: string): void {
+  _baseDir = dir;
+  writeQueue = Promise.resolve();
+}
 
 export async function initAngelEyeDirs(): Promise<void> {
-  await mkdir(SESSIONS_DIR, { recursive: true });
-  await mkdir(ARCHIVE_DIR, { recursive: true });
+  const sessionsDir = _sessionsDir();
+  const archiveDir = _archiveDir();
+  const registryPath = _registryPath();
+  const workspacesPath = _workspacesPath();
 
-  if (!existsSync(REGISTRY_PATH)) {
-    await writeFile(REGISTRY_PATH, JSON.stringify({}), 'utf-8');
-    logger.info({ path: REGISTRY_PATH }, 'Created registry.json');
+  await mkdir(sessionsDir, { recursive: true });
+  await mkdir(archiveDir, { recursive: true });
+
+  if (!existsSync(registryPath)) {
+    await writeFile(registryPath, JSON.stringify({}), 'utf-8');
+    logger.info({ path: registryPath }, 'Created registry.json');
   }
 
-  if (!existsSync(WORKSPACES_PATH)) {
-    await writeFile(WORKSPACES_PATH, JSON.stringify({ workspaces: [] }), 'utf-8');
-    logger.info({ path: WORKSPACES_PATH }, 'Created workspaces.json');
+  if (!existsSync(workspacesPath)) {
+    await writeFile(workspacesPath, JSON.stringify({ workspaces: [] }), 'utf-8');
+    logger.info({ path: workspacesPath }, 'Created workspaces.json');
   }
 }
 
 export async function writeEvent(event: AngelEyeEvent): Promise<void> {
-  const filePath = join(SESSIONS_DIR, `session-${event.session_id}.jsonl`);
+  const filePath = join(_sessionsDir(), `session-${event.session_id}.jsonl`);
   try {
     await appendFile(filePath, JSON.stringify(event) + '\n', 'utf-8');
   } catch (err) {
@@ -38,7 +62,7 @@ export async function writeEvent(event: AngelEyeEvent): Promise<void> {
 
 export async function readRegistry(): Promise<Registry> {
   try {
-    const raw = await readFile(REGISTRY_PATH, 'utf-8');
+    const raw = await readFile(_registryPath(), 'utf-8');
     return JSON.parse(raw) as Registry;
   } catch (err) {
     logger.warn({ err }, 'Could not read registry.json, returning empty registry');
@@ -87,7 +111,7 @@ async function _doUpdateRegistry(
       ...updates,
     } as RegistryEntry;
 
-    await writeFile(REGISTRY_PATH, JSON.stringify(registry, null, 2), 'utf-8');
+    await writeFile(_registryPath(), JSON.stringify(registry, null, 2), 'utf-8');
   } catch (err) {
     logger.error({ err, sessionId }, 'Failed to update registry');
     throw err;
@@ -95,7 +119,7 @@ async function _doUpdateRegistry(
 }
 
 export async function getSessionEvents(sessionId: string): Promise<AngelEyeEvent[]> {
-  const filePath = join(SESSIONS_DIR, `session-${sessionId}.jsonl`);
+  const filePath = join(_sessionsDir(), `session-${sessionId}.jsonl`);
   try {
     const raw = await readFile(filePath, 'utf-8');
     return raw
@@ -113,8 +137,8 @@ export async function getSessionEvents(sessionId: string): Promise<AngelEyeEvent
 }
 
 export async function archiveSession(sessionId: string): Promise<void> {
-  const src = join(SESSIONS_DIR, `session-${sessionId}.jsonl`);
-  const dest = join(ARCHIVE_DIR, `session-${sessionId}.jsonl`);
+  const src = join(_sessionsDir(), `session-${sessionId}.jsonl`);
+  const dest = join(_archiveDir(), `session-${sessionId}.jsonl`);
   try {
     await rename(src, dest);
     logger.info({ sessionId, dest }, 'Session archived');

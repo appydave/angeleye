@@ -7,6 +7,21 @@ import type { Server } from 'node:http';
 import ErrorFallback from './components/ErrorFallback.js';
 import App from './App.js';
 
+// ── Mock socket.io-client ─────────────────────────────────────────────────────
+// ObserverView creates a socket at module level. In tests there is no server, so
+// we stub io() with a no-op socket that will never attempt to connect.
+vi.mock('socket.io-client', () => {
+  const noop = () => {};
+  const mockSocket = {
+    connected: false,
+    on: noop,
+    off: noop,
+    emit: noop,
+    disconnect: noop,
+  };
+  return { io: () => mockSocket };
+});
+
 // Capture native fetch before any stub replaces it
 const nativeFetch = globalThis.fetch;
 
@@ -26,6 +41,8 @@ beforeAll(
           data: { nodeVersion: 'test', environment: 'test', port: 0, clientUrl: '', uptime: 0 },
         })
       );
+      // ObserverView fetches /api/sessions on mount
+      app.get('/api/sessions', (_, res) => res.json({ status: 'ok', data: { sessions: [] } }));
       server = app.listen(0, () => {
         serverPort = (server.address() as { port: number }).port;
         resolve();
@@ -112,6 +129,7 @@ describe('main.tsx wiring — ErrorBoundary', () => {
       </ErrorBoundary>
     );
 
-    expect(screen.getByText(/Production-ready RVETS stack boilerplate/)).toBeInTheDocument();
+    // App renders the AppShell — verify the brand name is present
+    expect(screen.getByText('AngelEye')).toBeInTheDocument();
   });
 });
