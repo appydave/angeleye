@@ -5,7 +5,7 @@
 
 ## Session 4 Start Prompt
 
-> Read the AngelEye handover at `~/dev/ad/apps/angeleye/docs/planning/SESSION_HANDOVER.md`, check if the W01 workspace API agent completed (run `npm test --workspace server` in the wave 3 worktree), then continue the Ralphy loop with W02.
+> Read the AngelEye handover at `~/dev/ad/apps/angeleye/docs/planning/SESSION_HANDOVER.md`, W01 is confirmed complete (116 tests passing). Start by launching the W02 agent prompt below.
 
 ## What Was Done This Session
 
