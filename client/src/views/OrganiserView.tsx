@@ -32,7 +32,13 @@ function timeAgo(isoString: string): string {
 }
 
 function sessionLabel(entry: RegistryEntry): string {
-  return entry.name ?? entry.project ?? entry.session_id?.slice(0, 8) ?? 'unknown';
+  if (entry.name) return entry.name;
+  if (entry.project) return entry.project;
+  if (entry.project_dir) {
+    const base = entry.project_dir.split('/').filter(Boolean).pop();
+    if (base) return base;
+  }
+  return entry.session_id?.slice(0, 8) ?? 'unknown';
 }
 
 function statusDot(isoString: string): { symbol: string; className: string } {
@@ -200,16 +206,38 @@ function DroppableZone({ id, children, className = '' }: DroppableZoneProps) {
 interface WorkspaceCardProps {
   workspace: WorkspaceEntry;
   sessions: RegistryEntry[];
+  onDeleted: (workspaceId: string) => void;
 }
 
-function WorkspaceCard({ workspace, sessions }: WorkspaceCardProps) {
+function WorkspaceCard({ workspace, sessions, onDeleted }: WorkspaceCardProps) {
+  const handleDelete = () => {
+    if (sessions.length > 0) {
+      const confirmed = window.confirm(
+        `Delete workspace "${workspace.name}"? ${sessions.length} session${sessions.length !== 1 ? 's' : ''} will return to inbox.`
+      );
+      if (!confirmed) return;
+    }
+    fetch(`/api/workspaces/${workspace.id}`, { method: 'DELETE' })
+      .then(() => onDeleted(workspace.id))
+      .catch(() => {});
+  };
+
   return (
     <div className="border border-border rounded bg-surface">
       <div className="flex items-center justify-between px-3 py-2 border-b border-border">
         <span className="font-bebas tracking-wider text-primary text-lg">{workspace.name}</span>
-        <span className="text-muted-foreground text-xs">
-          {sessions.length} session{sessions.length !== 1 ? 's' : ''}
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="text-muted-foreground text-xs">
+            {sessions.length} session{sessions.length !== 1 ? 's' : ''}
+          </span>
+          <button
+            onClick={handleDelete}
+            className="text-muted-foreground hover:text-destructive transition-colors text-xs leading-none"
+            title="Delete workspace"
+          >
+            ✕
+          </button>
+        </div>
       </div>
       <DroppableZone id={workspace.id} className="p-2 flex flex-col gap-1.5 min-h-12 rounded-b">
         {sessions.length === 0 && (
@@ -372,6 +400,13 @@ export default function OrganiserView() {
     setShowNewWorkspace(false);
   };
 
+  const handleWorkspaceDeleted = (workspaceId: string) => {
+    setWorkspaces((prev) => prev.filter((ws) => ws.id !== workspaceId));
+    setSessions((prev) =>
+      prev.map((s) => (s.workspace_id === workspaceId ? { ...s, workspace_id: null } : s))
+    );
+  };
+
   return (
     <DndContext onDragEnd={handleDragEnd}>
       <div className="flex flex-col h-full min-h-0">
@@ -445,6 +480,7 @@ export default function OrganiserView() {
                   key={workspace.id}
                   workspace={workspace}
                   sessions={sessions.filter((s) => s.workspace_id === workspace.id)}
+                  onDeleted={handleWorkspaceDeleted}
                 />
               ))}
             </div>

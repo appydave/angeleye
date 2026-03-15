@@ -21,7 +21,13 @@ function timeAgo(isoString: string): string {
 }
 
 function sessionLabel(entry: RegistryEntry): string {
-  return entry.name ?? entry.project ?? entry.session_id?.slice(0, 8) ?? 'unknown';
+  if (entry.name) return entry.name;
+  if (entry.project) return entry.project;
+  if (entry.project_dir) {
+    const base = entry.project_dir.split('/').filter(Boolean).pop();
+    if (base) return base;
+  }
+  return entry.session_id?.slice(0, 8) ?? 'unknown';
 }
 
 function statusDot(isoString: string): { symbol: string; className: string } {
@@ -242,6 +248,23 @@ export default function ObserverView() {
             ●
           </span>
         </div>
+      </div>
+
+      {/* Column Header Row */}
+      <div className="flex items-center gap-3 px-4 py-1 border-b border-border shrink-0">
+        <span className="w-4 shrink-0" />
+        <span className="font-bebas tracking-wider text-muted-foreground text-xs w-32 shrink-0">
+          SESSION
+        </span>
+        <span className="font-bebas tracking-wider text-muted-foreground text-xs flex-1">
+          LAST ACTIVITY
+        </span>
+        <span className="font-bebas tracking-wider text-muted-foreground text-xs w-16 text-right shrink-0">
+          WHEN
+        </span>
+        <span className="font-bebas tracking-wider text-muted-foreground text-xs w-12 text-right shrink-0">
+          IDLE
+        </span>
       </div>
 
       {/* Layer 2: Activity Feed */}
