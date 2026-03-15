@@ -2,7 +2,7 @@ import { readFile, writeFile, mkdir, rename, appendFile } from 'node:fs/promises
 import { existsSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
-import type { AngelEyeEvent, Registry, RegistryEntry } from '@appystack/shared';
+import type { AngelEyeEvent, Registry, RegistryEntry, WorkspaceEntry } from '@appystack/shared';
 import { logger } from '../config/logger.js';
 
 // Module-level base dir — overridable via _setDataDir (test-only)
@@ -146,4 +146,64 @@ export async function archiveSession(sessionId: string): Promise<void> {
     logger.error({ err, sessionId }, 'Failed to archive session');
     throw err;
   }
+}
+
+// ── Workspace CRUD ─────────────────────────────────────────────────────────────
+
+export async function readWorkspaces(): Promise<WorkspaceEntry[]> {
+  try {
+    const raw = await readFile(_workspacesPath(), 'utf-8');
+    const parsed = JSON.parse(raw) as { workspaces: WorkspaceEntry[] };
+    return Array.isArray(parsed.workspaces) ? parsed.workspaces : [];
+  } catch (err) {
+    logger.warn({ err }, 'Could not read workspaces.json, returning empty array');
+    return [];
+  }
+}
+
+export async function writeWorkspaces(workspaces: WorkspaceEntry[]): Promise<void> {
+  try {
+    await writeFile(_workspacesPath(), JSON.stringify({ workspaces }, null, 2), 'utf-8');
+  } catch (err) {
+    logger.error({ err }, 'Failed to write workspaces.json');
+    throw err;
+  }
+}
+
+export async function createWorkspace(name: string): Promise<WorkspaceEntry> {
+  const entry: WorkspaceEntry = {
+    id: crypto.randomUUID(),
+    name,
+    tags: [],
+    created_at: new Date().toISOString(),
+  };
+  const workspaces = await readWorkspaces();
+  workspaces.push(entry);
+  await writeWorkspaces(workspaces);
+  return entry;
+}
+
+export async function updateWorkspace(
+  id: string,
+  updates: Partial<Pick<WorkspaceEntry, 'name' | 'tags'>>
+): Promise<WorkspaceEntry> {
+  const workspaces = await readWorkspaces();
+  const index = workspaces.findIndex((ws) => ws.id === id);
+  if (index === -1) {
+    throw new Error(`Workspace not found: ${id}`);
+  }
+  const updated: WorkspaceEntry = { ...workspaces[index]!, ...updates };
+  workspaces[index] = updated;
+  await writeWorkspaces(workspaces);
+  return updated;
+}
+
+export async function deleteWorkspace(id: string): Promise<void> {
+  const workspaces = await readWorkspaces();
+  const index = workspaces.findIndex((ws) => ws.id === id);
+  if (index === -1) {
+    throw new Error(`Workspace not found: ${id}`);
+  }
+  const filtered = workspaces.filter((ws) => ws.id !== id);
+  await writeWorkspaces(filtered);
 }

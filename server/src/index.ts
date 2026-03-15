@@ -15,6 +15,7 @@ import { apiLimiter } from './middleware/rateLimiter.js';
 import healthRouter from './routes/health.js';
 import infoRouter from './routes/info.js';
 import sessionsRouter from './routes/sessions.js';
+import workspacesRouter from './routes/workspaces.js';
 import { createHooksRouter } from './routes/hooks.js';
 import { initAngelEyeDirs } from './services/angeleye-data.js';
 import type { ServerToClientEvents, ClientToServerEvents } from '@appystack/shared';
@@ -47,6 +48,7 @@ app.use(apiLimiter);
 app.use(healthRouter);
 app.use(infoRouter);
 app.use(sessionsRouter);
+app.use(workspacesRouter);
 app.use(createHooksRouter(io));
 
 // Production static file serving — serve the built client app
