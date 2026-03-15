@@ -116,6 +116,9 @@ export default function ObserverView() {
             (Date.now() - new Date(e.last_active).getTime()) / 1000
           );
         });
+      })
+      .catch(() => {
+        // Server may be unavailable on first load — silently ignore and wait for socket events
       });
   }, []);
 
@@ -213,6 +216,9 @@ export default function ObserverView() {
       .then((body: { status: string; data?: { events?: AngelEyeEvent[] } }) => {
         const events = (body.data?.events ?? []).slice(-10);
         setFocusEvents({ sessionId, events });
+      })
+      .catch(() => {
+        // Server may be unavailable — silently ignore
       });
   };
 
