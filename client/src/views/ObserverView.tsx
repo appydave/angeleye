@@ -3,6 +3,7 @@ import { io, Socket } from 'socket.io-client';
 import type {
   AngelEyeEvent,
   RegistryEntry,
+  WorkspaceEntry,
   ServerToClientEvents,
   ClientToServerEvents,
 } from '@appystack/shared';
@@ -183,6 +184,7 @@ function groupSummaryText(events: AngelEyeEvent[]): string {
 
 export default function ObserverView() {
   const [sessions, setSessions] = useState<SessionState[]>([]);
+  const [workspaceMap, setWorkspaceMap] = useState<Map<string, string>>(new Map());
   const [focusedId, setFocusedId] = useState<string | null>(null);
   const [focusEvents, setFocusEvents] = useState<FocusEvents | null>(null);
   const [, setTick] = useState(0); // forces re-render for live time displays
@@ -215,6 +217,20 @@ export default function ObserverView() {
       })
       .catch(() => {
         // Server may be unavailable on first load — silently ignore and wait for socket events
+      });
+  }, []);
+
+  // ── Workspace map fetch ────────────────────────────────────────────────────
+  useEffect(() => {
+    void fetch('/api/workspaces')
+      .then((r) => r.json())
+      .then((body: { workspaces?: WorkspaceEntry[] }) => {
+        const map = new Map<string, string>();
+        (body.workspaces ?? []).forEach((w) => map.set(w.id, w.name));
+        setWorkspaceMap(map);
+      })
+      .catch(() => {
+        // Workspace names are decorative — silently ignore fetch failures
       });
   }, []);
 
@@ -430,6 +446,11 @@ export default function ObserverView() {
                       className={`text-[10px] font-bebas tracking-wider px-1.5 py-0.5 rounded shrink-0 ${badgeClass}`}
                     >
                       {sessionType}
+                    </span>
+                  )}
+                  {s.entry.workspace_id && workspaceMap.get(s.entry.workspace_id) && (
+                    <span className="text-[10px] px-1.5 py-0.5 rounded shrink-0 bg-amber-100/60 text-amber-800/70 border border-amber-200/60">
+                      {workspaceMap.get(s.entry.workspace_id)}
                     </span>
                   )}
                   {sessionLabel(s.entry) !== s.entry.session_id.slice(0, 8) && (

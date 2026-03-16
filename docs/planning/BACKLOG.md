@@ -1,7 +1,7 @@
 # Project Backlog — AngelEye
 
 **Last updated**: 2026-03-16
-**Total**: 26 | Pending: 9 | In Progress: 0 | Done: 17 | Deferred: 2 | Rejected: 0
+**Total**: 27 | Pending: 9 | In Progress: 0 | Done: 18 | Deferred: 2 | Rejected: 0
 
 ## Pending
 
@@ -29,6 +29,10 @@
 
 - [ ] B024 — Replace HTTP hooks with command hooks using `curl ... || true` so Claude sessions don't show errors when AngelEye server isn't running | Priority: high
 - [ ] B025 — launchd plist for AngelEye server: always-on persistent service, auto-restart on crash/reboot | Priority: medium
+
+### Observer — Workspace visibility
+
+- [x] B027 — Add workspace badge to session rows in Observer: small pill badge showing assigned workspace name, no workspace = no badge. Data is already in registry. Quick win. | Completed: angeleye-b027-workspace-badge
 
 ### Infrastructure
 
