@@ -19,20 +19,22 @@ Recipes are:
 
 ## Available Recipes
 
-| Recipe               | What it builds                                                                                                                                                                                                                                                  |
-| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `nav-shell`          | Left-sidebar navigation shell with header, collapsible sidebar, main content area, and optional footer. Menus can switch dynamically when sub-tools are active. Domain-agnostic layout scaffold.                                                                |
-| `file-crud`          | JSON file-based persistence for one or more entities. Each record is a file named `{slug}-{id}.json`. Real-time Socket.io sync. No database required. Includes chokidar file watcher.                                                                           |
-| `entity-socket-crud` | Generic Socket.io CRUD pattern for any number of entities. One `entity:{operation}` contract, one `useEntity` hook, per-entity server handlers — all following the same structure. Discovered in Signal Studio production. Requires `file-crud` infrastructure. |
-| `local-service`      | Persistent local service management via Procfile + Overmind. Services survive terminal close. Optional Platypus `.app` launcher for Spotlight launch. Includes CLAUDE.md port-check rule to prevent AI agents from restarting running servers.                  |
-| `api-endpoints`      | REST API layer with OpenAPI/Swagger documentation. Exposes entities as external-facing endpoints with API key auth and CORS. Layers on top of `file-crud`.                                                                                                      |
-| `readme`             | Generates a polished, app-specific README.md by reading the codebase and asking 5 targeted questions. Run at Stage 1 (after first recipes applied) and again at Stage 2 (when app is substantially complete).                                                   |
-| `add-orm`            | Adds Prisma or Drizzle ORM to replace JSON file persistence. Advisory first — reads entities, explains trade-offs, asks which database, then generates a targeted migration.                                                                                    |
-| `add-auth`           | JWT authentication + protected routes + optional Socket.io auth. Reads existing routes, asks what to protect and where users are stored, then generates auth middleware + login/me endpoints + client hooks.                                                    |
-| `add-tanstack-query` | Smart HTTP caching that complements Socket.io. Reads existing raw fetch hooks, replaces them with `useQuery`/`useMutation`, and generates the combined Query + Socket.io cache-invalidation pattern.                                                            |
-| `add-state`          | Zustand store that replaces multiple React contexts. Reads existing context files, consolidates them into typed slices with optional persistence and DevTools.                                                                                                  |
-| `csv-bulk-import`    | CSV upload modal for bulk-creating entity records. Column validation, partial success reporting, company scoping for non-admins. Uses HTTP POST + multer; emits Socket.io `entity:external-change` after writes.                                                |
-| `domain-expert-uat`  | Generates a plain-English UAT plan for a non-developer domain expert. Groups test cases by business workflow, not technical entity. Covers happy path, validation errors, permission boundaries, and three-state field transitions.                             |
+| Recipe               | What it builds                                                                                                                                                                                                                                                                                                             |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `nav-shell`          | Left-sidebar navigation shell with header, collapsible sidebar, main content area, and optional footer. Menus can switch dynamically when sub-tools are active. Domain-agnostic layout scaffold.                                                                                                                           |
+| `file-crud`          | JSON file-based persistence for one or more entities. Each record is a file named `{slug}-{id}.json`. Real-time Socket.io sync. No database required. Includes chokidar file watcher.                                                                                                                                      |
+| `entity-socket-crud` | Generic Socket.io CRUD pattern for any number of entities. One `entity:{operation}` contract, one `useEntity` hook, per-entity server handlers — all following the same structure. Discovered in Signal Studio production. Requires `file-crud` infrastructure.                                                            |
+| `local-service`      | Persistent local service management via Procfile + Overmind. Services survive terminal close. Optional Platypus `.app` launcher for Spotlight launch. Includes CLAUDE.md port-check rule to prevent AI agents from restarting running servers.                                                                             |
+| `api-endpoints`      | REST API layer with OpenAPI/Swagger documentation. Exposes entities as external-facing endpoints with API key auth and CORS. Layers on top of `file-crud`.                                                                                                                                                                 |
+| `readme`             | Generates a polished, app-specific README.md by reading the codebase and asking 5 targeted questions. Run at Stage 1 (after first recipes applied) and again at Stage 2 (when app is substantially complete).                                                                                                              |
+| `add-orm`            | Adds Prisma or Drizzle ORM to replace JSON file persistence. Advisory first — reads entities, explains trade-offs, asks which database, then generates a targeted migration.                                                                                                                                               |
+| `add-auth`           | JWT authentication + protected routes + optional Socket.io auth. Reads existing routes, asks what to protect and where users are stored, then generates auth middleware + login/me endpoints + client hooks.                                                                                                               |
+| `add-tanstack-query` | Smart HTTP caching that complements Socket.io. Reads existing raw fetch hooks, replaces them with `useQuery`/`useMutation`, and generates the combined Query + Socket.io cache-invalidation pattern.                                                                                                                       |
+| `add-state`          | Zustand store that replaces multiple React contexts. Reads existing context files, consolidates them into typed slices with optional persistence and DevTools.                                                                                                                                                             |
+| `csv-bulk-import`    | CSV upload modal for bulk-creating entity records. Column validation, partial success reporting, company scoping for non-admins. Uses HTTP POST + multer; emits Socket.io `entity:external-change` after writes.                                                                                                           |
+| `domain-expert-uat`  | Generates a plain-English UAT plan for a non-developer domain expert. Groups test cases by business workflow, not technical entity. Covers happy path, validation errors, permission boundaries, and three-state field transitions.                                                                                        |
+| `appydave-palette`   | AppyDave's visual brand as color semantics — the five rules that make any UI feel like it belongs to the AppyDave ecosystem. Not a component kit. Governs what each color zone _means_ (dark = structure, warm-light = content, one accent = active state only). Load before any Mochaccino session or design exploration. |
+| `wizard-shell`       | Multi-step workflow execution shell. Shell owns the header; step components own only their content. Covers landing screen (three-zone: Identity / Navigation / Action) and execution shell (6-zone layout with pipeline circles, developer panel, view modes). For prompt pipelines, intake wizards, interview flows.      |
 
 **Combinations:**
 
@@ -47,6 +49,8 @@ Recipes are:
 - `readme` = run after any combination to document what was built
 - `csv-bulk-import` = add to any entity that needs bulk data entry
 - `domain-expert-uat` = run after features stabilise to generate non-developer test plans
+- `appydave-palette` = load before any Mochaccino session or design work to ground it in AppyDave color semantics
+- `wizard-shell` = for any app built around a structured multi-step workflow (combine with `appydave-palette` for visual treatment)
 
 **Reference files:**
 
@@ -63,6 +67,8 @@ Recipes are:
 - `references/add-state.md` — Zustand store (replaces multiple React contexts)
 - `references/csv-bulk-import.md` — CSV upload modal, column validation, partial success, company scoping
 - `references/domain-expert-uat.md` — plain-English UAT plan generator for non-developer domain experts
+- `references/appydave-palette.md` — AppyDave color semantics: the five rules, warm palette family, accent calibration, typography roles, anti-patterns, Mochaccino usage guide
+- `references/wizard-shell.md` — multi-step execution shell: landing screen three-zone layout, 6-zone execution layout, component ownership, step type visual grammar, pipeline circles, developer panel, view modes
 
 ---
 
