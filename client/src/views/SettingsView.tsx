@@ -1,58 +1,31 @@
 import { useState } from 'react';
 
-interface BackfillResult {
-  scanned: number;
+interface SyncResult {
   imported: number;
-  skipped: number;
-  errors: number;
-}
-
-interface ClassifyResult {
   classified: number;
-  skipped: number;
+  alreadyUpToDate: number;
   errors: number;
 }
 
 export default function SettingsView() {
-  const [running, setRunning] = useState(false);
-  const [result, setResult] = useState<BackfillResult | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [syncing, setSyncing] = useState(false);
+  const [syncResult, setSyncResult] = useState<SyncResult | null>(null);
+  const [syncError, setSyncError] = useState<string | null>(null);
 
-  const [classifying, setClassifying] = useState(false);
-  const [classifyResult, setClassifyResult] = useState<ClassifyResult | null>(null);
-  const [classifyError, setClassifyError] = useState<string | null>(null);
-
-  function runBackfill() {
-    setRunning(true);
-    setResult(null);
-    setError(null);
-    fetch('/api/backfill', { method: 'POST' })
+  function runSync() {
+    setSyncing(true);
+    setSyncResult(null);
+    setSyncError(null);
+    fetch('/api/sync', { method: 'POST' })
       .then((r) => r.json())
       .then((d) => {
-        setResult(d.data as BackfillResult);
+        setSyncResult(d.data as SyncResult);
       })
       .catch(() => {
-        setError('Backfill request failed.');
+        setSyncError('Sync request failed.');
       })
       .finally(() => {
-        setRunning(false);
-      });
-  }
-
-  function runClassify() {
-    setClassifying(true);
-    setClassifyResult(null);
-    setClassifyError(null);
-    fetch('/api/classify', { method: 'POST' })
-      .then((r) => r.json())
-      .then((d) => {
-        setClassifyResult(d.data as ClassifyResult);
-      })
-      .catch(() => {
-        setClassifyError('Classify request failed.');
-      })
-      .finally(() => {
-        setClassifying(false);
+        setSyncing(false);
       });
   }
 
@@ -63,54 +36,40 @@ export default function SettingsView() {
       </div>
 
       <div className="bg-card border border-border rounded-md shadow-sm p-5 max-w-lg">
-        <h2 className="font-bebas text-lg tracking-wider text-primary mb-1">Transcript Backfill</h2>
+        <h2 className="font-bebas text-lg tracking-wider text-primary mb-1">Session Sync</h2>
         <p className="text-muted-foreground text-sm mb-4">
-          Scan <code className="text-primary">~/.claude/projects/</code> and import historical
-          sessions into the registry. Safe to run multiple times — skips already-known sessions.
+          Scan and classify all Claude Code sessions in one pass. Safe to run multiple times.
         </p>
 
-        <div className="flex gap-2">
-          <button
-            onClick={runBackfill}
-            disabled={running}
-            className="px-4 py-1.5 text-sm font-medium border border-border rounded hover:border-primary hover:text-primary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-          >
-            {running ? 'Running…' : 'Run Backfill'}
-          </button>
+        <button
+          onClick={runSync}
+          disabled={syncing}
+          className="px-4 py-1.5 text-sm font-medium border border-border rounded hover:border-primary hover:text-primary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        >
+          {syncing ? 'Syncing…' : 'Sync Sessions'}
+        </button>
 
-          <button
-            onClick={runClassify}
-            disabled={classifying}
-            className="px-4 py-1.5 text-sm font-medium border border-border rounded hover:border-primary hover:text-primary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-          >
-            {classifying ? 'Classifying…' : 'Classify Sessions'}
-          </button>
-        </div>
-
-        {result && (
+        {syncResult && (
           <div className="mt-4 text-sm space-y-1">
-            <p className="text-primary font-medium">Done</p>
-            <p className="text-muted-foreground">Scanned: {result.scanned}</p>
-            <p className="text-primary">Imported: {result.imported}</p>
-            <p className="text-muted-foreground">Skipped: {result.skipped}</p>
-            {result.errors > 0 && <p className="text-destructive">Errors: {result.errors}</p>}
-          </div>
-        )}
-
-        {error && <p className="mt-4 text-sm text-destructive">{error}</p>}
-
-        {classifyResult && (
-          <div className="mt-4 text-sm space-y-1">
-            <p className="text-primary font-medium">
-              Classified {classifyResult.classified} sessions ({classifyResult.skipped} skipped)
-            </p>
-            {classifyResult.errors > 0 && (
-              <p className="text-destructive">Errors: {classifyResult.errors}</p>
+            <p className="text-primary font-medium">Sync complete</p>
+            {syncResult.imported > 0 && (
+              <p className="text-primary">
+                {syncResult.imported} new session{syncResult.imported !== 1 ? 's' : ''} imported
+              </p>
+            )}
+            {syncResult.classified > 0 && (
+              <p className="text-primary">
+                {syncResult.classified} session{syncResult.classified !== 1 ? 's' : ''} classified
+              </p>
+            )}
+            <p className="text-muted-foreground">{syncResult.alreadyUpToDate} already up to date</p>
+            {syncResult.errors > 0 && (
+              <p className="text-destructive">Errors: {syncResult.errors}</p>
             )}
           </div>
         )}
 
-        {classifyError && <p className="mt-4 text-sm text-destructive">{classifyError}</p>}
+        {syncError && <p className="mt-4 text-sm text-destructive">{syncError}</p>}
       </div>
     </div>
   );

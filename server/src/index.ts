@@ -18,6 +18,7 @@ import sessionsRouter from './routes/sessions.js';
 import workspacesRouter from './routes/workspaces.js';
 import { createHooksRouter } from './routes/hooks.js';
 import backfillRouter from './routes/backfill.js';
+import syncRouter from './routes/sync.js';
 import { initAngelEyeDirs } from './services/registry.service.js';
 import type { ServerToClientEvents, ClientToServerEvents } from '@appystack/shared';
 import { SOCKET_EVENTS } from '@appystack/shared';
@@ -53,6 +54,7 @@ app.use(workspacesRouter);
 app.use(createHooksRouter(io));
 app.use('/api/backfill', backfillRouter);
 app.use('/api', backfillRouter);
+app.use('/api/sync', syncRouter);
 
 // Production static file serving — serve the built client app
 if (env.isProduction) {
