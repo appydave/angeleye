@@ -5,6 +5,23 @@ import type { AngelEyeEvent, RegistryEntry } from '@appystack/shared';
 import { readRegistry, updateRegistry } from './registry.service.js';
 import { writeEvent } from './sessions.service.js';
 
+// ── Custom Title Extraction ──────────────────────────────────────────────────────
+
+function extractCustomTitle(lines: string[]): string | null {
+  let lastTitle: string | null = null;
+  for (const line of lines) {
+    try {
+      const entry = JSON.parse(line);
+      if (entry.type === 'custom-title' && typeof entry.customTitle === 'string') {
+        lastTitle = entry.customTitle;
+      }
+    } catch {
+      // skip malformed lines
+    }
+  }
+  return lastTitle; // last wins — same as Claude Code behaviour
+}
+
 // ── Transcript Backfill ─────────────────────────────────────────────────────────
 
 export interface BackfillResult {
@@ -88,8 +105,20 @@ export async function backfillTranscripts(
       const sessionId = file.replace('.jsonl', '');
       result.scanned++;
 
-      // Skip already-known sessions
+      // Skip already-known sessions — but still backfill name if null
       if (registry[sessionId]) {
+        if (registry[sessionId].name === null || registry[sessionId].name === undefined) {
+          try {
+            const raw = await readFile(join(projectPath, file), 'utf-8');
+            const lines = raw.split('\n').filter((l) => l.trim());
+            const customTitle = extractCustomTitle(lines);
+            if (customTitle) {
+              await updateRegistry(sessionId, { name: customTitle });
+            }
+          } catch {
+            // non-fatal — skip
+          }
+        }
         result.skipped++;
         continue;
       }
@@ -127,6 +156,9 @@ export async function backfillTranscripts(
         const project_dir = cwd;
         const project = cwd.split('/').filter(Boolean).pop() ?? '';
 
+        // Extract /rename custom title if present
+        const customTitle = extractCustomTitle(lines);
+
         // Write to registry
         await updateRegistry(sessionId, {
           session_id: sessionId,
@@ -136,7 +168,7 @@ export async function backfillTranscripts(
           last_active,
           status: 'ended',
           source: 'transcript',
-          name: null,
+          name: customTitle,
           tags: [],
           workspace_id: null,
         });

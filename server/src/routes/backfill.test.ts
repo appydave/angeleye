@@ -225,4 +225,136 @@ describe('POST /api/backfill', () => {
     expect(result.skipped).toBe(0);
     expect(result.errors).toBe(0);
   });
+
+  // ── WC05: custom-title extraction tests ────────────────────────────────────
+
+  it('WC05: JSONL with one custom-title entry populates registry name', async () => {
+    const customTitleLine = JSON.stringify({
+      type: 'custom-title',
+      customTitle: 'my-rename-session',
+      timestamp: '2026-03-01T10:10:00.000Z',
+    });
+
+    await writeFixtureJsonl('-Users-test-dev-myproject', 'session-with-title', [
+      realPromptLine1,
+      customTitleLine,
+    ]);
+
+    await backfillTranscripts(claudeProjectsDir);
+
+    const { readRegistry } = await import('../services/registry.service.js');
+    const registry = await readRegistry();
+
+    expect(registry['session-with-title'].name).toBe('my-rename-session');
+  });
+
+  it('WC05: JSONL with two custom-title entries — last one wins', async () => {
+    const firstTitleLine = JSON.stringify({
+      type: 'custom-title',
+      customTitle: 'first-name',
+      timestamp: '2026-03-01T10:10:00.000Z',
+    });
+    const secondTitleLine = JSON.stringify({
+      type: 'custom-title',
+      customTitle: 'second-name',
+      timestamp: '2026-03-01T10:15:00.000Z',
+    });
+
+    await writeFixtureJsonl('-Users-test-dev-myproject', 'session-two-titles', [
+      realPromptLine1,
+      firstTitleLine,
+      secondTitleLine,
+    ]);
+
+    await backfillTranscripts(claudeProjectsDir);
+
+    const { readRegistry } = await import('../services/registry.service.js');
+    const registry = await readRegistry();
+
+    expect(registry['session-two-titles'].name).toBe('second-name');
+  });
+
+  it('WC05: JSONL with no custom-title entry leaves name as null', async () => {
+    await writeFixtureJsonl('-Users-test-dev-myproject', 'session-no-title', [
+      realPromptLine1,
+      assistantLine,
+    ]);
+
+    await backfillTranscripts(claudeProjectsDir);
+
+    const { readRegistry } = await import('../services/registry.service.js');
+    const registry = await readRegistry();
+
+    expect(registry['session-no-title'].name).toBeNull();
+  });
+
+  it('WC05: existing session with name: null gets name populated on re-backfill', async () => {
+    const { updateRegistry, readRegistry } = await import('../services/registry.service.js');
+
+    // Pre-populate registry with name: null
+    await updateRegistry('session-retroactive', {
+      session_id: 'session-retroactive',
+      project: 'myproject',
+      project_dir: '/Users/test/dev/myproject',
+      started_at: '2026-03-01T10:00:00.000Z',
+      last_active: '2026-03-01T10:05:00.000Z',
+      status: 'ended',
+      source: 'transcript',
+      name: null,
+      tags: [],
+      workspace_id: null,
+    });
+
+    const customTitleLine = JSON.stringify({
+      type: 'custom-title',
+      customTitle: 'retroactive-name',
+      timestamp: '2026-03-01T10:10:00.000Z',
+    });
+
+    await writeFixtureJsonl('-Users-test-dev-myproject', 'session-retroactive', [
+      realPromptLine1,
+      customTitleLine,
+    ]);
+
+    // Re-run backfill — session is already in registry so it's "skipped" but name should be filled
+    await backfillTranscripts(claudeProjectsDir);
+
+    const registry = await readRegistry();
+    expect(registry['session-retroactive'].name).toBe('retroactive-name');
+  });
+
+  it('WC05: existing session with non-null name is NOT overwritten on re-backfill', async () => {
+    const { updateRegistry, readRegistry } = await import('../services/registry.service.js');
+
+    // Pre-populate registry with an existing name
+    await updateRegistry('session-existing-name', {
+      session_id: 'session-existing-name',
+      project: 'myproject',
+      project_dir: '/Users/test/dev/myproject',
+      started_at: '2026-03-01T10:00:00.000Z',
+      last_active: '2026-03-01T10:05:00.000Z',
+      status: 'ended',
+      source: 'transcript',
+      name: 'existing',
+      tags: [],
+      workspace_id: null,
+    });
+
+    const customTitleLine = JSON.stringify({
+      type: 'custom-title',
+      customTitle: 'should-not-overwrite',
+      timestamp: '2026-03-01T10:10:00.000Z',
+    });
+
+    await writeFixtureJsonl('-Users-test-dev-myproject', 'session-existing-name', [
+      realPromptLine1,
+      customTitleLine,
+    ]);
+
+    // Re-run backfill — existing non-null name must be preserved
+    await backfillTranscripts(claudeProjectsDir);
+
+    const registry = await readRegistry();
+    expect(registry['session-existing-name'].name).toBe('existing');
+  });
 });
