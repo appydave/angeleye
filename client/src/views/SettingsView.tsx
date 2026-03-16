@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface SyncResult {
   imported: number;
@@ -7,10 +7,28 @@ interface SyncResult {
   errors: number;
 }
 
+type SessionType = 'BUILD' | 'TEST' | 'RESEARCH' | 'KNOWLEDGE' | 'OPS' | 'ORIENTATION';
+
+interface StatsResult {
+  byType: Record<SessionType | 'unclassified', number>;
+  total: number;
+}
+
 export default function SettingsView() {
   const [syncing, setSyncing] = useState(false);
   const [syncResult, setSyncResult] = useState<SyncResult | null>(null);
   const [syncError, setSyncError] = useState<string | null>(null);
+
+  const [stats, setStats] = useState<StatsResult | null>(null);
+
+  useEffect(() => {
+    fetch('/api/stats')
+      .then((r) => r.json())
+      .then((d) => setStats(d.data as StatsResult))
+      .catch(() => {
+        /* non-fatal */
+      });
+  }, []);
 
   function runSync() {
     setSyncing(true);
@@ -20,6 +38,12 @@ export default function SettingsView() {
       .then((r) => r.json())
       .then((d) => {
         setSyncResult(d.data as SyncResult);
+        void fetch('/api/stats')
+          .then((r) => r.json())
+          .then((d) => setStats(d.data as StatsResult))
+          .catch(() => {
+            /* non-fatal */
+          });
       })
       .catch(() => {
         setSyncError('Sync request failed.');
@@ -70,6 +94,30 @@ export default function SettingsView() {
         )}
 
         {syncError && <p className="mt-4 text-sm text-destructive">{syncError}</p>}
+
+        {stats && (
+          <div className="mt-4">
+            <p className="text-xs font-bebas tracking-wider text-muted-foreground mb-2">
+              Session Types — {stats.total} total
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {(['BUILD', 'RESEARCH', 'KNOWLEDGE', 'TEST', 'OPS', 'ORIENTATION'] as const).map(
+                (type) => (
+                  <span key={type} className="text-xs font-mono">
+                    <span className="text-foreground">{type}</span>
+                    <span className="text-muted-foreground ml-1">{stats.byType[type] ?? 0}</span>
+                  </span>
+                )
+              )}
+              {(stats.byType['unclassified'] ?? 0) > 0 && (
+                <span className="text-xs font-mono">
+                  <span className="text-muted-foreground/60">unclassified</span>
+                  <span className="text-muted-foreground ml-1">{stats.byType['unclassified']}</span>
+                </span>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
