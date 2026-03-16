@@ -30,6 +30,11 @@ export function _setDataDir(dir: string): void {
   writeQueue = Promise.resolve();
 }
 
+/** Returns the current base data directory (e.g. ~/.claude/angeleye). */
+export function getDataDir(): string {
+  return _baseDir;
+}
+
 export async function initAngelEyeDirs(): Promise<void> {
   const sessionsDir = _sessionsDir();
   const archiveDir = _archiveDir();

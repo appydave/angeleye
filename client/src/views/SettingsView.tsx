@@ -7,6 +7,12 @@ interface SyncResult {
   errors: number;
 }
 
+interface LastSyncRecord {
+  timestamp: string;
+  imported: number;
+  classified: number;
+}
+
 type SessionType = 'BUILD' | 'TEST' | 'RESEARCH' | 'KNOWLEDGE' | 'OPS' | 'ORIENTATION';
 
 interface StatsResult {
@@ -14,12 +20,30 @@ interface StatsResult {
   total: number;
 }
 
+function relativeTime(isoString: string): string {
+  const diffMs = Date.now() - new Date(isoString).getTime();
+  const mins = Math.floor(diffMs / 60_000);
+  if (mins < 1) return 'just now';
+  if (mins < 60) return `${mins} minute${mins !== 1 ? 's' : ''} ago`;
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+  const days = Math.floor(hours / 24);
+  return `${days} day${days !== 1 ? 's' : ''} ago`;
+}
+
 export default function SettingsView() {
   const [syncing, setSyncing] = useState(false);
   const [syncResult, setSyncResult] = useState<SyncResult | null>(null);
   const [syncError, setSyncError] = useState<string | null>(null);
-
+  const [lastSync, setLastSync] = useState<LastSyncRecord | null | undefined>(undefined);
   const [stats, setStats] = useState<StatsResult | null>(null);
+
+  useEffect(() => {
+    fetch('/api/sync/status')
+      .then((r) => r.json())
+      .then((d) => setLastSync((d.data?.lastSync as LastSyncRecord | null) ?? null))
+      .catch(() => setLastSync(null));
+  }, []);
 
   useEffect(() => {
     fetch('/api/stats')
@@ -37,7 +61,13 @@ export default function SettingsView() {
     fetch('/api/sync', { method: 'POST' })
       .then((r) => r.json())
       .then((d) => {
-        setSyncResult(d.data as SyncResult);
+        const result = d.data as SyncResult;
+        setSyncResult(result);
+        setLastSync({
+          timestamp: new Date().toISOString(),
+          imported: result.imported,
+          classified: result.classified,
+        });
         void fetch('/api/stats')
           .then((r) => r.json())
           .then((d) => setStats(d.data as StatsResult))
@@ -64,6 +94,18 @@ export default function SettingsView() {
         <p className="text-muted-foreground text-sm mb-4">
           Scan and classify all Claude Code sessions in one pass. Safe to run multiple times.
         </p>
+
+        <div className="text-xs text-muted-foreground mb-3">
+          {lastSync === undefined && <span>Loading…</span>}
+          {lastSync === null && <span>Never synced</span>}
+          {lastSync && (
+            <span>
+              Last sync: {relativeTime(lastSync.timestamp)}
+              {lastSync.imported > 0 &&
+                ` — ${lastSync.imported} new session${lastSync.imported !== 1 ? 's' : ''}`}
+            </span>
+          )}
+        </div>
 
         <button
           onClick={runSync}
