@@ -22,6 +22,9 @@ logs/
 .DS_Store
 Thumbs.db
 
+# Screenshots
+.screenshots/
+
 # Coverage
 coverage/
 .nyc_output/
