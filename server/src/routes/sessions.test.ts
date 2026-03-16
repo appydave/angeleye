@@ -5,13 +5,9 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import request from 'supertest';
 import express from 'express';
 import type { AngelEyeEvent } from '@appystack/shared';
-import {
-  _setDataDir,
-  initAngelEyeDirs,
-  updateRegistry,
-  writeEvent,
-  createWorkspace,
-} from '../services/angeleye-data.js';
+import { _setDataDir, initAngelEyeDirs, updateRegistry } from '../services/registry.service.js';
+import { writeEvent } from '../services/sessions.service.js';
+import { createWorkspace } from '../services/workspace.service.js';
 import sessionsRouter from './sessions.js';
 
 let testDir: string;

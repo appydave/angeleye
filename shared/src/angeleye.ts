@@ -27,6 +27,24 @@ export interface AngelEyeEvent {
   agent_type?: string;
 }
 
+export type SessionType =
+  | 'BUILD' // product code changes — Edit/Write/Bash dominant
+  | 'TEST' // UAT, Playwright, test running
+  | 'RESEARCH' // web search, reading, external investigation
+  | 'KNOWLEDGE' // brain/docs updates — no product changes
+  | 'OPS' // infrastructure, CI/CD, Bash-only campaigns
+  | 'ORIENTATION'; // cold start, reorientation, lookup
+
+export type ToolPattern =
+  | 'playwright-heavy' // mcp__playwright__ > 40% of tool calls
+  | 'bash-heavy' // Bash > 40% of tool calls
+  | 'edit-heavy' // Edit+Write > 40% of tool calls
+  | 'task-heavy' // Task+TaskCreate+TaskUpdate+TaskOutput > 40%
+  | 'agent-heavy' // Agent > 20% of tool calls (lower threshold)
+  | 'websearch-heavy' // WebFetch+mcp__brave-search > 30% of tool calls
+  | 'read-heavy' // Glob+Read+Grep > 60% of tool calls, minimal writes
+  | 'mixed'; // no single dominant pattern
+
 export interface RegistryEntry {
   session_id: string;
   project: string;
@@ -38,6 +56,12 @@ export interface RegistryEntry {
   workspace_id: string | null;
   status: 'active' | 'ended';
   source: AngelEyeSource;
+  // rule-based classification (no LLM, computed from events)
+  is_junk?: boolean;
+  session_type?: SessionType;
+  tool_pattern?: ToolPattern;
+  first_edited_dir?: string; // first directory meaningfully touched
+  first_real_prompt?: string; // first non-junk prompt snippet, max 200 chars
 }
 
 export interface WorkspaceEntry {

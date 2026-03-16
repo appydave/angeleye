@@ -7,35 +7,41 @@
   /* Fonts */
   --font-family-bebas: 'Bebas Neue', sans-serif;
 
-  /* Background layers — warm dark (AWB palette adapted) */
-  --color-background: #0f0d0c;
-  --color-surface: #181412;
-  --color-surface-mid: #201b18; /* active row backgrounds, card inners */
-  --color-surface-hover: #271f1b;
+  /* Background layers — v2-linen palette */
+  --color-background: #e8e0d4;
+  --color-surface: #ede7dc;
+  --color-surface-mid: #ddd6cc; /* active row backgrounds, card inners */
+  --color-surface-hover: #ddd6cc;
+  --color-card: #f5f1eb;
 
-  /* Borders — AWB primary-dark */
-  --color-border: #2d2622;
-  --color-border-raised: #3d3430; /* card/hover border escalation */
+  /* Borders */
+  --color-border: #d4cdc4;
+  --color-border-raised: #ccc5bb; /* card/hover border escalation */
 
-  /* Primary — AWB primary-light (warm beige) */
-  --color-primary: #ccba9d;
-  --color-primary-foreground: #0f0d0c;
+  /* Primary — amber accent */
+  --color-primary: #c8841a;
+  --color-primary-foreground: #fff;
 
   /* Foreground */
-  --color-foreground: #e8ddd0;
-  --color-muted-foreground: #7a6e62;
+  --color-foreground: #2a2018;
+  --color-muted-foreground: #7a6e5e;
 
-  /* Accent — AWB secondary */
-  --color-accent: #95a19f;
+  /* Accent */
+  --color-accent: #c8841a;
 
   /* Destructive */
-  --color-destructive: #ff3131;
-  --color-destructive-foreground: #e8ddd0;
+  --color-destructive: #c0392b;
+  --color-destructive-foreground: #fff;
 }
 
 body {
   margin: 0;
-  background-color: #0f0d0c;
-  color: #e8ddd0;
-  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
+  background-color: #e8e0d4;
+  color: #2a2018;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
 }

@@ -1,0 +1,159 @@
+import { readFile, readdir } from 'node:fs/promises';
+import { homedir } from 'node:os';
+import { join } from 'node:path';
+import type { AngelEyeEvent, RegistryEntry } from '@appystack/shared';
+import { readRegistry, updateRegistry } from './registry.service.js';
+import { writeEvent } from './sessions.service.js';
+
+// ── Transcript Backfill ─────────────────────────────────────────────────────────
+
+export interface BackfillResult {
+  scanned: number;
+  imported: number;
+  skipped: number;
+  errors: number;
+}
+
+function transcriptToEvents(sessionId: string, entries: unknown[]): AngelEyeEvent[] {
+  const events: AngelEyeEvent[] = [];
+
+  for (const e of entries as Record<string, unknown>[]) {
+    const ts = (e.timestamp as string) ?? new Date().toISOString();
+    const cwd = (e.cwd as string) ?? '';
+
+    if (e.type === 'user' && !e.isMeta) {
+      const content = (e.message as Record<string, unknown>)?.content;
+      if (typeof content === 'string' && content.length > 0 && !content.startsWith('<')) {
+        events.push({
+          id: crypto.randomUUID(),
+          session_id: sessionId,
+          ts,
+          source: 'transcript',
+          event: 'user_prompt',
+          cwd,
+          prompt: content,
+        });
+      }
+    }
+
+    if (e.type === 'assistant') {
+      const content = (e.message as Record<string, unknown>)?.content;
+      if (Array.isArray(content)) {
+        for (const block of content as Record<string, unknown>[]) {
+          if (block.type === 'tool_use' && typeof block.name === 'string') {
+            events.push({
+              id: crypto.randomUUID(),
+              session_id: sessionId,
+              ts,
+              source: 'transcript',
+              event: 'tool_use',
+              cwd,
+              tool: block.name,
+            });
+          }
+        }
+      }
+    }
+  }
+
+  return events;
+}
+
+export async function backfillTranscripts(
+  claudeProjectsDir = join(homedir(), '.claude', 'projects')
+): Promise<BackfillResult> {
+  const result = { scanned: 0, imported: 0, skipped: 0, errors: 0 };
+
+  // Read existing registry once
+  const registry = await readRegistry();
+
+  // Walk project dirs
+  let projectDirs: string[];
+  try {
+    projectDirs = await readdir(claudeProjectsDir);
+  } catch {
+    return result; // dir doesn't exist — not an error
+  }
+
+  for (const projectSlug of projectDirs) {
+    const projectPath = join(claudeProjectsDir, projectSlug);
+    let sessionFiles: string[];
+    try {
+      sessionFiles = (await readdir(projectPath)).filter((f) => f.endsWith('.jsonl'));
+    } catch {
+      continue;
+    }
+
+    for (const file of sessionFiles) {
+      const sessionId = file.replace('.jsonl', '');
+      result.scanned++;
+
+      // Skip already-known sessions
+      if (registry[sessionId]) {
+        result.skipped++;
+        continue;
+      }
+
+      try {
+        const raw = await readFile(join(projectPath, file), 'utf-8');
+        const lines = raw.split('\n').filter((l) => l.trim());
+        const entries = lines.map((l) => JSON.parse(l));
+
+        // Extract metadata from entries
+        const cwdEntry = entries.find((e) => e.cwd);
+        const cwd: string = cwdEntry?.cwd ?? '';
+        const timestamps = entries
+          .filter((e) => e.timestamp)
+          .map((e) => e.timestamp as string)
+          .sort();
+        const started_at = timestamps[0] ?? new Date().toISOString();
+        const last_active = timestamps[timestamps.length - 1] ?? started_at;
+
+        // Count real user prompts (non-meta, non-command)
+        const promptCount = entries.filter(
+          (e) =>
+            e.type === 'user' &&
+            !e.isMeta &&
+            typeof e.message?.content === 'string' &&
+            !e.message.content.startsWith('<')
+        ).length;
+
+        if (promptCount === 0) {
+          result.skipped++; // empty/meta-only sessions aren't useful
+          continue;
+        }
+
+        // Derive project from cwd
+        const project_dir = cwd;
+        const project = cwd.split('/').filter(Boolean).pop() ?? '';
+
+        // Write to registry
+        await updateRegistry(sessionId, {
+          session_id: sessionId,
+          project,
+          project_dir,
+          started_at,
+          last_active,
+          status: 'ended',
+          source: 'transcript',
+          name: null,
+          tags: [],
+          workspace_id: null,
+        });
+
+        // Write events to sessions dir
+        const events = transcriptToEvents(sessionId, entries);
+        for (const event of events) {
+          await writeEvent(event);
+        }
+
+        registry[sessionId] = { session_id: sessionId } as RegistryEntry; // mark known
+        result.imported++;
+      } catch {
+        result.errors++;
+      }
+    }
+  }
+
+  return result;
+}

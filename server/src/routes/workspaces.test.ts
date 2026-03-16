@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import request from 'supertest';
 import express from 'express';
-import { _setDataDir, initAngelEyeDirs } from '../services/angeleye-data.js';
+import { _setDataDir, initAngelEyeDirs } from '../services/registry.service.js';
 import workspacesRouter from './workspaces.js';
 
 let testDir: string;

@@ -4,14 +4,15 @@ import { join } from 'node:path';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import request from 'supertest';
 import express from 'express';
-import { _setDataDir, initAngelEyeDirs, backfillTranscripts } from '../services/angeleye-data.js';
+import { _setDataDir, initAngelEyeDirs } from '../services/registry.service.js';
+import { backfillTranscripts } from '../services/backfill.service.js';
 import backfillRouter from './backfill.js';
 
 // Mock the service module so route-level tests don't scan real ~/.claude/projects
 // or fire async write queues that contaminate subsequent tests' temp dirs.
 // Service-level tests (below) call backfillTranscripts() directly via the real import.
-vi.mock('../services/angeleye-data.js', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('../services/angeleye-data.js')>();
+vi.mock('../services/backfill.service.js', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../services/backfill.service.js')>();
   return {
     ...actual,
     backfillTranscripts: vi.fn(actual.backfillTranscripts),

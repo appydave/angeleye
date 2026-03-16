@@ -61,7 +61,7 @@ function DraggableSession({ session, workspaces, onAssign, onDismiss }: Draggabl
     <div
       ref={setNodeRef}
       style={style}
-      className={`flex flex-col gap-1 px-3 py-2 bg-background border border-border rounded text-sm cursor-grab active:cursor-grabbing transition-opacity${isDragging ? ' opacity-50' : ''}`}
+      className={`flex flex-col gap-1 px-3 py-2 bg-card border border-border rounded shadow-sm text-sm cursor-grab active:cursor-grabbing transition-opacity${isDragging ? ' opacity-50' : ''}`}
       {...listeners}
       {...attributes}
     >
@@ -148,7 +148,7 @@ function DraggableWorkspaceSession({ session }: DraggableWorkspaceSessionProps) 
     <div
       ref={setNodeRef}
       style={style}
-      className={`flex items-center gap-2 px-2 py-1.5 rounded text-sm bg-background border border-border cursor-grab active:cursor-grabbing transition-opacity${isDragging ? ' opacity-50' : ''}`}
+      className={`flex items-center gap-2 px-2 py-1.5 rounded text-sm bg-card border border-border shadow-sm cursor-grab active:cursor-grabbing transition-opacity${isDragging ? ' opacity-50' : ''}`}
       {...listeners}
       {...attributes}
     >

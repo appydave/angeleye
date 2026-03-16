@@ -6,7 +6,7 @@ import {
   createWorkspace,
   updateWorkspace,
   deleteWorkspace,
-} from '../services/angeleye-data.js';
+} from '../services/workspace.service.js';
 
 const router = Router();
 

@@ -1,7 +1,10 @@
 import dotenv from 'dotenv';
 import { z } from 'zod';
+import path from 'path';
 
-dotenv.config();
+// process.cwd() is server/ when nodemon runs; load .env from monorepo root
+// override: true ensures .env always wins over any ambient shell PORT/env vars
+dotenv.config({ path: path.resolve(process.cwd(), '../.env'), override: true });
 
 const envSchema = z.object({
   // TODO: Update defaults for your project

@@ -1,9 +1,14 @@
 # Project Backlog — AngelEye
 
 **Last updated**: 2026-03-15
-**Total**: 15 | Pending: 0 | In Progress: 0 | Done: 15 | Deferred: 4 | Rejected: 0
+**Total**: 20 | Pending: 4 | In Progress: 0 | Done: 17 | Deferred: 2 | Rejected: 0
 
 ## Pending
+
+- [x] B020 — v2-linen UI redesign: full light theme, floating cards, dark column header, amber accent | Completed: angeleye-wave7a-linen
+- [x] B021 — Split angeleye-data.ts into registry/sessions/workspace/backfill services | Completed: angeleye-wave7b-datasplit
+- [x] B012 — Ambient intelligence: rule-based session classification (is_junk, session_type, tool_pattern, first_edited_dir, first_real_prompt) | Completed: angeleye-wave8-intelligence
+- [ ] B011 — /angeleye:publish skill (Nano Banana / FliDeck integration) | Priority: medium
 
 ## In Progress
 
@@ -27,8 +32,6 @@
 
 ## Deferred
 
-- [-] B011 — /angeleye:publish skill (Nano Banana / FliDeck integration) | Reason: depends on context skill; wave 3+
-- [-] B012 — Ambient intelligence / skill suggester (prompt frequency pattern miner) | Reason: needs data archive first; wave 3+
 - [-] B013 — Paperclip / OpenClaw / stream-JSON adapter layer | Reason: future provider support; not wave 1
 - [-] B014 — Supabase cold archive path | Reason: JSONL flat files sufficient for personal use; add if indexed search needed
 

@@ -6,7 +6,7 @@ import request from 'supertest';
 import express from 'express';
 import type { AngelEyeEvent, RegistryEntry } from '@appystack/shared';
 import { SOCKET_EVENTS } from '@appystack/shared';
-import { _setDataDir, initAngelEyeDirs } from '../services/angeleye-data.js';
+import { _setDataDir, initAngelEyeDirs } from '../services/registry.service.js';
 import { createHooksRouter } from './hooks.js';
 
 const mockIo = { emit: vi.fn() };

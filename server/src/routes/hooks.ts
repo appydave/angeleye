@@ -3,7 +3,9 @@ import type { Server } from 'socket.io';
 import type { AngelEyeEvent, AngelEyeEventType } from '@appystack/shared';
 import { SOCKET_EVENTS } from '@appystack/shared';
 import { logger } from '../config/logger.js';
-import { writeEvent, updateRegistry, archiveSession } from '../services/angeleye-data.js';
+import { writeEvent, getSessionEvents, archiveSession } from '../services/sessions.service.js';
+import { readRegistry, updateRegistry } from '../services/registry.service.js';
+import { classifySession, findFirstRealPrompt } from '../services/classifier.service.js';
 
 const EVENT_MAP: Record<string, AngelEyeEventType> = {
   SessionStart: 'session_start',
@@ -136,14 +138,36 @@ export function createHooksRouter(io: Server): Router {
           status: 'active',
           source: 'hook',
         });
+      } else if (eventType === 'stop') {
+        const allEvents = await getSessionEvents(sessionId);
+        const classification = classifySession(allEvents, sessionId, cwd ?? '');
+        await updateRegistry(sessionId, {
+          last_active: ts,
+          ...(cwd !== undefined && { project_dir: cwd }),
+          ...classification,
+        });
       } else if (eventType === 'session_end') {
-        await updateRegistry(sessionId, { status: 'ended', last_active: ts });
+        const allEvents = await getSessionEvents(sessionId);
+        const classification = classifySession(allEvents, sessionId, cwd ?? '');
+        await updateRegistry(sessionId, { status: 'ended', last_active: ts, ...classification });
         await archiveSession(sessionId);
       } else {
         await updateRegistry(sessionId, {
           last_active: ts,
           ...(cwd !== undefined && { project_dir: cwd }),
         });
+
+        // On user_prompt: capture first_real_prompt early if not yet set
+        if (eventType === 'user_prompt') {
+          const registry = await readRegistry();
+          const existing = registry[sessionId];
+          if (!existing?.first_real_prompt) {
+            const result = findFirstRealPrompt([event]);
+            if (result !== undefined) {
+              await updateRegistry(sessionId, { first_real_prompt: result });
+            }
+          }
+        }
       }
 
       io.emit(SOCKET_EVENTS.ANGELEYE_EVENT, event);

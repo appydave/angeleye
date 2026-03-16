@@ -13,4 +13,6 @@ export type {
   RegistryEntry,
   WorkspaceEntry,
   Registry,
+  SessionType,
+  ToolPattern,
 } from './angeleye.js';

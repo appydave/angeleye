@@ -1,12 +1,9 @@
 import { Router } from 'express';
 import { apiSuccess, apiFailure } from '../helpers/response.js';
 import { logger } from '../config/logger.js';
-import {
-  readRegistry,
-  getSessionEvents,
-  updateRegistry,
-  readWorkspaces,
-} from '../services/angeleye-data.js';
+import { readRegistry, updateRegistry } from '../services/registry.service.js';
+import { getSessionEvents } from '../services/sessions.service.js';
+import { readWorkspaces } from '../services/workspace.service.js';
 import type { RegistryEntry } from '@appystack/shared';
 
 const router = Router();

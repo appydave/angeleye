@@ -130,6 +130,6 @@ describe('main.tsx wiring — ErrorBoundary', () => {
     );
 
     // App renders the AppShell — verify the brand name is present
-    expect(screen.getByText('AngelEye')).toBeInTheDocument();
+    expect(screen.getByText((_, el) => el?.textContent === 'AngelEye')).toBeInTheDocument();
   });
 });

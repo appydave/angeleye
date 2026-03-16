@@ -3,15 +3,8 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import type { AngelEyeEvent } from '@appystack/shared';
-import {
-  _setDataDir,
-  initAngelEyeDirs,
-  writeEvent,
-  readRegistry,
-  updateRegistry,
-  getSessionEvents,
-  archiveSession,
-} from './angeleye-data.js';
+import { _setDataDir, initAngelEyeDirs, readRegistry, updateRegistry } from './registry.service.js';
+import { writeEvent, getSessionEvents, archiveSession } from './sessions.service.js';
 
 let testDir: string;
 
