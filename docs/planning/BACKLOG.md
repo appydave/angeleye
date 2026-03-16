@@ -1,7 +1,7 @@
 # Project Backlog — AngelEye
 
-**Last updated**: 2026-03-15
-**Total**: 20 | Pending: 4 | In Progress: 0 | Done: 17 | Deferred: 2 | Rejected: 0
+**Last updated**: 2026-03-16
+**Total**: 26 | Pending: 9 | In Progress: 0 | Done: 17 | Deferred: 2 | Rejected: 0
 
 ## Pending
 
@@ -9,6 +9,30 @@
 - [x] B021 — Split angeleye-data.ts into registry/sessions/workspace/backfill services | Completed: angeleye-wave7b-datasplit
 - [x] B012 — Ambient intelligence: rule-based session classification (is_junk, session_type, tool_pattern, first_edited_dir, first_real_prompt) | Completed: angeleye-wave8-intelligence
 - [ ] B011 — /angeleye:publish skill (Nano Banana / FliDeck integration) | Priority: medium
+
+## UX Backlog (from live usage 2026-03-16)
+
+### Observer — Full prompt content
+
+- [ ] B022 — Expand prompt row on click: clicking a user_prompt row wraps text to show full content, second click collapses. Hover tooltip (title attr) as companion quick win. | Priority: high
+  - **Mochaccino candidates** (generate 4 variations before implementing):
+    1. Inline expand — row grows in place, text wraps fully
+    2. Tooltip on hover — native title or styled popover
+    3. Side drawer — click opens right-side panel with full prompt + metadata
+    4. Modal — click opens a focused overlay with full text, timestamp, tool calls
+
+### Observer — Session list pagination
+
+- [ ] B023 — Paginate session list: cursor-based API (`GET /api/sessions?after=<id>&limit=50`), virtual scrolling on client. Currently 671+ sessions loaded at once — will degrade at 2000+. | Priority: medium
+
+### Observer — Hook resilience (hooks fire on all sessions even when server is down)
+
+- [ ] B024 — Replace HTTP hooks with command hooks using `curl ... || true` so Claude sessions don't show errors when AngelEye server isn't running | Priority: high
+- [ ] B025 — launchd plist for AngelEye server: always-on persistent service, auto-restart on crash/reboot | Priority: medium
+
+### Infrastructure
+
+- [ ] B026 — Update create-appystack template with: resilient start.sh (port conflict detection + human-in-loop), dotenv override:true fix, correct VITE_SOCKET_URL | Priority: medium
 
 ## In Progress
 

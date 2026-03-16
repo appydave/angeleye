@@ -94,13 +94,102 @@ function sessionTypeBadgeClass(sessionType: string): string {
   }
 }
 
+// ─── Progressive disclosure types ────────────────────────────────────────────
+
+type FocusRow =
+  | {
+      type: 'prompt';
+      event: AngelEyeEvent;
+      trailingGroup?: { events: AngelEyeEvent[]; key: string };
+    }
+  | { type: 'orphan-group'; events: AngelEyeEvent[]; key: string };
+
+function buildFocusRows(events: AngelEyeEvent[]): FocusRow[] {
+  // Build in chronological order, attach non-prompt events to the prompt that precedes them,
+  // then reverse for newest-first display.
+  const rows: FocusRow[] = [];
+  let pendingGroup: AngelEyeEvent[] = [];
+  let groupIndex = 0;
+
+  for (const ev of events) {
+    if (ev.event === 'user_prompt') {
+      if (pendingGroup.length > 0) {
+        // Pending group belongs to the prompt that came before — attach it
+        const last = rows[rows.length - 1];
+        if (last?.type === 'prompt') {
+          last.trailingGroup = { events: pendingGroup, key: `group-${groupIndex++}` };
+        } else {
+          rows.push({ type: 'orphan-group', events: pendingGroup, key: `group-${groupIndex++}` });
+        }
+        pendingGroup = [];
+      }
+      rows.push({ type: 'prompt', event: ev });
+    } else {
+      pendingGroup.push(ev);
+    }
+  }
+
+  // Trailing group after the last prompt
+  if (pendingGroup.length > 0) {
+    const last = rows[rows.length - 1];
+    if (last?.type === 'prompt') {
+      last.trailingGroup = { events: pendingGroup, key: `group-${groupIndex++}` };
+    } else {
+      rows.push({ type: 'orphan-group', events: pendingGroup, key: `group-${groupIndex++}` });
+    }
+  }
+
+  return rows.reverse();
+}
+
+function groupSummaryText(events: AngelEyeEvent[]): string {
+  const counts: Record<string, number> = {};
+  for (const ev of events) {
+    counts[ev.event] = (counts[ev.event] ?? 0) + 1;
+  }
+
+  const parts: string[] = [];
+
+  const toolCount = counts['tool_use'] ?? 0;
+  if (toolCount > 0) parts.push(`${toolCount} tool call${toolCount !== 1 ? 's' : ''}`);
+
+  const stopCount = counts['stop'] ?? 0;
+  if (stopCount > 0) parts.push(`${stopCount} stop${stopCount !== 1 ? 's' : ''}`);
+
+  const ssCount = (counts['session_start'] ?? 0) + (counts['session_end'] ?? 0);
+  if (ssCount > 0) parts.push(`${ssCount} session event${ssCount !== 1 ? 's' : ''}`);
+
+  const saCount = (counts['subagent_start'] ?? 0) + (counts['subagent_stop'] ?? 0);
+  if (saCount > 0) parts.push(`${saCount} subagent event${saCount !== 1 ? 's' : ''}`);
+
+  // Catch-all for anything else
+  const known = new Set([
+    'tool_use',
+    'stop',
+    'session_start',
+    'session_end',
+    'subagent_start',
+    'subagent_stop',
+  ]);
+  const otherCount = Object.entries(counts)
+    .filter(([k]) => !known.has(k))
+    .reduce((sum, [, v]) => sum + v, 0);
+  if (otherCount > 0) parts.push(`${otherCount} other`);
+
+  return parts.length > 0
+    ? parts.join(' · ')
+    : `${events.length} event${events.length !== 1 ? 's' : ''}`;
+}
+
 export default function ObserverView() {
   const [sessions, setSessions] = useState<SessionState[]>([]);
   const [focusedId, setFocusedId] = useState<string | null>(null);
   const [focusEvents, setFocusEvents] = useState<FocusEvents | null>(null);
   const [, setTick] = useState(0); // forces re-render for live time displays
   const [panelHeight, setPanelHeight] = useState(240);
+  const [panelSnap, setPanelSnap] = useState<'collapsed' | 'expanded'>('collapsed');
   const [hideJunk, setHideJunk] = useState(true);
+  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
   const idleCounters = useRef<Record<string, number>>({});
   const dragState = useRef<{ startY: number; startHeight: number } | null>(null);
 
@@ -237,7 +326,10 @@ export default function ObserverView() {
       const onMove = (ev: MouseEvent) => {
         if (!dragState.current) return;
         const delta = dragState.current.startY - ev.clientY;
-        const next = Math.max(100, Math.min(600, dragState.current.startHeight + delta));
+        const next = Math.max(
+          100,
+          Math.min(window.innerHeight - 120, dragState.current.startHeight + delta)
+        );
         setPanelHeight(next);
       };
 
@@ -388,7 +480,7 @@ export default function ObserverView() {
           {/* Drag handle */}
           <div
             onMouseDown={handleDragStart}
-            className="h-2 bg-border hover:bg-primary/20 cursor-row-resize shrink-0 flex items-center justify-center group select-none"
+            className="relative h-4 bg-border hover:bg-primary/20 cursor-row-resize shrink-0 flex items-center justify-center group select-none"
             title="Drag to resize"
           >
             <div className="flex gap-1">
@@ -396,6 +488,19 @@ export default function ObserverView() {
               <span className="w-8 h-px bg-muted-foreground/40 rounded group-hover:bg-primary/60" />
               <span className="w-8 h-px bg-muted-foreground/40 rounded group-hover:bg-primary/60" />
             </div>
+            <button
+              onMouseDown={(e) => e.stopPropagation()}
+              onClick={() => {
+                const next = panelSnap === 'collapsed' ? 'expanded' : 'collapsed';
+                setPanelSnap(next);
+                setPanelHeight(next === 'expanded' ? window.innerHeight - 240 : 240);
+              }}
+              className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 top-1/2 text-[10px] leading-none text-muted-foreground/60 hover:text-primary cursor-pointer bg-transparent border-none p-0 z-10"
+              title={panelSnap === 'collapsed' ? 'Expand panel' : 'Collapse panel'}
+              aria-label={panelSnap === 'collapsed' ? 'Expand panel' : 'Collapse panel'}
+            >
+              {panelSnap === 'collapsed' ? '⌃' : '⌄'}
+            </button>
           </div>
           <div className="bg-card shrink-0 flex flex-col" style={{ height: panelHeight }}>
             <div className="flex items-center justify-between px-4 py-2 border-b border-border">
@@ -430,25 +535,102 @@ export default function ObserverView() {
               {focusEvents.events.length === 0 && (
                 <div className="px-4 py-3 text-muted-foreground text-xs">No events recorded.</div>
               )}
-              {[...focusEvents.events].reverse().map((ev) => (
-                <div
-                  key={ev.id}
-                  className="flex items-start gap-3 px-4 py-1.5 border-b border-border text-xs hover:bg-surface-hover"
-                >
-                  {/* Timestamp */}
-                  <span className="text-muted-foreground shrink-0 w-16">
-                    {formatTimestamp(ev.ts)}
-                  </span>
+              {buildFocusRows(focusEvents.events).map((row) => {
+                const toggleGroup = (key: string) => {
+                  setExpandedGroups((prev) => {
+                    const next = new Set(prev);
+                    if (next.has(key)) next.delete(key);
+                    else next.add(key);
+                    return next;
+                  });
+                };
 
-                  {/* Event type badge */}
-                  <span className="text-primary bg-primary/10 rounded px-1.5 py-0.5 shrink-0 text-xs font-medium">
-                    {ev.event}
-                  </span>
+                // Orphan group (no preceding prompt) — keep as its own row
+                if (row.type === 'orphan-group') {
+                  const isExpanded = expandedGroups.has(row.key);
+                  return (
+                    <div key={row.key}>
+                      <button
+                        onClick={() => toggleGroup(row.key)}
+                        className="w-full flex items-center gap-2 pl-6 pr-4 py-1 border-b border-border text-xs text-muted-foreground/50 hover:text-muted-foreground hover:bg-surface-hover transition-colors cursor-pointer bg-transparent text-left"
+                      >
+                        <span
+                          style={{
+                            display: 'inline-block',
+                            transform: isExpanded ? 'rotate(90deg)' : 'none',
+                          }}
+                        >
+                          ›
+                        </span>
+                        <span>↳ {groupSummaryText(row.events)}</span>
+                      </button>
+                      {isExpanded &&
+                        [...row.events].reverse().map((ev) => (
+                          <div
+                            key={ev.id}
+                            className="flex items-start gap-3 pl-10 pr-4 py-1 border-b border-border/50 text-xs text-muted-foreground/50"
+                          >
+                            <span className="shrink-0 w-16">{formatTimestamp(ev.ts)}</span>
+                            <span className="bg-muted-foreground/10 text-muted-foreground/60 rounded px-1.5 py-0.5 shrink-0">
+                              {ev.event}
+                            </span>
+                            <span className="flex-1 break-all">{eventSummary(ev)}</span>
+                          </div>
+                        ))}
+                    </div>
+                  );
+                }
 
-                  {/* Description */}
-                  <span className="text-foreground flex-1 break-all">{eventSummary(ev)}</span>
-                </div>
-              ))}
+                // Prompt row — group indicator inline at end of row
+                const ev = row.event;
+                const group = row.trailingGroup;
+                const isExpanded = group ? expandedGroups.has(group.key) : false;
+                return (
+                  <div key={ev.id}>
+                    <div className="flex items-start gap-3 px-4 py-1.5 border-b border-border text-xs hover:bg-surface-hover">
+                      <span className="text-muted-foreground shrink-0 w-16">
+                        {formatTimestamp(ev.ts)}
+                      </span>
+                      <span className="text-primary bg-primary/10 rounded px-1.5 py-0.5 shrink-0 font-medium">
+                        {ev.event}
+                      </span>
+                      <span className="text-foreground flex-1 break-all">{eventSummary(ev)}</span>
+                      {group && (
+                        <button
+                          onClick={() => toggleGroup(group.key)}
+                          className="shrink-0 flex items-center gap-1 text-muted-foreground/50 hover:text-muted-foreground transition-colors bg-transparent border-none cursor-pointer text-xs ml-2"
+                          title={isExpanded ? 'Collapse' : 'Expand'}
+                        >
+                          <span
+                            style={{
+                              display: 'inline-block',
+                              transform: isExpanded ? 'rotate(90deg)' : 'none',
+                              transition: 'transform 150ms',
+                            }}
+                          >
+                            ›
+                          </span>
+                          <span>↳ {groupSummaryText(group.events)}</span>
+                        </button>
+                      )}
+                    </div>
+                    {isExpanded &&
+                      group &&
+                      [...group.events].reverse().map((gev) => (
+                        <div
+                          key={gev.id}
+                          className="flex items-start gap-3 pl-10 pr-4 py-1 border-b border-border/50 text-xs text-muted-foreground/50 hover:bg-surface-hover"
+                        >
+                          <span className="shrink-0 w-16">{formatTimestamp(gev.ts)}</span>
+                          <span className="bg-muted-foreground/10 text-muted-foreground/60 rounded px-1.5 py-0.5 shrink-0">
+                            {gev.event}
+                          </span>
+                          <span className="flex-1 break-all">{eventSummary(gev)}</span>
+                        </div>
+                      ))}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </>
