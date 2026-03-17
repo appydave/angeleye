@@ -1,16 +1,11 @@
 # Project Backlog — AngelEye
 
-**Last updated**: 2026-03-16
-**Total**: 27 | Pending: 9 | In Progress: 0 | Done: 18 | Deferred: 2 | Rejected: 0
+**Last updated**: 2026-03-17
+**Total**: 37 | Pending: 5 | In Progress: 0 | Done: 30 | Deferred: 2 | Rejected: 0
 
 ## Pending
 
-- [x] B020 — v2-linen UI redesign: full light theme, floating cards, dark column header, amber accent | Completed: angeleye-wave7a-linen
-- [x] B021 — Split angeleye-data.ts into registry/sessions/workspace/backfill services | Completed: angeleye-wave7b-datasplit
-- [x] B012 — Ambient intelligence: rule-based session classification (is_junk, session_type, tool_pattern, first_edited_dir, first_real_prompt) | Completed: angeleye-wave8-intelligence
 - [ ] B011 — /angeleye:publish skill (Nano Banana / FliDeck integration) | Priority: medium
-
-## UX Backlog (from live usage 2026-03-16)
 
 ### Observer — Full prompt content
 
@@ -23,25 +18,35 @@
 
 ### Observer — Session list pagination
 
-- [ ] B023 — Paginate session list: cursor-based API (`GET /api/sessions?after=<id>&limit=50`), virtual scrolling on client. Currently 671+ sessions loaded at once — will degrade at 2000+. | Priority: medium
+- [ ] B023 — Paginate session list: cursor-based API (`GET /api/sessions?after=<id>&limit=50`), virtual scrolling on client. Currently 690+ sessions loaded at once — will degrade at 2000+. | Priority: medium
 
-### Observer — Hook resilience (hooks fire on all sessions even when server is down)
+### Observer — Named session row design
 
-- [ ] B024 — Replace HTTP hooks with command hooks using `curl ... || true` so Claude sessions don't show errors when AngelEye server isn't running | Priority: high
-- [ ] B025 — launchd plist for AngelEye server: always-on persistent service, auto-restart on crash/reboot | Priority: medium
-
-### Observer — Workspace visibility
-
-- [x] B027 — Add workspace badge to session rows in Observer: small pill badge showing assigned workspace name, no workspace = no badge. Data is already in registry. Quick win. | Completed: angeleye-b027-workspace-badge
+- [ ] B037 — Named session elevated row treatment: amber left rail, name as flex-1 hero (no 140px cap), project+cwd on secondary dim line, ⚑ named micro-tag. Observer currently truncates long names like "solo-deck-flideck-slide-system" to fit the fixed column. Mockup designed 2026-03-17. | Priority: medium
 
 ### Infrastructure
 
+- [ ] B025 — launchd plist for AngelEye server: always-on persistent service, auto-restart on crash/reboot | Priority: medium
 - [ ] B026 — Update create-appystack template with: resilient start.sh (port conflict detection + human-in-loop), dotenv override:true fix, correct VITE_SOCKET_URL | Priority: medium
 
 ## In Progress
 
 ## Done
 
+- [x] B032 — Unified Sync button replacing backfill + classify | Completed: angeleye-wave10-settings-intelligence
+- [x] B033 — Delta tracking: last-sync.json + status line in Settings | Completed: angeleye-wave10-settings-intelligence
+- [x] B034 — Classification breakdown panel in Settings | Completed: angeleye-wave10-settings-intelligence
+- [x] B035 — Session type legend in Observer (tooltips + ⓘ panel) | Completed: angeleye-wave10-settings-intelligence
+- [x] B036 — Backfill extracts /rename names from custom-title JSONL | Completed: angeleye-wave10-settings-intelligence
+- [x] B020 — v2-linen UI redesign | Completed: angeleye-wave7a-linen
+- [x] B021 — Split angeleye-data.ts into registry/sessions/workspace/backfill services | Completed: angeleye-wave7b-datasplit
+- [x] B012 — Ambient intelligence: rule-based session classification | Completed: angeleye-wave8-intelligence
+- [x] B027 — Workspace badge on Observer session rows | Completed: angeleye-b027-workspace-badge
+- [x] B024 — Replace HTTP hooks with `curl ... || true` command hooks | Completed: angeleye-wave9-bookmarks
+- [x] B028 — Star/bookmark: ★ toggle, note field, All|Starred|Named filter, copy-resume (UUID) | Completed: angeleye-wave9-bookmarks
+- [x] B029 — Named session filter + inline rename with full JSONL write-back | Completed: angeleye-wave9-bookmarks
+- [x] B030 — Investigate Claude Code session name storage (`custom-title` + `agent-name` in JSONL) | Completed: angeleye-wave9-bookmarks
+- [x] B031 — Auto-run backfill on server start | Completed: angeleye-wave9-bookmarks
 - [x] B001 — Shared AngelEye types (AngelEyeEvent, RegistryEntry, WorkspaceEntry) | Completed: angeleye-wave-1
 - [x] B002 — AngelEye data service (JSONL write, registry, archive) | Completed: angeleye-wave-1
 - [x] B003 — Hook endpoint POST /hooks/:event | Completed: angeleye-wave-1
