@@ -56,6 +56,7 @@ export interface RegistryEntry {
   workspace_id: string | null;
   status: 'active' | 'ended';
   source: AngelEyeSource;
+  note?: string | null; // free-text annotation, set by user
   // rule-based classification (no LLM, computed from events)
   is_junk?: boolean;
   session_type?: SessionType;

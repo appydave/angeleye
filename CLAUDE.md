@@ -2,6 +2,24 @@
 
 AI agent context for an AppyStack project.
 
+## 📚 Claude Code Internals — Canonical Documentation
+
+AngelEye reads and writes Claude Code's own data files. Before implementing anything that touches JSONL transcripts, session naming, hooks, or storage layout, check the canonical brain docs first:
+
+| Topic                                                            | Canonical location                                                   |
+| ---------------------------------------------------------------- | -------------------------------------------------------------------- |
+| JSONL entry types, streaming dedup, tool pairing, session naming | `~/dev/ad/brains/anthropic-claude/claude-code/observability.md`      |
+| Hook events (all 17), hook input format, env vars                | `~/dev/ad/brains/anthropic-claude/claude-code/hooks-reference.md`    |
+| Session resume, /rename, /fork, /rewind behaviour                | `~/dev/ad/brains/anthropic-claude/claude-code/session-management.md` |
+
+**Key facts for AngelEye agents** (don't re-discover these):
+
+- Session files live at `~/.claude/projects/<encoded-path>/<session_id>.jsonl`
+- `/rename` appends `custom-title` + `agent-name` entries (no `parentUuid` — tree-detached). Write-back by appending a new pair — never mutate existing entries
+- `progress` entries are the most numerous type (~75% in hook-heavy sessions) — skip when parsing for conversation content
+- `isSidechain: true` entries appear in subagent files (`agent-*.jsonl`), not main sessions
+- Auto-slug (`witty-painting-plum` style) lives in `system/turn_duration` entries — this is NOT the user-assigned name
+
 ## ⚠️ Already Inside an AppyStack Project
 
 This CLAUDE.md means you are **inside an existing AppyStack app**. Two skills exist for AppyStack — do not confuse them:

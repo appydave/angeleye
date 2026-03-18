@@ -1,10 +1,15 @@
-import { mkdtemp, rm, readFile, writeFile, stat } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { mkdtemp, rm, readFile, writeFile, stat, mkdir } from 'node:fs/promises';
+import { tmpdir, homedir } from 'node:os';
 import { join } from 'node:path';
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import type { AngelEyeEvent } from '@appystack/shared';
 import { _setDataDir, initAngelEyeDirs, readRegistry, updateRegistry } from './registry.service.js';
-import { writeEvent, getSessionEvents, archiveSession } from './sessions.service.js';
+import {
+  writeEvent,
+  getSessionEvents,
+  archiveSession,
+  writeSessionName,
+} from './sessions.service.js';
 
 let testDir: string;
 
@@ -283,5 +288,135 @@ describe('archiveSession', () => {
   it('throws if source file does not exist', async () => {
     await initAngelEyeDirs();
     await expect(archiveSession('ses-nonexistent')).rejects.toThrow();
+  });
+});
+
+// ── writeSessionName ──────────────────────────────────────────────────────────
+
+describe('writeSessionName', () => {
+  // We need a real tmpdir that simulates ~/.claude/projects/<encoded>/<sessionId>.jsonl
+  // We use a separate fakeClaude dir that acts as homedir for path construction tests.
+  // writeSessionName uses os.homedir() internally, so we create the directory at the
+  // real expected location under a tmp root and use an absolute path for projectDir.
+
+  let fakeClaudeDir: string;
+  let fakeTmpRoot: string;
+
+  beforeEach(async () => {
+    fakeTmpRoot = await mkdtemp(join(tmpdir(), 'angeleye-wb02-'));
+    // We'll create a fake projects directory structure inside fakeTmpRoot
+    fakeClaudeDir = join(fakeTmpRoot, '.claude', 'projects');
+    await mkdir(fakeClaudeDir, { recursive: true });
+  });
+
+  afterEach(async () => {
+    await rm(fakeTmpRoot, { recursive: true, force: true });
+  });
+
+  it('does not throw when JSONL file does not exist (logs warning and returns)', async () => {
+    // Use a real absolute project dir; JSONL won't exist under real homedir — that's fine
+    // We call writeSessionName with a bogus session id that won't exist
+    await expect(
+      writeSessionName('ses-nonexistent-12345', 'my-name', '/tmp/nonexistent-project-dir-xyz')
+    ).resolves.toBeUndefined();
+  });
+
+  it('appends both custom-title and agent-name entries to existing JSONL', async () => {
+    // Build the encoded path manually
+    const projectDir = '/Users/testuser/dev/myproject';
+    const sessionId = 'ses-wb02-append';
+
+    // Create the JSONL file at the real ~/.claude/projects/<encoded>/<sessionId>.jsonl path
+    const realEncoded = projectDir.replace(/\//g, '-');
+    const sessionDir = join(homedir(), '.claude', 'projects', realEncoded);
+    const jsonlPath = join(sessionDir, `${sessionId}.jsonl`);
+
+    await mkdir(sessionDir, { recursive: true });
+    await writeFile(jsonlPath, '{"type":"existing","data":"before"}\n', 'utf-8');
+
+    try {
+      await writeSessionName(sessionId, 'my-test-session', projectDir);
+
+      const content = await readFile(jsonlPath, 'utf-8');
+      const lines = content.split('\n').filter((l) => l.trim() !== '');
+
+      expect(lines).toHaveLength(3); // original + 2 appended
+      const second = JSON.parse(lines[1]) as {
+        type: string;
+        customTitle: string;
+        sessionId: string;
+      };
+      const third = JSON.parse(lines[2]) as { type: string; agentName: string; sessionId: string };
+
+      expect(second.type).toBe('custom-title');
+      expect(second.customTitle).toBe('my-test-session');
+      expect(second.sessionId).toBe(sessionId);
+
+      expect(third.type).toBe('agent-name');
+      expect(third.agentName).toBe('my-test-session');
+      expect(third.sessionId).toBe(sessionId);
+    } finally {
+      // Clean up the real file we created
+      await rm(sessionDir, { recursive: true, force: true });
+    }
+  });
+
+  it('derives the correct encoded path from projectDir (/ replaced with -)', async () => {
+    const projectDir = '/Users/davidcruwys/dev/ad/apps/angeleye';
+    const sessionId = 'ses-wb02-encode';
+    const expectedEncoded = '-Users-davidcruwys-dev-ad-apps-angeleye';
+    const sessionDir = join(homedir(), '.claude', 'projects', expectedEncoded);
+    const jsonlPath = join(sessionDir, `${sessionId}.jsonl`);
+
+    await mkdir(sessionDir, { recursive: true });
+    await writeFile(jsonlPath, '', 'utf-8');
+
+    try {
+      await writeSessionName(sessionId, 'encode-test', projectDir);
+
+      const content = await readFile(jsonlPath, 'utf-8');
+      const lines = content.split('\n').filter((l) => l.trim() !== '');
+
+      expect(lines).toHaveLength(2);
+      const first = JSON.parse(lines[0]) as { type: string };
+      expect(first.type).toBe('custom-title');
+    } finally {
+      await rm(sessionDir, { recursive: true, force: true });
+    }
+  });
+
+  it('appending twice creates two pairs of entries in the JSONL file', async () => {
+    const projectDir = '/Users/testuser/dev/doublecall';
+    const sessionId = 'ses-wb02-double';
+    const encoded = projectDir.replace(/\//g, '-');
+    const sessionDir = join(homedir(), '.claude', 'projects', encoded);
+    const jsonlPath = join(sessionDir, `${sessionId}.jsonl`);
+
+    await mkdir(sessionDir, { recursive: true });
+    await writeFile(jsonlPath, '', 'utf-8');
+
+    try {
+      await writeSessionName(sessionId, 'first-name', projectDir);
+      await writeSessionName(sessionId, 'second-name', projectDir);
+
+      const content = await readFile(jsonlPath, 'utf-8');
+      const lines = content.split('\n').filter((l) => l.trim() !== '');
+
+      expect(lines).toHaveLength(4); // 2 pairs
+
+      const entries = lines.map(
+        (l) => JSON.parse(l) as { type: string; customTitle?: string; agentName?: string }
+      );
+      expect(entries[0]?.type).toBe('custom-title');
+      expect(entries[0]?.customTitle).toBe('first-name');
+      expect(entries[1]?.type).toBe('agent-name');
+      expect(entries[1]?.agentName).toBe('first-name');
+      expect(entries[2]?.type).toBe('custom-title');
+      expect(entries[2]?.customTitle).toBe('second-name');
+      expect(entries[3]?.type).toBe('agent-name');
+      expect(entries[3]?.agentName).toBe('second-name');
+    } finally {
+      await rm(sessionDir, { recursive: true, force: true });
+    }
   });
 });

@@ -1,20 +1,11 @@
 # Project Backlog — AngelEye
 
 **Last updated**: 2026-03-17
-**Total**: 37 | Pending: 5 | In Progress: 0 | Done: 30 | Deferred: 2 | Rejected: 0
+**Total**: 37 | Pending: 4 | In Progress: 0 | Done: 31 | Deferred: 2 | Rejected: 0
 
 ## Pending
 
 - [ ] B011 — /angeleye:publish skill (Nano Banana / FliDeck integration) | Priority: medium
-
-### Observer — Full prompt content
-
-- [ ] B022 — Expand prompt row on click: clicking a user_prompt row wraps text to show full content, second click collapses. Hover tooltip (title attr) as companion quick win. | Priority: high
-  - **Mochaccino candidates** (generate 4 variations before implementing):
-    1. Inline expand — row grows in place, text wraps fully
-    2. Tooltip on hover — native title or styled popover
-    3. Side drawer — click opens right-side panel with full prompt + metadata
-    4. Modal — click opens a focused overlay with full text, timestamp, tool calls
 
 ### Observer — Session list pagination
 
@@ -33,6 +24,7 @@
 
 ## Done
 
+- [x] B022 — Expand prompt row on click in focus panel + first_real_prompt tooltip on session row | Completed: angeleye-b022-prompt-expand
 - [x] B032 — Unified Sync button replacing backfill + classify | Completed: angeleye-wave10-settings-intelligence
 - [x] B033 — Delta tracking: last-sync.json + status line in Settings | Completed: angeleye-wave10-settings-intelligence
 - [x] B034 — Classification breakdown panel in Settings | Completed: angeleye-wave10-settings-intelligence

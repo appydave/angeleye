@@ -320,6 +320,54 @@ describe('PATCH /api/sessions/:id', () => {
     expect(res.body.data.workspace_id).toBe(ws.id);
   });
 
+  it('update note — registry updated with note text', async () => {
+    await updateRegistry('ses-patch-note', {
+      session_id: 'ses-patch-note',
+      project_dir: '/projects/patch',
+      last_active: '2026-03-15T09:00:00.000Z',
+    });
+
+    const res = await request(app)
+      .patch('/api/sessions/ses-patch-note')
+      .send({ note: 'interesting auth pattern' });
+
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe('ok');
+    expect(res.body.data.note).toBe('interesting auth pattern');
+  });
+
+  it('update note with null — clears existing note', async () => {
+    await updateRegistry('ses-patch-note-clear', {
+      session_id: 'ses-patch-note-clear',
+      project_dir: '/projects/patch',
+      last_active: '2026-03-15T09:00:00.000Z',
+      note: 'old annotation',
+    });
+
+    const res = await request(app).patch('/api/sessions/ses-patch-note-clear').send({ note: null });
+
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe('ok');
+    expect(res.body.data.note).toBeNull();
+  });
+
+  it('update note and name together — both fields updated', async () => {
+    await updateRegistry('ses-patch-note-name', {
+      session_id: 'ses-patch-note-name',
+      project_dir: '/projects/patch',
+      last_active: '2026-03-15T09:00:00.000Z',
+    });
+
+    const res = await request(app)
+      .patch('/api/sessions/ses-patch-note-name')
+      .send({ name: 'auth-investigation', note: 'started looking at JWT expiry' });
+
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe('ok');
+    expect(res.body.data.name).toBe('auth-investigation');
+    expect(res.body.data.note).toBe('started looking at JWT expiry');
+  });
+
   it('documents: PATCH with non-array tags currently writes without error (known gap)', async () => {
     // tags validation is a known gap — add Zod body schema in a future wave
     await updateRegistry('ses-patch-tags-invalid', {

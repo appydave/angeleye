@@ -1,3 +1,18 @@
+# AngelEye Documentation
+
+> AngelEye is built on AppyStack (RVETS). AppyStack-specific docs are below.
+> AngelEye-specific docs: `planning/BACKLOG.md`, `intelligence/PATTERNS.md`, `requirements.md`
+
+## 🔗 Claude Code Internals — Canonical Reference
+
+AngelEye reads and writes Claude Code's storage. Canonical knowledge lives in the brain — not here:
+
+- **JSONL format, entry types, streaming, naming**: `~/dev/ad/brains/anthropic-claude/claude-code/observability.md`
+- **Hook events and payloads**: `~/dev/ad/brains/anthropic-claude/claude-code/hooks-reference.md`
+- **Session lifecycle (/rename, /fork, /rewind)**: `~/dev/ad/brains/anthropic-claude/claude-code/session-management.md`
+
+---
+
 # AppyStack Documentation
 
 Complete reference for building on the RVETS stack (React + Vite + Express + TypeScript + Socket.io).

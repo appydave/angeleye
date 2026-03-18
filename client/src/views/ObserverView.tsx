@@ -3,6 +3,7 @@ import { io, Socket } from 'socket.io-client';
 import type {
   AngelEyeEvent,
   RegistryEntry,
+  SessionType,
   WorkspaceEntry,
   ServerToClientEvents,
   ClientToServerEvents,
@@ -94,6 +95,56 @@ function sessionTypeBadgeClass(sessionType: string): string {
       return '';
   }
 }
+
+// ─── Session type descriptions (for tooltips) ────────────────────────────────
+
+const SESSION_TYPE_DESCRIPTIONS: Record<string, string> = {
+  BUILD: 'Writing or editing product code — Edit, Write, Bash dominant',
+  TEST: 'Running tests or Playwright — UAT and test campaigns',
+  RESEARCH: 'Web search and external investigation — reading, not writing',
+  KNOWLEDGE: 'Brain or docs updates — read-heavy in a brain/ directory',
+  OPS: 'Infrastructure and CI/CD — Bash-heavy in ops/ansible directories',
+  ORIENTATION: 'Cold start or reorientation — mostly reading, no writes yet',
+};
+
+// ─── Session type legend (for the inline legend panel) ───────────────────────
+
+const SESSION_TYPE_LEGEND: Array<{
+  type: SessionType;
+  color: string;
+  rules: string;
+}> = [
+  {
+    type: 'BUILD',
+    color: 'text-primary',
+    rules: 'Edit/Write/Bash >40% of tool calls, or Task/Agent heavy. Default for mixed sessions.',
+  },
+  {
+    type: 'TEST',
+    color: 'text-sky-300',
+    rules: 'Playwright tool calls >40% of tool calls.',
+  },
+  {
+    type: 'RESEARCH',
+    color: 'text-purple-300',
+    rules: 'WebFetch or brave-search >30% of tool calls.',
+  },
+  {
+    type: 'KNOWLEDGE',
+    color: 'text-green-400',
+    rules: 'Read-heavy (Glob/Read/Grep >60%, minimal writes) AND project_dir contains "brain".',
+  },
+  {
+    type: 'OPS',
+    color: 'text-orange-300',
+    rules: 'Bash-heavy AND project_dir contains "agent-os", "ansible", "ci", or "ops".',
+  },
+  {
+    type: 'ORIENTATION',
+    color: 'text-[#d4c9b8]',
+    rules: 'Read-heavy (Glob/Read/Grep >60%, minimal writes) in a non-brain directory.',
+  },
+];
 
 // ─── Progressive disclosure types ────────────────────────────────────────────
 
@@ -191,7 +242,13 @@ export default function ObserverView() {
   const [panelHeight, setPanelHeight] = useState(240);
   const [panelSnap, setPanelSnap] = useState<'collapsed' | 'expanded'>('collapsed');
   const [hideJunk, setHideJunk] = useState(true);
+  const [showLegend, setShowLegend] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
+  const [expandedPrompts, setExpandedPrompts] = useState<Set<string>>(new Set());
+  const [filter, setFilter] = useState<'all' | 'starred' | 'named'>('all');
+  const [renamingId, setRenamingId] = useState<string | null>(null);
+  const [noteValue, setNoteValue] = useState('');
+  const [noteSaved, setNoteSaved] = useState(false);
   const idleCounters = useRef<Record<string, number>>({});
   const dragState = useRef<{ startY: number; startHeight: number } | null>(null);
 
@@ -334,6 +391,20 @@ export default function ObserverView() {
       });
   };
 
+  // ── Sync note field when focused session changes ───────────────────────────
+  useEffect(() => {
+    if (!focusedId) {
+      setNoteValue('');
+      setNoteSaved(false);
+      setExpandedPrompts(new Set());
+      return;
+    }
+    const entry = sessions.find((s) => s.entry.session_id === focusedId)?.entry;
+    setNoteValue(entry?.note ?? '');
+    setNoteSaved(false);
+    setExpandedPrompts(new Set());
+  }, [focusedId]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const handleDragStart = useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault();
@@ -361,9 +432,100 @@ export default function ObserverView() {
     [panelHeight]
   );
 
+  // ── Star toggle ────────────────────────────────────────────────────────────
+  const toggleStar = useCallback((session: RegistryEntry) => {
+    const isStarred = session.tags?.includes('starred') ?? false;
+    const newTags = isStarred
+      ? (session.tags ?? []).filter((t) => t !== 'starred')
+      : [...(session.tags ?? []), 'starred'];
+
+    // Optimistic update
+    setSessions((prev) =>
+      prev.map((s) =>
+        s.entry.session_id === session.session_id
+          ? { ...s, entry: { ...s.entry, tags: newTags } }
+          : s
+      )
+    );
+
+    void fetch(`/api/sessions/${session.session_id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tags: newTags }),
+    })
+      .then((r) => r.json())
+      .catch(() => {
+        // Revert on error
+        setSessions((prev) =>
+          prev.map((s) =>
+            s.entry.session_id === session.session_id
+              ? { ...s, entry: { ...s.entry, tags: session.tags } }
+              : s
+          )
+        );
+      });
+  }, []);
+
+  // ── Note save ──────────────────────────────────────────────────────────────
+  const saveNote = useCallback((sessionId: string, value: string) => {
+    const notePayload = value.trim() === '' ? null : value.trim();
+    void fetch(`/api/sessions/${sessionId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ note: notePayload }),
+    })
+      .then((r) => r.json())
+      .then(() => {
+        setSessions((prev) =>
+          prev.map((s) =>
+            s.entry.session_id === sessionId
+              ? { ...s, entry: { ...s.entry, note: notePayload } }
+              : s
+          )
+        );
+        setNoteSaved(true);
+        setTimeout(() => setNoteSaved(false), 1500);
+      })
+      .catch(() => {
+        // Non-fatal — silently ignore
+      });
+  }, []);
+
+  // ── Rename commit ──────────────────────────────────────────────────────────
+  const commitRename = useCallback((session: RegistryEntry, value: string) => {
+    setRenamingId(null);
+    const namePayload = value.trim() === '' ? null : value.trim();
+    void fetch(`/api/sessions/${session.session_id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: namePayload }),
+    })
+      .then((r) => r.json())
+      .then(() => {
+        setSessions((prev) =>
+          prev.map((s) =>
+            s.entry.session_id === session.session_id
+              ? { ...s, entry: { ...s.entry, name: namePayload } }
+              : s
+          )
+        );
+      })
+      .catch(() => {
+        // Non-fatal — silently ignore
+      });
+  }, []);
+
   const activeSessions = sessions.filter((s) => s.entry.status === 'active');
   const anyActive = activeSessions.length > 0;
-  const visibleSessions = hideJunk ? sessions.filter((s) => s.entry.is_junk !== true) : sessions;
+  const baseVisible = hideJunk ? sessions.filter((s) => s.entry.is_junk !== true) : sessions;
+  const visibleSessions =
+    filter === 'starred'
+      ? baseVisible.filter((s) => s.entry.tags?.includes('starred'))
+      : filter === 'named'
+        ? baseVisible.filter(
+            (s) => s.entry.name !== null && s.entry.name !== undefined && s.entry.name !== ''
+          )
+        : baseVisible;
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
@@ -399,13 +561,77 @@ export default function ObserverView() {
         <span className="font-bebas tracking-wider text-[#d4c9b8] text-xs w-12 text-right shrink-0 opacity-70">
           PULSE
         </span>
+        {/* All | Starred filter */}
+        <div className="flex items-center gap-1 shrink-0">
+          <button
+            onClick={() => setFilter('all')}
+            className={`text-[10px] font-bebas tracking-wider px-2 py-0.5 rounded cursor-pointer border-none transition-colors ${
+              filter === 'all'
+                ? 'bg-primary/20 text-primary'
+                : 'text-muted-foreground hover:text-primary bg-transparent'
+            }`}
+          >
+            All
+          </button>
+          <button
+            onClick={() => setFilter('starred')}
+            className={`text-[10px] font-bebas tracking-wider px-2 py-0.5 rounded cursor-pointer border-none transition-colors ${
+              filter === 'starred'
+                ? 'bg-amber-500/20 text-amber-400'
+                : 'text-muted-foreground hover:text-amber-400 bg-transparent'
+            }`}
+          >
+            Starred
+          </button>
+          <button
+            onClick={() => setFilter('named')}
+            className={`text-[10px] font-bebas tracking-wider px-2 py-0.5 rounded cursor-pointer border-none transition-colors ${
+              filter === 'named'
+                ? 'bg-sky-500/20 text-sky-400'
+                : 'text-muted-foreground hover:text-sky-400 bg-transparent'
+            }`}
+          >
+            Named
+          </button>
+        </div>
         <button
           onClick={() => setHideJunk((v) => !v)}
           className="text-[10px] text-muted-foreground hover:text-primary cursor-pointer font-bebas tracking-wider shrink-0 bg-transparent border-none p-0"
         >
           {hideJunk ? 'show junk' : 'hide junk'}
         </button>
+        <button
+          onClick={() => setShowLegend((v) => !v)}
+          className="text-[10px] text-[#d4c9b8]/60 hover:text-[#d4c9b8] font-bebas tracking-wider shrink-0 bg-transparent border-none p-0 cursor-pointer"
+          title="Show session type legend"
+          aria-label="Toggle session type legend"
+        >
+          ⓘ
+        </button>
       </div>
+
+      {/* Legend Panel */}
+      {showLegend && (
+        <div className="shrink-0 bg-card border-b border-border px-4 py-3 flex flex-col gap-2">
+          <p className="font-bebas tracking-wider text-xs text-muted-foreground">
+            Session Type Classification Rules
+          </p>
+          {SESSION_TYPE_LEGEND.map(({ type, color, rules }) => (
+            <div key={type} className="flex items-start gap-2 text-xs">
+              <span
+                className={`font-bebas tracking-wider px-1.5 py-0.5 rounded shrink-0 bg-foreground/85 ${color}`}
+              >
+                {type}
+              </span>
+              <span className="text-muted-foreground leading-relaxed">{rules}</span>
+            </div>
+          ))}
+          <p className="text-xs text-muted-foreground/50 mt-1">
+            Junk sessions (agent-*, empty, tmp-only) are classified separately and hidden by
+            default.
+          </p>
+        </div>
+      )}
 
       {/* Layer 2: Activity Feed */}
       <div className="flex-1 overflow-y-auto min-h-0 p-3 flex flex-col gap-1.5">
@@ -420,6 +646,7 @@ export default function ObserverView() {
           const isFocused = focusedId === s.entry.session_id;
           const sessionType = s.entry.session_type;
           const badgeClass = sessionType ? sessionTypeBadgeClass(sessionType) : '';
+          const isStarred = s.entry.tags?.includes('starred') ?? false;
           return (
             <div
               key={s.entry.session_id}
@@ -438,12 +665,37 @@ export default function ObserverView() {
               <div className="flex flex-col flex-1 min-w-0 gap-0.5">
                 {/* Top row */}
                 <div className="flex items-center gap-2 min-w-0">
-                  <span className="text-foreground font-medium truncate shrink-0 max-w-[140px]">
-                    {sessionLabel(s.entry)}
-                  </span>
+                  {renamingId === s.entry.session_id ? (
+                    <input
+                      autoFocus
+                      defaultValue={s.entry.name ?? ''}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          commitRename(s.entry, e.currentTarget.value);
+                        }
+                        if (e.key === 'Escape') setRenamingId(null);
+                      }}
+                      onBlur={(e) => commitRename(s.entry, e.currentTarget.value)}
+                      className="font-mono text-sm border-b border-amber-500 bg-transparent outline-none w-full max-w-[200px]"
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  ) : (
+                    <span
+                      className="text-foreground font-medium truncate shrink-0 max-w-[140px] cursor-pointer hover:underline"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setRenamingId(s.entry.session_id);
+                      }}
+                      title="Click to rename"
+                    >
+                      {sessionLabel(s.entry)}
+                    </span>
+                  )}
                   {sessionType && (
                     <span
-                      className={`text-[10px] font-bebas tracking-wider px-1.5 py-0.5 rounded shrink-0 ${badgeClass}`}
+                      className={`text-[10px] font-bebas tracking-wider px-1.5 py-0.5 rounded shrink-0 cursor-default ${badgeClass}`}
+                      title={SESSION_TYPE_DESCRIPTIONS[sessionType] ?? sessionType}
                     >
                       {sessionType}
                     </span>
@@ -466,6 +718,32 @@ export default function ObserverView() {
                     </span>
                   )}
                   <span className="flex-1" />
+                  {/* Copy-resume button */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      void navigator.clipboard.writeText(`claude --resume ${s.entry.session_id}`);
+                    }}
+                    title="Copy resume command"
+                    className="text-xs text-muted-foreground opacity-40 hover:opacity-100 hover:text-foreground shrink-0 bg-transparent border-none cursor-pointer p-0 leading-none"
+                  >
+                    ⎘
+                  </button>
+                  {/* Star button */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleStar(s.entry);
+                    }}
+                    className={`text-sm shrink-0 bg-transparent border-none cursor-pointer p-0 leading-none ${
+                      isStarred
+                        ? 'text-amber-500'
+                        : 'text-muted-foreground opacity-40 hover:opacity-100'
+                    }`}
+                    title={isStarred ? 'Remove bookmark' : 'Bookmark session'}
+                  >
+                    {isStarred ? '★' : '☆'}
+                  </button>
                   <span className="text-muted-foreground text-xs shrink-0">
                     {timeAgo(s.entry.last_active)}
                   </span>
@@ -481,7 +759,10 @@ export default function ObserverView() {
 
                 {/* Bottom row — prompt or last event, full width */}
                 {(s.entry.first_real_prompt ?? lastEvent) && (
-                  <span className="text-xs text-muted-foreground/70 truncate">
+                  <span
+                    className="text-xs text-muted-foreground/70 truncate"
+                    title={s.entry.first_real_prompt ?? undefined}
+                  >
                     {s.entry.first_real_prompt ? (
                       <span className="italic">{s.entry.first_real_prompt}</span>
                     ) : lastEvent ? (
@@ -552,7 +833,7 @@ export default function ObserverView() {
                 ×
               </button>
             </div>
-            <div className="overflow-y-auto flex-1">
+            <div className="overflow-y-auto flex-1 flex flex-col">
               {focusEvents.events.length === 0 && (
                 <div className="px-4 py-3 text-muted-foreground text-xs">No events recorded.</div>
               )}
@@ -615,7 +896,36 @@ export default function ObserverView() {
                       <span className="text-primary bg-primary/10 rounded px-1.5 py-0.5 shrink-0 font-medium">
                         {ev.event}
                       </span>
-                      <span className="text-foreground flex-1 break-all">{eventSummary(ev)}</span>
+                      {ev.event === 'user_prompt' && (ev.prompt ?? '').length > 80 ? (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setExpandedPrompts((prev) => {
+                              const next = new Set(prev);
+                              if (next.has(ev.id)) next.delete(ev.id);
+                              else next.add(ev.id);
+                              return next;
+                            });
+                          }}
+                          className="flex-1 text-left bg-transparent border-none cursor-pointer p-0 group"
+                          title={expandedPrompts.has(ev.id) ? 'Collapse' : 'Expand full prompt'}
+                        >
+                          {expandedPrompts.has(ev.id) ? (
+                            <span className="text-foreground whitespace-pre-wrap break-words leading-relaxed">
+                              {ev.prompt}
+                            </span>
+                          ) : (
+                            <span className="text-foreground break-all">
+                              {eventSummary(ev)}
+                              <span className="text-muted-foreground/50 ml-1 group-hover:text-muted-foreground">
+                                ›
+                              </span>
+                            </span>
+                          )}
+                        </button>
+                      ) : (
+                        <span className="text-foreground flex-1 break-all">{eventSummary(ev)}</span>
+                      )}
                       {group && (
                         <button
                           onClick={() => toggleGroup(group.key)}
@@ -652,6 +962,26 @@ export default function ObserverView() {
                   </div>
                 );
               })}
+              {/* Note field */}
+              <div className="flex items-center gap-2 px-4 py-2 border-t border-border mt-auto shrink-0">
+                <span className="text-xs text-muted-foreground shrink-0">Note:</span>
+                <input
+                  type="text"
+                  value={noteValue}
+                  onChange={(e) => setNoteValue(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') saveNote(focusedId, noteValue);
+                  }}
+                  placeholder="Add a note…"
+                  className="flex-1 text-xs bg-transparent border-b border-border focus:border-primary outline-none py-0.5 text-foreground placeholder:text-muted-foreground/40"
+                />
+                <button
+                  onClick={() => saveNote(focusedId, noteValue)}
+                  className="text-xs text-muted-foreground hover:text-primary bg-transparent border-none cursor-pointer shrink-0 px-1"
+                >
+                  {noteSaved ? 'Saved' : 'Save'}
+                </button>
+              </div>
             </div>
           </div>
         </>

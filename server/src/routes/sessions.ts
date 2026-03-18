@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { apiSuccess, apiFailure } from '../helpers/response.js';
 import { logger } from '../config/logger.js';
 import { readRegistry, updateRegistry } from '../services/registry.service.js';
-import { getSessionEvents } from '../services/sessions.service.js';
+import { getSessionEvents, writeSessionName } from '../services/sessions.service.js';
 import { readWorkspaces } from '../services/workspace.service.js';
 import type { RegistryEntry } from '@appystack/shared';
 
@@ -39,15 +39,28 @@ router.patch('/api/sessions/:id', async (req, res, next) => {
     if (!registryBefore[id]) {
       return apiFailure(res, 'Session not found', 404);
     }
-    const { name, tags, workspace_id } = req.body as {
+    const { name, tags, workspace_id, note } = req.body as {
       name?: string | null;
       tags?: string[];
       workspace_id?: string | null;
+      note?: string | null;
     };
     const updates: Partial<RegistryEntry> = {};
-    if (name !== undefined) updates.name = name;
+    if (name !== undefined) {
+      updates.name = name;
+      // write-back to Claude Code JSONL so claude --resume "name" works
+      if (name !== null) {
+        const entry = registryBefore[id];
+        if (entry?.project_dir) {
+          writeSessionName(id, name, entry.project_dir).catch((err) =>
+            logger.warn({ err }, 'writeSessionName failed (non-fatal)')
+          );
+        }
+      }
+    }
     if (tags !== undefined) updates.tags = tags;
     if (workspace_id !== undefined) updates.workspace_id = workspace_id;
+    if (note !== undefined) updates.note = note;
     if (updates.workspace_id !== null && updates.workspace_id !== undefined) {
       const workspaces = await readWorkspaces();
       const exists = workspaces.some((w) => w.id === updates.workspace_id);

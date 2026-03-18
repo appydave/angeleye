@@ -1,5 +1,6 @@
-import { readFile, rename, appendFile } from 'node:fs/promises';
+import { readFile, rename, appendFile, access } from 'node:fs/promises';
 import { join } from 'node:path';
+import { homedir } from 'node:os';
 import type { AngelEyeEvent } from '@appystack/shared';
 import { logger } from '../config/logger.js';
 import { _sessionsDir, _archiveDir } from './registry.service.js';
@@ -30,6 +31,33 @@ export async function getSessionEvents(sessionId: string): Promise<AngelEyeEvent
     logger.error({ err, sessionId }, 'Failed to read session events');
     return [];
   }
+}
+
+export async function writeSessionName(
+  sessionId: string,
+  name: string,
+  projectDir: string
+): Promise<void> {
+  // Expand ~ to home directory
+  const expandedDir = projectDir.startsWith('~') ? homedir() + projectDir.slice(1) : projectDir;
+
+  // Encode path: replace each / with -
+  const encoded = expandedDir.replace(/\//g, '-');
+
+  const jsonlPath = join(homedir(), '.claude', 'projects', encoded, `${sessionId}.jsonl`);
+
+  // Check if file exists; if not, warn and return (don't throw)
+  try {
+    await access(jsonlPath);
+  } catch {
+    logger.warn({ jsonlPath }, 'writeSessionName: JSONL not found, skipping');
+    return;
+  }
+
+  const line1 = JSON.stringify({ type: 'custom-title', customTitle: name, sessionId }) + '\n';
+  const line2 = JSON.stringify({ type: 'agent-name', agentName: name, sessionId }) + '\n';
+
+  await appendFile(jsonlPath, line1 + line2, 'utf-8');
 }
 
 export async function archiveSession(sessionId: string): Promise<void> {

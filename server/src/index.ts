@@ -21,6 +21,7 @@ import backfillRouter from './routes/backfill.js';
 import syncRouter from './routes/sync.js';
 import statsRouter from './routes/stats.js';
 import { initAngelEyeDirs } from './services/registry.service.js';
+import { backfillTranscripts } from './services/backfill.service.js';
 import type { ServerToClientEvents, ClientToServerEvents } from '@appystack/shared';
 import { SOCKET_EVENTS } from '@appystack/shared';
 
@@ -142,6 +143,19 @@ if (!env.isTest) {
     } catch (err: unknown) {
       logger.error({ err }, 'Failed to initialise AngelEye dirs');
     }
+    // Auto-heal: catch up on sessions missed while server was down
+    backfillTranscripts()
+      .then((result) => {
+        if (result.imported > 0) {
+          logger.info(
+            { imported: result.imported, skipped: result.skipped },
+            'Startup backfill complete'
+          );
+        }
+      })
+      .catch((err: unknown) => {
+        logger.warn({ err }, 'Startup backfill failed (non-fatal)');
+      });
     httpServer.listen(env.PORT, () => {
       logger.info(`Server running on http://localhost:${env.PORT}`);
       logger.info(`Client URL: ${env.CLIENT_URL}`);
