@@ -2,6 +2,14 @@
 
 AI agent context for an AppyStack project.
 
+## 🔄 Start Here — Read STEERING.md First
+
+Before doing any work in this project, read `STEERING.md` in this directory.
+
+It contains David's current observations/blockers/questions and Claude's last direction. Process David's items, write direction back, move resolved items. Stable direction gets absorbed into this CLAUDE.md over time.
+
+**Brain**: `~/dev/ad/brains/angeleye/` — full domain knowledge for AngelEye (concepts, data model, ingestion architecture, ambient intelligence).
+
 ## 📚 Claude Code Internals — Canonical Documentation
 
 AngelEye reads and writes Claude Code's own data files. Before implementing anything that touches JSONL transcripts, session naming, hooks, or storage layout, check the canonical brain docs first:
