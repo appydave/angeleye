@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "9476dfb9-0a89-42f1-8469-3970268086cf",
+  "machine": "m4-mini",
+  "project": "brains",
+  "project_dir": "/Users/davidcruwys/dev/ad/brains",
+  "session_type_registry": "KNOWLEDGE",
+  "session_type_analysed": "knowledge.personal_advisory",
+  "file_size_bytes": 6588,
+  "event_count": 21,
+  "disposition": "active",
+  "interest_level": "medium",
+  "notes": "Personal family advisory session misclassified as KNOWLEDGE. David asks about Philippines monitor research for Jan and Mary. Brain search phase (Grep×6, Glob×2, Bash×2, Read×3) found no prior research — knowledge gap, not knowledge retrieval. Session pivots: David pastes live Lazada URL, Claude invokes Playwright to browse product page (mcp__playwright__browser_navigate) for scam verification. Follow-up prompts on pivot/VESA rotation. No brain files written — research is session-ephemeral. Three classifier learning signals: (1) Playwright = external_research flag; (2) personal names + consumer topic in first prompt → personal_advisory; (3) empty search result = knowledge gap, not KNOWLEDGE session. Recommended brain file: brains/davidcruwys/personal/philippines-monitor-research.md (does not exist).",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

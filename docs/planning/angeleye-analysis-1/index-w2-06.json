@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "4e8c5897-9951-4e85-aee4-a01ef46df76c",
+  "machine": "m4-mini",
+  "project": "brains",
+  "project_dir": "/Users/davidcruwys/dev/ad/brains",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "knowledge.brain_update -> orientation.advisory (pivot)",
+  "file_size_bytes": 572148,
+  "event_count": 366,
+  "disposition": "active",
+  "interest_level": "high",
+  "notes": "Canonical Sally/Advisor pattern. Phase 1 (5 min): /refresh-bmad-brain skill updates bmad-method brain v6.0.4->v6.2.0. Session pivots within 2 minutes to advisory role for SupportSignal BMAD planning. Phase 2 (4h): advisor for John the PM building PRD (Steps 1-13). Phase 3 (2.5h, +2 days): advisor for Sally the UX designer building UX spec (14 steps). Phase 4 (40 min, +2 days): meta-reflection formalizes advisory pattern as bmad-oversight command. 101 user prompts (highest seen), 158 tool calls. Brain subfolder: bmad-method. Registry BUILD classification incorrect — project_dir=brains should block BUILD. Proposed new subtype: orientation.advisory.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

@@ -1,0 +1,266 @@
+[
+  {
+    "session_id": "99574b7a-1ff1-489c-a699-da08cb1df7d5",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-99574b7a-1ff1-489c-a699-da08cb1df7d5.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/angeleye",
+    "shape": {
+      "event_count": 536,
+      "user_prompt_count": 44,
+      "tool_use_count": 414,
+      "stop_count": 43,
+      "subagent_start_count": 16,
+      "subagent_stop_count": 18,
+      "first_event_ts": "2026-03-15T13:47:55.927000+00:00",
+      "last_event_ts": "2026-03-16T03:01:29.054000+00:00",
+      "duration_minutes": 793,
+      "active_minutes": 113,
+      "idle_gaps_over_1h": 3,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-15T15:04:18.769000+00:00",
+          "end": "2026-03-15T16:28:50.633000+00:00",
+          "gap_minutes": 84
+        },
+        {
+          "start": "2026-03-15T17:00:51.919000+00:00",
+          "end": "2026-03-16T00:29:48.434000+00:00",
+          "gap_minutes": 448
+        },
+        {
+          "start": "2026-03-16T00:30:52.619000+00:00",
+          "end": "2026-03-16T02:57:42.227000+00:00",
+          "gap_minutes": 146
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 216,
+      "Read": 78,
+      "Edit": 34,
+      "TaskUpdate": 25,
+      "Agent": 16,
+      "Glob": 14,
+      "Write": 12,
+      "TaskCreate": 9,
+      "Grep": 9,
+      "ToolSearch": 1
+    },
+    "file_paths": {
+      "read": [
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/BACKLOG.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/intelligence/PATTERNS.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/services/angeleye-data.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/services/angeleye-data.test.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-wave7b-datasplit/IMPLEMENTATION_PLAN.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-wave7b-datasplit/AGENTS.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/services/registry.service.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/routes/hooks.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/routes/sessions.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/routes/workspaces.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/routes/backfill.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/routes/hooks.test.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/routes/sessions.test.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/routes/backfill.test.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/routes/workspaces.test.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/services/sessions.service.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/services/workspace.service.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/index.ts",
+        "/Users/davidcruwys/.claude/angeleye/registry.json",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/services/backfill.service.ts"
+      ],
+      "write": [
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/services/registry.service.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/services/sessions.service.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/services/workspace.service.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/services/backfill.service.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/intelligence/research/batch-1.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/intelligence/research/batch-5.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/intelligence/research/100-session-analysis.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-wave8-intelligence/IMPLEMENTATION_PLAN.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-wave8-intelligence/AGENTS.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/services/classifier.service.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/services/classifier.service.test.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/client/src/views/SettingsView.tsx"
+      ],
+      "edit": [
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/routes/hooks.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/routes/sessions.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/routes/workspaces.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/routes/backfill.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/services/angeleye-data.test.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/routes/hooks.test.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/routes/sessions.test.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/routes/workspaces.test.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/routes/backfill.test.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/index.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-wave7b-datasplit/IMPLEMENTATION_PLAN.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/BACKLOG.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/services/backfill.service.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/shared/src/angeleye.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/shared/src/index.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/services/classifier.service.test.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/client/src/views/ObserverView.tsx",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-wave8-intelligence/IMPLEMENTATION_PLAN.md"
+      ]
+    },
+    "bash_commands_sample": [
+      "find /Users/davidcruwys/dev/ad/apps/angeleye/server/src -type f | sort",
+      "wc -l /Users/davidcruwys/dev/ad/apps/angeleye/server/src/services/angeleye-data.ts /Users/davidcruwys/dev/ad/apps/angeleye/server/src/services/angeleye-data.test.ts",
+      "ls /Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/",
+      "npm run typecheck 2>&1",
+      "npm run lint 2>&1",
+      "npm test 2>&1 | tail -40",
+      "npm run typecheck 2>&1",
+      "npm run lint 2>&1",
+      "npm test 2>&1",
+      "npm test 2>&1 | tail -30"
+    ],
+    "first_real_prompt": {
+      "text": "What did we do related to themes? And AppyStack and recipes And also, when it comes to the intelligence system, did we end up building that here in Angel Eye? Is it Chris? What's the deal with the next ticket, B-17 or something? Maybe B12. \n \u2590\u259b\u2588\u2588\u2588\u259c\u258c   Claude Code v2.1.76\n\u259d\u259c\u2588\u2588\u2588\u2588\u2588\u259b\u2598  Sonnet 4.6 with medium effort \u00b7 Claude API\n  \u2598\u2598 \u259d\u259d    ~/dev/ad/apps/angeleye\n\n\u273b Cooked for 1m 4s\n\n\u276f There's also another issue, I think, and it's with the observer. At\nthe moment, when you look at the individual tool ",
+      "full_length": 37237,
+      "ts": "2026-03-15T13:47:55.927Z"
+    },
+    "skill_invocations": null,
+    "subagents": [
+      {
+        "agent_id": "af279ffa2df773a8a",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-15T13:57:19.308Z",
+        "stopped_at": "2026-03-15T13:58:19.892Z"
+      },
+      {
+        "agent_id": "aedb5aafd552a2be4",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-15T13:58:32.223Z",
+        "stopped_at": "2026-03-15T13:59:22.855Z"
+      },
+      {
+        "agent_id": "a25dae167d5f0af13",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-15T13:59:35.516Z",
+        "stopped_at": "2026-03-15T14:00:26.062Z"
+      },
+      {
+        "agent_id": "a3d9bdad97b101282",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-15T14:00:50.266Z",
+        "stopped_at": "2026-03-15T14:03:42.948Z"
+      },
+      {
+        "agent_id": "a35cac47e8e6d8a47",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-15T14:18:14.538Z",
+        "stopped_at": "2026-03-15T14:27:59.020Z"
+      },
+      {
+        "agent_id": "a2b008566da8077b0",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-15T14:43:31.561Z",
+        "stopped_at": "2026-03-15T14:51:23.114Z"
+      },
+      {
+        "agent_id": "af2a2710c3b4fdc48",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-15T14:43:37.144Z",
+        "stopped_at": "2026-03-15T14:52:44.820Z"
+      },
+      {
+        "agent_id": "a4b3f00f9e43ac814",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-15T14:43:41.531Z",
+        "stopped_at": "2026-03-15T14:52:02.927Z"
+      },
+      {
+        "agent_id": "a88857290bf91f177",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-15T14:43:48.257Z",
+        "stopped_at": "2026-03-15T14:55:58.563Z"
+      },
+      {
+        "agent_id": "a3bbd1d5f386baae6",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-15T14:43:57.970Z",
+        "stopped_at": "2026-03-15T14:52:34.915Z"
+      },
+      {
+        "agent_id": "a4a6e68642def09cc",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-15T14:56:50.829Z",
+        "stopped_at": "2026-03-15T15:04:04.178Z"
+      },
+      {
+        "agent_id": "aeb1d365ed6062e84",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-15T16:36:54.323Z",
+        "stopped_at": "2026-03-15T16:37:41.861Z"
+      },
+      {
+        "agent_id": "a127f7580cf18e3c3",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-15T16:38:05.668Z",
+        "stopped_at": "2026-03-15T16:41:06.434Z"
+      },
+      {
+        "agent_id": "af0b952d286bc6081",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-15T16:41:41.470Z",
+        "stopped_at": "2026-03-15T16:42:48.048Z"
+      },
+      {
+        "agent_id": "abcc37fc683da67fd",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-15T16:41:55.911Z",
+        "stopped_at": "2026-03-15T16:43:51.356Z"
+      },
+      {
+        "agent_id": "a2a3e8ff2c4cde074",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-15T16:42:14.134Z",
+        "stopped_at": "2026-03-15T16:43:45.706Z"
+      }
+    ],
+    "detections": {
+      "compaction_resume": {
+        "detected": true,
+        "count": 1
+      },
+      "loop_runaway": {
+        "detected": false,
+        "stop_ratio": 0.08
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": true,
+        "count": 4
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": true,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false,
+        "first_prompt_length": 37237,
+        "short_prompt_ratio": 0.37
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": "/Users/davidcruwys/dev/ad/apps/angeleye",
+      "cwd_reliable": true,
+      "edit_write_count": 30
+    }
+  }
+]

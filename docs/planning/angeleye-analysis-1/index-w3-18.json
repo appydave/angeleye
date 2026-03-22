@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "65e82b48-d7a3-4a2a-b7c5-2c837ca76975",
+  "machine": "m4-mini",
+  "project": "prompt.supportsignal",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "build.dsl_refinement",
+  "file_size_bytes": 223712,
+  "event_count": 224,
+  "disposition": "active",
+  "interest_level": "medium-high",
+  "notes": "73-minute POEM OS poem-executor build session. Fixes output schema (nested→flat strings), mock data contamination (care notes), and a compile error. Second half pivots to DSL vocabulary redesign (predicate/observation/category) and integration test scaffolding. One context compaction; duplicate-send after compaction observed. Three Task (subagent) calls in DSL redesign phase. Notable: dual Claude session cross-talk — David pastes Alex agent output from a parallel POEM OS session. DSL vocabulary still unsettling at session end. No session naming.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

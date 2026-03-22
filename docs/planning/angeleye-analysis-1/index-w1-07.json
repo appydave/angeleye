@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "a080427c-2a23-43ff-a1ca-529ed3ae600d",
+  "machine": "m4-mini",
+  "project": "thumbrack",
+  "project_dir": "/Users/davidcruwys/dev/ad/apps/thumbrack",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "test.uat_debug_hybrid",
+  "file_size_bytes": 109860,
+  "event_count": 215,
+  "disposition": "active",
+  "interest_level": "high",
+  "notes": "Misclassified as BUILD — actually a UAT debug loop with 58 Playwright uses and 33 reactive Edits fixing a broken divider drag-and-drop feature. Escalating frustration, regression loop across 4 fix attempts, closing ceremony with memory file extraction. Proposes new test.uat_debug_hybrid subtype.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

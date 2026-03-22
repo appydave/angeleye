@@ -1,0 +1,89 @@
+{
+  "session_id": "4e3b83f7-2df0-4694-a2d3-c596aadc0d42",
+  "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-4e3b83f7-2df0-4694-a2d3-c596aadc0d42.jsonl",
+  "cwd": "/Users/davidcruwys/dev/ad/brains",
+  "shape": {
+    "event_count": 130,
+    "user_prompt_count": 23,
+    "tool_use_count": 107,
+    "stop_count": 0,
+    "subagent_start_count": 0,
+    "subagent_stop_count": 0,
+    "first_event_ts": "2026-02-18T13:04:55.326000+00:00",
+    "last_event_ts": "2026-02-19T02:02:19.319000+00:00",
+    "duration_minutes": 777,
+    "active_minutes": 139,
+    "idle_gaps_over_1h": 1,
+    "idle_gap_details": [
+      {
+        "start": "2026-02-18T13:42:51.932000+00:00",
+        "end": "2026-02-19T00:20:31.524000+00:00",
+        "gap_minutes": 637
+      }
+    ]
+  },
+  "tools": {
+    "Edit": 39,
+    "Read": 29,
+    "Bash": 20,
+    "TaskUpdate": 6,
+    "Write": 6,
+    "TaskCreate": 4,
+    "Task": 2,
+    "Skill": 1
+  },
+  "file_paths": {
+    "read": [],
+    "write": [],
+    "edit": []
+  },
+  "bash_commands_sample": [],
+  "first_real_prompt": {
+    "text": "Is the file of the content that I've just given you still relevant? Do you know where the files are? Were there questions that began that I should have followed up on? \n\n \u2590\u259b\u2588\u2588\u2588\u259c\u258c   Claude Code v2.1.39\n\u259d\u259c\u2588\u2588\u2588\u2588\u2588\u259b\u2598  Sonnet 4.5 \u00b7 Claude API\n  \u2598\u2598 \u259d\u259d    ~/dev/ad/brains\n\n\u276f Was this a bunch of work on updating the metadata on one of my brains?\n\n   \u2590\u259b\u2588\u2588\u2588\u259c\u258c   Claude Code v2.1.37\n  \u259d\u259c\u2588\u2588\u2588\u2588\u2588\u259b\u2598  Sonnet 4.5 \u00b7 Claude API\n    \u2598\u2598 \u259d\u259d    ~/dev/ad/brains\n\n  \u276f I don't remember what this conversation was about. Can you",
+    "full_length": 72279,
+    "ts": "2026-02-18T13:04:55.326Z"
+  },
+  "skill_invocations": [{}],
+  "subagents": null,
+  "detections": {
+    "compaction_resume": {
+      "detected": false,
+      "count": 0
+    },
+    "loop_runaway": {
+      "detected": false
+    },
+    "write_then_open": {
+      "detected": false,
+      "count": 0
+    },
+    "unauthorized_edit_before_prompt": {
+      "detected": false,
+      "count": 0
+    },
+    "search_without_read": {
+      "detected": false,
+      "count": 0
+    },
+    "ralphy_mode": {
+      "detected": false,
+      "has_ralphy_skill": false,
+      "has_impl_plan": false,
+      "has_agent_calls": true
+    },
+    "form_filling": {
+      "detected": true,
+      "first_prompt_length": 72279,
+      "short_prompt_ratio": 0.95
+    },
+    "cron_polling": {
+      "detected": false,
+      "creates": 0,
+      "deletes": 0
+    }
+  },
+  "project_inference": {
+    "inferred_project": null,
+    "cwd_reliable": null
+  }
+}

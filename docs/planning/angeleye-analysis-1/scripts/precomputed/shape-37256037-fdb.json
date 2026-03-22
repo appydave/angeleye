@@ -1,0 +1,79 @@
+{
+  "session_id": "37256037-fdb0-4769-85d4-3d19463c5fbd",
+  "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-37256037-fdb0-4769-85d4-3d19463c5fbd.jsonl",
+  "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+  "shape": {
+    "event_count": 66,
+    "user_prompt_count": 3,
+    "tool_use_count": 63,
+    "stop_count": 0,
+    "subagent_start_count": 0,
+    "subagent_stop_count": 0,
+    "first_event_ts": "2026-02-17T08:49:11.748000+00:00",
+    "last_event_ts": "2026-02-17T09:09:40.028000+00:00",
+    "duration_minutes": 20,
+    "active_minutes": 20,
+    "idle_gaps_over_1h": 0,
+    "idle_gap_details": null
+  },
+  "tools": {
+    "Read": 26,
+    "Task": 15,
+    "TaskOutput": 12,
+    "Bash": 7,
+    "Glob": 2,
+    "Write": 1
+  },
+  "file_paths": {
+    "read": [],
+    "write": [],
+    "edit": []
+  },
+  "bash_commands_sample": [],
+  "first_real_prompt": {
+    "text": "*run 106",
+    "full_length": 8,
+    "ts": "2026-02-17T08:54:24.122Z"
+  },
+  "skill_invocations": null,
+  "subagents": null,
+  "detections": {
+    "compaction_resume": {
+      "detected": false,
+      "count": 0
+    },
+    "loop_runaway": {
+      "detected": false
+    },
+    "write_then_open": {
+      "detected": false,
+      "count": 0
+    },
+    "unauthorized_edit_before_prompt": {
+      "detected": false,
+      "count": 0
+    },
+    "search_without_read": {
+      "detected": false,
+      "count": 0
+    },
+    "ralphy_mode": {
+      "detected": false,
+      "has_ralphy_skill": false,
+      "has_impl_plan": false,
+      "has_agent_calls": false
+    },
+    "form_filling": {
+      "detected": false
+    },
+    "cron_polling": {
+      "detected": false,
+      "creates": 0,
+      "deletes": 0
+    }
+  },
+  "project_inference": {
+    "inferred_project": null,
+    "cwd_reliable": null
+  }
+}

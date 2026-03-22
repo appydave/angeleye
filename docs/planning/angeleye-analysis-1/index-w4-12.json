@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "b6c11972-2315-44b2-b0ca-d74cf52211c0",
+  "machine": "m4-mini",
+  "project": "brains",
+  "project_dir": "/Users/davidcruwys/dev/ad/brains",
+  "session_type_registry": "KNOWLEDGE",
+  "session_type_analysed": "knowledge.survey_and_implement",
+  "file_size_bytes": 21272,
+  "event_count": 64,
+  "disposition": "active",
+  "interest_level": "medium-high",
+  "notes": "Bulk taxonomy survey of all 36 brains (36 Read calls in ~90s burst) followed by architectural recommendation (subfolders vs frontmatter categories) and immediate Task agent dispatch to implement. Claude produced 8-category taxonomy inline in chat; David pasted it back as agent spec — inline-knowledge anti-pattern. File count discrepancy investigated (590 curated vs 1500 total files) via 6 Bash probes. 13h gap then single 'commit this' close. No /rename, no handover. Proposed new subtype: knowledge.survey_and_implement (survey triggers implementation in same session). KNOWLEDGE label retained as primary; BUILD component present in second half.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

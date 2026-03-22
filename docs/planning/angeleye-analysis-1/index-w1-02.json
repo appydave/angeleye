@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "78f31f8c-83b4-47dd-8366-99d3f6c1e732",
+  "machine": "m4-mini",
+  "project": "brains",
+  "project_dir": "/Users/davidcruwys/dev/ad/brains",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "orientation.morning_triage",
+  "file_size_bytes": 76670,
+  "event_count": 97,
+  "disposition": "active",
+  "interest_level": "high",
+  "notes": "Morning triage session: /focus + /radar opening, OMI voice memo ingestion for 4 projects, handover email drafting with 3 correction cycles, brain gap analysis via Explore subagent, FliHub research. Zero build execution. Strong evidence BUILD is over-classified — this is orientation/knowledge work in brains project.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

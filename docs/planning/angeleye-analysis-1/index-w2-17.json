@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "59aedbad-6082-4b56-bd79-fe7e795e1074",
+  "machine": "mbp",
+  "project": "prompt.supportsignal.com.au",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "build.iterative_design",
+  "file_size_bytes": 262203,
+  "event_count": 319,
+  "disposition": "active",
+  "interest_level": "high",
+  "notes": "Sustained iterative design session on AWB (Agent Workflow Builder) UI. 17 real prompts + 3 compaction summaries. Built Output Files panel, fixed FliHub resume flow (currentStepId, peekPendingIntake, off-by-one step advance), fixed UX highlight button, redesigned DataPanel (Table/Flat/Nested views), added parallel step cancel/timeout. Heavy Playwright MCP usage (38 browser interactions) as design verification loop. Voice-transcribed design critique throughout. Ralphy test campaign planned (wui-round21-tests, 5 work units, 4 waves). 49 Edits across WizardShell.jsx, StepRenderer.jsx, intake.js, LlmStep.jsx. Three context compactions — longest single session analysed so far. Commit and push at end-of-day (8h gap). No session naming.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

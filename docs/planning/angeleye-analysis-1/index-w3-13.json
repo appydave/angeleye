@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "a4dd0a45-95e8-4f68-baa8-8079f40c228c",
+  "machine": "m4-mini",
+  "project": "ansible",
+  "project_dir": "/Users/davidcruwys/dev/ad/agent-os/ansible",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "operations.mac_provisioning",
+  "file_size_bytes": 87457,
+  "event_count": 49,
+  "disposition": "ended",
+  "interest_level": "high",
+  "notes": "Registry BUILD is wrong — this is OPERATIONS. Session drives desired state on three macOS machines (M4 Mac Pro, M4 Mac Mini, M2 Mac) via Ansible playbooks. Tool pattern: Read x14, Edit x14, Task x10, Glob x2. Read/Edit symmetry (both 35%) signals config-authoring with verify cycle, not greenfield development. Task-heavy (25%) reflects subagent shell orchestration. 9 user prompts across 3 active phases (~33 min + ~12 min), separated by ~6.5h overnight gap. Final phase includes aborted ansible-playbook run (User interrupted execution). Subtype candidate: operations.mac_provisioning. Key classifier signal: cwd in agent-os/ansible + playbook edits + ansible-playbook terminal output = OPERATIONS, not BUILD.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

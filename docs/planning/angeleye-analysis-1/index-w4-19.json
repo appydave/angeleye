@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "bb290809-318a-475f-b0d8-ad06b4de6253",
+  "machine": "m4-mini",
+  "project": "brains",
+  "project_dir": "/Users/davidcruwys/dev/ad/brains",
+  "session_type_registry": "RESEARCH",
+  "session_type_analysed": "RESEARCH / research.quick_lookup",
+  "file_size_bytes": 1811,
+  "event_count": 6,
+  "disposition": "active",
+  "interest_level": "low",
+  "notes": "Single-prompt Loom full-screen behavior lookup. 1 user_prompt + 2 brave_web_search + 3 WebFetch. No response event captured. cwd is brains but incidental — off-topic question. No reclassification needed. Proposes research.quick_lookup subtype for one-shot websearch sessions. 35-minute gap between last tool event and last_active suggests idle reading time.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

@@ -1,0 +1,76 @@
+{
+  "session_id": "66b802a7-c830-44c9-8e6b-2f70cffd0bbc",
+  "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-66b802a7-c830-44c9-8e6b-2f70cffd0bbc.jsonl",
+  "cwd": "/Users/davidcruwys/dev/ad/brains",
+  "shape": {
+    "event_count": 11,
+    "user_prompt_count": 2,
+    "tool_use_count": 9,
+    "stop_count": 0,
+    "subagent_start_count": 0,
+    "subagent_stop_count": 0,
+    "first_event_ts": "2026-02-20T09:27:29.118000+00:00",
+    "last_event_ts": "2026-02-20T09:29:48.501000+00:00",
+    "duration_minutes": 2,
+    "active_minutes": 2,
+    "idle_gaps_over_1h": 0,
+    "idle_gap_details": null
+  },
+  "tools": {
+    "WebFetch": 4,
+    "Bash": 4,
+    "Task": 1
+  },
+  "file_paths": {
+    "read": [],
+    "write": [],
+    "edit": []
+  },
+  "bash_commands_sample": [],
+  "first_real_prompt": {
+    "text": "why is this not finishing in the other window?\n\n Bash(CLAUDECODE= claude skill install vercel-labs/agent-browser\n      2>&1)\n  \u23bf \u00a0(No output)\n\n\u23fa Read 1 file (ctrl+o to expand)\n\n\u23fa Hmm, it ran without errors but the skill isn't showing up in\n  ~/.claude/skills/. Let me check if it went somewhere else.\n\n\u23fa Searched for 1 pattern (ctrl+o to expand)\n\n\u23fa Bash(CLAUDECODE= claude skill install vercel-labs/agent-browser\n      2>&1; echo \"exit: $?\")\n  \u23bf \u00a0Running\u2026\n\n\u273b Flowing\u2026 (7m 47s \u00b7 \u2193 246 tokens \u00b7 thinkin",
+    "full_length": 6773,
+    "ts": "2026-02-20T09:27:29.118Z"
+  },
+  "skill_invocations": null,
+  "subagents": null,
+  "detections": {
+    "compaction_resume": {
+      "detected": false,
+      "count": 0
+    },
+    "loop_runaway": {
+      "detected": false
+    },
+    "write_then_open": {
+      "detected": false,
+      "count": 0
+    },
+    "unauthorized_edit_before_prompt": {
+      "detected": false,
+      "count": 0
+    },
+    "search_without_read": {
+      "detected": false,
+      "count": 0
+    },
+    "ralphy_mode": {
+      "detected": false,
+      "has_ralphy_skill": false,
+      "has_impl_plan": false,
+      "has_agent_calls": false
+    },
+    "form_filling": {
+      "detected": false
+    },
+    "cron_polling": {
+      "detected": false,
+      "creates": 0,
+      "deletes": 0
+    }
+  },
+  "project_inference": {
+    "inferred_project": null,
+    "cwd_reliable": null
+  }
+}

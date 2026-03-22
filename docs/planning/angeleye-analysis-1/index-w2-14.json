@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "2ddee32c-1a89-4e91-8b7b-f9da75f61ddf",
+  "machine": "macbook-pro-m4",
+  "project": "brains",
+  "project_dir": "/Users/davidcruwys/dev/ad/brains",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "OPERATIONS / ops.machine_provision",
+  "file_size_bytes": 178000,
+  "event_count": 266,
+  "disposition": "active",
+  "interest_level": "medium",
+  "notes": "Registry override: BUILD -> OPERATIONS. David used /focus ansible to orient, then spent ~2 hours live-provisioning Jan's Mac Mini in the Philippines via Tailscale + Ansible. 40+ voice-transcribed prompts in a human relay pattern (David between Claude and Jan). Key events: Tailscale invite flow failed due to identity provider mismatch (@ideasmen.com.au required, Jan has @gmail.com) — resolved via auth key. PII discovered in public repo — background agent split inventory into public/private. Oh My Zsh --unattended flag bug and tailscale role scope bug both fixed and pushed. Syncthing setup for file sync initiated. Two subagents: background PII cleanup (general-purpose) and Explore agent for recall failure (boulder synchronisation = Syncthing/FreeFileSync). No closing ceremony — session trails off mid-Syncthing setup. Skills: /focus.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

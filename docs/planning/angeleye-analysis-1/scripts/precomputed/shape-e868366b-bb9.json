@@ -1,0 +1,705 @@
+{
+  "session_id": "e868366b-bb95-48db-aece-bede7eb1c2d5",
+  "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-e868366b-bb95-48db-aece-bede7eb1c2d5.jsonl",
+  "cwd": "/Users/davidcruwys/dev/ad/apps/angeleye",
+  "shape": {
+    "event_count": 1678,
+    "user_prompt_count": 99,
+    "tool_use_count": 1339,
+    "stop_count": 91,
+    "subagent_start_count": 71,
+    "subagent_stop_count": 74,
+    "first_event_ts": "2026-03-22T10:05:52.768000+00:00",
+    "last_event_ts": "2026-03-22T15:38:52.107000+00:00",
+    "duration_minutes": 332,
+    "active_minutes": 263,
+    "idle_gaps_over_1h": 1,
+    "idle_gap_details": [
+      {
+        "start": "2026-03-22T10:50:45.328000+00:00",
+        "end": "2026-03-22T12:00:33.146000+00:00",
+        "gap_minutes": 69
+      }
+    ]
+  },
+  "tools": {
+    "Bash": 588,
+    "Read": 354,
+    "Write": 153,
+    "Agent": 71,
+    "Glob": 60,
+    "Edit": 46,
+    "Grep": 29,
+    "TaskUpdate": 22,
+    "TaskCreate": 11,
+    "ToolSearch": 5
+  },
+  "file_paths": {
+    "read": [
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/IMPLEMENTATION_PLAN.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/BACKLOG.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/STEERING.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/AGENTS.md",
+      "/Users/davidcruwys/dev/ad/brains/angeleye/conversation-analysis-framework.md",
+      "/Users/davidcruwys/.claude/angeleye/sessions/session-30391e74-c705-4b3a-a689-65e8dbb79d98.jsonl",
+      "/Users/davidcruwys/.claude/angeleye/archive/session-11553588-c7ab-4e0b-b9bc-23fad00c5fe7.jsonl",
+      "/Users/davidcruwys/.claude/angeleye/sessions/session-78f31f8c-83b4-47dd-8366-99d3f6c1e732.jsonl",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w1-05.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w1-08.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w1-02.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w1-07.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w1-05-lars.md",
+      "/Users/davidcruwys/.claude/angeleye/sessions/session-59a8f9ac-6609-4d0a-a3eb-5397a21af069.jsonl",
+      "/Users/davidcruwys/.claude/angeleye/sessions/session-6ba65a37-5b76-47fe-8d6a-c88a8c6be907.jsonl",
+      "/Users/davidcruwys/.claude/angeleye/sessions/session-a4fd902a-cdbe-4533-b563-d9f86a3333a2.jsonl",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w1-01.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w1-06.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w1-04.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w1-03.json"
+    ],
+    "write": [
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w1-05-lars.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w1-05.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w1-08-angeleye.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w1-08.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w1-02-brains.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w1-02.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w1-07-thumbrack.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w1-07.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/learnings/wave-1a-learnings.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w1-01-brains.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w1-01.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w1-06-signal-studio.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w1-04-supportsignal.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w1-06.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w1-04.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w1-03-supportsignal-oversight.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w1-03.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/learnings/wave-1b-learnings.md",
+      "/Users/davidcruwys/.claude/projects/-Users-davidcruwys-dev-ad-apps-angeleye/memory/feedback_explain_terminology.md",
+      "/Users/davidcruwys/.claude/projects/-Users-davidcruwys-dev-ad-apps-angeleye/memory/MEMORY.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/learnings/subtype-candidates.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/learnings/skill-inventory.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/learnings/skill-lookup.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w2-01-flihub.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w2-02-digital-stage.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w2-01.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w2-02.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w2-03-digital-stage-2.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w2-03.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w2-05-angeleye.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w2-05.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w2-04-digital-stage-3.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w2-04.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w2-08-brains-agentic.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w2-08.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w2-10-brains-poem.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w2-10.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w2-09-brains-knowledge.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w2-09.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w2-07-brains-research.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w2-07.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w2-06-brains-bmad.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w2-06.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w2-15-supportsignal-sprint.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w2-15.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w2-14-brains-focus.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w2-13-supportsignal-arch.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w2-14.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w2-13.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w2-12-supportsignal-bmad.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w2-12.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w2-11-flihub.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w2-11.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w2-17-prompt-ss.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w2-16-deckhand.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w2-19-ss-planning.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w2-17.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w2-16.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w2-20-flideck.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w2-19.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w2-20.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w2-18-outputs.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w2-18.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/learnings/wave-2-learnings.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w3-04-plugins-test.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w3-04.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w3-05-brains-research.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w3-07-signal-studio-research.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w3-05.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w3-07.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w3-03-signal-studio-test.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w3-03.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w3-06-brains-research.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w3-01-signal-studio-test.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w3-06.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w3-01.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w3-02-signal-studio-test.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w3-02.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w3-10-plugins.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w3-10.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w3-09-appystack.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w3-09.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w3-16-brain-dynamous.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w3-13-ansible.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w3-16.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w3-12-v-appydave.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w3-14-ansible.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w3-08-appystack.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w3-13.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w3-12.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w3-14.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w3-08.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w3-15-brain-dynamous.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w3-11-plugins.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w3-15.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w3-11.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w3-18-prompt-ss.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w3-18.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w3-19-prompt-ss.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w3-19.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w3-17-prompt-ss.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w3-17.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w3-20-v-appydave.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w3-20.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/learnings/wave-3-learnings.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w4-05-prompt-ss-orient.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w4-04-app-ss-orient.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w4-03-prompt-ss-orient.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w4-05.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w4-04.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w4-03.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w4-07-v-appydave-orient.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w4-07.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w4-08-prompt-ss-orient.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w4-06-app-ss-orient.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w4-08.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w4-06.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w4-02-v-appydave-orient.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w4-02.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w4-01-prompt-ss-orient.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w4-01.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w4-10-brains-knowledge.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w4-10.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w4-19-brains-research.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w4-20-prompt-ss-research.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w4-19.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w4-20.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w4-12-brains-knowledge.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w4-17-ad-build.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w4-14-signal-studio-build.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w4-14.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w4-12.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w4-17.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w4-16-signal-studio-build.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w4-13-brains-knowledge.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w4-13.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w4-15-signal-studio-build.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w4-16.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w4-15.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w4-18-davidcruwys-build.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w4-09-brains-knowledge.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/findings-w4-11-brains-knowledge.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w4-18.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w4-09.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/index-w4-11.json",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/learnings/wave-4-learnings.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/learnings/analysis-lenses.md",
+      "/Users/davidcruwys/dev/ad/brains/angeleye/analysis/migrations/migrate-v1-to-v2.py",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/scripts/compute-session-shape.py",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/learnings/wave-5-setup-notes.md"
+    ],
+    "edit": [
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/IMPLEMENTATION_PLAN.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/AGENTS.md",
+      "/Users/davidcruwys/dev/ad/brains/angeleye/analysis/migrations/migrate-v1-to-v2.py"
+    ]
+  },
+  "bash_commands_sample": [
+    "ls -la ~/dev/ad/brains/angeleye/analysis/ 2>/dev/null || echo \"directory does not exist\"",
+    "python3 -c \"\nimport json\nwith open('$HOME/.claude/angeleye/registry.json') as f:\n    reg = json.load(f)\n# Extract the 8 target sessions\ntargets = ['59a8f9ac','78f31f8c','a4fd902a','6ba65a37','30391e74','bb44829b','a080427c','11553588']\nfor t in targets:\n    matches = [k for k in reg if k.startswith(",
+    "# Check where session files actually are - some are archived (size -1)\nfor id in 59a8f9ac 78f31f8c a4fd902a 6ba65a37 30391e74 bb44829b a080427c 11553588; do\n  full=$(python3 -c \"\nimport json\nwith open('$HOME/.claude/angeleye/registry.json') as f:\n    reg = json.load(f)\nfor k in reg:\n    if k.startsw",
+    "python3 -c \"\nimport json\nwith open('$HOME/.claude/angeleye/registry.json') as f:\n    reg = json.load(f)\ntargets = ['59a8f9ac','78f31f8c','a4fd902a','6ba65a37','30391e74','bb44829b','a080427c','11553588']\nfor t in targets:\n    for k in reg:\n        if k.startswith(t):\n            print(f'{t} \u2192 {k}')\n",
+    "mkdir -p /Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/learnings /Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/patterns /Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-analysis-1/decisions",
+    "python3 -c \"\nimport json\nwith open('$HOME/.claude/angeleye/registry.json') as f:\n    reg = json.load(f)\nprint(json.dumps(reg.get('30391e74-c705-4b3a-a689-65e8dbb79d98', {}), indent=2))\n\"",
+    "wc -c ~/.claude/angeleye/sessions/session-30391e74-c705-4b3a-a689-65e8dbb79d98.jsonl",
+    "python3 -c \"\nimport json\nwith open('$HOME/.claude/angeleye/registry.json') as f:\n    reg = json.load(f)\nprint(json.dumps(reg.get('11553588-c7ab-4e0b-b9bc-23fad00c5fe7', {}), indent=2))\n\"",
+    "wc -l ~/.claude/angeleye/archive/session-11553588-c7ab-4e0b-b9bc-23fad00c5fe7.jsonl && stat -f%z ~/.claude/angeleye/archive/session-11553588-c7ab-4e0b-b9bc-23fad00c5fe7.jsonl",
+    "python3 -c \"\nimport json\nwith open('$HOME/.claude/angeleye/registry.json') as f:\n    reg = json.load(f)\nprint(json.dumps(reg.get('78f31f8c-83b4-47dd-8366-99d3f6c1e732', {}), indent=2))\n\""
+  ],
+  "first_real_prompt": {
+    "text": "/ralphy",
+    "full_length": 7,
+    "ts": "2026-03-22T10:05:58.017Z"
+  },
+  "skill_invocations": null,
+  "subagents": [
+    {
+      "agent_id": "aad1350ac7f3374c5",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T10:21:52.746Z",
+      "stopped_at": "2026-03-22T10:23:06.596Z"
+    },
+    {
+      "agent_id": "af8b4d3ae00962c59",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T10:22:03.080Z",
+      "stopped_at": "2026-03-22T10:23:18.178Z"
+    },
+    {
+      "agent_id": "ae17f0ac9ff113243",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T10:22:15.260Z",
+      "stopped_at": "2026-03-22T10:23:53.026Z"
+    },
+    {
+      "agent_id": "a508156c427d84f21",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T10:22:25.851Z",
+      "stopped_at": "2026-03-22T10:24:56.189Z"
+    },
+    {
+      "agent_id": "a5f29f56e3a3ad453",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T10:46:21.447Z",
+      "stopped_at": "2026-03-22T10:48:16.019Z"
+    },
+    {
+      "agent_id": "af90992256b056962",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T10:46:31.904Z",
+      "stopped_at": "2026-03-22T10:48:35.479Z"
+    },
+    {
+      "agent_id": "ad9730f1a33c6fe79",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T10:46:44.234Z",
+      "stopped_at": "2026-03-22T10:48:41.339Z"
+    },
+    {
+      "agent_id": "ac68782124436e7ae",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T10:46:58.130Z",
+      "stopped_at": "2026-03-22T10:48:56.610Z"
+    },
+    {
+      "agent_id": "a81308ee8fdde19cb",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T12:18:42.710Z",
+      "stopped_at": "2026-03-22T12:21:27.560Z"
+    },
+    {
+      "agent_id": "a29f7e54c71d1cd5b",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T12:32:08.187Z",
+      "stopped_at": "2026-03-22T12:34:56.061Z"
+    },
+    {
+      "agent_id": "a000c87f21ab530cb",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T12:32:17.055Z",
+      "stopped_at": "2026-03-22T12:35:00.354Z"
+    },
+    {
+      "agent_id": "a556f2a51f1b66c21",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T12:32:23.717Z",
+      "stopped_at": "2026-03-22T12:35:13.423Z"
+    },
+    {
+      "agent_id": "ae2baf7e2ea6ab953",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T12:32:30.604Z",
+      "stopped_at": "2026-03-22T12:35:46.900Z"
+    },
+    {
+      "agent_id": "ae4e2f669f2720d53",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T12:32:36.676Z",
+      "stopped_at": "2026-03-22T12:35:29.937Z"
+    },
+    {
+      "agent_id": "a56fb6070e11edaae",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T12:37:03.655Z",
+      "stopped_at": "2026-03-22T12:40:27.068Z"
+    },
+    {
+      "agent_id": "ac69fb7f9bb22b984",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T12:37:10.764Z",
+      "stopped_at": "2026-03-22T12:39:55.597Z"
+    },
+    {
+      "agent_id": "ae99a7c0bddf9b870",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T12:37:16.018Z",
+      "stopped_at": "2026-03-22T12:39:02.687Z"
+    },
+    {
+      "agent_id": "a983d023b3f218057",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T12:37:20.925Z",
+      "stopped_at": "2026-03-22T12:39:29.142Z"
+    },
+    {
+      "agent_id": "a3820cf18a26b455e",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T12:37:25.717Z",
+      "stopped_at": "2026-03-22T12:39:17.052Z"
+    },
+    {
+      "agent_id": "a2660a0ee1b7d84b7",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T12:48:52.071Z",
+      "stopped_at": "2026-03-22T12:53:17.396Z"
+    },
+    {
+      "agent_id": "aa64998b87548347e",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T12:48:54.180Z",
+      "stopped_at": "2026-03-22T12:52:03.568Z"
+    },
+    {
+      "agent_id": "aadde99dd976e937a",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T12:48:59.159Z",
+      "stopped_at": "2026-03-22T12:51:53.342Z"
+    },
+    {
+      "agent_id": "aa4e52c92217196f2",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T12:49:05.434Z",
+      "stopped_at": "2026-03-22T12:51:52.305Z"
+    },
+    {
+      "agent_id": "a4b17f568e640eebc",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T12:49:10.741Z",
+      "stopped_at": "2026-03-22T12:51:35.729Z"
+    },
+    {
+      "agent_id": "a0e5bdf4987da75e3",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T12:54:35.605Z",
+      "stopped_at": "2026-03-22T12:57:58.339Z"
+    },
+    {
+      "agent_id": "afad00db174bdfeee",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T12:54:41.916Z",
+      "stopped_at": "2026-03-22T12:57:52.403Z"
+    },
+    {
+      "agent_id": "ae6654dd5d6beb8c1",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T12:54:46.942Z",
+      "stopped_at": "2026-03-22T12:59:34.486Z"
+    },
+    {
+      "agent_id": "a24cf81d2f3ff0be9",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T12:54:52.180Z",
+      "stopped_at": "2026-03-22T12:58:07.222Z"
+    },
+    {
+      "agent_id": "aded49a0cf4d1fd51",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T12:54:58.048Z",
+      "stopped_at": "2026-03-22T12:58:00.962Z"
+    },
+    {
+      "agent_id": "a56b74b06dfd43afd",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T13:22:30.273Z",
+      "stopped_at": "2026-03-22T13:25:49.379Z"
+    },
+    {
+      "agent_id": "a479b798bc65ccbc4",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T13:22:37.437Z",
+      "stopped_at": "2026-03-22T13:26:23.791Z"
+    },
+    {
+      "agent_id": "a2972ea06ef40c09d",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T13:22:44.662Z",
+      "stopped_at": "2026-03-22T13:25:23.008Z"
+    },
+    {
+      "agent_id": "afadff5534ef252d2",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T13:22:50.933Z",
+      "stopped_at": "2026-03-22T13:24:46.792Z"
+    },
+    {
+      "agent_id": "a09c0d1fe86955102",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T13:22:59.751Z",
+      "stopped_at": "2026-03-22T13:25:04.224Z"
+    },
+    {
+      "agent_id": "a74fcd8138d4d06b8",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T13:23:07.368Z",
+      "stopped_at": "2026-03-22T13:25:46.244Z"
+    },
+    {
+      "agent_id": "a8f4d73b8ae762af6",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T13:23:13.300Z",
+      "stopped_at": "2026-03-22T13:25:06.758Z"
+    },
+    {
+      "agent_id": "aa0d2468ba604fede",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T13:27:35.957Z",
+      "stopped_at": "2026-03-22T13:31:01.630Z"
+    },
+    {
+      "agent_id": "a6432d5aedc7300af",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T13:27:43.240Z",
+      "stopped_at": "2026-03-22T13:30:06.220Z"
+    },
+    {
+      "agent_id": "aafcb15dbf2f7b22f",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T13:27:50.575Z",
+      "stopped_at": "2026-03-22T13:29:34.824Z"
+    },
+    {
+      "agent_id": "ac2721256e964fcb6",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T13:27:57.198Z",
+      "stopped_at": "2026-03-22T13:31:32.752Z"
+    },
+    {
+      "agent_id": "a3c0f6ccfb8d6f620",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T13:28:08.552Z",
+      "stopped_at": "2026-03-22T13:30:53.594Z"
+    },
+    {
+      "agent_id": "adeb3879d6b487e6b",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T13:28:19.108Z",
+      "stopped_at": "2026-03-22T13:30:51.059Z"
+    },
+    {
+      "agent_id": "a738c63096b7c23c8",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T13:28:25.113Z",
+      "stopped_at": "2026-03-22T13:30:57.833Z"
+    },
+    {
+      "agent_id": "a06b513b6119afdc1",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T13:28:31.993Z",
+      "stopped_at": "2026-03-22T13:31:27.969Z"
+    },
+    {
+      "agent_id": "a293045598c224d99",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T13:28:38.475Z",
+      "stopped_at": "2026-03-22T13:30:45.797Z"
+    },
+    {
+      "agent_id": "a47a64fc75eb46108",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T13:32:51.203Z",
+      "stopped_at": "2026-03-22T13:36:20.290Z"
+    },
+    {
+      "agent_id": "a8c52c8ef26535464",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T13:32:58.833Z",
+      "stopped_at": "2026-03-22T13:35:54.061Z"
+    },
+    {
+      "agent_id": "a2e3e7c2fd10ca1fa",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T13:33:06.203Z",
+      "stopped_at": "2026-03-22T13:36:05.266Z"
+    },
+    {
+      "agent_id": "a36bc3e1b5654ff90",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T13:33:14.263Z",
+      "stopped_at": "2026-03-22T13:37:15.961Z"
+    },
+    {
+      "agent_id": "a76272a55748d8d0e",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T14:09:05.758Z",
+      "stopped_at": "2026-03-22T14:12:24.530Z"
+    },
+    {
+      "agent_id": "afbd75a0118a89411",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T14:09:10.036Z",
+      "stopped_at": "2026-03-22T14:12:16.156Z"
+    },
+    {
+      "agent_id": "a267c7190c47f96d1",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T14:09:13.833Z",
+      "stopped_at": "2026-03-22T14:11:06.354Z"
+    },
+    {
+      "agent_id": "a1b700bad3752b555",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T14:09:17.392Z",
+      "stopped_at": "2026-03-22T14:11:03.594Z"
+    },
+    {
+      "agent_id": "a55700b023727f043",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T14:09:21.015Z",
+      "stopped_at": "2026-03-22T14:10:55.955Z"
+    },
+    {
+      "agent_id": "af65b6afe1b44cdfd",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T14:09:24.999Z",
+      "stopped_at": "2026-03-22T14:11:32.690Z"
+    },
+    {
+      "agent_id": "a3f8c535289590779",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T14:09:28.532Z",
+      "stopped_at": "2026-03-22T14:11:16.837Z"
+    },
+    {
+      "agent_id": "affabcbfcca39eeaf",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T14:09:31.862Z",
+      "stopped_at": "2026-03-22T14:11:35.920Z"
+    },
+    {
+      "agent_id": "aae8d4c45bea5d788",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T14:13:37.123Z",
+      "stopped_at": "2026-03-22T14:17:25.507Z"
+    },
+    {
+      "agent_id": "a30cf89ba30dfaa81",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T14:13:41.228Z",
+      "stopped_at": "2026-03-22T14:15:46.219Z"
+    },
+    {
+      "agent_id": "a403e8a9e22ff04c4",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T14:13:44.874Z",
+      "stopped_at": "2026-03-22T14:17:30.492Z"
+    },
+    {
+      "agent_id": "a2b66641cc337b86b",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T14:13:47.954Z",
+      "stopped_at": "2026-03-22T14:16:17.903Z"
+    },
+    {
+      "agent_id": "a78253216a01ddea4",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T14:13:51.122Z",
+      "stopped_at": "2026-03-22T14:16:52.507Z"
+    },
+    {
+      "agent_id": "a60df55c5fd1e69ca",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T14:13:56.166Z",
+      "stopped_at": "2026-03-22T14:16:16.200Z"
+    },
+    {
+      "agent_id": "af157e03115f8cebf",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T14:13:59.488Z",
+      "stopped_at": "2026-03-22T14:17:09.109Z"
+    },
+    {
+      "agent_id": "a3401662a1210cb39",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T14:14:03.093Z",
+      "stopped_at": "2026-03-22T14:17:02.628Z"
+    },
+    {
+      "agent_id": "a2f7b4038487d7833",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T14:14:07.079Z",
+      "stopped_at": "2026-03-22T14:16:13.537Z"
+    },
+    {
+      "agent_id": "a3194ab77a53ab864",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T14:14:11.474Z",
+      "stopped_at": "2026-03-22T14:17:14.696Z"
+    },
+    {
+      "agent_id": "ab525d434fb2fdbeb",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T14:14:14.626Z",
+      "stopped_at": "2026-03-22T14:15:57.450Z"
+    },
+    {
+      "agent_id": "ad7bab2788a33aca7",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T14:14:18.100Z",
+      "stopped_at": "2026-03-22T14:15:59.121Z"
+    },
+    {
+      "agent_id": "a7b41feca45d71aa1",
+      "agent_type": "Explore",
+      "started_at": "2026-03-22T14:58:19.224Z",
+      "stopped_at": "2026-03-22T14:59:27.327Z"
+    },
+    {
+      "agent_id": "afc12d9ce0a9cde48",
+      "agent_type": "Explore",
+      "started_at": "2026-03-22T15:31:30.690Z",
+      "stopped_at": "2026-03-22T15:32:39.530Z"
+    }
+  ],
+  "detections": {
+    "compaction_resume": {
+      "detected": true,
+      "count": 2
+    },
+    "loop_runaway": {
+      "detected": false,
+      "stop_ratio": 0.05
+    },
+    "write_then_open": {
+      "detected": false,
+      "count": 0
+    },
+    "unauthorized_edit_before_prompt": {
+      "detected": false,
+      "count": 0
+    },
+    "search_without_read": {
+      "detected": true,
+      "count": 38
+    },
+    "ralphy_mode": {
+      "detected": false,
+      "has_ralphy_skill": false,
+      "has_impl_plan": true,
+      "has_agent_calls": true
+    },
+    "form_filling": {
+      "detected": false
+    },
+    "cron_polling": {
+      "detected": false,
+      "creates": 0,
+      "deletes": 0
+    }
+  },
+  "project_inference": {
+    "inferred_project": "/Users/davidcruwys",
+    "cwd_reliable": true,
+    "edit_write_count": 153
+  }
+}

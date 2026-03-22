@@ -1,0 +1,85 @@
+{
+  "session_id": "48465caa-8b11-4196-8490-92ac318c5640",
+  "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-48465caa-8b11-4196-8490-92ac318c5640.jsonl",
+  "cwd": "/Users/davidcruwys/dev/ad/brain-cowork-upgrade",
+  "shape": {
+    "event_count": 87,
+    "user_prompt_count": 6,
+    "tool_use_count": 81,
+    "stop_count": 0,
+    "subagent_start_count": 0,
+    "subagent_stop_count": 0,
+    "first_event_ts": "2026-02-25T04:05:29.470000+00:00",
+    "last_event_ts": "2026-02-25T05:05:41.475000+00:00",
+    "duration_minutes": 60,
+    "active_minutes": 60,
+    "idle_gaps_over_1h": 0,
+    "idle_gap_details": null
+  },
+  "tools": {
+    "Bash": 20,
+    "Write": 19,
+    "TaskUpdate": 10,
+    "Edit": 9,
+    "Read": 7,
+    "Task": 6,
+    "TaskCreate": 5,
+    "mcp__playwright__browser_navigate": 3,
+    "mcp__playwright__browser_take_screenshot": 1,
+    "Skill": 1
+  },
+  "file_paths": {
+    "read": [],
+    "write": [],
+    "edit": []
+  },
+  "bash_commands_sample": [],
+  "first_real_prompt": {
+    "text": "I need you to come up with a plan of action on how you're going to solve a problem. \n\nFirstly, you're going to have a look through the brain folder that you're in. It's called Co-work upgrade, and what it is is a combination of using the productivity plugin from anthropic in their Claude Cowork. \n\nWe need to understand whether that productivity plug-in made sense for building second brains. You'll need to go and research the new productivity plug-in from Anthropic.\n\nYou will then have to analyse",
+    "full_length": 2389,
+    "ts": "2026-02-25T04:05:29.470Z"
+  },
+  "skill_invocations": [{}],
+  "subagents": null,
+  "detections": {
+    "compaction_resume": {
+      "detected": false,
+      "count": 0
+    },
+    "loop_runaway": {
+      "detected": false
+    },
+    "write_then_open": {
+      "detected": false,
+      "count": 0
+    },
+    "unauthorized_edit_before_prompt": {
+      "detected": false,
+      "count": 0
+    },
+    "search_without_read": {
+      "detected": false,
+      "count": 0
+    },
+    "ralphy_mode": {
+      "detected": false,
+      "has_ralphy_skill": false,
+      "has_impl_plan": false,
+      "has_agent_calls": true
+    },
+    "form_filling": {
+      "detected": true,
+      "first_prompt_length": 2389,
+      "short_prompt_ratio": 0.8
+    },
+    "cron_polling": {
+      "detected": false,
+      "creates": 0,
+      "deletes": 0
+    }
+  },
+  "project_inference": {
+    "inferred_project": null,
+    "cwd_reliable": null
+  }
+}

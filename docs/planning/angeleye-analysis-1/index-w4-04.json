@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "f6581769-8abe-434f-89bc-81620632ded3",
+  "machine": "m4-mini",
+  "project": "app.supportsignal",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
+  "session_type_registry": "ORIENTATION",
+  "session_type_analysed": "ORIENTATION/cold_start",
+  "file_size_bytes": 12079,
+  "event_count": 45,
+  "disposition": "active",
+  "interest_level": "high",
+  "notes": "17-tool pre-prompt autonomous burst before first user message — clean cold_start exemplar. Compressed prompt shorthand ('11.0' + 'go') signals shared backlog shorthand protocol. Skill invocation mid-session triggers nested orientation sub-burst (8 Read, 5 Grep, 3 Glob in 46s). 9-minute human review pause after read burst. Tail edits (3 Edits) are incidental cleanup, do not override orientation character. 'Deal with it' delegation pattern pre-authorises Claude to fix simple issues without asking. Registry ORIENTATION confirmed; cold_start subtype is best fit.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

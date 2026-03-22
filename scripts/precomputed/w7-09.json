@@ -1,0 +1,703 @@
+[
+  {
+    "session_id": "328f8ad5-7b7e-4d31-ae2e-954f32294f0c",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-328f8ad5-7b7e-4d31-ae2e-954f32294f0c.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 1,
+      "user_prompt_count": 1,
+      "tool_use_count": 0,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-26T03:17:27.523000+00:00",
+      "last_event_ts": "2026-02-26T03:17:27.523000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {},
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "These are a bunch of keys for my own Camtasia product. \n\nYour software keys appear here. To start using a product, download it, and then unlock it with a key. Learn more\nPrevious\nTechSmith Camtasia 2023\nLicense type\nSingle user\nSoftware key\nCMX5S-69GAV-4MUHA-2D2U6-Y92B7\n\n\n\nClear activations\nSubscription\nS445406, inactive since 29 Nov 2023. Manage subscription\nDownload\nSupport\nTutorials\nVersion history\nTechSmith Camtasia 2022\nLicense type\nSingle user\nSoftware key\nYJCMM-G7K7B-MLMCQ-HDC5B-BMB7D\n\n\n\n",
+      "full_length": 922,
+      "ts": "2026-02-26T03:17:27.523Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "a785d086-c823-4b09-84d8-60a48b4fc11b",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-a785d086-c823-4b09-84d8-60a48b4fc11b.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/lars",
+    "shape": {
+      "event_count": 6,
+      "user_prompt_count": 1,
+      "tool_use_count": 5,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-05T05:49:14.315000+00:00",
+      "last_event_ts": "2026-03-05T05:49:33.280000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "ToolSearch": 2,
+      "Read": 2,
+      "Edit": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Can you add this loom? I've got to send it out later today. There'll be others coming. \n\n\nhttps://www.loom.com/share/fc5c340f07b045928bcf9b69c9979e8b\n\nExploring AppyStack and the Mochaccino Skill for Micro-Applications\n\nG'day Lars, in this video, I'm sharing some insights on the work I've been doing with AppyStack and a micro-application designed to integrate with the agentic operating system. I wanted to show you the potential for quickly spinning up applications and how the data can persist in",
+      "full_length": 809,
+      "ts": "2026-03-05T05:49:14.315Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "5e587cc8-c516-4c2b-bdf1-360c2c8a570d",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-5e587cc8-c516-4c2b-bdf1-360c2c8a570d.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 4,
+      "user_prompt_count": 2,
+      "tool_use_count": 2,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-13T13:52:30.430000+00:00",
+      "last_event_ts": "2026-03-13T14:02:40.021000+00:00",
+      "duration_minutes": 10,
+      "active_minutes": 10,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Agent": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "what brain has mary and jans new computer and pricing",
+      "full_length": 53,
+      "ts": "2026-03-13T13:52:30.430Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "55a6468b-a1e9-4bf1-afbc-d7bcdc06b487",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-55a6468b-a1e9-4bf1-afbc-d7bcdc06b487.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/appystack",
+    "shape": {
+      "event_count": 18,
+      "user_prompt_count": 3,
+      "tool_use_count": 15,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-02T01:51:05.891000+00:00",
+      "last_event_ts": "2026-03-02T02:00:01.725000+00:00",
+      "duration_minutes": 8,
+      "active_minutes": 8,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 9,
+      "Skill": 1,
+      "Read": 1,
+      "EnterPlanMode": 1,
+      "Agent": 1,
+      "Write": 1,
+      "ExitPlanMode": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "commit",
+      "full_length": 6,
+      "ts": "2026-03-02T01:51:05.891Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "9ef7a313-a853-44b1-baf9-7c481912f24e",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-9ef7a313-a853-44b1-baf9-7c481912f24e.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/angeleye",
+    "shape": {
+      "event_count": 49,
+      "user_prompt_count": 7,
+      "tool_use_count": 31,
+      "stop_count": 7,
+      "subagent_start_count": 1,
+      "subagent_stop_count": 1,
+      "first_event_ts": "2026-03-16T16:02:21.482000+00:00",
+      "last_event_ts": "2026-03-17T08:16:50.554000+00:00",
+      "duration_minutes": 974,
+      "active_minutes": 44,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-16T16:04:28.828000+00:00",
+          "end": "2026-03-17T07:34:51.468000+00:00",
+          "gap_minutes": 930
+        }
+      ]
+    },
+    "tools": {
+      "Read": 10,
+      "Edit": 10,
+      "Bash": 6,
+      "Write": 2,
+      "Glob": 1,
+      "ToolSearch": 1,
+      "Agent": 1
+    },
+    "file_paths": {
+      "read": [
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/BACKLOG.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-wave10-settings-intelligence/IMPLEMENTATION_PLAN.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/client/src/views/ObserverView.tsx",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-wave9-bookmarks/IMPLEMENTATION_PLAN.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-wave10-settings-intelligence/AGENTS.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-b022-prompt-expand/AGENTS.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-b022-prompt-expand/IMPLEMENTATION_PLAN.md"
+      ],
+      "write": [
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-b022-prompt-expand/IMPLEMENTATION_PLAN.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-b022-prompt-expand/AGENTS.md"
+      ],
+      "edit": [
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-b022-prompt-expand/IMPLEMENTATION_PLAN.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/client/src/views/ObserverView.tsx",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/BACKLOG.md"
+      ]
+    },
+    "bash_commands_sample": [
+      "mkdir -p /Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-b022-prompt-expand",
+      "npm run typecheck 2>&1",
+      "npm run lint 2>&1",
+      "npm test --workspace client 2>&1",
+      "git status && git diff --stat",
+      "git log --oneline origin/main..HEAD"
+    ],
+    "first_real_prompt": {
+      "text": "/ralphy",
+      "full_length": 7,
+      "ts": "2026-03-16T16:02:28.195Z"
+    },
+    "skill_invocations": null,
+    "subagents": [
+      {
+        "agent_id": "ad8bd44af5b878fba",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-17T07:38:43.671Z",
+        "stopped_at": "2026-03-17T07:40:38.430Z"
+      }
+    ],
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": true,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": "/Users/davidcruwys/dev/ad/apps/angeleye",
+      "cwd_reliable": true,
+      "edit_write_count": 5
+    }
+  },
+  {
+    "session_id": "65dec077-7451-4e5f-a807-a7ed6cbf979a",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-65dec077-7451-4e5f-a807-a7ed6cbf979a.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/appydave-plugins",
+    "shape": {
+      "event_count": 49,
+      "user_prompt_count": 3,
+      "tool_use_count": 39,
+      "stop_count": 3,
+      "subagent_start_count": 1,
+      "subagent_stop_count": 1,
+      "first_event_ts": "2026-03-17T06:28:43.122000+00:00",
+      "last_event_ts": "2026-03-17T06:43:31.945000+00:00",
+      "duration_minutes": 14,
+      "active_minutes": 14,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 16,
+      "Edit": 11,
+      "Bash": 9,
+      "Write": 2,
+      "Agent": 1
+    },
+    "file_paths": {
+      "read": [
+        "/Users/davidcruwys/dev/ad/appydave-plugins/.claude-plugin/marketplace.json",
+        "/Users/davidcruwys/dev/ad/appydave-plugins/appydave/.claude-plugin/plugin.json",
+        "/Users/davidcruwys/dev/ad/appydave-plugins/brand-dave/.claude-plugin/plugin.json",
+        "/Users/davidcruwys/dev/ad/appydave-plugins/flivideo/.claude-plugin/plugin.json",
+        "/Users/davidcruwys/dev/ad/appydave-plugins/consultants/.claude-plugin/plugin.json",
+        "/Users/davidcruwys/dev/ad/appydave-plugins/consultants/CHANGELOG.md",
+        "/Users/davidcruwys/dev/ad/appydave-plugins/consultants/docs/phase2-roadmap.md",
+        "/Users/davidcruwys/dev/ad/appydave-plugins/README.md",
+        "/Users/davidcruwys/dev/ad/appydave-plugins/clauding-lab-events.skill",
+        "/Users/davidcruwys/dev/ad/appydave-plugins/appydave/skills/clauding-lab-events/SKILL.md",
+        "/Users/davidcruwys/dev/ad/appydave-plugins/brand-dave/commands/HANDOVER-solo-deck-simplification.md",
+        "/Users/davidcruwys/dev/ad/appydave-plugins/brand-dave/commands/solo-deck.md",
+        "/Users/davidcruwys/dev/ad/appydave-plugins/PLUGIN-ISSUES.md",
+        "/Users/davidcruwys/dev/ad/appydave-plugins/appydave/skills/ralphy/SKILL.md"
+      ],
+      "write": ["/Users/davidcruwys/dev/ad/appydave-plugins/PLUGIN-ISSUES.md"],
+      "edit": [
+        "/Users/davidcruwys/dev/ad/appydave-plugins/brand-dave/commands/solo-deck.md",
+        "/Users/davidcruwys/dev/ad/appydave-plugins/PLUGIN-ISSUES.md",
+        "/Users/davidcruwys/dev/ad/appydave-plugins/appydave/skills/ralphy/SKILL.md",
+        "/Users/davidcruwys/dev/ad/appydave-plugins/appydave/.claude-plugin/plugin.json"
+      ]
+    },
+    "bash_commands_sample": [
+      "find /Users/davidcruwys/dev/ad/appydave-plugins -type f -name \"*.md\" -o -name \"*.json\" -o -name \"*.sh\" | head -100",
+      "ls -la /Users/davidcruwys/dev/ad/appydave-plugins/",
+      "find /Users/davidcruwys/dev/ad/appydave-plugins -maxdepth 2 -type d | sort",
+      "for plugin in appydave brand-dave flivideo consultants; do\n  echo \"=== $plugin ===\"\n  echo \"Commands:\"\n  ls -1 /Users/davidcruwys/dev/ad/appydave-plugins/$plugin/commands/ 2>/dev/null | grep -v \"^$\" || echo \"  (none)\"\n  echo\n  echo \"Skills:\"\n  ls -1 /Users/davidcruwys/dev/ad/appydave-plugins/$plugin",
+      "find /Users/davidcruwys/dev/ad/appydave-plugins -type f \\( -iname \"*backlog*\" -o -iname \"*issue*\" -o -iname \"*todo*\" -o -iname \"*CHANGELOG*\" -o -iname \"*ROADMAP*\" \\) | sort",
+      "ls -la /Users/davidcruwys/dev/ad/appydave-plugins/docs/ && echo \"---\" && find /Users/davidcruwys/dev/ad/appydave-plugins/docs -type f | sort",
+      "tree -L 3 /Users/davidcruwys/dev/ad/appydave-plugins -I '.git|node_modules|.playwright-mcp' --dirsfirst 2>/dev/null || find /Users/davidcruwys/dev/ad/appydave-plugins -maxdepth 3 \\( ! -path \"*/\\.*\" ! -path \"*/.git*\" ! -path \"*/.playwright*\" \\) -print | sort",
+      "ls /Users/davidcruwys/dev/ad/appydave-plugins/brand-dave/backup/ && ls /Users/davidcruwys/dev/ad/appydave-plugins/flivideo/backup/",
+      "rm /Users/davidcruwys/dev/ad/appydave-plugins/clauding-lab-events.skill && mkdir -p /Users/davidcruwys/dev/ad/appydave-plugins/docs/handovers && mv /Users/davidcruwys/dev/ad/appydave-plugins/brand-dave/commands/HANDOVER-solo-deck-simplification.md /Users/davidcruwys/dev/ad/appydave-plugins/docs/hand"
+    ],
+    "first_real_prompt": {
+      "text": "Tell me a little bit about the folder structure, the things that are plug-ins, the things that are not, and how everything seems to be laid out. Are you happy with it?\n\nAlso, tell me if I wanted to just send messages to this folder system in the form of problems over in other areas, what file would you send? What I'm thinking of is something very similar to a backlog, which is coming from multiple locations, to say we've got a problem with this prompt or we've got a problem with this skill or wh",
+      "full_length": 577,
+      "ts": "2026-03-17T06:29:43.597Z"
+    },
+    "skill_invocations": null,
+    "subagents": [
+      {
+        "agent_id": "a29f892dfbaa80e1e",
+        "agent_type": "Explore",
+        "started_at": "2026-03-17T06:29:49.593Z",
+        "stopped_at": "2026-03-17T06:31:11.362Z"
+      }
+    ],
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": "/Users/davidcruwys/dev/ad/appydave-plugins",
+      "cwd_reliable": true,
+      "edit_write_count": 5
+    }
+  },
+  {
+    "session_id": "31f38fde-7347-4c12-95d3-be8e0717e1c8",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-31f38fde-7347-4c12-95d3-be8e0717e1c8.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
+    "shape": {
+      "event_count": 36,
+      "user_prompt_count": 7,
+      "tool_use_count": 29,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-28T14:37:51.500000+00:00",
+      "last_event_ts": "2026-02-28T14:52:52.714000+00:00",
+      "duration_minutes": 15,
+      "active_minutes": 15,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 21,
+      "Read": 5,
+      "Glob": 1,
+      "Edit": 1,
+      "Grep": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "do you know how to configure or test convex",
+      "full_length": 43,
+      "ts": "2026-02-28T14:37:51.500Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "4bb89879-b501-4c63-aa1b-ae2699781249",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-4bb89879-b501-4c63-aa1b-ae2699781249.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/signal-studio",
+    "shape": {
+      "event_count": 119,
+      "user_prompt_count": 12,
+      "tool_use_count": 107,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-10T05:01:22.900000+00:00",
+      "last_event_ts": "2026-03-10T08:23:51.121000+00:00",
+      "duration_minutes": 202,
+      "active_minutes": 81,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-10T07:16:38.448000+00:00",
+          "end": "2026-03-10T08:18:24.963000+00:00",
+          "gap_minutes": 61
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 73,
+      "Edit": 9,
+      "Read": 8,
+      "Glob": 4,
+      "Write": 4,
+      "mcp__playwright__browser_click": 4,
+      "mcp__playwright__browser_navigate": 2,
+      "Agent": 1,
+      "ToolSearch": 1,
+      "mcp__playwright__browser_snapshot": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Just give me an overall state of where we're at on things. I've just started a new session. I just want to know: do I need to pull anything from the git repo? What have we been working on, and what can I get started with?",
+      "full_length": 221,
+      "ts": "2026-03-10T05:01:22.900Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 3
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  }
+]

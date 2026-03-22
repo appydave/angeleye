@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "session_id": "f9a685e2-5105-4a5a-883a-25661196d055",
+  "machine": "m4-mini",
+  "project": "signal-studio",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/signal-studio",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "MIXED (BUILD + UI_REVIEW + DESIGN_EXPLORATION)",
+  "file_size_bytes": 160877,
+  "event_count": 429,
+  "user_prompt_count": 34,
+  "tool_use_count": 395,
+  "progress_event_count": 0,
+  "disposition": "ended",
+  "interest_level": "high",
+  "date_start": "2026-03-13T06:52:00.127Z",
+  "date_end": "2026-03-14T02:22:14.834Z",
+  "duration_hours": 19.5,
+  "tool_breakdown": {
+    "Bash": 80,
+    "Edit": 66,
+    "Read": 61,
+    "Grep": 47,
+    "mcp__playwright__browser_take_screenshot": 42,
+    "mcp__playwright__browser_navigate": 31,
+    "mcp__playwright__browser_click": 26,
+    "Write": 16,
+    "Glob": 8,
+    "ToolSearch": 6,
+    "Skill": 5,
+    "Agent": 5,
+    "mcp__playwright__browser_snapshot": 1,
+    "mcp__playwright__browser_resize": 1
+  },
+  "classification_challenged": true,
+  "challenge_reason": "Playwright MCP events = 101 (25.6% of tool_use). Pure BUILD sessions have <5% Playwright. Session spans three distinct phases: AWB feature build, Playwright visual audit of all Signal Studio pages, and design exploration (17 AWB landing page variants + AppyStack recipe formalisation). Registry single-label BUILD captures only the first phase.",
+  "phases": [
+    {
+      "name": "AWB Integration Build",
+      "time_start": "2026-03-13T06:52:00Z",
+      "time_end": "2026-03-13T07:54:00Z",
+      "type": "BUILD",
+      "summary": "Built AWB integration: renamed env var to AWB_URL, implemented POST /api/moments/:id/send-to-awb endpoint, fixed buildPoemPayload() for incidents, resolved EADDRINUSE port conflict"
+    },
+    {
+      "name": "Playwright UI Audit",
+      "time_start": "2026-03-13T07:54:00Z",
+      "time_end": "2026-03-13T16:33:00Z",
+      "type": "UI_REVIEW",
+      "summary": "42 Playwright screenshots across all Signal Studio pages. Fixed: incident list column widths (dropped Company/Reporter), normalised 'new incident' badge/button colours to brand palette, various style edits driven by visual feedback"
+    },
+    {
+      "name": "Design Exploration — AWB Landing Variants",
+      "time_start": "2026-03-14T00:53:00Z",
+      "time_end": "2026-03-14T02:22:00Z",
+      "type": "DESIGN_EXPLORATION",
+      "summary": "Resumed via compaction. Screenshotted 17 AWB mock landing pages (V1–V17). Updated AWB workflow step indicator to V10 Pipeline style. Agent sub-calls produced design preference write-up and AppyStack recipe formalisation (5 archetypes: Split, Tiles, Minimal, Compact, Hero)"
+    }
+  ],
+  "notable_events": [
+    {
+      "line": 316,
+      "type": "compaction_resume",
+      "description": "Very long user_prompt containing compaction summary (~700 lines). Detectable by prefix 'This session is being continued from a previous conversation that ran out of context.'"
+    },
+    {
+      "line": 420,
+      "type": "accidental_prompt",
+      "description": "Voice-to-text artefact: 'Unknown skill: near-compassion'"
+    },
+    {
+      "line": 36,
+      "type": "accidental_prompt",
+      "description": "Incomplete voice input: 'why? i'"
+    },
+    {
+      "lines": [403, 419],
+      "type": "agent_sub_calls",
+      "description": "Two Agent tool invocations spawning sub-agents. Companion agent-*.jsonl files expected with isSidechain: true"
+    }
+  ],
+  "notes": "High-interest session for AngelEye pattern library. Demonstrates: (1) multi-phase sessions that require multi-label classification, (2) Playwright MCP volume as a UI_REVIEW signal, (3) detectable compaction_resume events, (4) voice-to-text noise patterns, (5) long autonomous blocks (6.5h gap with no user prompts during Playwright audit). BUILD label from registry is accurate but incomplete.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

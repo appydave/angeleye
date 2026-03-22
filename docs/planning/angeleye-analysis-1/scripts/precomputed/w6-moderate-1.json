@@ -1,0 +1,706 @@
+[
+  {
+    "session_id": "e3f78527-fe9c-4067-ae38-43f522453111",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-e3f78527-fe9c-4067-ae38-43f522453111.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
+    "shape": {
+      "event_count": 61,
+      "user_prompt_count": 15,
+      "tool_use_count": 46,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-25T00:09:53.579000+00:00",
+      "last_event_ts": "2026-02-26T07:28:15.799000+00:00",
+      "duration_minutes": 1878,
+      "active_minutes": 65,
+      "idle_gaps_over_1h": 4,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-25T00:39:26.573000+00:00",
+          "end": "2026-02-25T04:10:08.618000+00:00",
+          "gap_minutes": 210
+        },
+        {
+          "start": "2026-02-25T04:10:23.608000+00:00",
+          "end": "2026-02-25T12:43:41.469000+00:00",
+          "gap_minutes": 513
+        },
+        {
+          "start": "2026-02-25T13:43:21.451000+00:00",
+          "end": "2026-02-25T16:07:35.062000+00:00",
+          "gap_minutes": 144
+        },
+        {
+          "start": "2026-02-25T16:12:12.961000+00:00",
+          "end": "2026-02-26T07:15:54.445000+00:00",
+          "gap_minutes": 903
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 26,
+      "Read": 11,
+      "Edit": 6,
+      "Task": 3
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Session Context: SupportSignal v2 Planning \u2014 2026-02-25\n\n  Working On\n\n  Building a business requirements planning document for SupportSignal v2 \u2014 a greenfield rebuild of an NDIS incident reporting SaaS application, moving\n  away from Convex to Postgres/Supabase, with an API-first and agent-first architecture philosophy.\n\n  Current State\n\n  Planning folder fully established at /Users/davidcruwys/dev/clients/supportsignal/supportsignal-v2-planning/. All JSON source documents written, a\n  render.t",
+      "full_length": 8910,
+      "ts": "2026-02-25T00:09:53.579Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false,
+        "first_prompt_length": 8910,
+        "short_prompt_ratio": 0.43
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "8b8e5899-ed39-40a0-85ca-2c324d24e5a5",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-8b8e5899-ed39-40a0-85ca-2c324d24e5a5.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
+    "shape": {
+      "event_count": 67,
+      "user_prompt_count": 18,
+      "tool_use_count": 49,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-17T02:19:35.060000+00:00",
+      "last_event_ts": "2026-02-17T04:57:41+00:00",
+      "duration_minutes": 158,
+      "active_minutes": 103,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 29,
+      "Bash": 4,
+      "Task": 3,
+      "Glob": 3,
+      "Grep": 3,
+      "Edit": 3,
+      "Write": 2,
+      "TaskOutput": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Which agent? Would you use if we needed to shift or make changes to an epics?",
+      "full_length": 77,
+      "ts": "2026-02-17T02:19:35.060Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 3
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "0510f9c2-321d-43d4-ad5c-b1e2d8f2580c",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-0510f9c2-321d-43d4-ad5c-b1e2d8f2580c.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/flivideo/flihub",
+    "shape": {
+      "event_count": 71,
+      "user_prompt_count": 12,
+      "tool_use_count": 59,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-10T12:04:46.652000+00:00",
+      "last_event_ts": "2026-03-10T15:49:17.010000+00:00",
+      "duration_minutes": 224,
+      "active_minutes": 110,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-10T14:28:28.227000+00:00",
+          "end": "2026-03-10T15:45:46.635000+00:00",
+          "gap_minutes": 77
+        }
+      ]
+    },
+    "tools": {
+      "Edit": 21,
+      "Read": 14,
+      "Bash": 11,
+      "Grep": 7,
+      "Agent": 3,
+      "Glob": 2,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Did we have any outstanding tasks on FliHub from our changes point of view? Do we have a list of tasks to work on? Do we have a backlog? Do we have a check of where things are at and whether code that's been done but still listed as to-do? Can you just look through the whole codebase? Look through all the documentation we might have around this and come up with a plan of action or not a plan of action. Come up with challenges, issues, gap analysis, sort of stuff.",
+      "full_length": 467,
+      "ts": "2026-03-10T12:04:46.652Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 2
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "8eb3a9dc-f307-4769-a6b0-4228d3aa0a22",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-8eb3a9dc-f307-4769-a6b0-4228d3aa0a22.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/appydave-plugins",
+    "shape": {
+      "event_count": 71,
+      "user_prompt_count": 21,
+      "tool_use_count": 50,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-21T01:07:18.740000+00:00",
+      "last_event_ts": "2026-02-21T09:54:15.681000+00:00",
+      "duration_minutes": 526,
+      "active_minutes": 67,
+      "idle_gaps_over_1h": 2,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-21T01:42:03.608000+00:00",
+          "end": "2026-02-21T02:55:05.953000+00:00",
+          "gap_minutes": 73
+        },
+        {
+          "start": "2026-02-21T03:45:10.928000+00:00",
+          "end": "2026-02-21T09:40:26.424000+00:00",
+          "gap_minutes": 355
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 21,
+      "Read": 9,
+      "Edit": 9,
+      "Glob": 4,
+      "Write": 4,
+      "Task": 2,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "when you are in a conversation and near compaction, what are 5 things you might want to do, I will give you 2 summarize, detailed knowledge cpature",
+      "full_length": 147,
+      "ts": "2026-02-21T01:07:18.740Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 2
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "3722bf8e-d944-4a85-84c1-9af8d1d50633",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-3722bf8e-d944-4a85-84c1-9af8d1d50633.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
+    "shape": {
+      "event_count": 78,
+      "user_prompt_count": 11,
+      "tool_use_count": 67,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-18T04:16:53.765000+00:00",
+      "last_event_ts": "2026-02-18T07:14:13.366000+00:00",
+      "duration_minutes": 177,
+      "active_minutes": 42,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 20,
+      "Read": 18,
+      "Edit": 15,
+      "Grep": 8,
+      "Glob": 4,
+      "Write": 1,
+      "Task": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "We recently did a whole lot of upgrading commits. They were all based on getting Support Signal published to production, and we had to work through a lot of problems. And we uncovered a bunch of linting issues. Do we still have a record of that? ",
+      "full_length": 246,
+      "ts": "2026-02-18T04:16:53.765Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 3
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "e40cfecd-363d-476a-b052-d3bb9c8c7bfb",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-e40cfecd-363d-476a-b052-d3bb9c8c7bfb.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 80,
+      "user_prompt_count": 8,
+      "tool_use_count": 70,
+      "stop_count": 1,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-14T01:37:58.207000+00:00",
+      "last_event_ts": "2026-03-16T01:38:17.184000+00:00",
+      "duration_minutes": 2880,
+      "active_minutes": 68,
+      "idle_gaps_over_1h": 2,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-14T02:45:14.096000+00:00",
+          "end": "2026-03-14T23:40:29.278000+00:00",
+          "gap_minutes": 1255
+        },
+        {
+          "start": "2026-03-14T23:40:29.278000+00:00",
+          "end": "2026-03-16T01:36:36.053000+00:00",
+          "gap_minutes": 1556
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 32,
+      "Edit": 23,
+      "Read": 9,
+      "Glob": 5,
+      "Agent": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "We're going to be looking at the new incident intake \n\nHandover Note for Alex (workflow author)\n\n  Re: Step naming and sidebar labelling in AWB\n\n  The pipeline step bar and left sidebar are the user's primary navigation reference for the whole workflow. Two things consistently hurt the\n  experience:\n\n  1. Step names in the pipeline bar\n\n  The circles are small. Names below them wrap at ~8 characters per line. Right now names like \"Generate Clarification Questions (All Phases)\" wrap\n  across 4\u20135 ",
+      "full_length": 1339,
+      "ts": "2026-03-14T01:56:20.046Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 2
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "5abfd4f1-4704-4465-99df-504763d76cb6",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-5abfd4f1-4704-4465-99df-504763d76cb6.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 88,
+      "user_prompt_count": 11,
+      "tool_use_count": 77,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-25T00:04:58.077000+00:00",
+      "last_event_ts": "2026-02-25T04:54:37.984000+00:00",
+      "duration_minutes": 289,
+      "active_minutes": 49,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-25T00:39:31.831000+00:00",
+          "end": "2026-02-25T04:06:26.412000+00:00",
+          "gap_minutes": 206
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 33,
+      "Read": 16,
+      "Edit": 13,
+      "Write": 5,
+      "Grep": 5,
+      "Task": 3,
+      "Glob": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "What has Angela provided me with Updating eccdc1f..03fc35c\nFast-forward\n ...-support-plan-system-technical-summary.md |   167 +\n .../participant-support-plan-system.html     |  5509 ++++++\n ...icipant-support-plan-systems-thoughts.pdf | 14877 +++++++++++++++\n .../support-plan-system-app/app.js           |  1949 ++\n .../data/participant-jordan-mitchell.js      |   637 +\n .../support-plan-system-app/data/schema.js   |   261 +\n .../support-plan-system-app/index.html       |  1672 ++\n .../support-pl",
+      "full_length": 598,
+      "ts": "2026-02-25T00:04:58.077Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "33f0048e-db26-436a-a1a8-77b3b31f0d1f",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-33f0048e-db26-436a-a1a8-77b3b31f0d1f.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 92,
+      "user_prompt_count": 50,
+      "tool_use_count": 42,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-22T18:06:07.658000+00:00",
+      "last_event_ts": "2026-02-23T05:00:01.413000+00:00",
+      "duration_minutes": 653,
+      "active_minutes": 156,
+      "idle_gaps_over_1h": 2,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-22T19:18:00.656000+00:00",
+          "end": "2026-02-23T02:00:39.007000+00:00",
+          "gap_minutes": 402
+        },
+        {
+          "start": "2026-02-23T02:54:47.183000+00:00",
+          "end": "2026-02-23T04:29:49.375000+00:00",
+          "gap_minutes": 95
+        }
+      ]
+    },
+    "tools": {
+      "Read": 14,
+      "Edit": 11,
+      "Bash": 10,
+      "Grep": 5,
+      "Write": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "how far did the provision get?\n\n\u279c  ansible git:(main) \u2717 ansible-m4\nUsing /Users/davidcruwys/dev/ad/agent-os/ansible/ansible.cfg as config file\nBECOME password:\n\nPLAY [Provision macOS development environment] **********************************************************************************************************\n\nTASK [Gathering Facts] **********************************************************************************************************************************\nok: [mac-mini-m4]\n\nTASK [Check",
+      "full_length": 37093,
+      "ts": "2026-02-22T18:09:33.833Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": true,
+        "first_prompt_length": 37093,
+        "short_prompt_ratio": 0.86
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  }
+]

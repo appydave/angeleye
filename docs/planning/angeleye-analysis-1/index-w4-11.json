@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "6a2cef50-e29a-4ff7-8dc8-804b0f1641f3",
+  "machine": "m4-mini",
+  "project": "brains",
+  "project_dir": "/Users/davidcruwys/dev/ad/brains",
+  "session_type_registry": "KNOWLEDGE",
+  "session_type_analysed": "knowledge.brain_synthesis",
+  "file_size_bytes": 26968,
+  "event_count": 58,
+  "disposition": "ended",
+  "interest_level": "high",
+  "notes": "Registry KNOWLEDGE is broadly correct but misses the synthesis subtype. Session goal: produce NotebookLM dataset(s) for an Ansible/agentic-OS video. Tool pattern: Read x17 (38.6%), Glob x11 (25.0%), Bash x8 (18.2%), Write x4 (9.1%), ToolSearch x3 (6.8%), Grep x1 (2.3%). Write + Bash(open) = delivery pattern, not code execution. Three deliverables produced: (1) primary consolidated Ansible/agentic-OS NotebookLM doc, (2) machine-specific provisioning doc (5-machine Ansible setup), (3) Ansible terminal commands/live demo doc. ToolSearch x3 early = skill-gap signal; David confirms 'I thought we had this in the skill already'. Brain subfolder: brains/ansible/ with 6+ files. Session has conversational Q&A tail (idempotent definition, vertical vs horizontal stack, Windows compatibility) with no tool calls — classification stays synthesis. Proposed subtype: knowledge.brain_synthesis (Glob > 6 + Read > 8 + Write > 0 + Bash(open) + NotebookLM reference). Companion sessions: W3-13, W3-14 (OPERATIONS ansible sessions that produced the brain content read here).",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

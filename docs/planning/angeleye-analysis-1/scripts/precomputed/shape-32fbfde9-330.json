@@ -1,0 +1,90 @@
+{
+  "session_id": "32fbfde9-3303-4dca-a22c-92888c1a4139",
+  "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-32fbfde9-3303-4dca-a22c-92888c1a4139.jsonl",
+  "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+  "shape": {
+    "event_count": 84,
+    "user_prompt_count": 19,
+    "tool_use_count": 65,
+    "stop_count": 0,
+    "subagent_start_count": 0,
+    "subagent_stop_count": 0,
+    "first_event_ts": "2026-02-23T09:40:44.254000+00:00",
+    "last_event_ts": "2026-02-23T16:18:58.949000+00:00",
+    "duration_minutes": 398,
+    "active_minutes": 100,
+    "idle_gaps_over_1h": 2,
+    "idle_gap_details": [
+      {
+        "start": "2026-02-23T10:26:18.191000+00:00",
+        "end": "2026-02-23T13:57:36.361000+00:00",
+        "gap_minutes": 211
+      },
+      {
+        "start": "2026-02-23T14:32:44.659000+00:00",
+        "end": "2026-02-23T15:59:14.163000+00:00",
+        "gap_minutes": 86
+      }
+    ]
+  },
+  "tools": {
+    "Bash": 31,
+    "Task": 12,
+    "Edit": 10,
+    "Read": 6,
+    "Write": 5,
+    "Skill": 1
+  },
+  "file_paths": {
+    "read": [],
+    "write": [],
+    "edit": []
+  },
+  "bash_commands_sample": [],
+  "first_real_prompt": {
+    "text": "What do you know about this new proof of concept WUI system that we built? \n\nWhat do you know about the architectural separation of the yaml file versus the data file versus prompt files versus the schema files versus how the actual code was implemented? Is there a clear separation between all of these, and are there any other structures in there that I need to be aware of? What are the absolute paths to some of the structures that I should be aware of? ",
+    "full_length": 458,
+    "ts": "2026-02-23T09:40:44.254Z"
+  },
+  "skill_invocations": [{}],
+  "subagents": null,
+  "detections": {
+    "compaction_resume": {
+      "detected": true,
+      "count": 1
+    },
+    "loop_runaway": {
+      "detected": false
+    },
+    "write_then_open": {
+      "detected": false,
+      "count": 0
+    },
+    "unauthorized_edit_before_prompt": {
+      "detected": false,
+      "count": 0
+    },
+    "search_without_read": {
+      "detected": false,
+      "count": 0
+    },
+    "ralphy_mode": {
+      "detected": false,
+      "has_ralphy_skill": false,
+      "has_impl_plan": false,
+      "has_agent_calls": false
+    },
+    "form_filling": {
+      "detected": false
+    },
+    "cron_polling": {
+      "detected": false,
+      "creates": 0,
+      "deletes": 0
+    }
+  },
+  "project_inference": {
+    "inferred_project": null,
+    "cwd_reliable": null
+  }
+}

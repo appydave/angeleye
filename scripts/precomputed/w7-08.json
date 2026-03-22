@@ -1,0 +1,739 @@
+[
+  {
+    "session_id": "1e0c8237-adc1-419f-bfa4-e88143a8b2a9",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-1e0c8237-adc1-419f-bfa4-e88143a8b2a9.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps",
+    "shape": {
+      "event_count": 1,
+      "user_prompt_count": 1,
+      "tool_use_count": 0,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-10T02:43:12.733000+00:00",
+      "last_event_ts": "2026-03-10T02:43:12.733000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {},
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "How do you do a tree command and just get the level one folders?",
+      "full_length": 64,
+      "ts": "2026-03-10T02:43:12.733Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "4b624fee-aa1a-4269-acf9-9b259b40a389",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-4b624fee-aa1a-4269-acf9-9b259b40a389.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/appydave-app-a-day/008-ai-programatic-art/.claude/worktrees/competent-golick",
+    "shape": {
+      "event_count": 8,
+      "user_prompt_count": 2,
+      "tool_use_count": 6,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-21T03:55:36.446000+00:00",
+      "last_event_ts": "2026-02-21T03:59:42.239000+00:00",
+      "duration_minutes": 4,
+      "active_minutes": 4,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 4,
+      "Read": 1,
+      "mcp__playwright__browser_navigate": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "can you  run this app here",
+      "full_length": 26,
+      "ts": "2026-02-21T03:55:36.446Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "030059a0-cf01-4f33-b596-76a0f6eca4ed",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-030059a0-cf01-4f33-b596-76a0f6eca4ed.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 17,
+      "user_prompt_count": 1,
+      "tool_use_count": 16,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-28T03:45:11.969000+00:00",
+      "last_event_ts": "2026-02-28T03:50:02.982000+00:00",
+      "duration_minutes": 4,
+      "active_minutes": 4,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "WebSearch": 7,
+      "WebFetch": 3,
+      "Glob": 2,
+      "Grep": 2,
+      "Read": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "boris herny tweet, in the next verion of claude code there are two skills /simplify and /batch",
+      "full_length": 94,
+      "ts": "2026-02-28T03:45:11.969Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "2ae4ea98-cf1f-4bd3-a5c2-7d319596539f",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-2ae4ea98-cf1f-4bd3-a5c2-7d319596539f.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brain-dynamous",
+    "shape": {
+      "event_count": 16,
+      "user_prompt_count": 9,
+      "tool_use_count": 7,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-28T02:00:48.292000+00:00",
+      "last_event_ts": "2026-02-28T02:51:52.749000+00:00",
+      "duration_minutes": 51,
+      "active_minutes": 51,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Glob": 2,
+      "Write": 1,
+      "Read": 1,
+      "Edit": 1,
+      "Bash": 1,
+      "Grep": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I want you to look at Amazon Web Services. You know what S3 is. What's the system they have in place for longer term back ups that are cheaper but slower to resolve, and what are the competing products to it from other ",
+      "full_length": 219,
+      "ts": "2026-02-28T02:01:21.909Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "6c42dbf4-76d2-494e-831f-5c709e36dbd1",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-6c42dbf4-76d2-494e-831f-5c709e36dbd1.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/supportsignal-v2-planning",
+    "shape": {
+      "event_count": 38,
+      "user_prompt_count": 7,
+      "tool_use_count": 31,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-27T06:53:31.703000+00:00",
+      "last_event_ts": "2026-02-27T13:48:27.145000+00:00",
+      "duration_minutes": 414,
+      "active_minutes": 20,
+      "idle_gaps_over_1h": 2,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-27T07:13:30.634000+00:00",
+          "end": "2026-02-27T09:40:54.129000+00:00",
+          "gap_minutes": 147
+        },
+        {
+          "start": "2026-02-27T09:41:06.340000+00:00",
+          "end": "2026-02-27T13:48:27.145000+00:00",
+          "gap_minutes": 247
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 16,
+      "Read": 10,
+      "Write": 2,
+      "AskUserQuestion": 1,
+      "Glob": 1,
+      "Edit": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "There's some information we've been working on. \n\nDone\n\n  Data integrity \u2014 fixed permanently\n\n  - The 4 missing entities (Medication, MealtimePlan, MobilityPlan,\n  FunctionalProfile) now appear in the ER diagram automatically\n  - The stale entity-relationship.mmd and system-topology.mmd hand-authored\n   files are deleted \u2014 they can never drift from the JSON again\n  - Both diagrams are now generated from their JSON source every time you\n  run bun serve.ts\n\n  Missing render sections \u2014 all added\n\n ",
+      "full_length": 9291,
+      "ts": "2026-02-27T06:53:31.703Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": true,
+        "first_prompt_length": 9291,
+        "short_prompt_ratio": 0.67
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "f12c0a0b-8839-4b22-906a-ca457266cd67",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-f12c0a0b-8839-4b22-906a-ca457266cd67.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 47,
+      "user_prompt_count": 6,
+      "tool_use_count": 41,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-26T15:05:11.173000+00:00",
+      "last_event_ts": "2026-02-26T15:41:14.237000+00:00",
+      "duration_minutes": 36,
+      "active_minutes": 36,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 26,
+      "Glob": 3,
+      "Write": 3,
+      "mcp__playwright__browser_navigate": 3,
+      "Read": 2,
+      "mcp__playwright__browser_take_screenshot": 2,
+      "Skill": 1,
+      "EnterWorktree": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "yes, build the redesign in a worktree,But answer me this: is the development that we're doing in another window, in another worktree, or even the main okay to keep going if we do a redesign in a worktree? ",
+      "full_length": 205,
+      "ts": "2026-02-26T15:09:24.079Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "4905b3ee-ad2f-406d-a6b7-7db02f6bd22f",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-4905b3ee-ad2f-406d-a6b7-7db02f6bd22f.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/appystack",
+    "shape": {
+      "event_count": 76,
+      "user_prompt_count": 3,
+      "tool_use_count": 73,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-08T16:04:32.465000+00:00",
+      "last_event_ts": "2026-03-09T00:30:09.404000+00:00",
+      "duration_minutes": 505,
+      "active_minutes": 12,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-08T16:13:06.057000+00:00",
+          "end": "2026-03-09T00:26:11.580000+00:00",
+          "gap_minutes": 493
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 50,
+      "Read": 11,
+      "Edit": 7,
+      "Write": 3,
+      "Glob": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Session Context: AppyStack Wave 5 + Signal Studio \u2014 2026-03-08\n\n  Working On\n\n  Comprehensive improvements to AppyStack template and Signal Studio based on real-world usage patterns discovered through deep architectural analysis\n   of Signal Studio (a production RVETS app). Session covered competitive research, architectural evaluation, template bug fixes, recipe creation, and\n   Signal Studio test/validation gaps.\n\n  Current State\n\n  Complete and pushed:\n  - AppyStack template: 2 commits pushed",
+      "full_length": 6123,
+      "ts": "2026-03-08T16:04:32.465Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "19643e68-fab8-4912-86a1-9e7aa0088260",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-19643e68-fab8-4912-86a1-9e7aa0088260.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/appystack",
+    "shape": {
+      "event_count": 107,
+      "user_prompt_count": 18,
+      "tool_use_count": 89,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-02T02:02:19.678000+00:00",
+      "last_event_ts": "2026-03-02T03:15:44.029000+00:00",
+      "duration_minutes": 73,
+      "active_minutes": 73,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 44,
+      "Edit": 14,
+      "Read": 12,
+      "TaskUpdate": 8,
+      "Write": 5,
+      "TaskCreate": 4,
+      "Agent": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Implement the following plan:\n\n# Plan: `npx create-appystack`\n\n## Context\n\nSetting up a new AppyStack project currently requires manually cloning the repo, copying the template, and running `npm run customize`. This friction stops developers from even trying it. The goal is a single command:\n\n```bash\nnpx create-appystack my-app\n```\n\nThat copies the template, walks through 5 prompts (app name, scope, ports, description), installs deps, and prints `cd my-app && npm run dev`.\n\nThe package name `cre",
+      "full_length": 5476,
+      "ts": "2026-03-02T02:02:19.678Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false,
+        "first_prompt_length": 5476,
+        "short_prompt_ratio": 0.47
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "db533df6-bbc4-4ecc-b3ad-0025fff20d69",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-db533df6-bbc4-4ecc-b3ad-0025fff20d69.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/thumbrack",
+    "shape": {
+      "event_count": 215,
+      "user_prompt_count": 11,
+      "tool_use_count": 203,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-13T03:43:15.096000+00:00",
+      "last_event_ts": "2026-03-16T03:02:06.893000+00:00",
+      "duration_minutes": 4278,
+      "active_minutes": 118,
+      "idle_gaps_over_1h": 2,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-13T04:40:40.168000+00:00",
+          "end": "2026-03-14T00:47:53.731000+00:00",
+          "gap_minutes": 1207
+        },
+        {
+          "start": "2026-03-14T02:45:36.709000+00:00",
+          "end": "2026-03-16T03:02:06.893000+00:00",
+          "gap_minutes": 2896
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 115,
+      "Read": 34,
+      "Edit": 30,
+      "Agent": 13,
+      "Write": 7,
+      "Glob": 3,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I just want you to investigate your codebase on two concepts. The first one is: if I drag an image up or down, does that image also get focus? My understanding, when I drag at the moment, is that the visible layer goes black, which would not be useful. I just want you to check your codebase before we do any action. I also find the position of the drag symbol is okay, but you have to be on it to drag. I almost want to be able to drag from anywhere where the image button is. Also want you to tell ",
+      "full_length": 2490,
+      "ts": "2026-03-13T03:43:15.096Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": true,
+        "count": 1
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false,
+        "first_prompt_length": 2490,
+        "short_prompt_ratio": 0.4
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  }
+]

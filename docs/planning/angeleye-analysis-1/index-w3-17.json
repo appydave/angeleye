@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "72977bff-6f26-4b39-8b17-6a25d49b56ed",
+  "machine": "m4-mini",
+  "project": "prompt.supportsignal",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "build.debug_loop",
+  "file_size_bytes": 224428,
+  "event_count": 260,
+  "disposition": "active",
+  "interest_level": "medium-high",
+  "notes": "7-hour debug session on the POEM Executor CLI (Node.js, YAML-compiled workflows, Agent SDK). 53 real prompts + 3 compaction summaries. Opens with prior-session handover paste then immediately pastes error_max_turns CLI output for incident 105. Primary loop: paste CLI error → read source → edit → re-run. Key issues worked: error_max_turns in generate-during-questions substep, run number regression introduced by prior fix, command confusion (run vs compile-run vs execute), double-nesting in output shape, LLM returning prose instead of JSON. Background Task agent used once for file bundling. Late session pivots to architectural discussion about YAML DSL limits and JSON schema auto-injection. 56 Edits total across agent-sdk.js, provider-router.js, output-namer.js, YAML workflow files, CLI command files. 3 context compactions. Session ends open — no commit, no handover, no session naming. Handover-as-bootstrap pattern documented.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

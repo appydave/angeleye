@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "8fe1e952-c8c2-4773-b550-b7c4dbb9f532",
+  "machine": "m4-mini",
+  "project": "brain-dynamous",
+  "project_dir": "/Users/davidcruwys/dev/ad/brain-dynamous",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "meta.compaction_flush",
+  "file_size_bytes": 15000,
+  "event_count": 1,
+  "disposition": "ended",
+  "interest_level": "medium",
+  "notes": "Single-event JSONL containing only a pre-compaction memory flush prompt — no tool_use events, no real user prompts, 15 seconds wall clock. Registry BUILD classification is wrong; this is a system-generated artefact, not a work session. The embedded conversation reveals the prior session was brain-dynamous setup work: Google OAuth for Gmail/Calendar, heartbeat.py testing, sqlite_vec fix, and architecture discussion around HEARTBEAT.md vs cron vs Supabase pg_cron. brain-dynamous is David's personal ambient AI OS (Python, uv, Claude Agent SDK, heartbeat-based reasoning, memory indexing). Key classifier finding: pre-compaction flush events must be detected early (look for 'Pre-compaction memory flush' in first user_prompt) and short-circuited to meta.compaction_flush before any tool-pattern analysis runs. Duration ≤30s is a secondary signal. Embedded conversation text has secondary attribution value if the prior session JSONL is missing.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

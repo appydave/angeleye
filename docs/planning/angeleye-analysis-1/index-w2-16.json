@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "7bef7cb3-8087-4f0e-ab11-26947622d3f5",
+  "machine": "m4-mini",
+  "project": "deckhand",
+  "project_dir": "/Users/davidcruwys/dev/ad/apps/deckhand",
+  "session_type_registry": "unclassified",
+  "session_type_analysed": "orientation.ideation",
+  "file_size_bytes": 6323200,
+  "event_count": 1394,
+  "disposition": "junk",
+  "interest_level": "low",
+  "notes": "Loop-driven comedy session. /loop cron fired ~685 ASCII art responses over 10 hours with zero human interaction. No files created or modified. Registry correctly flagged is_junk. Proposed new subtype: orientation.loop_runaway.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

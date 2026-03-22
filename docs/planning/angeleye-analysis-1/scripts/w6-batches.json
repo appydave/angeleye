@@ -1,0 +1,776 @@
+[
+  {
+    "name": "micro-1",
+    "sessions": [
+      {
+        "session_id": "2eee3b5e-3e1c-4925-a393-20472d7c8124",
+        "project": "signal-studio",
+        "lines": 1,
+        "size_bytes": 4142,
+        "bucket": "micro",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-2eee3b5e-3e1c-4925-a393-20472d7c8124.jsonl",
+        "event_count": 1
+      },
+      {
+        "session_id": "f2854c94-d9ad-4816-addc-b762c84afdbf",
+        "project": "signal-studio",
+        "lines": 1,
+        "size_bytes": 273,
+        "bucket": "micro",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-f2854c94-d9ad-4816-addc-b762c84afdbf.jsonl",
+        "event_count": 1
+      },
+      {
+        "session_id": "13e77111-cbd4-47bb-8339-fa7e8b87255a",
+        "project": "app.supportsignal.com.au",
+        "lines": 1,
+        "size_bytes": 2015,
+        "bucket": "micro",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-13e77111-cbd4-47bb-8339-fa7e8b87255a.jsonl",
+        "event_count": 1
+      },
+      {
+        "session_id": "2a918928-6a55-4d15-8546-522fbc1e5b31",
+        "project": "signal-studio",
+        "lines": 2,
+        "size_bytes": 4218,
+        "bucket": "micro",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-2a918928-6a55-4d15-8546-522fbc1e5b31.jsonl",
+        "event_count": 2
+      },
+      {
+        "session_id": "71d89f95-6199-444f-91e3-869f147d8766",
+        "project": "appydave-plugins",
+        "lines": 2,
+        "size_bytes": 479,
+        "bucket": "micro",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-71d89f95-6199-444f-91e3-869f147d8766.jsonl",
+        "event_count": 2
+      },
+      {
+        "session_id": "d09d6492-6f1c-4ee0-8728-35754fdb2b93",
+        "project": "appydave-plugins",
+        "lines": 2,
+        "size_bytes": 521,
+        "bucket": "micro",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-d09d6492-6f1c-4ee0-8728-35754fdb2b93.jsonl",
+        "event_count": 2
+      },
+      {
+        "session_id": "a9d80a30-b958-4cd1-befd-05e809df361f",
+        "project": "flihub",
+        "lines": 3,
+        "size_bytes": 831,
+        "bucket": "micro",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-a9d80a30-b958-4cd1-befd-05e809df361f.jsonl",
+        "event_count": 3
+      },
+      {
+        "session_id": "5ab618e0-77e5-4973-a947-0335601ec988",
+        "project": "app.supportsignal.com.au",
+        "lines": 3,
+        "size_bytes": 1130,
+        "bucket": "micro",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-5ab618e0-77e5-4973-a947-0335601ec988.jsonl",
+        "event_count": 3
+      },
+      {
+        "session_id": "3ea8cded-fb4f-441b-bcec-aa0da34e4970",
+        "project": "signal-studio",
+        "lines": 3,
+        "size_bytes": 4781,
+        "bucket": "micro",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-3ea8cded-fb4f-441b-bcec-aa0da34e4970.jsonl",
+        "event_count": 3
+      },
+      {
+        "session_id": "50cfaae9-3995-4284-ad92-1d90f0caec6b",
+        "project": "app.supportsignal.com.au",
+        "lines": 4,
+        "size_bytes": 1201,
+        "bucket": "micro",
+        "path": "/Users/davidcruwys/.claude/angeleye/archive/session-50cfaae9-3995-4284-ad92-1d90f0caec6b.jsonl",
+        "event_count": 4
+      },
+      {
+        "session_id": "00184225-bb2e-4563-8bc1-41bf86115743",
+        "project": "flihub",
+        "lines": 4,
+        "size_bytes": 1380,
+        "bucket": "micro",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-00184225-bb2e-4563-8bc1-41bf86115743.jsonl",
+        "event_count": 4
+      },
+      {
+        "session_id": "3971ea12-45d6-4064-8db4-3f1a05d37c7c",
+        "project": "signal-studio",
+        "lines": 4,
+        "size_bytes": 1240,
+        "bucket": "micro",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-3971ea12-45d6-4064-8db4-3f1a05d37c7c.jsonl",
+        "event_count": 4
+      },
+      {
+        "session_id": "8bde85c9-6b8e-40f0-986f-2e00bfe0d2b8",
+        "project": "signal-studio",
+        "lines": 4,
+        "size_bytes": 1068,
+        "bucket": "micro",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-8bde85c9-6b8e-40f0-986f-2e00bfe0d2b8.jsonl",
+        "event_count": 4
+      },
+      {
+        "session_id": "04a70e36-d55e-42c6-b002-85bbd0f8b89c",
+        "project": "signal-studio",
+        "lines": 4,
+        "size_bytes": 1324,
+        "bucket": "micro",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-04a70e36-d55e-42c6-b002-85bbd0f8b89c.jsonl",
+        "event_count": 4
+      },
+      {
+        "session_id": "75192ff9-616d-4bde-a355-34dfbc92ad52",
+        "project": "signal-studio",
+        "lines": 7,
+        "size_bytes": 1855,
+        "bucket": "micro",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-75192ff9-616d-4bde-a355-34dfbc92ad52.jsonl",
+        "event_count": 7
+      },
+      {
+        "session_id": "b887e434-2e2d-4292-80d8-a71f587e6312",
+        "project": "appydave-plugins",
+        "lines": 7,
+        "size_bytes": 1815,
+        "bucket": "micro",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-b887e434-2e2d-4292-80d8-a71f587e6312.jsonl",
+        "event_count": 7
+      },
+      {
+        "session_id": "7601e97d-422a-4a11-8881-bee870005a55",
+        "project": "appydave-plugins",
+        "lines": 7,
+        "size_bytes": 1832,
+        "bucket": "micro",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-7601e97d-422a-4a11-8881-bee870005a55.jsonl",
+        "event_count": 7
+      },
+      {
+        "session_id": "2f65c956-8072-41a2-812b-5c8ab8137f89",
+        "project": "signal-studio",
+        "lines": 7,
+        "size_bytes": 2165,
+        "bucket": "micro",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-2f65c956-8072-41a2-812b-5c8ab8137f89.jsonl",
+        "event_count": 7
+      },
+      {
+        "session_id": "6739f1c0-8e94-4ae6-8d70-b5233f1ffd85",
+        "project": "flihub",
+        "lines": 7,
+        "size_bytes": 1689,
+        "bucket": "micro",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-6739f1c0-8e94-4ae6-8d70-b5233f1ffd85.jsonl",
+        "event_count": 7
+      },
+      {
+        "session_id": "962b823c-4823-4540-a360-e4a6405f9e36",
+        "project": "flihub",
+        "lines": 7,
+        "size_bytes": 1681,
+        "bucket": "micro",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-962b823c-4823-4540-a360-e4a6405f9e36.jsonl",
+        "event_count": 7
+      },
+      {
+        "session_id": "1c8733c9-55c7-4e9d-a073-b8027b52b6e4",
+        "project": "signal-studio",
+        "lines": 7,
+        "size_bytes": 2073,
+        "bucket": "micro",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-1c8733c9-55c7-4e9d-a073-b8027b52b6e4.jsonl",
+        "event_count": 7
+      },
+      {
+        "session_id": "3f580ad1-f68b-4122-abd8-0858183bea3d",
+        "project": "flihub",
+        "lines": 7,
+        "size_bytes": 4306,
+        "bucket": "micro",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-3f580ad1-f68b-4122-abd8-0858183bea3d.jsonl",
+        "event_count": 7
+      },
+      {
+        "session_id": "61c7cef6-03aa-4b00-8fb6-7dd4e8b18fd4",
+        "project": "appydave-plugins",
+        "lines": 8,
+        "size_bytes": 2060,
+        "bucket": "micro",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-61c7cef6-03aa-4b00-8fb6-7dd4e8b18fd4.jsonl",
+        "event_count": 8
+      }
+    ],
+    "count": 23
+  },
+  {
+    "name": "light-1",
+    "sessions": [
+      {
+        "session_id": "f9c4d2e6-4f3b-4608-81d7-22432c1bb597",
+        "project": "prompt.supportsignal.com.au",
+        "lines": 12,
+        "size_bytes": 3391,
+        "bucket": "light",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-f9c4d2e6-4f3b-4608-81d7-22432c1bb597.jsonl",
+        "event_count": 12
+      },
+      {
+        "session_id": "d0799256-83cd-42a8-89b9-9c67fd024b70",
+        "project": "app.supportsignal.com.au",
+        "lines": 13,
+        "size_bytes": 3845,
+        "bucket": "light",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-d0799256-83cd-42a8-89b9-9c67fd024b70.jsonl",
+        "event_count": 13
+      },
+      {
+        "session_id": "e5198554-a9dc-4adb-9799-0e76339fb162",
+        "project": "appydave-plugins",
+        "lines": 13,
+        "size_bytes": 28684,
+        "bucket": "light",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-e5198554-a9dc-4adb-9799-0e76339fb162.jsonl",
+        "event_count": 13
+      },
+      {
+        "session_id": "ce19a727-8fd6-4a97-a486-260021d2d5f6",
+        "project": "flihub",
+        "lines": 14,
+        "size_bytes": 6476,
+        "bucket": "light",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-ce19a727-8fd6-4a97-a486-260021d2d5f6.jsonl",
+        "event_count": 14
+      },
+      {
+        "session_id": "1422b159-8224-4053-b1fb-1f1bc6b5abfb",
+        "project": "appydave-plugins",
+        "lines": 15,
+        "size_bytes": 3665,
+        "bucket": "light",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-1422b159-8224-4053-b1fb-1f1bc6b5abfb.jsonl",
+        "event_count": 15
+      },
+      {
+        "session_id": "44d74deb-f687-421a-9fa5-27bf52a9f04c",
+        "project": "prompt.supportsignal.com.au",
+        "lines": 19,
+        "size_bytes": 5665,
+        "bucket": "light",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-44d74deb-f687-421a-9fa5-27bf52a9f04c.jsonl",
+        "event_count": 19
+      },
+      {
+        "session_id": "87ea6053-b5a2-45a8-b394-c6bc5d96e89f",
+        "project": "signal-studio",
+        "lines": 20,
+        "size_bytes": 5618,
+        "bucket": "light",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-87ea6053-b5a2-45a8-b394-c6bc5d96e89f.jsonl",
+        "event_count": 20
+      },
+      {
+        "session_id": "4278b993-017c-462f-ade6-66a9867b3f49",
+        "project": "brains",
+        "lines": 20,
+        "size_bytes": 12319,
+        "bucket": "light",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-4278b993-017c-462f-ade6-66a9867b3f49.jsonl",
+        "event_count": 20
+      },
+      {
+        "session_id": "04fd1cd3-d9b7-40ab-a212-cef5231e174b",
+        "project": "app.supportsignal.com.au",
+        "lines": 21,
+        "size_bytes": 33144,
+        "bucket": "light",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-04fd1cd3-d9b7-40ab-a212-cef5231e174b.jsonl",
+        "event_count": 21
+      },
+      {
+        "session_id": "1727cafa-987d-426b-bb9c-8001bb9ea138",
+        "project": "appydave-plugins",
+        "lines": 21,
+        "size_bytes": 5181,
+        "bucket": "light",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-1727cafa-987d-426b-bb9c-8001bb9ea138.jsonl",
+        "event_count": 21
+      },
+      {
+        "session_id": "b5368be3-7de6-4b51-81df-3f6a4524b4cc",
+        "project": "prompt.supportsignal.com.au",
+        "lines": 21,
+        "size_bytes": 7170,
+        "bucket": "light",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-b5368be3-7de6-4b51-81df-3f6a4524b4cc.jsonl",
+        "event_count": 21
+      },
+      {
+        "session_id": "b06245d7-64b0-4c3d-883d-a23b6c4d4a0a",
+        "project": "signal-studio",
+        "lines": 24,
+        "size_bytes": 8631,
+        "bucket": "light",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-b06245d7-64b0-4c3d-883d-a23b6c4d4a0a.jsonl",
+        "event_count": 24
+      }
+    ],
+    "count": 12
+  },
+  {
+    "name": "light-2",
+    "sessions": [
+      {
+        "session_id": "fe34a87a-38cc-49da-ba1c-946d12b6ae43",
+        "project": "brains",
+        "lines": 26,
+        "size_bytes": 20289,
+        "bucket": "light",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-fe34a87a-38cc-49da-ba1c-946d12b6ae43.jsonl",
+        "event_count": 26
+      },
+      {
+        "session_id": "30ac4f13-7e3a-4680-9942-05c7e3954258",
+        "project": "app.supportsignal.com.au",
+        "lines": 27,
+        "size_bytes": 20272,
+        "bucket": "light",
+        "path": "/Users/davidcruwys/.claude/angeleye/archive/session-30ac4f13-7e3a-4680-9942-05c7e3954258.jsonl",
+        "event_count": 27
+      },
+      {
+        "session_id": "f5d141ee-2d95-47fe-8b27-3ff0d434f3e6",
+        "project": "brains",
+        "lines": 28,
+        "size_bytes": 10358,
+        "bucket": "light",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-f5d141ee-2d95-47fe-8b27-3ff0d434f3e6.jsonl",
+        "event_count": 28
+      },
+      {
+        "session_id": "a2e0133d-171f-45e0-8cf4-920a68ec0247",
+        "project": "brains",
+        "lines": 30,
+        "size_bytes": 13885,
+        "bucket": "light",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-a2e0133d-171f-45e0-8cf4-920a68ec0247.jsonl",
+        "event_count": 30
+      },
+      {
+        "session_id": "8a7c8853-ea0d-4533-916a-6d7d5fbd86f8",
+        "project": "appydave-plugins",
+        "lines": 32,
+        "size_bytes": 19415,
+        "bucket": "light",
+        "path": "/Users/davidcruwys/.claude/angeleye/archive/session-8a7c8853-ea0d-4533-916a-6d7d5fbd86f8.jsonl",
+        "event_count": 32
+      },
+      {
+        "session_id": "a9f68828-ef25-4169-8c4c-bb3f4c2273f2",
+        "project": "flihub",
+        "lines": 33,
+        "size_bytes": 45139,
+        "bucket": "light",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-a9f68828-ef25-4169-8c4c-bb3f4c2273f2.jsonl",
+        "event_count": 33
+      },
+      {
+        "session_id": "03736413-0712-4fb1-b470-7083e3bb5375",
+        "project": "app.supportsignal.com.au",
+        "lines": 35,
+        "size_bytes": 9279,
+        "bucket": "light",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-03736413-0712-4fb1-b470-7083e3bb5375.jsonl",
+        "event_count": 35
+      },
+      {
+        "session_id": "5b6065f9-5c3b-4af9-8f4f-9b373154b2a1",
+        "project": "app.supportsignal.com.au",
+        "lines": 38,
+        "size_bytes": 24142,
+        "bucket": "light",
+        "path": "/Users/davidcruwys/.claude/angeleye/archive/session-5b6065f9-5c3b-4af9-8f4f-9b373154b2a1.jsonl",
+        "event_count": 38
+      },
+      {
+        "session_id": "6305b5a1-e14f-4afd-91cd-e2af59ac85ab",
+        "project": "flihub",
+        "lines": 41,
+        "size_bytes": 9703,
+        "bucket": "light",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-6305b5a1-e14f-4afd-91cd-e2af59ac85ab.jsonl",
+        "event_count": 41
+      },
+      {
+        "session_id": "efb535fb-b7ba-4e7b-990c-ae0ac2c1b6f7",
+        "project": "brains",
+        "lines": 46,
+        "size_bytes": 11076,
+        "bucket": "light",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-efb535fb-b7ba-4e7b-990c-ae0ac2c1b6f7.jsonl",
+        "event_count": 46
+      },
+      {
+        "session_id": "91d6c2cd-6d5b-4615-b3a5-1499923a1963",
+        "project": "signal-studio",
+        "lines": 52,
+        "size_bytes": 17966,
+        "bucket": "light",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-91d6c2cd-6d5b-4615-b3a5-1499923a1963.jsonl",
+        "event_count": 52
+      },
+      {
+        "session_id": "6feb59a6-6582-4aef-b8d2-a51ada6b9b42",
+        "project": "prompt.supportsignal.com.au",
+        "lines": 56,
+        "size_bytes": 18445,
+        "bucket": "light",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-6feb59a6-6582-4aef-b8d2-a51ada6b9b42.jsonl",
+        "event_count": 56
+      }
+    ],
+    "count": 12
+  },
+  {
+    "name": "moderate-1",
+    "sessions": [
+      {
+        "session_id": "e3f78527-fe9c-4067-ae38-43f522453111",
+        "project": "app.supportsignal.com.au",
+        "lines": 61,
+        "size_bytes": 34102,
+        "bucket": "moderate",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-e3f78527-fe9c-4067-ae38-43f522453111.jsonl",
+        "event_count": 61
+      },
+      {
+        "session_id": "8b8e5899-ed39-40a0-85ca-2c324d24e5a5",
+        "project": "app.supportsignal.com.au",
+        "lines": 67,
+        "size_bytes": 46273,
+        "bucket": "moderate",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-8b8e5899-ed39-40a0-85ca-2c324d24e5a5.jsonl",
+        "event_count": 67
+      },
+      {
+        "session_id": "0510f9c2-321d-43d4-ad5c-b1e2d8f2580c",
+        "project": "flihub",
+        "lines": 71,
+        "size_bytes": 45903,
+        "bucket": "moderate",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-0510f9c2-321d-43d4-ad5c-b1e2d8f2580c.jsonl",
+        "event_count": 71
+      },
+      {
+        "session_id": "8eb3a9dc-f307-4769-a6b0-4228d3aa0a22",
+        "project": "appydave-plugins",
+        "lines": 71,
+        "size_bytes": 18672,
+        "bucket": "moderate",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-8eb3a9dc-f307-4769-a6b0-4228d3aa0a22.jsonl",
+        "event_count": 71
+      },
+      {
+        "session_id": "3722bf8e-d944-4a85-84c1-9af8d1d50633",
+        "project": "app.supportsignal.com.au",
+        "lines": 78,
+        "size_bytes": 21230,
+        "bucket": "moderate",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-3722bf8e-d944-4a85-84c1-9af8d1d50633.jsonl",
+        "event_count": 78
+      },
+      {
+        "session_id": "e40cfecd-363d-476a-b052-d3bb9c8c7bfb",
+        "project": "prompt.supportsignal.com.au",
+        "lines": 80,
+        "size_bytes": 25002,
+        "bucket": "moderate",
+        "path": "/Users/davidcruwys/.claude/angeleye/archive/session-e40cfecd-363d-476a-b052-d3bb9c8c7bfb.jsonl",
+        "event_count": 80
+      },
+      {
+        "session_id": "5abfd4f1-4704-4465-99df-504763d76cb6",
+        "project": "prompt.supportsignal.com.au",
+        "lines": 88,
+        "size_bytes": 36514,
+        "bucket": "moderate",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-5abfd4f1-4704-4465-99df-504763d76cb6.jsonl",
+        "event_count": 88
+      },
+      {
+        "session_id": "33f0048e-db26-436a-a1a8-77b3b31f0d1f",
+        "project": "brains",
+        "lines": 92,
+        "size_bytes": 71031,
+        "bucket": "moderate",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-33f0048e-db26-436a-a1a8-77b3b31f0d1f.jsonl",
+        "event_count": 92
+      }
+    ],
+    "count": 8
+  },
+  {
+    "name": "moderate-2",
+    "sessions": [
+      {
+        "session_id": "69424780-cac4-4277-91f7-8c5470fc17d7",
+        "project": "signal-studio",
+        "lines": 95,
+        "size_bytes": 27074,
+        "bucket": "moderate",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-69424780-cac4-4277-91f7-8c5470fc17d7.jsonl",
+        "event_count": 95
+      },
+      {
+        "session_id": "e560d248-8091-46b6-9046-a1c79a70315b",
+        "project": "prompt.supportsignal.com.au",
+        "lines": 96,
+        "size_bytes": 28675,
+        "bucket": "moderate",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-e560d248-8091-46b6-9046-a1c79a70315b.jsonl",
+        "event_count": 96
+      },
+      {
+        "session_id": "03c0efb5-7875-40a6-9836-31ea33192809",
+        "project": "brains",
+        "lines": 97,
+        "size_bytes": 53595,
+        "bucket": "moderate",
+        "path": "/Users/davidcruwys/.claude/angeleye/archive/session-03c0efb5-7875-40a6-9836-31ea33192809.jsonl",
+        "event_count": 97
+      },
+      {
+        "session_id": "27e99b38-753f-4679-9e67-5833a85ab712",
+        "project": "flihub",
+        "lines": 99,
+        "size_bytes": 28506,
+        "bucket": "moderate",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-27e99b38-753f-4679-9e67-5833a85ab712.jsonl",
+        "event_count": 99
+      },
+      {
+        "session_id": "64410d3b-b25a-4b0e-8018-cd50ac77222e",
+        "project": "prompt.supportsignal.com.au",
+        "lines": 100,
+        "size_bytes": 36046,
+        "bucket": "moderate",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-64410d3b-b25a-4b0e-8018-cd50ac77222e.jsonl",
+        "event_count": 100
+      },
+      {
+        "session_id": "08152bc4-48eb-4395-b42b-518db6f20297",
+        "project": "app.supportsignal.com.au",
+        "lines": 106,
+        "size_bytes": 169327,
+        "bucket": "moderate",
+        "path": "/Users/davidcruwys/.claude/angeleye/archive/session-08152bc4-48eb-4395-b42b-518db6f20297.jsonl",
+        "event_count": 106
+      },
+      {
+        "session_id": "de52510d-64e0-40d9-9357-3d2eb087d394",
+        "project": "brains",
+        "lines": 106,
+        "size_bytes": 25518,
+        "bucket": "moderate",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-de52510d-64e0-40d9-9357-3d2eb087d394.jsonl",
+        "event_count": 106
+      },
+      {
+        "session_id": "698ddfb2-3e45-4e5a-98dc-6685b1d42bb3",
+        "project": "signal-studio",
+        "lines": 117,
+        "size_bytes": 48409,
+        "bucket": "moderate",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-698ddfb2-3e45-4e5a-98dc-6685b1d42bb3.jsonl",
+        "event_count": 117
+      }
+    ],
+    "count": 8
+  },
+  {
+    "name": "moderate-3",
+    "sessions": [
+      {
+        "session_id": "95575dbb-7d6a-4014-9fa3-0d8225da18a6",
+        "project": "signal-studio",
+        "lines": 121,
+        "size_bytes": 33621,
+        "bucket": "moderate",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-95575dbb-7d6a-4014-9fa3-0d8225da18a6.jsonl",
+        "event_count": 121
+      },
+      {
+        "session_id": "23582e93-bb18-42a3-9450-c1444a759891",
+        "project": "signal-studio",
+        "lines": 129,
+        "size_bytes": 37410,
+        "bucket": "moderate",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-23582e93-bb18-42a3-9450-c1444a759891.jsonl",
+        "event_count": 129
+      },
+      {
+        "session_id": "150882c0-ea28-4e62-9e7c-bf42af9081b4",
+        "project": "app.supportsignal.com.au",
+        "lines": 149,
+        "size_bytes": 87468,
+        "bucket": "moderate",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-150882c0-ea28-4e62-9e7c-bf42af9081b4.jsonl",
+        "event_count": 149
+      },
+      {
+        "session_id": "50fbca33-b254-466f-87f0-bdfa560863a6",
+        "project": "app.supportsignal.com.au",
+        "lines": 162,
+        "size_bytes": 81858,
+        "bucket": "moderate",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-50fbca33-b254-466f-87f0-bdfa560863a6.jsonl",
+        "event_count": 162
+      },
+      {
+        "session_id": "171ad14c-96be-483e-8c24-840c320d38be",
+        "project": "brains",
+        "lines": 165,
+        "size_bytes": 209694,
+        "bucket": "moderate",
+        "path": "/Users/davidcruwys/.claude/angeleye/archive/session-171ad14c-96be-483e-8c24-840c320d38be.jsonl",
+        "event_count": 165
+      },
+      {
+        "session_id": "410fcd3f-cfe6-4eb7-9a27-8a0b2a4abaf2",
+        "project": "flihub",
+        "lines": 190,
+        "size_bytes": 136378,
+        "bucket": "moderate",
+        "path": "/Users/davidcruwys/.claude/angeleye/archive/session-410fcd3f-cfe6-4eb7-9a27-8a0b2a4abaf2.jsonl",
+        "event_count": 190
+      }
+    ],
+    "count": 6
+  },
+  {
+    "name": "heavy-1",
+    "sessions": [
+      {
+        "session_id": "cda1edc2-12ce-4b99-bd89-f791ce07a6e7",
+        "project": "flihub",
+        "lines": 224,
+        "size_bytes": 120458,
+        "bucket": "heavy",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-cda1edc2-12ce-4b99-bd89-f791ce07a6e7.jsonl",
+        "event_count": 229
+      },
+      {
+        "session_id": "233c15fd-751e-49f4-8987-8e294c5a32f1",
+        "project": "signal-studio",
+        "lines": 229,
+        "size_bytes": 77605,
+        "bucket": "heavy",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-233c15fd-751e-49f4-8987-8e294c5a32f1.jsonl",
+        "event_count": 229
+      },
+      {
+        "session_id": "120c7392-b065-4e92-891c-18e46e5e04fc",
+        "project": "brains",
+        "lines": 238,
+        "size_bytes": 206326,
+        "bucket": "heavy",
+        "path": "/Users/davidcruwys/.claude/angeleye/archive/session-120c7392-b065-4e92-891c-18e46e5e04fc.jsonl",
+        "event_count": 238
+      },
+      {
+        "session_id": "3701e9b8-8004-4ecb-8865-68c6f5b2b968",
+        "project": "app.supportsignal.com.au",
+        "lines": 239,
+        "size_bytes": 378008,
+        "bucket": "heavy",
+        "path": "/Users/davidcruwys/.claude/angeleye/archive/session-3701e9b8-8004-4ecb-8865-68c6f5b2b968.jsonl",
+        "event_count": 239
+      },
+      {
+        "session_id": "ae9b4bb4-b3cd-43e6-992d-f7c7698af398",
+        "project": "angeleye",
+        "lines": 247,
+        "size_bytes": 288866,
+        "bucket": "heavy",
+        "path": "/Users/davidcruwys/.claude/angeleye/archive/session-ae9b4bb4-b3cd-43e6-992d-f7c7698af398.jsonl",
+        "event_count": 247
+      }
+    ],
+    "count": 5
+  },
+  {
+    "name": "heavy-2",
+    "sessions": [
+      {
+        "session_id": "65f77723-c8a2-49a5-a597-0e6d3a1ed85a",
+        "project": "signal-studio",
+        "lines": 261,
+        "size_bytes": 112365,
+        "bucket": "heavy",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-65f77723-c8a2-49a5-a597-0e6d3a1ed85a.jsonl",
+        "event_count": 261
+      },
+      {
+        "session_id": "24d71c92-b59c-4617-8c8b-191533ecb3fc",
+        "project": "signal-studio",
+        "lines": 263,
+        "size_bytes": 102068,
+        "bucket": "heavy",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-24d71c92-b59c-4617-8c8b-191533ecb3fc.jsonl",
+        "event_count": 263
+      },
+      {
+        "session_id": "76e2b0c7-86ea-4174-bad5-bc9a07b60850",
+        "project": "prompt.supportsignal.com.au",
+        "lines": 266,
+        "size_bytes": 122347,
+        "bucket": "heavy",
+        "path": "/Users/davidcruwys/.claude/angeleye/sessions/session-76e2b0c7-86ea-4174-bad5-bc9a07b60850.jsonl",
+        "event_count": 266
+      },
+      {
+        "session_id": "f1ee6fea-0f86-4bca-92e6-c887599d957d",
+        "project": "brains",
+        "lines": 283,
+        "size_bytes": 156919,
+        "bucket": "heavy",
+        "path": "/Users/davidcruwys/.claude/angeleye/archive/session-f1ee6fea-0f86-4bca-92e6-c887599d957d.jsonl",
+        "event_count": 283
+      },
+      {
+        "session_id": "26d4475f-8673-443f-a8f7-8e6ac22d0c06",
+        "project": "flihub",
+        "lines": 318,
+        "size_bytes": 165127,
+        "bucket": "heavy",
+        "path": "/Users/davidcruwys/.claude/angeleye/archive/session-26d4475f-8673-443f-a8f7-8e6ac22d0c06.jsonl",
+        "event_count": 318
+      }
+    ],
+    "count": 5
+  },
+  {
+    "name": "marathon-1",
+    "sessions": [
+      {
+        "session_id": "99574b7a-1ff1-489c-a699-da08cb1df7d5",
+        "project": "angeleye",
+        "lines": 536,
+        "size_bytes": 443045,
+        "bucket": "marathon",
+        "path": "/Users/davidcruwys/.claude/angeleye/archive/session-99574b7a-1ff1-489c-a699-da08cb1df7d5.jsonl",
+        "event_count": 536
+      }
+    ],
+    "count": 1
+  }
+]

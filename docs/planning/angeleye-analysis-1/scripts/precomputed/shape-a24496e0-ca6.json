@@ -1,0 +1,86 @@
+{
+  "session_id": "a24496e0-ca60-44b3-8f7c-0755939c1b7b",
+  "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-a24496e0-ca60-44b3-8f7c-0755939c1b7b.jsonl",
+  "cwd": "/Users/davidcruwys/dev/ad",
+  "shape": {
+    "event_count": 40,
+    "user_prompt_count": 9,
+    "tool_use_count": 31,
+    "stop_count": 0,
+    "subagent_start_count": 0,
+    "subagent_stop_count": 0,
+    "first_event_ts": "2026-02-19T07:17:27.189000+00:00",
+    "last_event_ts": "2026-02-19T10:57:05.667000+00:00",
+    "duration_minutes": 219,
+    "active_minutes": 28,
+    "idle_gaps_over_1h": 1,
+    "idle_gap_details": [
+      {
+        "start": "2026-02-19T07:36:32.165000+00:00",
+        "end": "2026-02-19T10:47:28.323000+00:00",
+        "gap_minutes": 190
+      }
+    ]
+  },
+  "tools": {
+    "Bash": 21,
+    "Read": 3,
+    "Task": 2,
+    "Skill": 2,
+    "Glob": 1,
+    "Write": 1,
+    "Edit": 1
+  },
+  "file_paths": {
+    "read": [],
+    "write": [],
+    "edit": []
+  },
+  "bash_commands_sample": [],
+  "first_real_prompt": {
+    "text": "Where do we keep our skills? What folder? I made a stuff we're working on and developing. ",
+    "full_length": 90,
+    "ts": "2026-02-19T07:17:27.189Z"
+  },
+  "skill_invocations": [{}, {}],
+  "subagents": null,
+  "detections": {
+    "compaction_resume": {
+      "detected": false,
+      "count": 0
+    },
+    "loop_runaway": {
+      "detected": false
+    },
+    "write_then_open": {
+      "detected": false,
+      "count": 0
+    },
+    "unauthorized_edit_before_prompt": {
+      "detected": false,
+      "count": 0
+    },
+    "search_without_read": {
+      "detected": false,
+      "count": 0
+    },
+    "ralphy_mode": {
+      "detected": false,
+      "has_ralphy_skill": false,
+      "has_impl_plan": false,
+      "has_agent_calls": false
+    },
+    "form_filling": {
+      "detected": false
+    },
+    "cron_polling": {
+      "detected": false,
+      "creates": 0,
+      "deletes": 0
+    }
+  },
+  "project_inference": {
+    "inferred_project": null,
+    "cwd_reliable": null
+  }
+}

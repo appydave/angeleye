@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "c3bd8d95-5402-4091-8c87-5432ec3f5479",
+  "machine": "m4-mini",
+  "project": "v-appydave",
+  "project_dir": "/Users/davidcruwys/dev/video-projects/v-appydave",
+  "session_type_registry": "ORIENTATION",
+  "session_type_analysed": "orientation.requirements",
+  "file_size_bytes": 27010,
+  "event_count": 41,
+  "disposition": "ended",
+  "interest_level": "medium-high",
+  "notes": "Third session in the YLO textarea rendering failure arc (follows w3-12, w3-20). David knowledge-checks Claude on YLO schemas, injects prior session analysis as context priming (explicitly instructs Claude NOT to act on it), then points Claude at SupportSignal POEM WUI as a working reference implementation. Session ends with David's sharpest expression of frustration yet: can't get textareas via YAML config changes. Zero edits made — purely observational. Root-cause hypothesis: YAML elicit step configuration differs from JSON schema x-ui-rows annotation. 3-hour idle gap followed by terminal 'x' artifact.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

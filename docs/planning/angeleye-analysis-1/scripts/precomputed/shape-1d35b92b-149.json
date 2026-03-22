@@ -1,0 +1,74 @@
+{
+  "session_id": "1d35b92b-149f-438f-964e-0dc5291ab32a",
+  "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-1d35b92b-149f-438f-964e-0dc5291ab32a.jsonl",
+  "cwd": "/Users/davidcruwys/dev/ad/brain-dynamous",
+  "shape": {
+    "event_count": 4,
+    "user_prompt_count": 1,
+    "tool_use_count": 3,
+    "stop_count": 0,
+    "subagent_start_count": 0,
+    "subagent_stop_count": 0,
+    "first_event_ts": "2026-02-28T02:24:25.603000+00:00",
+    "last_event_ts": "2026-02-28T02:24:37.533000+00:00",
+    "duration_minutes": 0,
+    "active_minutes": 0,
+    "idle_gaps_over_1h": 0,
+    "idle_gap_details": null
+  },
+  "tools": {
+    "Bash": 3
+  },
+  "file_paths": {
+    "read": [],
+    "write": [],
+    "edit": []
+  },
+  "bash_commands_sample": [],
+  "first_real_prompt": {
+    "text": "\nThis is a HEARTBEAT check. You are David's personal AI assistant running a proactive check.\n\n## Response Format (READ THIS FIRST)\n\nYou can think, reason, and narrate freely in earlier turns while you work through tools \u2014 David never sees those.\nOnly your FINAL text response is sent to David as a Slack notification on their phone.\n\nMake your final response ONLY:\n- Bullet points for items needing attention\n- A \"Priority: NORMAL/HIGH/URGENT\" line\n- Or exactly \"HEARTBEAT_OK\" if nothing needs attent",
+    "full_length": 10294,
+    "ts": "2026-02-28T02:24:25.603Z"
+  },
+  "skill_invocations": null,
+  "subagents": null,
+  "detections": {
+    "compaction_resume": {
+      "detected": false,
+      "count": 0
+    },
+    "loop_runaway": {
+      "detected": false
+    },
+    "write_then_open": {
+      "detected": false,
+      "count": 0
+    },
+    "unauthorized_edit_before_prompt": {
+      "detected": false,
+      "count": 0
+    },
+    "search_without_read": {
+      "detected": false,
+      "count": 0
+    },
+    "ralphy_mode": {
+      "detected": false,
+      "has_ralphy_skill": false,
+      "has_impl_plan": false,
+      "has_agent_calls": false
+    },
+    "form_filling": {
+      "detected": false
+    },
+    "cron_polling": {
+      "detected": false,
+      "creates": 0,
+      "deletes": 0
+    }
+  },
+  "project_inference": {
+    "inferred_project": null,
+    "cwd_reliable": null
+  }
+}

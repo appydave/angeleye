@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "79cfee06-28c5-48c0-a19f-885c56b0cf34",
+  "machine": "m4-mini",
+  "project": "angeleye",
+  "project_dir": "/Users/davidcruwys/dev/ad/apps/angeleye",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "BUILD / build.campaign",
+  "file_size_bytes": 110326,
+  "event_count": 206,
+  "disposition": "active",
+  "interest_level": "high",
+  "notes": "Ralphy Build mode — Wave 10 Settings Intelligence. 5 features built across 3 waves (WC01-WC05) using 5 parallel worktree agents in 17 minutes of autonomous execution. Self-referential: AngelEye building its own session monitoring features. Session has 3 lifecycle phases: build (17 min), user Q&A about rename visibility (hours later), closing ceremony with backlog/assessment updates. Frontend-design skill used for named-session row mockup. 27 new tests added (170 to 197). Registry classification correct.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

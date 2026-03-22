@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "b61d5adf-dfac-46c9-89bc-ce32aacb7c82",
+  "machine": "mbp",
+  "project": "outputs",
+  "project_dir": "/Users/davidcruwys/dev/ad/brains/summits/digital-stage-2026/outputs",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "BUILD / build.content_production",
+  "file_size_bytes": 243712,
+  "event_count": 265,
+  "disposition": "active",
+  "interest_level": "medium",
+  "notes": "Digital Stage Summit 2026 talk materials — 15 Mochaccino HTML variants (5x3 groups: stack, apps, skills) built via 12 parallel subagents, Playwright visual QA, JSON-canonical data architecture with gap analysis. Created agentic-applications.json, updated personal-agent-stack.json (POEM OS to POEM, workflow engines restructured, Comfy UI added). Remapped stack-v5.html to AppyDave brand palette. Voice-driven session with transcription corrections (N8N, Mochaccino, Samantha). Context exhaustion triggered continuation. Samantha vs KyberBot conflation corrected and committed to memory.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

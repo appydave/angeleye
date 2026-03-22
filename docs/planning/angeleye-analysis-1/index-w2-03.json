@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "99b75591-5c74-4342-97cb-2fba77e11d93",
+  "machine": "m4-mini",
+  "project": "digital-stage-summit-2026",
+  "project_dir": "/Users/davidcruwys/dev/ad/apps/digital-stage-summit-2026",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "BUILD / build.campaign",
+  "file_size_bytes": 128684,
+  "event_count": 232,
+  "disposition": "active",
+  "interest_level": "high",
+  "notes": "Ralphy Build mode session. /ralphy opening, voice-steered orientation, then 'build' trigger dispatches 4 background agents across worktrees for wave 4 subfolder support. 198 tool calls (106 Bash, 40 Read, 32 Edit, 7 Write, 5 Agent). Cross-project side-quest to log plugin issue about Ralphy UX. Task-notification pseudo-prompts (3 of 11 turns). First fully analysed Ralphy Build lifecycle.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

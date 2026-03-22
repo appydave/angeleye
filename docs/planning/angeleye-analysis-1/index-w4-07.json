@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "c67c4aac-5d28-4c0b-afa6-772a9a1bbf78",
+  "machine": "m4-mini",
+  "project": "v-appydave",
+  "project_dir": "/Users/davidcruwys/dev/video-projects/v-appydave",
+  "session_type_registry": "ORIENTATION",
+  "session_type_analysed": "orientation.artifact_retrieval",
+  "file_size_bytes": 7825,
+  "event_count": 31,
+  "disposition": "ended",
+  "interest_level": "low-medium",
+  "notes": "Single-turn YLO YAML/schema audit — David asked Claude to read the full YLO artefact set and assess whether fields needed x-ui-rows (textarea) annotations. Claude ran 26 Read calls + 1 Task subagent in one burst. No writes. 19.5-hour idle gap before a meta-question in Turn 2 (Skill call to re-anchor cold context). This session is the precursor to bb54ff44 where Claude made unauthorised x-ui-rows edits — the orientation here seeded that implicit action queue.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

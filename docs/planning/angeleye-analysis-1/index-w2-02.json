@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "699cab47-79c9-4f09-8a67-004fa77fddd4",
+  "machine": "m4-mini",
+  "project": "digital-stage-summit-2026",
+  "project_dir": "/Users/davidcruwys/dev/ad/apps/digital-stage-summit-2026",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "build.campaign",
+  "file_size_bytes": 188643,
+  "event_count": 228,
+  "disposition": "active",
+  "interest_level": "high",
+  "notes": "Ralphy Extend/Build session for Wave 3 — sync server routes, swagger fix, chokidar watcher, ScriptSyncView UI. Four parallel build agents, then user-QA bug report triggers 3 audit agents (arch/code/test). BLOCKERs fixed, conversational handover closing. Plugin self-assessment feedback loop.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

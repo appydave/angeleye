@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "59a8f9ac-6609-4d0a-a3eb-5397a21af069",
+  "machine": "m4-mini",
+  "project": "brains",
+  "project_dir": "/Users/davidcruwys/dev/ad/brains",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "knowledge.methodology_design",
+  "file_size_bytes": 158606,
+  "event_count": 129,
+  "disposition": "active",
+  "interest_level": "high",
+  "notes": "Genesis session for the analysis campaign. Designed the two-pass methodology, schema versioning with migration, brain-app split. Heavy voice transcription with paste-as-context opening. BUILD classification is wrong — zero application code was written.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

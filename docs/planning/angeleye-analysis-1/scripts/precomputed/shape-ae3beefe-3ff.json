@@ -1,0 +1,78 @@
+{
+  "session_id": "ae3beefe-3ff7-48f3-bef4-ca9064cdd11b",
+  "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-ae3beefe-3ff7-48f3-bef4-ca9064cdd11b.jsonl",
+  "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au/.claude/worktrees",
+  "shape": {
+    "event_count": 23,
+    "user_prompt_count": 5,
+    "tool_use_count": 18,
+    "stop_count": 0,
+    "subagent_start_count": 0,
+    "subagent_stop_count": 0,
+    "first_event_ts": "2026-02-21T16:05:10.487000+00:00",
+    "last_event_ts": "2026-02-21T16:29:40.040000+00:00",
+    "duration_minutes": 24,
+    "active_minutes": 24,
+    "idle_gaps_over_1h": 0,
+    "idle_gap_details": null
+  },
+  "tools": {
+    "Read": 7,
+    "Bash": 6,
+    "Edit": 3,
+    "Task": 1,
+    "Glob": 1
+  },
+  "file_paths": {
+    "read": [],
+    "write": [],
+    "edit": []
+  },
+  "bash_commands_sample": [],
+  "first_real_prompt": {
+    "text": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au/.claude/worktrees/ralphy-wui/poem/workflows/new-incident/mock-data/incidents\\\n\\\nCan you just look through any of the narratives before event, during event, end event, or post event and just tell me if any of these show signs of high risk, severity, self-harm, anything like that? ",
+    "full_length": 353,
+    "ts": "2026-02-21T16:05:10.487Z"
+  },
+  "skill_invocations": null,
+  "subagents": null,
+  "detections": {
+    "compaction_resume": {
+      "detected": false,
+      "count": 0
+    },
+    "loop_runaway": {
+      "detected": false
+    },
+    "write_then_open": {
+      "detected": false,
+      "count": 0
+    },
+    "unauthorized_edit_before_prompt": {
+      "detected": false,
+      "count": 0
+    },
+    "search_without_read": {
+      "detected": false,
+      "count": 0
+    },
+    "ralphy_mode": {
+      "detected": false,
+      "has_ralphy_skill": false,
+      "has_impl_plan": false,
+      "has_agent_calls": false
+    },
+    "form_filling": {
+      "detected": false
+    },
+    "cron_polling": {
+      "detected": false,
+      "creates": 0,
+      "deletes": 0
+    }
+  },
+  "project_inference": {
+    "inferred_project": null,
+    "cwd_reliable": null
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "3a24ba02-45f3-41bf-8fac-423ceb087189",
+  "machine": "m4-mini",
+  "project": "signal-studio",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/signal-studio",
+  "session_type_registry": "RESEARCH",
+  "session_type_analysed": "research.dev_env_troubleshooting",
+  "file_size_bytes": 7957,
+  "event_count": 27,
+  "disposition": "ended",
+  "interest_level": "medium",
+  "notes": "cwd is signal-studio but zero project files touched — session is entirely personal dev environment troubleshooting (GitHub Copilot removal, Ecamm Live virtual camera in Teams). websearch-heavy pattern confirmed (12 brave_web_search, 52.2% of events). Two frustration prompts signal agent-answer failure and forced search escalation. No artefacts produced (zero writes, edits, commits). Subtype candidate: research.dev_env_troubleshooting. Secondary candidate tag: research.consultative (zero file artefacts). Key classifier signal: cwd alone is not a reliable project indicator when no project files are touched.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

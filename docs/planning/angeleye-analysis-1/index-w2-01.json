@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "d08d1b10-6a61-467f-84c9-70288e51a50b",
+  "machine": "m4-mini",
+  "project": "flihub",
+  "project_dir": "/Users/davidcruwys/dev/ad/flivideo/flihub",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "build.campaign",
+  "file_size_bytes": 318558,
+  "event_count": 472,
+  "disposition": "active",
+  "interest_level": "high",
+  "notes": "Two-cycle Ralphy Build session for NFR-146 test coverage + code quality. 21 background agents across 2 campaigns, 75 Edits + 34 Writes. Post-build quality audit reflex pattern observed.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "798c3fc6-67d8-44fc-ae42-4ee70eeeef1e",
+  "machine": "m4-mini",
+  "project": "signal-studio",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/signal-studio",
+  "session_type_registry": "TEST",
+  "session_type_analysed": "test.uat_with_inline_debug",
+  "file_size_bytes": 176727,
+  "event_count": 474,
+  "disposition": "active",
+  "interest_level": "high",
+  "notes": "Wave 24 UAT execution via Playwright MCP against pre-written workflow documents. Session arc: handover open → UAT strategy debate → CronCreate monitoring loop → playwright-heavy execution → 4x context compaction → inline bug discovery + Edit fixes → second UAT pass → commit/report close. Voice-transcribed throughout (Wiggum loop artifact). 248/459 tool calls are playwright; 65 Edit calls confirm inline code repair. First observed CronCreate-for-UAT-monitoring pattern.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

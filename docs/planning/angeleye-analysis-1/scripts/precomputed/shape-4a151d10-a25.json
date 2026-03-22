@@ -1,0 +1,74 @@
+{
+  "session_id": "4a151d10-a257-4cab-93d4-04f4af675a05",
+  "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-4a151d10-a257-4cab-93d4-04f4af675a05.jsonl",
+  "cwd": "/Users/davidcruwys/dev/ad/agent-workflow-builder/ad-agent_architecture",
+  "shape": {
+    "event_count": 2,
+    "user_prompt_count": 1,
+    "tool_use_count": 1,
+    "stop_count": 0,
+    "subagent_start_count": 0,
+    "subagent_stop_count": 0,
+    "first_event_ts": "2026-02-21T02:37:42.571000+00:00",
+    "last_event_ts": "2026-02-21T02:37:46.260000+00:00",
+    "duration_minutes": 0,
+    "active_minutes": 0,
+    "idle_gaps_over_1h": 0,
+    "idle_gap_details": null
+  },
+  "tools": {
+    "Glob": 1
+  },
+  "file_paths": {
+    "read": [],
+    "write": [],
+    "edit": []
+  },
+  "bash_commands_sample": [],
+  "first_real_prompt": {
+    "text": "how do i run this bin server or something",
+    "full_length": 41,
+    "ts": "2026-02-21T02:37:42.571Z"
+  },
+  "skill_invocations": null,
+  "subagents": null,
+  "detections": {
+    "compaction_resume": {
+      "detected": false,
+      "count": 0
+    },
+    "loop_runaway": {
+      "detected": false
+    },
+    "write_then_open": {
+      "detected": false,
+      "count": 0
+    },
+    "unauthorized_edit_before_prompt": {
+      "detected": false,
+      "count": 0
+    },
+    "search_without_read": {
+      "detected": false,
+      "count": 1
+    },
+    "ralphy_mode": {
+      "detected": false,
+      "has_ralphy_skill": false,
+      "has_impl_plan": false,
+      "has_agent_calls": false
+    },
+    "form_filling": {
+      "detected": false
+    },
+    "cron_polling": {
+      "detected": false,
+      "creates": 0,
+      "deletes": 0
+    }
+  },
+  "project_inference": {
+    "inferred_project": null,
+    "cwd_reliable": null
+  }
+}

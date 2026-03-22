@@ -1,0 +1,76 @@
+{
+  "session_id": "32566acd-40e0-4251-bc88-0afe1a6fa9aa",
+  "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-32566acd-40e0-4251-bc88-0afe1a6fa9aa.jsonl",
+  "cwd": "/Users/davidcruwys/dev",
+  "shape": {
+    "event_count": 9,
+    "user_prompt_count": 3,
+    "tool_use_count": 6,
+    "stop_count": 0,
+    "subagent_start_count": 0,
+    "subagent_stop_count": 0,
+    "first_event_ts": "2026-02-28T12:18:43.600000+00:00",
+    "last_event_ts": "2026-02-28T12:23:55.239000+00:00",
+    "duration_minutes": 5,
+    "active_minutes": 5,
+    "idle_gaps_over_1h": 0,
+    "idle_gap_details": null
+  },
+  "tools": {
+    "Bash": 4,
+    "Read": 1,
+    "Write": 1
+  },
+  "file_paths": {
+    "read": [],
+    "write": [],
+    "edit": []
+  },
+  "bash_commands_sample": [],
+  "first_real_prompt": {
+    "text": "  # Check if you have a global gitignore\n  git config --global core.excludesfile\n\n  # It should point to something like ~/.gitignore_global\n  # Add DS_Store if not already there\n  echo \".DS_Store\" >> ~/.gitignore_global\n\ndo we have this config in place?",
+    "full_length": 253,
+    "ts": "2026-02-28T12:18:43.600Z"
+  },
+  "skill_invocations": null,
+  "subagents": null,
+  "detections": {
+    "compaction_resume": {
+      "detected": false,
+      "count": 0
+    },
+    "loop_runaway": {
+      "detected": false
+    },
+    "write_then_open": {
+      "detected": false,
+      "count": 0
+    },
+    "unauthorized_edit_before_prompt": {
+      "detected": false,
+      "count": 0
+    },
+    "search_without_read": {
+      "detected": false,
+      "count": 0
+    },
+    "ralphy_mode": {
+      "detected": false,
+      "has_ralphy_skill": false,
+      "has_impl_plan": false,
+      "has_agent_calls": false
+    },
+    "form_filling": {
+      "detected": false
+    },
+    "cron_polling": {
+      "detected": false,
+      "creates": 0,
+      "deletes": 0
+    }
+  },
+  "project_inference": {
+    "inferred_project": null,
+    "cwd_reliable": null
+  }
+}

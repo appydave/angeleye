@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "bb44829b-de20-4fb1-89ba-18d723dea4a1",
+  "machine": "m4-mini",
+  "project": "signal-studio",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/signal-studio",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "build.migration",
+  "file_size_bytes": 165813,
+  "event_count": 225,
+  "disposition": "active",
+  "interest_level": "high",
+  "notes": "Complete Wave 25 schema migration (escalation field rename) with worktree-based parallel agent execution, Playwright visual verification, and cross-project POEM impact check. Voice-driven, /ralphy planning, /capture-context closing.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

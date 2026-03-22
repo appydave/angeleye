@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "1c87debe-1895-4e38-abef-8bcd28888f11",
+  "machine": "m4-mini",
+  "project": "brains",
+  "project_dir": "/Users/davidcruwys/dev/ad/brains",
+  "session_type_registry": "RESEARCH",
+  "session_type_analysed": "RESEARCH / research.operational",
+  "file_size_bytes": 23310,
+  "event_count": 67,
+  "disposition": "active",
+  "interest_level": "low-medium",
+  "notes": "No reclassification needed — RESEARCH/websearch-heavy is correct. Session is Philippines hardware procurement research for team members Jan and Mary: Mac Mini M4 x2, 4K monitors (LG 27US500W), Magic Keyboards, peripherals, budget under $2,500 USD. Ran from brains cwd but has zero relation to brain knowledge work — classic cwd=brains-but-not-brain-work pattern. 35+ brave_web_search calls, 8 playwright browser_navigate calls to verify Lazada store URLs. No Write/Edit/git operations — no artefacts produced. Voice transcription throughout. Ends abruptly with currency conversion request, no closing ceremony. New subtype proposed: research.operational (decision-support research producing no knowledge artefacts).",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

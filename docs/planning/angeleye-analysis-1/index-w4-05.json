@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "38a1c160-dfba-4244-b5c7-adb51664740a",
+  "machine": "m4-mini",
+  "project": "prompt.supportsignal",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+  "session_type_registry": "ORIENTATION",
+  "session_type_analysed": "ORIENTATION.artifact_retrieval",
+  "file_size_bytes": 8905,
+  "event_count": 24,
+  "disposition": "ended",
+  "interest_level": "medium-high",
+  "notes": "Two-burst session spanning ~20 hours. Burst 1 (38 min): documentation archaeology across AWB/POEM WUI docs — Display YAML, N8N alignment rationale, React visualisation library compatibility, doc tree audit. Ends with Write (synthesised research note). Burst 2 (next morning, 3 min): explicit bookend — recap, handoff context, Skill invocation to close. Compound subtype: artifact_retrieval + bookend. Registry classification of ORIENTATION is correct; read-heavy tool pattern confirmed (Read x6, Glob x3, Grep x2). Notable: session opens with a terminology probe ('what do you know it as?') — a deliberate prior-context check before substantive work.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

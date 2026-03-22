@@ -1,0 +1,127 @@
+{
+  "session_id": "bbc86dc1-5776-4545-9d13-bd05dda100cd",
+  "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-bbc86dc1-5776-4545-9d13-bd05dda100cd.jsonl",
+  "cwd": "/Users/davidcruwys/dev/ad/apps/angeleye",
+  "shape": {
+    "event_count": 77,
+    "user_prompt_count": 11,
+    "tool_use_count": 52,
+    "stop_count": 11,
+    "subagent_start_count": 1,
+    "subagent_stop_count": 1,
+    "first_event_ts": "2026-03-15T01:35:33.599000+00:00",
+    "last_event_ts": "2026-03-15T14:38:02.066000+00:00",
+    "duration_minutes": 782,
+    "active_minutes": 28,
+    "idle_gaps_over_1h": 1,
+    "idle_gap_details": [
+      {
+        "start": "2026-03-15T02:03:37.308000+00:00",
+        "end": "2026-03-15T14:38:02.066000+00:00",
+        "gap_minutes": 754
+      }
+    ]
+  },
+  "tools": {
+    "Bash": 24,
+    "Read": 17,
+    "Edit": 6,
+    "Glob": 2,
+    "Skill": 1,
+    "Write": 1,
+    "Agent": 1
+  },
+  "file_paths": {
+    "read": [
+      "/Users/davidcruwys/dev/ad/apps/angeleye/client/src/views/ObserverView.tsx",
+      "/Users/davidcruwys/.claude/skills/angeleye/SKILL.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/services/angeleye-data.ts",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/routes/hooks.ts",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/requirements.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/BACKLOG.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-wave-1/IMPLEMENTATION_PLAN.md",
+      "/Users/davidcruwys/.claude/skills/angeleye-install/SKILL.md",
+      "/Users/davidcruwys/.claude/skills/angeleye-name-session/SKILL.md",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/client/src/components/AppShell.tsx",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/client/src/contexts/NavContext.tsx",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/SESSION_HANDOVER.md"
+    ],
+    "write": ["/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/SESSION_HANDOVER.md"],
+    "edit": [
+      "/Users/davidcruwys/dev/ad/apps/angeleye/client/src/views/ObserverView.tsx",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/services/angeleye-data.ts",
+      "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/routes/hooks.ts"
+    ]
+  },
+  "bash_commands_sample": [
+    "find ~/.claude/skills/angeleye -type f | sort && echo \"---\" && ls ~/.claude/skills/ | head -20",
+    "cat ~/.claude/skills/angeleye/SKILL.md && echo \"===\" && cat ~/.claude/skills/angeleye/install.md && echo \"===\" && cat ~/.claude/skills/angeleye/name-session.md",
+    "ls ~/.claude/skills/brand-dave/ | head -10 && echo \"---\" && ls ~/.claude/skills/appydave/ | head -10",
+    "find ~/.claude/plugins -name \"SKILL.md\" | grep -i \"install\\|brand-dave\\|appydave\" | head -10",
+    "mkdir -p ~/.claude/skills/angeleye/install && mkdir -p ~/.claude/skills/angeleye/name-session && cp ~/.claude/skills/angeleye/install.md ~/.claude/skills/angeleye/install/SKILL.md && cp ~/.claude/skills/angeleye/name-session.md ~/.claude/skills/angeleye/name-session/SKILL.md && rm ~/.claude/skills/a",
+    "find ~/.claude/skills/angeleye -type f | sort",
+    "rm ~/.claude/skills/angeleye/SKILL.md",
+    "cat ~/.claude/angeleye/registry.json 2>/dev/null || echo \"not found\"",
+    "echo '{}' > ~/.claude/angeleye/registry.json && echo \"cleared\"",
+    "grep -n \"\\.map(\" /Users/davidcruwys/dev/ad/apps/angeleye/client/src/views/ObserverView.tsx"
+  ],
+  "first_real_prompt": {
+    "text": "check this ?  Say the quick brown fox jumped\n over the lazy\n\n\u23fa The quick brown fox jumped over\n   the lazy dog!",
+    "full_length": 111,
+    "ts": "2026-03-15T01:57:37.714Z"
+  },
+  "skill_invocations": [
+    {
+      "keys": ["skill"]
+    }
+  ],
+  "subagents": [
+    {
+      "agent_id": "a1351abac46126056",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-15T02:01:20.318Z",
+      "stopped_at": "2026-03-15T02:03:23.644Z"
+    }
+  ],
+  "detections": {
+    "compaction_resume": {
+      "detected": false,
+      "count": 0
+    },
+    "loop_runaway": {
+      "detected": false,
+      "stop_ratio": 0.14
+    },
+    "write_then_open": {
+      "detected": false,
+      "count": 0
+    },
+    "unauthorized_edit_before_prompt": {
+      "detected": false,
+      "count": 0
+    },
+    "search_without_read": {
+      "detected": false,
+      "count": 0
+    },
+    "ralphy_mode": {
+      "detected": false,
+      "has_ralphy_skill": false,
+      "has_impl_plan": true,
+      "has_agent_calls": true
+    },
+    "form_filling": {
+      "detected": false
+    },
+    "cron_polling": {
+      "detected": false,
+      "creates": 0,
+      "deletes": 0
+    }
+  },
+  "project_inference": {
+    "inferred_project": "/Users/davidcruwys/dev/ad/apps/angeleye",
+    "cwd_reliable": true,
+    "edit_write_count": 4
+  }
+}

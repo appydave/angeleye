@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "830bd3ac-f7f5-41a1-adf8-8ded529578d3",
+  "machine": "m4-mini",
+  "project": "brain-dynamous",
+  "project_dir": "/Users/davidcruwys/dev/ad/brain-dynamous",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "setup.onboarding_and_integration",
+  "file_size_bytes": 19335,
+  "event_count": 51,
+  "disposition": "ended",
+  "interest_level": "high",
+  "notes": "brain-dynamous is a personal AI OS scaffold (not the brains/ knowledge base) — hooks, heartbeat.py, Gmail/Calendar/Slack/Asana/Circle integrations, fastembed, SOUL.md/USER.md/MEMORY.md/BOOTSTRAP.md. Session activates the system for the first time: BOOTSTRAP onboarding interview (Phase 1, no tools), memory file writes (Phase 2, Write x2 Edit x4), Gmail/Calendar OAuth wiring (Phase 3, Skill x1 Bash x2 Glob x1), heartbeat test and sqlite_vec debug (Phase 4, Bash x6), cron/Supabase architecture discussion (Phase 5, no tools). Wall clock 22h due to overnight gap — active time ~2-3h. Bash dominates (17/31, 54.8%). Heartbeat cost $0.2231/run noted explicitly. Subtype candidates: setup.scaffold_activation (new), session.overnight_gap (tag). BUILD classification correct; subtype refinement needed.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

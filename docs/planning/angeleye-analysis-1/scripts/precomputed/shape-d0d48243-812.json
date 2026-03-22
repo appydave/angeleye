@@ -1,0 +1,81 @@
+{
+  "session_id": "d0d48243-812c-43e4-8eb0-fd46619dadd8",
+  "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-d0d48243-812c-43e4-8eb0-fd46619dadd8.jsonl",
+  "cwd": "/Users/davidcruwys/dev/ad/brains",
+  "shape": {
+    "event_count": 49,
+    "user_prompt_count": 5,
+    "tool_use_count": 44,
+    "stop_count": 0,
+    "subagent_start_count": 0,
+    "subagent_stop_count": 0,
+    "first_event_ts": "2026-03-01T04:54:13.720000+00:00",
+    "last_event_ts": "2026-03-01T05:51:06.218000+00:00",
+    "duration_minutes": 56,
+    "active_minutes": 56,
+    "idle_gaps_over_1h": 0,
+    "idle_gap_details": null
+  },
+  "tools": {
+    "Edit": 19,
+    "Read": 7,
+    "TaskUpdate": 6,
+    "Bash": 6,
+    "TaskCreate": 2,
+    "WebFetch": 2,
+    "Glob": 1,
+    "AskUserQuestion": 1
+  },
+  "file_paths": {
+    "read": [],
+    "write": [],
+    "edit": []
+  },
+  "bash_commands_sample": [],
+  "first_real_prompt": {
+    "text": "Main focus today is on the agentic-os, but I think there's some really useful data in Ansible. And the question really is, when you look at the architecture, I want to understand whether I've got a vertical and a horizontal architecture in everything we've got. So vertical architecture is kind of what OpenClaw would do, but if we were to build it ourselves, it would be a brain on the bottom, a second brain, maybe an action-based memory system to-do system. On top of that would be a harness. In O",
+    "full_length": 2467,
+    "ts": "2026-03-01T04:57:58.843Z"
+  },
+  "skill_invocations": null,
+  "subagents": null,
+  "detections": {
+    "compaction_resume": {
+      "detected": false,
+      "count": 0
+    },
+    "loop_runaway": {
+      "detected": false
+    },
+    "write_then_open": {
+      "detected": false,
+      "count": 0
+    },
+    "unauthorized_edit_before_prompt": {
+      "detected": false,
+      "count": 0
+    },
+    "search_without_read": {
+      "detected": false,
+      "count": 0
+    },
+    "ralphy_mode": {
+      "detected": false,
+      "has_ralphy_skill": false,
+      "has_impl_plan": false,
+      "has_agent_calls": true
+    },
+    "form_filling": {
+      "detected": false
+    },
+    "cron_polling": {
+      "detected": false,
+      "creates": 0,
+      "deletes": 0
+    }
+  },
+  "project_inference": {
+    "inferred_project": null,
+    "cwd_reliable": null
+  }
+}

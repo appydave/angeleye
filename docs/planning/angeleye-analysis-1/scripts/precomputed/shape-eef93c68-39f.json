@@ -1,0 +1,74 @@
+{
+  "session_id": "eef93c68-39fe-4d92-91aa-ee1528dde126",
+  "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-eef93c68-39fe-4d92-91aa-ee1528dde126.jsonl",
+  "cwd": "/Users/davidcruwys/dev/clients",
+  "shape": {
+    "event_count": 12,
+    "user_prompt_count": 4,
+    "tool_use_count": 8,
+    "stop_count": 0,
+    "subagent_start_count": 0,
+    "subagent_stop_count": 0,
+    "first_event_ts": "2026-03-03T12:40:33.868000+00:00",
+    "last_event_ts": "2026-03-03T12:43:51.111000+00:00",
+    "duration_minutes": 3,
+    "active_minutes": 3,
+    "idle_gaps_over_1h": 0,
+    "idle_gap_details": null
+  },
+  "tools": {
+    "Bash": 8
+  },
+  "file_paths": {
+    "read": [],
+    "write": [],
+    "edit": []
+  },
+  "bash_commands_sample": [],
+  "first_real_prompt": {
+    "text": "How many client directories do I have, and which ones have repositories? What would be the pattern for repositories if the ones that didn't have repositories had repositories? What would be the file naming or the repository naming concepts? ",
+    "full_length": 241,
+    "ts": "2026-03-03T12:40:33.868Z"
+  },
+  "skill_invocations": null,
+  "subagents": null,
+  "detections": {
+    "compaction_resume": {
+      "detected": false,
+      "count": 0
+    },
+    "loop_runaway": {
+      "detected": false
+    },
+    "write_then_open": {
+      "detected": false,
+      "count": 0
+    },
+    "unauthorized_edit_before_prompt": {
+      "detected": false,
+      "count": 0
+    },
+    "search_without_read": {
+      "detected": false,
+      "count": 0
+    },
+    "ralphy_mode": {
+      "detected": false,
+      "has_ralphy_skill": false,
+      "has_impl_plan": false,
+      "has_agent_calls": false
+    },
+    "form_filling": {
+      "detected": false
+    },
+    "cron_polling": {
+      "detected": false,
+      "creates": 0,
+      "deletes": 0
+    }
+  },
+  "project_inference": {
+    "inferred_project": null,
+    "cwd_reliable": null
+  }
+}

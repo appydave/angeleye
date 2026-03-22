@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "4693345b-0260-445b-95e5-01250801e8e7",
+  "machine": "m4-mini",
+  "project": "flihub",
+  "project_dir": "/Users/davidcruwys/dev/ad/flivideo/flihub",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "build.campaign",
+  "file_size_bytes": 253000,
+  "event_count": 278,
+  "disposition": "active",
+  "interest_level": "medium",
+  "notes": "Handover-driven build session: 3 feature handovers (FR-145, UX batch, FR-144) executed sequentially, then /ralphy Project Heal for backlog reconciliation. 34 Edits, 5 Writes, 4 commits. Skills: /flivideo:dev (context loader, not in lookup), audit skills, /ralphy. Background agent for cross-project port research.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

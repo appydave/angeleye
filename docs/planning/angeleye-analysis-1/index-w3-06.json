@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "b9d30d9f-f624-4457-90e7-6a16dff07f24",
+  "machine": "m4-mini",
+  "project": "brains",
+  "project_dir": "/Users/davidcruwys/dev/ad/brains",
+  "session_type_registry": "RESEARCH",
+  "session_type_analysed": "RESEARCH / research.knowledge-capture",
+  "file_size_bytes": 9000,
+  "event_count": 34,
+  "disposition": "active",
+  "interest_level": "medium-high",
+  "notes": "No reclassification needed — RESEARCH is correct, subtype refined from websearch-heavy to research.knowledge-capture. Two-prompt session: prompt 1 triggers deep web research on Claude Agent SDK + /loop command (21 web tools), prompt 2 commits findings to brain file + injects proactive /loop suggestion rules into ~/.claude/CLAUDE.md. Brain subfolder: anthropic-claude/ (claude-code/ and ralph-wiggum/). CLAUDE.md write is the high-leverage artifact — permanently alters Claude proactive behaviour in all future sessions. Desktop scheduled tasks explicitly deferred by David. Voice transcription throughout (Ralph Wiggum Loop = /loop).",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

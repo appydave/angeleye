@@ -17,7 +17,7 @@ AngelEye reads and writes Claude Code's own data files. Before implementing anyt
 | Topic                                                            | Canonical location                                                   |
 | ---------------------------------------------------------------- | -------------------------------------------------------------------- |
 | JSONL entry types, streaming dedup, tool pairing, session naming | `~/dev/ad/brains/anthropic-claude/claude-code/observability.md`      |
-| Hook events (all 17), hook input format, env vars                | `~/dev/ad/brains/anthropic-claude/claude-code/hooks-reference.md`    |
+| Hook events (all 22), hook input format, env vars                | `~/dev/ad/brains/anthropic-claude/claude-code/hooks-reference.md`    |
 | Session resume, /rename, /fork, /rewind behaviour                | `~/dev/ad/brains/anthropic-claude/claude-code/session-management.md` |
 
 **Key facts for AngelEye agents** (don't re-discover these):

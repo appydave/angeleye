@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "session_id": "904f0069-500c-44d7-bebd-0bb0dbe42772",
+  "machine": "m4-mini",
+  "project": "brains",
+  "project_dir": "/Users/davidcruwys/dev/ad/brains",
+  "session_type_registry": "KNOWLEDGE",
+  "session_type_analysed": "build.surgical",
+  "reclassified": true,
+  "reclassification_reason": "project_dir false positive — session invokes rename-images skill on ~/Downloads, never touches brains directory",
+  "file_size_bytes": 7000,
+  "event_count": 32,
+  "disposition": "complete",
+  "interest_level": "low",
+  "skills_used": ["rename-images"],
+  "notes": "Skill-driven session: /rename-images on 14 Ecamm Live presentation PNGs in ~/Downloads. 3 real user prompts. Classifier learning: project_dir needs file-touch guard before using as classification signal.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

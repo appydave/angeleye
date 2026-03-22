@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "1fe96bc7-fc4c-4653-88df-fe942ab52d15",
+  "machine": "m4-mini",
+  "project": "signal-studio",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/signal-studio",
+  "session_type_registry": "TEST",
+  "session_type_analysed": "test.uat-narrative",
+  "file_size_bytes": 31428,
+  "event_count": 92,
+  "disposition": "active",
+  "interest_level": "medium-high",
+  "notes": "Three-phase session: (1) wave22 git merge + UAT planning, (2) W01 workflow narrative execution via Playwright MCP (~30 browser interactions, CronCreate for monitoring log), (3) next-morning frustration review + workflow process redesign. First observed test.uat-narrative session — Claude executes human-authored workflow narratives step-by-step using browser_click/fill_form/snapshot, distinct from automated E2E spec execution. Key failure: log wrote 20 identical 'no change' entries instead of human-readable summary grid. Produced 'stop and wait' protocol design for unattended agent runs. CronCreate+CronDelete lifecycle (create monitoring cron, delete after run) — only observed example. Session opens with near-compaction handover paste as context injection. Tools: mcp__playwright__browser_click x18, Bash x17, Edit x10, Read x10, mcp__playwright__browser_fill_form x8.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

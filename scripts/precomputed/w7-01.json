@@ -1,0 +1,719 @@
+[
+  {
+    "session_id": "df728ece-225d-44e0-b5fa-49bef627ef1d",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-df728ece-225d-44e0-b5fa-49bef627ef1d.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brain-dynamous",
+    "shape": {
+      "event_count": 1,
+      "user_prompt_count": 1,
+      "tool_use_count": 0,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-28T04:30:37.186000+00:00",
+      "last_event_ts": "2026-02-28T04:30:37.186000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {},
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Pre-compaction memory flush. The session is near auto-compaction.\n\nReview the conversation context below and respond with a concise summary of important items.\nDo NOT use any tools \u2014 just return plain text.\n\nFormat your response as bullet points covering:\n- Decisions made and their rationale\n- Lessons learned or mistakes to avoid\n- Important facts, configurations, or patterns discovered\n- Action items or follow-ups mentioned\n- Key context that would be lost after compaction\n\nSkip anything that i",
+      "full_length": 1467,
+      "ts": "2026-02-28T04:30:37.186Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "f2117010-90d5-4930-bcbc-f8ee70560f8c",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-f2117010-90d5-4930-bcbc-f8ee70560f8c.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brain-dynamous",
+    "shape": {
+      "event_count": 2,
+      "user_prompt_count": 1,
+      "tool_use_count": 1,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-28T04:26:53.606000+00:00",
+      "last_event_ts": "2026-02-28T04:27:52.930000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "AskUserQuestion": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I want you to unpack this statment into something that can be researched, use AskTool if you need more info from me.\n\nCONTEXT GRAPHS (GRAPH RAG, Knowledge Rag), Semantic ontology, taxonomy, intent, patterns, content curation",
+      "full_length": 224,
+      "ts": "2026-02-28T04:26:53.606Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "5145c4cb-52d6-4b79-afd1-4033f5225307",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-5145c4cb-52d6-4b79-afd1-4033f5225307.jsonl",
+    "cwd": "/Users/davidcruwys",
+    "shape": {
+      "event_count": 3,
+      "user_prompt_count": 2,
+      "tool_use_count": 1,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-13T14:12:13.412000+00:00",
+      "last_event_ts": "2026-03-13T14:12:55.784000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Open this for me please.",
+      "full_length": 24,
+      "ts": "2026-03-13T14:12:13.412Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "d43bcb1a-4e25-4605-9972-c697bb9e5de4",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-d43bcb1a-4e25-4605-9972-c697bb9e5de4.jsonl",
+    "cwd": "/Users/davidcruwys/dev/video-projects/v-appydave",
+    "shape": {
+      "event_count": 13,
+      "user_prompt_count": 1,
+      "tool_use_count": 12,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-22T05:50:46.217000+00:00",
+      "last_event_ts": "2026-02-22T05:53:34.075000+00:00",
+      "duration_minutes": 2,
+      "active_minutes": 2,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Glob": 5,
+      "Read": 3,
+      "Write": 3,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Can we create a second brain just for using the Mac operating system? Best practises, tweaks, and stuff like that. \n\nAnd while we're at it, why the fuck does everything disappear when I click on the desktop, and how do I stop it?",
+      "full_length": 229,
+      "ts": "2026-02-22T05:50:46.217Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "649b08de-8ac9-432d-8581-c65562e2c0ef",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-649b08de-8ac9-432d-8581-c65562e2c0ef.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/appystack",
+    "shape": {
+      "event_count": 21,
+      "user_prompt_count": 4,
+      "tool_use_count": 17,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-05T01:32:04.192000+00:00",
+      "last_event_ts": "2026-03-05T02:30:22.007000+00:00",
+      "duration_minutes": 58,
+      "active_minutes": 27,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 5,
+      "Edit": 4,
+      "Bash": 4,
+      "ToolSearch": 3,
+      "Glob": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "What are the basic installation instructions for a new AppyStack? Don't look at the README document because that's actually well out of date. ",
+      "full_length": 142,
+      "ts": "2026-03-05T01:32:04.192Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "a1ebdd28-7dd6-4ed1-a756-135f579f5973",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-a1ebdd28-7dd6-4ed1-a756-135f579f5973.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/lars",
+    "shape": {
+      "event_count": 41,
+      "user_prompt_count": 4,
+      "tool_use_count": 37,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-05T10:20:45.628000+00:00",
+      "last_event_ts": "2026-03-06T00:23:20.660000+00:00",
+      "duration_minutes": 842,
+      "active_minutes": 29,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-05T10:50:15.091000+00:00",
+          "end": "2026-03-06T00:23:10.035000+00:00",
+          "gap_minutes": 812
+        }
+      ]
+    },
+    "tools": {
+      "Read": 12,
+      "Glob": 9,
+      "Edit": 5,
+      "Write": 4,
+      "Bash": 4,
+      "ToolSearch": 3
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I'm in Bangkok. This is information about LAS. I don't know what CET stands for. \n\n\nLars Filtenborg\nWed, Mar 4, 11:42\u202fAM (1 day ago)\nto me\n\nActually - any morning 6, 7 or 8 am CET I can plan for with you if needed. \nMed venlig hilsen \u2013 Kind regards,\n\nLars Filtenborg\n\n \n\nEt billede, der indeholder tekst, skilt\n\nAutomatisk genereret beskrivelse \n\n \n\n \n\n \n\nFrom: Lars Filtenborg <lars@tjeks.dk>\nDate: Tuesday, 3 March 2026 at 15.06\nTo: David Cruwys <david@ideasmen.com.au>\nSubject: Re: Getting Started",
+      "full_length": 2527,
+      "ts": "2026-03-05T10:20:45.628Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "d876db56-8ba2-417b-b367-593f0b6712cd",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-d876db56-8ba2-417b-b367-593f0b6712cd.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps",
+    "shape": {
+      "event_count": 48,
+      "user_prompt_count": 2,
+      "tool_use_count": 46,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-08T13:15:47.362000+00:00",
+      "last_event_ts": "2026-03-08T13:40:14.418000+00:00",
+      "duration_minutes": 24,
+      "active_minutes": 24,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Edit": 17,
+      "Read": 7,
+      "Glob": 6,
+      "Write": 6,
+      "Agent": 4,
+      "Bash": 3,
+      "Grep": 2,
+      "ToolSearch": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Yeah, get going with it. Wave 2",
+      "full_length": 31,
+      "ts": "2026-03-08T13:17:19.137Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 2
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "9d791f83-4054-482b-aef4-f89d0346d9bd",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-9d791f83-4054-482b-aef4-f89d0346d9bd.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/flivideo/flideck",
+    "shape": {
+      "event_count": 74,
+      "user_prompt_count": 10,
+      "tool_use_count": 64,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-06T05:04:21.121000+00:00",
+      "last_event_ts": "2026-03-06T15:07:23.525000+00:00",
+      "duration_minutes": 603,
+      "active_minutes": 36,
+      "idle_gaps_over_1h": 2,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-06T05:39:17.157000+00:00",
+          "end": "2026-03-06T09:08:49.981000+00:00",
+          "gap_minutes": 209
+        },
+        {
+          "start": "2026-03-06T09:10:04.843000+00:00",
+          "end": "2026-03-06T15:07:19.545000+00:00",
+          "gap_minutes": 357
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 29,
+      "Read": 27,
+      "ToolSearch": 3,
+      "Write": 2,
+      "mcp__playwright__browser_navigate": 2,
+      "mcp__playwright__browser_install": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Do you have knowledge of where we're up to looking at backlogs or documentation or anything? ",
+      "full_length": 93,
+      "ts": "2026-03-06T05:04:21.121Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "59c2d164-15c6-4fc5-813e-d807001bd174",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-59c2d164-15c6-4fc5-813e-d807001bd174.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 131,
+      "user_prompt_count": 34,
+      "tool_use_count": 97,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-01T06:12:57.112000+00:00",
+      "last_event_ts": "2026-03-01T12:06:56.051000+00:00",
+      "duration_minutes": 353,
+      "active_minutes": 173,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-01T09:40:53.080000+00:00",
+          "end": "2026-03-01T12:04:56.419000+00:00",
+          "gap_minutes": 144
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 44,
+      "Read": 30,
+      "Edit": 18,
+      "Write": 3,
+      "Skill": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "\u23fa Let me verify the final file looks correct:\n\n\u23fa Bash(cd /Users/davidcruwys/dev/ad/brains/agentic-os/architecture && python3 -c \"import json; data=json.load(open('system.json')); print('\u2705 Valid\n      JSON'); print(f'Top-\u2026)\n  \u23bf \u00a0\u2705 Valid JSON\n     Top-level keys: ['system', 'views', 'machines', 'layers', 'components', 'relationships', 'decisions', 'vertical_stack', 'vertical_stack_prof\n     iles', 'users', 'brain_topology', 'metadata']\n     \u2026 +7 lines (ctrl+o to expand)\n\n\u23fa Valid JSON. Let me do a ",
+      "full_length": 60390,
+      "ts": "2026-03-01T06:13:17.564Z"
+    },
+    "skill_invocations": [{}, {}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": true,
+        "count": 1
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false,
+        "first_prompt_length": 60390,
+        "short_prompt_ratio": 0.52
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  }
+]

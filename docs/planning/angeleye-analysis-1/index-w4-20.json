@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "fddf773a-3e78-4df1-90b2-40023625bc20",
+  "machine": "m4-mini",
+  "project": "prompt.supportsignal",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+  "session_type_registry": "RESEARCH",
+  "session_type_analysed": "research.status_check",
+  "file_size_bytes": 1000,
+  "event_count": 5,
+  "disposition": "active",
+  "interest_level": "low",
+  "notes": "3-minute one-shot status check. Single prompt asking about Anthropic/Claude uptime and news, framed around Trump/Department of War geopolitical context. Pattern: WebFetch×2 + brave_news_search×2 fired in 6-second burst. No project files touched. Session opened in prompt.supportsignal.com.au incidentally — entirely external to the project. RESEARCH classification confirmed. Subtype research.status_check: targeted operational check, not exploratory research. Dual-channel lookup (direct URL fetch + news search) is the diagnostic signal. Analytically thin but confirms status_check as a real micro-session type.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

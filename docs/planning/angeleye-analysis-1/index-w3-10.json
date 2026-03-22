@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "d363ca82-0496-4ff8-8011-d0346b1ae4fb",
+  "machine": "m4-mini",
+  "project": "appydave-plugins",
+  "project_dir": "/Users/davidcruwys/dev/ad/appydave-plugins",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "skill.design",
+  "file_size_bytes": 52000,
+  "event_count": 44,
+  "disposition": "active",
+  "interest_level": "high",
+  "notes": "Registry BUILD classification is wrong — no application code was written. Session is entirely about designing and improving the Ralphy skill (SKILL.md edits in the plugin authoring repo). Key work: four-mode taxonomy (requirements/plan/build/extend), terminology canonicalisation (campaign=worktree=PR), startup directive pattern, and Project Heal capability. Also demonstrates cross-session transcript-review workflow for skill iteration. High AngelEye signal — David explicitly articulates skill discoverability requirements and 'lost learnings' pain point that is central to AngelEye's purpose.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

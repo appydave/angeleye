@@ -1,0 +1,79 @@
+{
+  "session_id": "c313d9f7-86e0-42f8-b9ad-6fb338a52b83",
+  "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-c313d9f7-86e0-42f8-b9ad-6fb338a52b83.jsonl",
+  "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+  "shape": {
+    "event_count": 21,
+    "user_prompt_count": 1,
+    "tool_use_count": 20,
+    "stop_count": 0,
+    "subagent_start_count": 0,
+    "subagent_stop_count": 0,
+    "first_event_ts": "2026-02-18T04:05:12.950000+00:00",
+    "last_event_ts": "2026-02-18T04:12:34.644000+00:00",
+    "duration_minutes": 7,
+    "active_minutes": 7,
+    "idle_gaps_over_1h": 0,
+    "idle_gap_details": null
+  },
+  "tools": {
+    "Read": 7,
+    "Task": 5,
+    "TaskOutput": 4,
+    "Grep": 2,
+    "Write": 1,
+    "Edit": 1
+  },
+  "file_paths": {
+    "read": [],
+    "write": [],
+    "edit": []
+  },
+  "bash_commands_sample": [],
+  "first_real_prompt": {
+    "text": "Found them. New files are:\n\n  - Conversations: a21.txt, a22.txt (345KB \u2014 big one), a23.txt\n  - JSON outputs: ex20260217-003--105-mp, ex20260217-003--106-nr, ex20260217-003--107-nr, plus ex20260218-001--106-nr\n\n  Here's the prompt:\n\n  I've been doing iterative analysis of Oscar (POEM workflow orchestrator) across multiple test rounds to identify recurring behavioral issues. Previous\n  analysis is documented here:\n\n  - Round 1 analysis: tools/poem-executor/docs/planning/oscar-round1-issues.md\n  - ",
+    "full_length": 1900,
+    "ts": "2026-02-18T04:05:12.950Z"
+  },
+  "skill_invocations": null,
+  "subagents": null,
+  "detections": {
+    "compaction_resume": {
+      "detected": false,
+      "count": 0
+    },
+    "loop_runaway": {
+      "detected": false
+    },
+    "write_then_open": {
+      "detected": false,
+      "count": 0
+    },
+    "unauthorized_edit_before_prompt": {
+      "detected": false,
+      "count": 0
+    },
+    "search_without_read": {
+      "detected": false,
+      "count": 0
+    },
+    "ralphy_mode": {
+      "detected": false,
+      "has_ralphy_skill": false,
+      "has_impl_plan": false,
+      "has_agent_calls": false
+    },
+    "form_filling": {
+      "detected": false
+    },
+    "cron_polling": {
+      "detected": false,
+      "creates": 0,
+      "deletes": 0
+    }
+  },
+  "project_inference": {
+    "inferred_project": null,
+    "cwd_reliable": null
+  }
+}

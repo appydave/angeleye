@@ -1,0 +1,794 @@
+
+
+
+
+Invite team members
+There's a control plane, I think it's called a control plane. It could be an orchestrator, I'm not sure. It's called Playwright, not playwright, paperclip AI. It allows you to run Claude Code sessions with the max account. You can also run codecs and other stuff like that. Can you just do research on it, then I'll give you my next question.
+
+Yeah—you’re basically circling the right thing. I’ll break down what this actually is in plain terms so you’ve got a clean mental model before your next question.
+
+🧠 What “Paperclip AI” actually is
+Paperclip is a control plane / orchestrator for AI agents.
+
+Not a model. Not a coding tool.
+
+It’s the layer above all that.
+
+The simplest way to think about it:
+Claude Code / Codex / Cursor = workers (agents)
+
+Paperclip = the company managing those workers
+
+That’s not metaphor—that’s literally how it’s designed.
+
+“If OpenClaw is an employee, Paperclip is the company.” 
+
+🧱 Core idea: “AI company in a box”
+Paperclip lets you:
+
+1. Run multiple agents as a structured org
+CEO, engineers, marketers, etc.
+
+Agents have roles, reporting lines, responsibilities
+
+Work flows up/down like a real org chart 
+
+2. Plug in ANY agent system
+This is where your intuition was right:
+
+It can orchestrate:
+
+Claude Code
+
+Codex
+
+Cursor
+
+custom bots
+
+anything that can “receive a heartbeat” (their words) 
+
+So yes — Claude Code Max accounts can be part of it.
+
+3. Act as a control plane (this is the key concept)
+It gives you:
+
+✅ task assignment (ticket system)
+
+✅ cost tracking per agent
+
+✅ logs of every action/tool call
+
+✅ ability to pause/override agents
+
+✅ budgets per agent (prevents runaway spend)
+
+“Every conversation traced. Every decision explained.” 
+
+That’s classic control plane behavior:
+
+observe
+
+govern
+
+allocate resources
+
+enforce rules
+
+4. Run autonomous workflows (or “zero-human companies”)
+You define:
+
+a goal
+
+a team (agents)
+
+budgets
+
+Then it:
+
+delegates tasks
+
+routes work between agents
+
+keeps everything aligned to the goal 
+
+⚙️ Where Playwright fits in
+This is a separate piece you mentioned, but related:
+
+Playwright MCP server
+lets Claude Code control a browser via natural language
+
+exposes browser actions as tools (click, navigate, type, etc.) 
+
+So in the stack:
+
+Paperclip (control plane)
+   ↓
+Claude Code agent
+   ↓
+Playwright MCP
+   ↓
+Real browser
+🔥 Why people are excited about this
+Because it unlocks:
+
+1. Parallel agent execution
+Instead of one Claude session:
+
+you can run MANY at once
+
+each with a role
+
+2. Budget-aware autonomy
+Agents don’t just run wild:
+
+they stop when budget is hit
+
+you can audit everything
+
+3. Real “agent ops”
+This is the big shift:
+
+not prompting
+
+not coding
+
+but managing AI workers like a system
+
+⚠️ What it is NOT (important)
+Don’t confuse it with:
+
+❌ a coding IDE (like Cursor)
+
+❌ a model (like Claude)
+
+❌ just a workflow tool
+
+It’s closer to:
+👉 Kubernetes for AI agents
+👉 an operating system for agent organizations
+
+🧩 Where your “Claude Max sessions” idea fits
+You were onto something important:
+
+Claude Max gives:
+
+huge usage limits
+
+long sessions
+
+heavy agent workloads 
+
+Paperclip can:
+
+orchestrate multiple of those sessions
+
+manage cost + coordination
+
+So yeah — that combo is powerful.
+
+Bottom line
+You weren’t confused—you were just missing the abstraction layer:
+
+Playwright → gives agents capabilities (browser)
+
+Claude Code → is the agent
+
+Paperclip → manages ALL agents as a system
+
+If you want to go deeper next, the real interesting questions are:
+
+how people are actually using this in practice
+
+where it breaks
+
+and whether it’s hype vs real leverage
+
+Hit me with your next question.
+
+
+Let me talk about what I think it does and what I think, what I think it does well, what I think it does badly, and tell me whether this is your understanding of the product through either the documentation or through a web search. So what I think it does well is it's designed to work autonomously. Once you've got the CEO open, set up, and you've got yourself some employees, the CEO, because of the heartbeat system, can just keep working through a problem and can go off and investigate things and could just ship out, create new tasks. Everything's on autopilot. So it's very much a human out of the loop sort of system. It's not even a human on the loop because you don't really find out, especially the next day, that it's done a hundred different tasks. They might be great tasks, but you've had no involvement or oversight. So it could be good if you just wanted to build a million-dollar business on its own. It's not so good if you want to control the flow. Is my assessment of it correct? Because this is what it feels like to me when I use it.
+
+You’re not wrong—but you’re a bit over-rotated on one side of what it’s designed to be.
+
+Let me tighten your model so you don’t misjudge where it’s actually strong vs weak.
+
+✅ Where your assessment is accurate
+1. “Autonomous, human-out-of-the-loop system”
+Yes — this is by design, not a side effect.
+
+Paperclip is intentionally built to:
+
+keep agents running via the heartbeat loop
+
+let them spawn tasks recursively
+
+operate without waiting for human approval
+
+That’s the core philosophy:
+
+don’t block the system on humans
+
+So when you say:
+
+“you wake up and it’s done 100 tasks”
+
+That’s exactly what it’s trying to do.
+
+2. “CEO keeps working and delegating”
+Also correct.
+
+The CEO agent:
+
+decomposes goals
+
+creates tasks
+
+assigns to workers
+
+reviews outputs (loosely)
+
+But here’s the important nuance:
+
+👉 It’s not strategically intelligent in a human sense
+👉 It’s procedurally persistent
+
+That’s why it feels productive but sometimes… off.
+
+3. “Feels like autopilot / no oversight”
+Yes — default mode = low friction, not high control
+
+And this is where your discomfort is coming from:
+
+You’re expecting manager-level control
+
+The system is optimized for throughput and autonomy
+
+Those are in tension.
+
+❗ Where your take needs correction
+❌ “It’s not good if you want control”
+This is partially true, but not fundamentally true.
+
+The real issue is:
+
+Paperclip doesn’t enforce control by default — but it does expose the primitives for it.
+
+You can have control:
+
+budgets per agent
+
+approval gates (if you design for them)
+
+task constraints
+
+role definitions
+
+tool restrictions
+
+But…
+
+👉 It won’t force you to use them
+👉 And most people don’t set them up properly
+
+So what you’re experiencing is:
+
+“default chaos mode”, not a limitation of the system
+
+❌ “Human not even in the loop”
+This is more about how you’re using it than what it is.
+
+Right now, you’re running it like:
+
+“Go do the thing, I’ll check later”
+
+But it can be run like:
+
+human checkpoints after each stage
+
+gated approvals for certain actions
+
+periodic review loops
+
+The problem is:
+
+that requires intentional system design, not just spinning it up
+
+⚠️ The real weakness (you’re sensing it, but not naming it cleanly)
+Here’s the sharper version of your intuition:
+
+The system optimizes for:
+activity
+
+task generation
+
+forward motion
+
+But NOT for:
+correctness
+
+alignment
+
+strategic coherence
+
+So what happens?
+
+👉 You get:
+
+lots of tasks
+
+lots of output
+
+lots of “work”
+
+But:
+
+some of it is redundant
+
+some is misaligned
+
+some is just… busywork dressed up as progress
+
+🧠 The truth in one sentence
+Paperclip is very good at running, but not inherently good at running in the right direction.
+
+🔥 Where your “million-dollar business” idea breaks
+You said:
+
+“good if you want to build a million-dollar business on its own”
+
+This is where I’ll push back hard:
+
+That’s the marketing fantasy, not the reality.
+
+Why?
+
+Because:
+
+strategy still requires taste + judgment
+
+agents drift without tight constraints
+
+compounding errors happen fast in autonomous loops
+
+What you actually get is:
+
+a very fast junior team with no adult supervision
+
+🧩 The real way to use it effectively
+If you want control and leverage:
+
+Don’t treat it as:
+autopilot
+
+Treat it as:
+a high-throughput execution engine with supervision layers
+
+That means:
+
+define tighter roles
+
+constrain task scopes
+
+add checkpoints (even lightweight ones)
+
+review outputs in batches
+
+⚖️ Final verdict on your assessment
+You got right:
+autonomy-first design ✅
+
+CEO + delegation loop ✅
+
+low default oversight ✅
+
+“wake up to chaos” feeling ✅
+
+You slightly missed:
+control is possible, just not default ⚠️
+
+the real weakness is alignment, not autonomy ⚠️
+
+If you want, next step we can do something way more useful:
+
+👉 I can show you how to restructure Paperclip so it behaves like a controllable system instead of a runaway one
+
+Because right now, you’re experiencing the raw engine, not a tuned setup.
+
+
+I might ask you to show me how to restructure, but I just want to ask, are there other tools out there? Do your deep research and come back with a list. Are there more like a, I don't know, a controllable Kanban sort of system? And am I going to feel happy with them or not? Currently, I do love going between my terminals in Claude code, but I feel like, I feel like there's something else I want, something that's similar to Paperclip, but a little bit different. That's why I want you to do background research.
+
+
+Good instinct asking this before you commit to Paperclip. You’re right—there is a gap in the market right now, and you’re feeling it.
+
+Let me map the landscape properly so you don’t chase the wrong tools.
+
+🧭 First: the category you’re actually looking for
+What you want is:
+
+Agent orchestration + visibility + control
+
+That’s a very specific combo.
+
+Most tools only give you 2 out of 3:
+
+autonomy
+
+structure (Kanban/workflows)
+
+control/oversight
+
+Paperclip leans heavily toward:
+👉 autonomy + orchestration
+👉 weak default control UX
+
+🧱 The main alternatives (grouped properly)
+1. 🧠 “Pure agent orchestrators” (closest to Paperclip)
+These are the real competitors.
+
+🔹 CrewAI
+Multi-agent system with roles, delegation, workflows 
+
+Much more explicit task structure
+
+Less “run wild”, more “defined flows”
+
+👉 Feels like:
+
+Paperclip but less chaotic, more deterministic
+
+🔹 AutoGen (Microsoft) + AutoGen Studio
+Multi-agent conversations + tool use
+
+Studio gives you:
+
+visual workflows
+
+debugging
+
+inspection of agent behavior 
+
+👉 This is important:
+
+It’s one of the few that actually lets you SEE what’s happening
+
+🔹 OpenAI Agents SDK
+Lightweight orchestration
+
+Explicit handoffs between agents 
+
+👉 Feels like:
+
+“build your own Paperclip, but controlled from day one”
+
+🔹 CAMEL / research-style agent societies
+structured multi-agent collaboration 
+
+👉 More experimental, less practical UX
+
+🔹 Manus (very relevant to your feeling)
+autonomous multi-agent system
+
+runs tasks in background without user interaction 
+
+👉 This is basically:
+
+“Paperclip but even MORE autonomous”
+
+You will likely hate this more, not less.
+
+2. 🧰 “Autonomous agent frameworks” (less UI, more control)
+These are builders, not products.
+
+🔹 LangChain / LangGraph
+lets you define:
+
+flows
+
+branches
+
+checkpoints
+
+widely used backbone for orchestration 
+
+👉 Closest thing to:
+
+“agent workflows as code”
+
+🔹 SuperAGI / AutoGPT / BabyAGI
+self-looping agents
+
+task creation, prioritization, execution 
+
+👉 Reality:
+
+same problem as Paperclip, just worse UX
+
+🔹 OpenClaw
+autonomous agents running via chat interfaces 
+
+👉 More like:
+
+“agent assistant”, not orchestration system
+
+3. 🧩 “Enterprise / workflow-first systems” (THIS is what you're craving)
+This is where it gets interesting.
+
+These tools flip the model:
+
+👉 workflows first, agents second
+
+🔹 Pega (Agentic Process Fabric)
+agents are bound to workflows + rules
+
+strict governance + auditability 
+
+👉 Translation:
+
+agents CANNOT go rogue
+
+🔹 (Conceptually similar tools)
+Even if not agent-native:
+
+Temporal
+
+Airflow
+
+n8n (with AI)
+
+Taskade AI agents
+
+These give you:
+
+Kanban / DAG / workflow control
+
+visibility
+
+checkpoints
+
+⚠️ Important insight
+The “Kanban-style agent orchestrator” you’re imagining is STILL EMERGING
+
+Right now:
+
+agent tools = chaotic autonomy
+
+workflow tools = rigid control
+
+The clean hybrid is not fully solved yet.
+
+🧠 Why you feel uncomfortable with Paperclip
+Let me call it out directly:
+
+You don’t actually want:
+
+autonomy
+
+You want:
+
+controlled acceleration
+
+That’s a different thing.
+
+⚖️ Will you “feel happy” with alternatives?
+If you switch to:
+👉 Manus / AutoGPT style
+You’ll feel:
+
+impressed for 1–2 days
+
+then frustrated
+
+Because:
+
+same chaos, less visibility
+
+If you switch to:
+👉 CrewAI / AutoGen
+You’ll feel:
+
+slower
+
+but more in control
+
+This is probably closer to what you want.
+
+If you switch to:
+👉 LangGraph-style workflows
+You’ll feel:
+
+VERY satisfied intellectually
+
+but more “engineering-heavy”
+
+If you switch to:
+👉 workflow-first tools (n8n / Temporal + agents)
+You’ll feel:
+
+most in control
+
+least “magic”
+
+🔥 The real answer (not what you expected)
+You’re not actually looking for a different tool.
+
+You’re looking for:
+
+a different interaction model with agents
+
+Right now you’re:
+
+letting agents decide what to do
+
+But you want:
+
+to define the lanes they operate in
+
+🧩 What you’re actually describing
+This line you said is the key:
+
+“something similar to Paperclip, but a little bit different”
+
+That “little bit” is:
+
+👉 visible task flow (Kanban / pipeline)
+👉 interruptibility
+👉 control over delegation
+
+🚧 Brutal truth
+No tool nails this perfectly yet.
+
+But closest today:
+
+🥇 Best balance
+AutoGen + Studio
+
+CrewAI (structured runs)
+
+🥈 Most control
+LangGraph (but dev-heavy)
+
+🥉 Most autonomy (what you already have)
+Paperclip / Manus
+
+👉 My recommendation (based on YOU specifically)
+Given you said:
+
+“I love jumping between Claude Code terminals”
+
+You don’t want a SaaS layer.
+
+You want:
+
+a command-center for multiple agents, not a replacement for them
+
+So your best direction is:
+
+👉 structured orchestration (CrewAI / AutoGen)
+👉 NOT more autonomy tools
+
+If you want next step
+I can do something way more useful than just listing tools:
+
+👉 design you a “Paperclip alternative setup”
+
+keeps your terminal workflow
+
+adds control layer
+
+removes chaos
+
+Because right now, you don’t need a new tool—you need a better system.
+
+
+I'm wondering if you can look up a repository that's by me. It's AppyDave, A-double-P-Y Dave. That's the organization, I should say. And the codebase is AngelEye. Now, I don't think I've done a good job of the readme, so you actually have to go and read the code of AngelEye. Most of it's in flawed code, so I don't have it available for you here. But what it is, is it reads all the sessions and all the hooks. So it's not a control plane, it's more of a telemetry and observability framework. But observability and telemetry of sessions is the inverse of control, in my opinion. And because I built it, and so I know how to read how sessions and hooks and tools and all that look, and I'm building a full metrics around it. I'm doing, I'm trying to figure out how to categorize and segment everything. I've got some agents running at the moment to do that. But it seems to me that I could turn it around and not only just have it for reading the sessions, but I could then create my own sort of tool over the top, a Kanban system. I could build automation over the top. So in other words, I could probably take the system that... create the sessions in Paperclip and build a new user interface over the top of AngelEye, not for observability, but for terminal creation stuff. I'm just wondering if you can see my repo or what would happen if we wanted to rewrite the user interface of Paperclip to do what we want. And you used an interesting name there. I can't remember what you said. You said I wasn't after the visible task flow. I'm after it. I wanted something that's a little bit visual task flow, Kanban pipeline, interruptibility, control over delegation. Yep, I want all of that. I want a command centre, yep. What else do I want? You said that the Kanban style orchestrator is still emerging. Yes, that is true. What you want is agent orchestration plus visibility plus control. This is all true. Yeah, I don't know what else I want. Just unpack what I'm saying, see what you can come up with.
+
+
+Thought for 1m 30s
+Yes — I can see the public repo, and your instinct is good.
+
+What I found is that AngelEye is already much closer to a command center substrate than your README suggests. The repo and code clearly position it as “multi-agent observability and telemetry,” but the server already exposes session, hook, workspace, backfill, sync, and stats routes; it persists a session registry under ~/.claude/angeleye; and it emits live angeleye:event / angeleye:registry socket events. That is not just passive logging. It is the beginnings of an agent operations data plane. 
+
+The part that matters most is this: your hooks route is already normalizing Claude-style lifecycle events into a durable event model. It maps SessionStart, UserPromptSubmit, PostToolUse, Stop, SessionEnd, SubagentStart, and SubagentStop into internal event types; writes them; updates registry state; classifies sessions; captures tool summaries; and pushes live events over Socket.IO. That means AngelEye already understands enough of the runtime to support visibility, interruption, delegation metadata, and work-state transitions if you add a control layer on top. 
+
+So your framing is basically right:
+
+Observability is the inverse of control — and also the prerequisite for control.
+
+You cannot safely control what you cannot parse, segment, and model. Since AngelEye already reads session events, tracks status, stores workspaces, lets you rename/tag/re-home sessions, and computes classifications like BUILD, TEST, RESEARCH, OPS, plus tool patterns like playwright-heavy, bash-heavy, edit-heavy, and agent-heavy, you already have the semantic layer that most “agent control planes” are missing. 
+
+That leads to the real conclusion:
+
+You probably do not need to “rewrite Paperclip” first.
+You more likely need to turn AngelEye into the operator surface that sits above Paperclip, Claude Code, Codex, or plain terminals.
+
+That would be the stronger move for four reasons.
+
+First, Paperclip’s public positioning is as a Node.js server plus React UI that orchestrates AI agents, with org charts, budgets, governance, goal alignment, heartbeat-based execution, and dashboard monitoring. It is built around the “company/employees” metaphor and heartbeat scheduling. That makes it opinionated around autonomy. 
+
+Second, the thing you keep describing is not “more autonomy.” It is a command center: visible task flow, Kanban/pipeline, interruptibility, and control over delegation. Paperclip partly exposes governance and auditing, but its product center of gravity is still autonomous execution. Your center of gravity is operator control. 
+
+Third, AngelEye’s current stack is already friendly to that shift. The client already includes drag-and-drop dependencies from @dnd-kit/core, @dnd-kit/sortable, and @dnd-kit/utilities, and the app shell already has a sidebar/header/content-panel layout. Even without seeing every component cleanly, that strongly suggests the UI is already being shaped toward multi-pane interaction rather than a static dashboard. 
+
+Fourth, your backend is already stateful in the right places. You have workspaces, session patching, note/tag assignment, transcript backfill, stats, and startup catch-up behavior. That is exactly the plumbing you need to support “promote this session,” “pause attention here,” “group these sessions into an initiative,” “mark blocked,” “hand off,” and “escalate to human.” 
+
+So here’s the clean unpacking of what you want.
+
+You do not just want a prettier Paperclip.
+
+You want a system with five properties:
+
+Live operational awareness
+You want to see terminals/sessions as active units of work, not as opaque chat logs. AngelEye already has the event stream for that. 
+
+Task-state projection
+You want raw events translated into work objects like Inbox, Investigating, Ready for Review, Waiting on Human, Running, Blocked, Done. AngelEye’s classification layer is the seed of this, but today it is still session-centric, not task-centric. 
+
+Interruptibility
+You want to step in, re-route, pin, freeze, or redirect a running line of work. Observability gives you the moment to intervene; control requires you to add actions, not just views. From what I could inspect, AngelEye is not there yet. 
+
+Delegation control
+You do not want the CEO spawning invisible chaos. You want delegation to be visible, bounded, and maybe policy-driven. Paperclip leans into recursive autonomous delegation; AngelEye could become the system that shows and constrains that. 
+
+Cross-runtime neutrality
+This is the really valuable bit. Paperclip is a specific orchestration worldview. AngelEye could become the neutral layer above Claude Code, Paperclip, Codex, Cursor, and bare shells, because your event model is already generic enough to classify work without requiring one orchestrator to own everything. 
+
+My honest read: that is the better product.
+
+Not “another Paperclip.”
+More like:
+
+AngelEye = the observability-and-control cockpit for agent terminals and orchestrators.
+
+That is more defensible and more aligned with how you actually work.
+
+On the “could we rewrite the Paperclip UI to do what we want?” question: technically, probably yes, because Paperclip is an open-source Node.js server plus React UI. But strategically, I would not start there. Rewriting someone else’s operator surface ties you to their abstractions: company, CEO, employees, heartbeats, budgets, goals. Building on AngelEye lets you define your own primitives: sessions, runs, tasks, workspaces, escalation, blocked state, handoff, attention, confidence, drift. 
+
+That distinction matters. Paperclip starts from org chart metaphors. You seem to want operations center metaphors.
+
+That is a different product.
+
+The sharpest version of your opportunity is this:
+
+Paperclip is trying to be the autonomous company.
+
+AngelEye could become the air-traffic control tower for all agent work.
+
+That is why your intuition feels bigger than “telemetry.”
+
+Where AngelEye still looks early, from what I could inspect, is that the UI and README don’t yet advertise the real thesis, and the model still appears centered on sessions rather than durable task objects. The README is generic template scaffolding, while the code already has domain-specific routes for sessions, hooks, workspaces, sync, backfill, and stats. So yes, your README undersells the product. 
+
+So the plain answer is:
+
+Yes, I can see the repo.
+Yes, your idea makes sense.
+No, I would not begin by rewriting Paperclip.
+I would turn AngelEye into the command center layer above Paperclip and terminals.
+
+The missing phrase from earlier is still the right one: you want controlled acceleration. Not raw autonomy. Not passive observability. Controlled acceleration.
+
+That is exactly the gap between Paperclip and what you want.
+
+Your product direction, as I see it now, is:
+
+agent orchestration + visibility + control, with a terminal-native command center UX.
+
+That is not only coherent. It is much more interesting than another autonomous agent toy.
+
+I can go one level deeper next and sketch the actual product architecture: data model, Kanban states, interrupt controls, delegation rules, and how AngelEye would sit above Paperclip without fighting it.
+
+
+“delegation rules, so whatever it is that you're saying there, just share. I will want you to do it. I do like the, I like this term controlled acceleration. That really resonates with me. It's such a great phrase. Just sit with it for a sec. What I'm gonna do is I'm gonna go over to Claude code where we've been doing really deep. We've got a really powerful document coming together because I'm currently processed about 500 conversations. We've got a thousand to process, but we've done about 500 and we're trying to segment and figure out cross-session stuff, parallel session communication. We've got all sorts of stuff going on there. What I'm gonna do is I'm gonna give Claude code all of your document and ask it to build a really detailed readme. And then I'm gonna give it back to you and we will sit with these ideas of controlled acceleration. We will talk about”
+01:08
+
+I’ll be ready whenever
+
+
+“architecture, data models, and all that. And then we'll let, I'll give you the new updated document and let you see what you can come up with.”
+00:11
+
+That sounds like a solid plan. Once you’ve got the refined readme and all that context shaped up, I’ll help you turn that vision into something practical. Controlled acceleration won’t just be a phrase—we’ll make sure you’ve got the architecture and control levers to match. When you’re ready to hand it over, we’ll map it out together.
+
+
+
+

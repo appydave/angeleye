@@ -1,0 +1,322 @@
+[
+  {
+    "wave_id": "w5-A-brains-01",
+    "session_id": "c6f3306c-4602-4f55-a726-2cb578d581ba",
+    "project": "brains",
+    "tool_pattern": "mixed",
+    "size_bytes": 251,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-c6f3306c-4602-4f55-a726-2cb578d581ba.jsonl"
+  },
+  {
+    "wave_id": "w5-A-brains-02",
+    "session_id": "2cda33b1-2e35-46e5-91ac-180101ad0233",
+    "project": "brains",
+    "tool_pattern": "mixed",
+    "size_bytes": 730,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-2cda33b1-2e35-46e5-91ac-180101ad0233.jsonl"
+  },
+  {
+    "wave_id": "w5-A-brains-03",
+    "session_id": "0adf7bf5-841f-485e-87b9-19cc4fbe39dd",
+    "project": "brains",
+    "tool_pattern": "mixed",
+    "size_bytes": 364,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-0adf7bf5-841f-485e-87b9-19cc4fbe39dd.jsonl"
+  },
+  {
+    "wave_id": "w5-A-brains-04",
+    "session_id": "7cf5cc25-7ac1-4e58-bb48-1e4214679ee9",
+    "project": "brains",
+    "tool_pattern": "bash-heavy",
+    "size_bytes": 20600,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-7cf5cc25-7ac1-4e58-bb48-1e4214679ee9.jsonl"
+  },
+  {
+    "wave_id": "w5-A-brains-05",
+    "session_id": "71f1b899-a1db-4c58-abc3-2f5192bbbbd6",
+    "project": "brains",
+    "tool_pattern": "bash-heavy",
+    "size_bytes": 944,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-71f1b899-a1db-4c58-abc3-2f5192bbbbd6.jsonl"
+  },
+  {
+    "wave_id": "w5-A-brains-06",
+    "session_id": "66b802a7-c830-44c9-8e6b-2f70cffd0bbc",
+    "project": "brains",
+    "tool_pattern": "bash-heavy",
+    "size_bytes": 10430,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-66b802a7-c830-44c9-8e6b-2f70cffd0bbc.jsonl"
+  },
+  {
+    "wave_id": "w5-A-brains-07",
+    "session_id": "4e3b83f7-2df0-4694-a2d3-c596aadc0d42",
+    "project": "brains",
+    "tool_pattern": "edit-heavy",
+    "size_bytes": 109179,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-4e3b83f7-2df0-4694-a2d3-c596aadc0d42.jsonl"
+  },
+  {
+    "wave_id": "w5-A-brains-08",
+    "session_id": "d0d48243-812c-43e4-8eb0-fd46619dadd8",
+    "project": "brains",
+    "tool_pattern": "edit-heavy",
+    "size_bytes": 15945,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-d0d48243-812c-43e4-8eb0-fd46619dadd8.jsonl"
+  },
+  {
+    "wave_id": "w5-A-brains-09",
+    "session_id": "41024780-a533-4e5c-a68e-63bb6ada6e2e",
+    "project": "brains",
+    "tool_pattern": "edit-heavy",
+    "size_bytes": 13287,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-41024780-a533-4e5c-a68e-63bb6ada6e2e.jsonl"
+  },
+  {
+    "wave_id": "w5-A-brains-10",
+    "session_id": "3646e49e-15fa-4907-83b9-8135bb94c4f0",
+    "project": "brains",
+    "tool_pattern": "unknown",
+    "size_bytes": 4310,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/archive/session-3646e49e-15fa-4907-83b9-8135bb94c4f0.jsonl"
+  },
+  {
+    "wave_id": "w5-B-prompt-01",
+    "session_id": "b3ae2275-3ed1-42df-ba95-47a18731bdae",
+    "project": "prompt.supportsignal.com.au",
+    "tool_pattern": "mixed",
+    "size_bytes": 53544,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-b3ae2275-3ed1-42df-ba95-47a18731bdae.jsonl"
+  },
+  {
+    "wave_id": "w5-B-prompt-02",
+    "session_id": "827700ca-3734-481a-9c40-6a8327322518",
+    "project": "prompt.supportsignal.com.au",
+    "tool_pattern": "mixed",
+    "size_bytes": 309,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-827700ca-3734-481a-9c40-6a8327322518.jsonl"
+  },
+  {
+    "wave_id": "w5-B-prompt-03",
+    "session_id": "18f1a890-0453-4da6-b359-15cf90a19cbd",
+    "project": "prompt.supportsignal.com.au",
+    "tool_pattern": "mixed",
+    "size_bytes": 421,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-18f1a890-0453-4da6-b359-15cf90a19cbd.jsonl"
+  },
+  {
+    "wave_id": "w5-B-prompt-04",
+    "session_id": "116f3f7c-b523-4694-bddb-0c88269f46fd",
+    "project": "prompt.supportsignal.com.au",
+    "tool_pattern": "bash-heavy",
+    "size_bytes": 25024,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-116f3f7c-b523-4694-bddb-0c88269f46fd.jsonl"
+  },
+  {
+    "wave_id": "w5-B-prompt-05",
+    "session_id": "32fbfde9-3303-4dca-a22c-92888c1a4139",
+    "project": "prompt.supportsignal.com.au",
+    "tool_pattern": "bash-heavy",
+    "size_bytes": 69179,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-32fbfde9-3303-4dca-a22c-92888c1a4139.jsonl"
+  },
+  {
+    "wave_id": "w5-B-prompt-06",
+    "session_id": "78a153a0-9b30-46b7-b569-6b513a50c86f",
+    "project": "prompt.supportsignal.com.au",
+    "tool_pattern": "bash-heavy",
+    "size_bytes": 17745,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-78a153a0-9b30-46b7-b569-6b513a50c86f.jsonl"
+  },
+  {
+    "wave_id": "w5-B-prompt-07",
+    "session_id": "37256037-fdb0-4769-85d4-3d19463c5fbd",
+    "project": "prompt.supportsignal.com.au",
+    "tool_pattern": "task-heavy",
+    "size_bytes": 18179,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-37256037-fdb0-4769-85d4-3d19463c5fbd.jsonl"
+  },
+  {
+    "wave_id": "w5-B-prompt-08",
+    "session_id": "92ea2610-744f-4ee8-9a35-904f3ccf87be",
+    "project": "prompt.supportsignal.com.au",
+    "tool_pattern": "task-heavy",
+    "size_bytes": 20071,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-92ea2610-744f-4ee8-9a35-904f3ccf87be.jsonl"
+  },
+  {
+    "wave_id": "w5-B-prompt-09",
+    "session_id": "c313d9f7-86e0-42f8-b9ad-6fb338a52b83",
+    "project": "prompt.supportsignal.com.au",
+    "tool_pattern": "task-heavy",
+    "size_bytes": 7555,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-c313d9f7-86e0-42f8-b9ad-6fb338a52b83.jsonl"
+  },
+  {
+    "wave_id": "w5-B-prompt-10",
+    "session_id": "439bd71d-69dc-4342-981b-98a41db8486f",
+    "project": "prompt.supportsignal.com.au",
+    "tool_pattern": "edit-heavy",
+    "size_bytes": 20906,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-439bd71d-69dc-4342-981b-98a41db8486f.jsonl"
+  },
+  {
+    "wave_id": "w5-C-new-01",
+    "session_id": "a24496e0-ca60-44b3-8f7c-0755939c1b7b",
+    "project": "ad",
+    "tool_pattern": "bash-heavy",
+    "size_bytes": 10116,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-a24496e0-ca60-44b3-8f7c-0755939c1b7b.jsonl"
+  },
+  {
+    "wave_id": "w5-C-new-02",
+    "session_id": "4a151d10-a257-4cab-93d4-04f4af675a05",
+    "project": "ad-agent_architecture",
+    "tool_pattern": "mixed",
+    "size_bytes": 570,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-4a151d10-a257-4cab-93d4-04f4af675a05.jsonl"
+  },
+  {
+    "wave_id": "w5-C-new-03",
+    "session_id": "e868366b-bb95-48db-aece-bede7eb1c2d5",
+    "project": "angeleye",
+    "tool_pattern": "bash-heavy",
+    "size_bytes": 1221022,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-e868366b-bb95-48db-aece-bede7eb1c2d5.jsonl"
+  },
+  {
+    "wave_id": "w5-C-new-04",
+    "session_id": "b34be0e9-3a8e-42c5-965f-6bfcd10ba54f",
+    "project": "ansible",
+    "tool_pattern": "mixed",
+    "size_bytes": 42313,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-b34be0e9-3a8e-42c5-965f-6bfcd10ba54f.jsonl"
+  },
+  {
+    "wave_id": "w5-C-new-05",
+    "session_id": "cfa7f6a3-5e90-4bdd-bdc6-db2ab03428bb",
+    "project": "apps",
+    "tool_pattern": "mixed",
+    "size_bytes": 85488,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-cfa7f6a3-5e90-4bdd-bdc6-db2ab03428bb.jsonl"
+  },
+  {
+    "wave_id": "w5-C-new-06",
+    "session_id": "b81e4057-b8f0-4328-940a-f0b9043bce59",
+    "project": "appydave.com",
+    "tool_pattern": "mixed",
+    "size_bytes": 62960,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/archive/session-b81e4057-b8f0-4328-940a-f0b9043bce59.jsonl"
+  },
+  {
+    "wave_id": "w5-C-new-07",
+    "session_id": "e27dd3c2-59b6-422c-8ed6-dbb632f78347",
+    "project": "beauty-and-joy",
+    "tool_pattern": "mixed",
+    "size_bytes": 37916,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-e27dd3c2-59b6-422c-8ed6-dbb632f78347.jsonl"
+  },
+  {
+    "wave_id": "w5-C-new-08",
+    "session_id": "48465caa-8b11-4196-8490-92ac318c5640",
+    "project": "brain-cowork-upgrade",
+    "tool_pattern": "mixed",
+    "size_bytes": 24200,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-48465caa-8b11-4196-8490-92ac318c5640.jsonl"
+  },
+  {
+    "wave_id": "w5-C-new-09",
+    "session_id": "1d35b92b-149f-438f-964e-0dc5291ab32a",
+    "project": "brain-dynamous",
+    "tool_pattern": "bash-heavy",
+    "size_bytes": 12067,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-1d35b92b-149f-438f-964e-0dc5291ab32a.jsonl"
+  },
+  {
+    "wave_id": "w5-C-new-10",
+    "session_id": "eef93c68-39fe-4d92-91aa-ee1528dde126",
+    "project": "clients",
+    "tool_pattern": "bash-heavy",
+    "size_bytes": 3180,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-eef93c68-39fe-4d92-91aa-ee1528dde126.jsonl"
+  },
+  {
+    "wave_id": "w5-D-oddball-01",
+    "session_id": "02437ab7-17de-4964-846e-c53d207dd5be",
+    "project": "davidcruwys",
+    "tool_pattern": "bash-heavy",
+    "size_bytes": 14423,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-02437ab7-17de-4964-846e-c53d207dd5be.jsonl"
+  },
+  {
+    "wave_id": "w5-D-oddball-02",
+    "session_id": "4053fd5c-6163-4af5-8411-03137f1d28fd",
+    "project": "davidcruwys",
+    "tool_pattern": "mixed",
+    "size_bytes": 5440,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-4053fd5c-6163-4af5-8411-03137f1d28fd.jsonl"
+  },
+  {
+    "wave_id": "w5-D-oddball-03",
+    "session_id": "22b1033f-5b25-4c43-a749-0376f8ae591d",
+    "project": "ad",
+    "tool_pattern": "mixed",
+    "size_bytes": 1974,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-22b1033f-5b25-4c43-a749-0376f8ae591d.jsonl"
+  },
+  {
+    "wave_id": "w5-D-oddball-04",
+    "session_id": "2aa2b5d7-81b3-4982-9d71-9cab54fae639",
+    "project": "ad",
+    "tool_pattern": "bash-heavy",
+    "size_bytes": 3815,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-2aa2b5d7-81b3-4982-9d71-9cab54fae639.jsonl"
+  },
+  {
+    "wave_id": "w5-D-oddball-05",
+    "session_id": "bbc86dc1-5776-4545-9d13-bd05dda100cd",
+    "project": "unknown",
+    "tool_pattern": "unknown",
+    "size_bytes": 37706,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/archive/session-bbc86dc1-5776-4545-9d13-bd05dda100cd.jsonl"
+  },
+  {
+    "wave_id": "w5-D-oddball-06",
+    "session_id": "ebd170c5-3e3d-476b-ba10-b49a2e5f3cc7",
+    "project": "unknown",
+    "tool_pattern": "mixed",
+    "size_bytes": 3302,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-ebd170c5-3e3d-476b-ba10-b49a2e5f3cc7.jsonl"
+  },
+  {
+    "wave_id": "w5-D-oddball-07",
+    "session_id": "32566acd-40e0-4251-bc88-0afe1a6fa9aa",
+    "project": "dev",
+    "tool_pattern": "bash-heavy",
+    "size_bytes": 2604,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-32566acd-40e0-4251-bc88-0afe1a6fa9aa.jsonl"
+  },
+  {
+    "wave_id": "w5-D-oddball-08",
+    "session_id": "67c6f182-1d27-4001-860f-f96045cebbc6",
+    "project": "dev",
+    "tool_pattern": "bash-heavy",
+    "size_bytes": 7482,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-67c6f182-1d27-4001-860f-f96045cebbc6.jsonl"
+  },
+  {
+    "wave_id": "w5-D-oddball-09",
+    "session_id": "7536c619-1622-43cd-88ba-06d39e16731a",
+    "project": "tmp",
+    "tool_pattern": "unknown",
+    "size_bytes": 208,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-7536c619-1622-43cd-88ba-06d39e16731a.jsonl"
+  },
+  {
+    "wave_id": "w5-D-oddball-10",
+    "session_id": "ae3beefe-3ff7-48f3-bef4-ca9064cdd11b",
+    "project": "worktrees",
+    "tool_pattern": "mixed",
+    "size_bytes": 8020,
+    "source_path": "/Users/davidcruwys/.claude/angeleye/sessions/session-ae3beefe-3ff7-48f3-bef4-ca9064cdd11b.jsonl"
+  }
+]

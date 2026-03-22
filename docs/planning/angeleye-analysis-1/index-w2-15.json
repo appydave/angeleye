@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "73dff618-5eea-4ded-900b-9abdaac1da4d",
+  "machine": "mbp",
+  "project": "app.supportsignal.com.au",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "ORIENTATION / orientation.requirements",
+  "file_size_bytes": 116538,
+  "event_count": 87,
+  "disposition": "active",
+  "interest_level": "low",
+  "notes": "BMAD sprint planning — /bmad-sprint-status then /bmad-create-story (twice, second with abridge override). 31 backlog stories, 0 in-progress. Created story 1-1 (project scaffolding and deployment pipeline, 332 lines). Sprint status updated: epic-1 backlog to in-progress, story 1-1 to ready-for-dev. Read-heavy (60% Reads on planning artifacts). No product code touched. Registry BUILD classification incorrect — this is orientation/requirements preparation via BMAD skills.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

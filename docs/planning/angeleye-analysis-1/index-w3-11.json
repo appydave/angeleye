@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "55dde42d-4022-471c-b321-5d753353ed32",
+  "machine": "m4-mini",
+  "project": "appydave-plugins",
+  "project_dir": "/Users/davidcruwys/dev/ad/appydave-plugins",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "skill.migration",
+  "file_size_bytes": 39645,
+  "event_count": 84,
+  "disposition": "active",
+  "interest_level": "medium",
+  "notes": "Registry BUILD classification is wrong — no application code was written. Session migrated the Ralphy skill from global ~/.claude/skills/ralphy into the appydave-plugins repo (making the plugin the single source of truth), then did a brain-sync audit. Produced commits v1.6.0 and v1.6.1. Direct predecessor to session d363ca82 (findings-w3-10-plugins.md) which did the design overhaul. Key signals: Claude hallucinated that the skill didn't exist (user confronted with 'BULSHIT'), voice-dictation noise in prompts, and a closing prompt explicitly asking about knowledge-decay ('any updates to brains that didn't get into the plugin') — a direct statement of AngelEye's purpose.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

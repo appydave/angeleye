@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "28779669-f351-4249-8a44-8696766f6bf7",
+  "machine": "mbp",
+  "project": "app.supportsignal.com.au",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "KNOWLEDGE / knowledge.pattern_design",
+  "file_size_bytes": 207872,
+  "event_count": 193,
+  "disposition": "active",
+  "interest_level": "medium",
+  "notes": "BMAD multi-persona architecture + epic session for SupportSignal v2. Winston (architect) created architecture.md through 7-step workflow with 6 David corrections. Bob (PM) decomposed into 31 stories across 4 active epics with 8 correction rounds. Persona transition was invisible — no handoff statement between Winston and Bob. David commissioned a background agent to investigate the missing transition retroactively. All outputs are planning artifacts in _bmad-output/planning-artifacts/ (architecture.md, epics.md). No product source code written. Registry BUILD classification incorrect — this is knowledge.pattern_design (design documents co-authored through iterative correction-driven refinement). Skills invoked: /bmad-architect, bmad-help, /bmad-create-epics-and-stories.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

@@ -1,0 +1,78 @@
+{
+  "session_id": "439bd71d-69dc-4342-981b-98a41db8486f",
+  "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-439bd71d-69dc-4342-981b-98a41db8486f.jsonl",
+  "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+  "shape": {
+    "event_count": 59,
+    "user_prompt_count": 12,
+    "tool_use_count": 47,
+    "stop_count": 0,
+    "subagent_start_count": 0,
+    "subagent_stop_count": 0,
+    "first_event_ts": "2026-02-17T02:33:27.072000+00:00",
+    "last_event_ts": "2026-02-17T04:36:31.791000+00:00",
+    "duration_minutes": 123,
+    "active_minutes": 29,
+    "idle_gaps_over_1h": 0,
+    "idle_gap_details": null
+  },
+  "tools": {
+    "Edit": 23,
+    "Read": 16,
+    "Task": 4,
+    "Glob": 3,
+    "Write": 1
+  },
+  "file_paths": {
+    "read": [],
+    "write": [],
+    "edit": []
+  },
+  "bash_commands_sample": [],
+  "first_real_prompt": {
+    "text": "Just get yourself up to speed on what we're doing with our documentation around these concepts. The new analysis-row-pattern that we came up with. The severity classifier that we came up with. Had any documentation in place around what we thought question and answers generation should be if severity was known? I believe we have 4 different severity metrics, and in theory, they can affect the question and answer system, but I don't know whether we documented it. Can you just check on it, please? ",
+    "full_length": 500,
+    "ts": "2026-02-17T02:33:27.072Z"
+  },
+  "skill_invocations": null,
+  "subagents": null,
+  "detections": {
+    "compaction_resume": {
+      "detected": false,
+      "count": 0
+    },
+    "loop_runaway": {
+      "detected": false
+    },
+    "write_then_open": {
+      "detected": false,
+      "count": 0
+    },
+    "unauthorized_edit_before_prompt": {
+      "detected": false,
+      "count": 0
+    },
+    "search_without_read": {
+      "detected": false,
+      "count": 0
+    },
+    "ralphy_mode": {
+      "detected": false,
+      "has_ralphy_skill": false,
+      "has_impl_plan": false,
+      "has_agent_calls": false
+    },
+    "form_filling": {
+      "detected": false
+    },
+    "cron_polling": {
+      "detected": false,
+      "creates": 0,
+      "deletes": 0
+    }
+  },
+  "project_inference": {
+    "inferred_project": null,
+    "cwd_reliable": null
+  }
+}

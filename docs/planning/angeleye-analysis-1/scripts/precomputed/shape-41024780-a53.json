@@ -1,0 +1,92 @@
+{
+  "session_id": "41024780-a533-4e5c-a68e-63bb6ada6e2e",
+  "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-41024780-a533-4e5c-a68e-63bb6ada6e2e.jsonl",
+  "cwd": "/Users/davidcruwys/dev/ad/brains",
+  "shape": {
+    "event_count": 55,
+    "user_prompt_count": 6,
+    "tool_use_count": 49,
+    "stop_count": 0,
+    "subagent_start_count": 0,
+    "subagent_stop_count": 0,
+    "first_event_ts": "2026-03-01T13:57:54.599000+00:00",
+    "last_event_ts": "2026-03-02T01:44:31.960000+00:00",
+    "duration_minutes": 706,
+    "active_minutes": 10,
+    "idle_gaps_over_1h": 2,
+    "idle_gap_details": [
+      {
+        "start": "2026-03-01T14:06:05.485000+00:00",
+        "end": "2026-03-01T23:49:13.891000+00:00",
+        "gap_minutes": 583
+      },
+      {
+        "start": "2026-03-01T23:49:47.924000+00:00",
+        "end": "2026-03-02T01:42:21.876000+00:00",
+        "gap_minutes": 112
+      }
+    ]
+  },
+  "tools": {
+    "Edit": 27,
+    "Read": 6,
+    "Grep": 5,
+    "mcp__playwright__browser_navigate": 5,
+    "mcp__playwright__browser_click": 2,
+    "Write": 2,
+    "Glob": 1,
+    "Skill": 1
+  },
+  "file_paths": {
+    "read": [],
+    "write": [],
+    "edit": []
+  },
+  "bash_commands_sample": [],
+  "first_real_prompt": {
+    "text": "Where have we been keeping information about other models, especially graphic diffusion models and either  Fal.ai or Kai.ai",
+    "full_length": 123,
+    "ts": "2026-03-01T13:57:54.599Z"
+  },
+  "skill_invocations": [{}],
+  "subagents": null,
+  "detections": {
+    "compaction_resume": {
+      "detected": false,
+      "count": 0
+    },
+    "loop_runaway": {
+      "detected": false
+    },
+    "write_then_open": {
+      "detected": false,
+      "count": 0
+    },
+    "unauthorized_edit_before_prompt": {
+      "detected": false,
+      "count": 0
+    },
+    "search_without_read": {
+      "detected": true,
+      "count": 4
+    },
+    "ralphy_mode": {
+      "detected": false,
+      "has_ralphy_skill": false,
+      "has_impl_plan": false,
+      "has_agent_calls": false
+    },
+    "form_filling": {
+      "detected": false
+    },
+    "cron_polling": {
+      "detected": false,
+      "creates": 0,
+      "deletes": 0
+    }
+  },
+  "project_inference": {
+    "inferred_project": null,
+    "cwd_reliable": null
+  }
+}

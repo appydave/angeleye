@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "48b3197d-afe0-4ce6-98c0-3337d48e566a",
+  "machine": "m4-mini",
+  "project": "app.supportsignal.com.au",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
+  "session_type_registry": "ORIENTATION",
+  "session_type_analysed": "ORIENTATION / orientation.artifact_retrieval",
+  "file_size_bytes": 8423,
+  "event_count": 32,
+  "disposition": "active",
+  "interest_level": "low",
+  "notes": "Single prompt '11.0' — versioned task reference triggering a skill. Pre-prompt phase (9 tool calls, 38s) is cold_start context loading. Post-prompt: Skill invocation then burst of 16 parallel Reads in 42s, one Write output. Total duration 3m13s. No subagents, no conversation, no closing ceremony. Registry ORIENTATION is correct; subtype refined from read-heavy tool pattern to orientation.artifact_retrieval. Zero-conversation execution pattern — skill deterministic enough that no clarification was needed.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

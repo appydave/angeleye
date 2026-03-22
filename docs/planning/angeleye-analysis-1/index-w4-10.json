@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "62b18cd4-6278-4d50-af86-d496f2f4a76d",
+  "machine": "m4-mini",
+  "project": "brains",
+  "project_dir": "/Users/davidcruwys/dev/ad/brains",
+  "session_type_registry": "KNOWLEDGE",
+  "session_type_analysed": "KNOWLEDGE / knowledge.brain_curation",
+  "file_size_bytes": 29725,
+  "event_count": 50,
+  "disposition": "active",
+  "interest_level": "medium-high",
+  "notes": "True positive KNOWLEDGE. Session is an Ansible-companion run: David alternates between running Ansible on a remote machine and asking Claude to read brain files, explain output, and document drift. Primary brain: ansible. Secondary brain: agentic-os. Key output: Edit recording commented-out package drift in ansible brain. Notable patterns: Task as orientation subagent at session start, large pasted prompt as knowledge ingestion event, rapid 4-Read burst as sync-reload, session-as-infrastructure-companion subtype candidate.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

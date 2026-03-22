@@ -1,0 +1,75 @@
+{
+  "session_id": "2cda33b1-2e35-46e5-91ac-180101ad0233",
+  "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-2cda33b1-2e35-46e5-91ac-180101ad0233.jsonl",
+  "cwd": "/Users/davidcruwys/dev/ad/brains",
+  "shape": {
+    "event_count": 3,
+    "user_prompt_count": 1,
+    "tool_use_count": 2,
+    "stop_count": 0,
+    "subagent_start_count": 0,
+    "subagent_stop_count": 0,
+    "first_event_ts": "2026-03-08T14:53:13.856000+00:00",
+    "last_event_ts": "2026-03-08T14:53:20.579000+00:00",
+    "duration_minutes": 0,
+    "active_minutes": 0,
+    "idle_gaps_over_1h": 0,
+    "idle_gap_details": null
+  },
+  "tools": {
+    "Glob": 1,
+    "Bash": 1
+  },
+  "file_paths": {
+    "read": [],
+    "write": [],
+    "edit": []
+  },
+  "bash_commands_sample": [],
+  "first_real_prompt": {
+    "text": "  1. \"Do we have Dynamous community transcripts?\"",
+    "full_length": 49,
+    "ts": "2026-03-08T14:53:13.856Z"
+  },
+  "skill_invocations": null,
+  "subagents": null,
+  "detections": {
+    "compaction_resume": {
+      "detected": false,
+      "count": 0
+    },
+    "loop_runaway": {
+      "detected": false
+    },
+    "write_then_open": {
+      "detected": false,
+      "count": 0
+    },
+    "unauthorized_edit_before_prompt": {
+      "detected": false,
+      "count": 0
+    },
+    "search_without_read": {
+      "detected": false,
+      "count": 1
+    },
+    "ralphy_mode": {
+      "detected": false,
+      "has_ralphy_skill": false,
+      "has_impl_plan": false,
+      "has_agent_calls": false
+    },
+    "form_filling": {
+      "detected": false
+    },
+    "cron_polling": {
+      "detected": false,
+      "creates": 0,
+      "deletes": 0
+    }
+  },
+  "project_inference": {
+    "inferred_project": null,
+    "cwd_reliable": null
+  }
+}

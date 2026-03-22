@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "6ba65a37-5b76-47fe-8d6a-c88a8c6be907",
+  "machine": "m4-mini",
+  "project": "app.supportsignal.com.au",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "research.workflow-design",
+  "file_size_bytes": 252566,
+  "event_count": 224,
+  "disposition": "active",
+  "interest_level": "high",
+  "notes": "Opens with BMAD skill invocations (bmad-help, sprint-planning) producing sprint-status.yaml, then pivots to 2h deep research comparing BMAD v4 vs v6 workflow patterns across 3 codebases using 6 background agents. Produces 'BMAD Relay' design doc and memory capture. Voice-transcribed prompts throughout. Only 1 write Bash out of 73 — bash-heavy classification is misleading.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

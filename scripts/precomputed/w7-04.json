@@ -1,0 +1,721 @@
+[
+  {
+    "session_id": "acd93d50-0d12-4d3e-9997-f4f8c04a8d54",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-acd93d50-0d12-4d3e-9997-f4f8c04a8d54.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 1,
+      "user_prompt_count": 1,
+      "tool_use_count": 0,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-08T15:07:54.046000+00:00",
+      "last_event_ts": "2026-03-08T15:07:54.046000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {},
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "  1. Do we have Dynamous community transcripts?",
+      "full_length": 47,
+      "ts": "2026-03-08T15:07:54.046Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "69486e50-8afa-452d-a875-a2eba6b7fb48",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-69486e50-8afa-452d-a875-a2eba6b7fb48.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/deckhand",
+    "shape": {
+      "event_count": 5,
+      "user_prompt_count": 1,
+      "tool_use_count": 1,
+      "stop_count": 1,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-17T08:05:16.338000+00:00",
+      "last_event_ts": "2026-03-17T08:05:51.807000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": ["lsof -i :5030 -i :5031 | grep LISTEN"],
+    "first_real_prompt": {
+      "text": "\u279c  deckhand git:(main) nr\n\u2009WARN\u2009 The \"workspaces\" field in package.json is not supported by pnpm. Create a \"pnpm-workspace.yaml\" file instead.\nLifecycle scripts:\n  test\n    npm run test -w server -w client\n  prepare\n    husky\n\nCommands available via \"pnpm run\":\n  dev\n    npm run build -w shared && concurrently -n server,client -c blue,green \"npm run dev -w server\" \"npm run dev -w client\"\n  build\n    npm run build -w shared && npm run build -w server && npm run build -w client\n  test:coverage\n   ",
+      "full_length": 1335,
+      "ts": "2026-03-17T08:05:23.228Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "3e2ce636-6bbf-4ecd-afe6-3b5e9afd3fb6",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-3e2ce636-6bbf-4ecd-afe6-3b5e9afd3fb6.jsonl",
+    "cwd": "/Users/davidcruwys/dev/video-projects/v-appydave",
+    "shape": {
+      "event_count": 11,
+      "user_prompt_count": 1,
+      "tool_use_count": 10,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-05T05:52:11.886000+00:00",
+      "last_event_ts": "2026-03-05T05:52:53.623000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 7,
+      "ToolSearch": 2,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Can you do a commit and push? ",
+      "full_length": 30,
+      "ts": "2026-03-05T05:52:11.886Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "f1183f53-dc53-4ecc-8f9a-a1f9fab80753",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-f1183f53-dc53-4ecc-8f9a-a1f9fab80753.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/appydave-plugins",
+    "shape": {
+      "event_count": 16,
+      "user_prompt_count": 2,
+      "tool_use_count": 14,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-03T02:03:50.170000+00:00",
+      "last_event_ts": "2026-03-03T02:10:16.182000+00:00",
+      "duration_minutes": 6,
+      "active_minutes": 6,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 4,
+      "Read": 3,
+      "Edit": 3,
+      "Skill": 2,
+      "Glob": 1,
+      "Write": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I'm going to need a new skill inside one of my plug-ins to tell me the best one to do it. What we need to be able to do is easily get to our other machines, and Claude never seems to remember that it can talk to other machines. Can I just give you some information to help you? use: skill creator skill\n\nHere's what the Ansible brain covers and specifically what you need for the localhost/SSH headers question:\n\n  ---\n  Ansible Brain Overview\n\n  7 files covering agentless Mac automation via SSH. Th",
+      "full_length": 2109,
+      "ts": "2026-03-03T02:03:50.170Z"
+    },
+    "skill_invocations": [{}, {}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "2e0518ac-b149-4f48-a995-1fcd86423962",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-2e0518ac-b149-4f48-a995-1fcd86423962.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/flivideo/flihub",
+    "shape": {
+      "event_count": 20,
+      "user_prompt_count": 1,
+      "tool_use_count": 19,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-09T10:16:55.197000+00:00",
+      "last_event_ts": "2026-03-09T13:35:48.337000+00:00",
+      "duration_minutes": 198,
+      "active_minutes": 1,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-09T10:18:54.200000+00:00",
+          "end": "2026-03-09T13:35:48.337000+00:00",
+          "gap_minutes": 196
+        }
+      ]
+    },
+    "tools": {
+      "Edit": 11,
+      "Read": 5,
+      "Grep": 3
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Just a question about the change you just made for me of combining all the transcript files together. I just realised that if we had a proper transcript file somewhere, we shouldn't have done this. I'm just going to give you an example. \n\nOn C15, we have all those files here. \n\nS3 Staging\n\nS3 Staging\nPREP (Your First Edit \u2192 Jan)\nSource: edit-1st/\n\u2713\nc15-opus-4.6-appystack.mp4\n932.4 MB\n\u2713\nc15-opus-4.6-appystack.srt\ud83d\udccb\n27.6 KB\nStaging: s3-staging/prep/\nSync from Source\n\u2713\nc15-opus-4.6-appystack.mp4\n932",
+      "full_length": 1178,
+      "ts": "2026-03-09T13:35:48.337Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": true,
+        "count": 11
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "abf3549a-f9df-477b-9e42-4df322f1ad6b",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-abf3549a-f9df-477b-9e42-4df322f1ad6b.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/appystack/template",
+    "shape": {
+      "event_count": 48,
+      "user_prompt_count": 5,
+      "tool_use_count": 43,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-26T00:52:05.954000+00:00",
+      "last_event_ts": "2026-02-26T01:11:05.118000+00:00",
+      "duration_minutes": 18,
+      "active_minutes": 18,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 28,
+      "Read": 4,
+      "Write": 3,
+      "mcp__playwright__browser_navigate": 3,
+      "mcp__playwright__browser_take_screenshot": 3,
+      "mcp__playwright__browser_run_code": 1,
+      "Edit": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I had a bit of a problem. I didn't create a repository for the AppyStack. And I think I did the git init in the wrong location. The template folder is where I am right now, but the AppyStack is one folder higher. And what I need to also do is go and look at https://github.com/orgs/appydave/repositories\n\nAnd probably put the AppyStack up into this location somewhere. \n\nWhat would be the actions you'd take? ",
+      "full_length": 409,
+      "ts": "2026-02-26T00:52:05.954Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "3335c76f-88c0-4325-931a-2715e89b2b51",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-3335c76f-88c0-4325-931a-2715e89b2b51.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/appystack",
+    "shape": {
+      "event_count": 40,
+      "user_prompt_count": 10,
+      "tool_use_count": 30,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-02T02:06:31.283000+00:00",
+      "last_event_ts": "2026-03-02T02:39:41.676000+00:00",
+      "duration_minutes": 33,
+      "active_minutes": 33,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 18,
+      "Read": 5,
+      "Edit": 3,
+      "Glob": 2,
+      "Agent": 1,
+      "Write": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "What do you know about the recipe? Related to SupportSignal Firstly, I don't think SupportSignal has a recipe per se. I think it's a substructure of some sort. ",
+      "full_length": 160,
+      "ts": "2026-03-02T02:06:31.283Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "3bfcf4c7-964e-4e9e-b7ad-edbe7a2f7cd7",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-3bfcf4c7-964e-4e9e-b7ad-edbe7a2f7cd7.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/signal-studio",
+    "shape": {
+      "event_count": 63,
+      "user_prompt_count": 8,
+      "tool_use_count": 55,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-27T09:52:48.719000+00:00",
+      "last_event_ts": "2026-02-27T14:04:29.612000+00:00",
+      "duration_minutes": 251,
+      "active_minutes": 93,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-27T11:10:18.365000+00:00",
+          "end": "2026-02-27T13:48:31.079000+00:00",
+          "gap_minutes": 158
+        }
+      ]
+    },
+    "tools": {
+      "Read": 15,
+      "Edit": 15,
+      "Task": 11,
+      "Glob": 6,
+      "Write": 4,
+      "Bash": 3,
+      "EnterWorktree": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "read and say 'yay'",
+      "full_length": 18,
+      "ts": "2026-02-27T09:52:48.719Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 3
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "5648cb84-ea49-455f-ab66-7b29c8ba1801",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-5648cb84-ea49-455f-ab66-7b29c8ba1801.jsonl",
+    "cwd": "/Users/davidcruwys/dev/video-projects/v-appydave",
+    "shape": {
+      "event_count": 90,
+      "user_prompt_count": 14,
+      "tool_use_count": 76,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-12T14:08:03.612000+00:00",
+      "last_event_ts": "2026-03-14T01:27:03.106000+00:00",
+      "duration_minutes": 2118,
+      "active_minutes": 124,
+      "idle_gaps_over_1h": 2,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-12T16:11:27.746000+00:00",
+          "end": "2026-03-13T04:55:20.986000+00:00",
+          "gap_minutes": 763
+        },
+        {
+          "start": "2026-03-13T04:55:20.986000+00:00",
+          "end": "2026-03-14T00:45:04.902000+00:00",
+          "gap_minutes": 1189
+        }
+      ]
+    },
+    "tools": {
+      "Edit": 29,
+      "Read": 28,
+      "Bash": 7,
+      "Agent": 5,
+      "Glob": 5,
+      "Write": 1,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "What do you know about The data called ChapterData and SRT in particular, FliHub chapters and SRT content. What do you know about it from both a schema and a data shape point of view?",
+      "full_length": 183,
+      "ts": "2026-03-12T14:08:03.612Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  }
+]

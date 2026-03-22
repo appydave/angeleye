@@ -1,0 +1,159 @@
+{
+  "session_id": "b81e4057-b8f0-4328-940a-f0b9043bce59",
+  "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-b81e4057-b8f0-4328-940a-f0b9043bce59.jsonl",
+  "cwd": "/Users/davidcruwys/dev/ad/appydave.com",
+  "shape": {
+    "event_count": 103,
+    "user_prompt_count": 8,
+    "tool_use_count": 75,
+    "stop_count": 8,
+    "subagent_start_count": 5,
+    "subagent_stop_count": 5,
+    "first_event_ts": "2026-03-22T10:22:54.444000+00:00",
+    "last_event_ts": "2026-03-22T10:41:07.068000+00:00",
+    "duration_minutes": 18,
+    "active_minutes": 18,
+    "idle_gaps_over_1h": 0,
+    "idle_gap_details": null
+  },
+  "tools": {
+    "Bash": 19,
+    "Read": 17,
+    "Write": 11,
+    "mcp__playwright__browser_navigate": 11,
+    "Glob": 7,
+    "Agent": 5,
+    "Edit": 3,
+    "Skill": 1,
+    "ToolSearch": 1
+  },
+  "file_paths": {
+    "read": [
+      "/Users/davidcruwys/dev/ad/appydave.com/apps/web/public/config/brand-preferences.json",
+      "/Users/davidcruwys/dev/ad/appydave.com/apps/web/src/styles/global.css",
+      "/Users/davidcruwys/dev/ad/appydave.com/apps/web/src/components/HeroSection.tsx",
+      "/Users/davidcruwys/dev/ad/appydave.com/apps/web/src/pages/index.astro",
+      "/Users/davidcruwys/dev/ad/appydave.com/apps/web/src/components/AboutIntroSection.tsx",
+      "/Users/davidcruwys/dev/ad/appydave.com/apps/web/src/components/ServicesSection.tsx",
+      "/Users/davidcruwys/dev/ad/appydave.com/apps/web/src/components/Header.tsx",
+      "/Users/davidcruwys/dev/ad/appydave.com/apps/web/src/components/Footer.tsx",
+      "/Users/davidcruwys/dev/ad/appydave.com/apps/web/src/components/RolesSection.tsx",
+      "/Users/davidcruwys/dev/ad/appydave.com/apps/web/src/components/AIPhilosophySection.tsx",
+      "/Users/davidcruwys/dev/ad/appydave.com/apps/web/src/components/YouTubeChannelsSection.tsx",
+      "/Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/v1-editorial-magazine/index.html",
+      "/Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/v2-dark-immersive/index.html",
+      "/Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/v3-split-panel/index.html",
+      "/Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/v4-card-mosaic/index.html",
+      "/Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/v5-storytelling-scroll/index.html",
+      "/Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/index.html"
+    ],
+    "write": [
+      "/Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/index.html",
+      "/Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/v1-editorial-magazine/index.html",
+      "/Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/v2-dark-immersive/index.html",
+      "/Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/v3-split-panel/index.html",
+      "/Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/v4-card-mosaic/index.html",
+      "/Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/v5-storytelling-scroll/index.html",
+      "/Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/v6-editorial-refined/index.html",
+      "/Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/v8-bold-asymmetric/index.html",
+      "/Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/v9-warm-mosaic/index.html",
+      "/Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/v7-dark-premium/index.html",
+      "/Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/v10-cinematic-narrative/index.html"
+    ],
+    "edit": ["/Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/index.html"]
+  },
+  "bash_commands_sample": [
+    "ls /Users/davidcruwys/dev/ad/appydave.com/",
+    "git log --oneline --all | head -30",
+    "mkdir -p /Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/v1-editorial-magazine /Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/v2-dark-immersive /Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/v3-split-panel /Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/",
+    "open -a \"Google Chrome\" /Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/index.html",
+    "cd /Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs && python3 -m http.server 8787 &\necho \"Server started on port 8787\"",
+    "mkdir -p /Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/v6-editorial-refined /Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/v7-dark-premium /Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/v8-bold-asymmetric /Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs",
+    "ls /Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/",
+    "ls /Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/v6-editorial-refined/",
+    "ls /Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/v1-editorial-magazine/",
+    "ls /Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs/"
+  ],
+  "first_real_prompt": {
+    "text": "Have you got any mock implementations of the API Dave website at the moment?",
+    "full_length": 76,
+    "ts": "2026-03-22T10:23:30.842Z"
+  },
+  "skill_invocations": [
+    {
+      "keys": ["skill", "args"]
+    }
+  ],
+  "subagents": [
+    {
+      "agent_id": "a4a7677968afb609c",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T10:32:41.690Z",
+      "stopped_at": "2026-03-22T10:34:37.026Z"
+    },
+    {
+      "agent_id": "a144bb2b43ee4d170",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T10:32:56.025Z",
+      "stopped_at": "2026-03-22T10:35:25.054Z"
+    },
+    {
+      "agent_id": "a6f807887b7c74762",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T10:33:09.591Z",
+      "stopped_at": "2026-03-22T10:34:58.161Z"
+    },
+    {
+      "agent_id": "a88dfcefd29a3c9c3",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T10:33:23.343Z",
+      "stopped_at": "2026-03-22T10:35:09.963Z"
+    },
+    {
+      "agent_id": "a54f9057b6060705e",
+      "agent_type": "general-purpose",
+      "started_at": "2026-03-22T10:33:39.892Z",
+      "stopped_at": "2026-03-22T10:35:58.715Z"
+    }
+  ],
+  "detections": {
+    "compaction_resume": {
+      "detected": false,
+      "count": 0
+    },
+    "loop_runaway": {
+      "detected": false
+    },
+    "write_then_open": {
+      "detected": true,
+      "count": 3
+    },
+    "unauthorized_edit_before_prompt": {
+      "detected": false,
+      "count": 0
+    },
+    "search_without_read": {
+      "detected": false,
+      "count": 2
+    },
+    "ralphy_mode": {
+      "detected": false,
+      "has_ralphy_skill": false,
+      "has_impl_plan": false,
+      "has_agent_calls": true
+    },
+    "form_filling": {
+      "detected": false
+    },
+    "cron_polling": {
+      "detected": false,
+      "creates": 0,
+      "deletes": 0
+    }
+  },
+  "project_inference": {
+    "inferred_project": "/Users/davidcruwys/dev/ad/appydave.com/.mochaccino/designs",
+    "cwd_reliable": true,
+    "edit_write_count": 12
+  }
+}

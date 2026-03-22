@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "0aabff8e-6ca4-4e8a-8eaf-96de6b418e29",
+  "machine": "m4-mini",
+  "project": "davidcruwys",
+  "project_dir": "/Users/davidcruwys",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "SYSOPS/multi-machine-sync",
+  "file_size_bytes": 96828,
+  "event_count": 50,
+  "disposition": "active",
+  "interest_level": "medium",
+  "notes": "Classification challenged: registry says BUILD but no code was written. Session was cross-Mac repo gap analysis and sync between M4 Mini and M4 Pro (source of truth). Generated a removal script (single Write), executed via Bash (24 calls total), deleted stale local repos, pulled/copied missing repos from Pro via SSH. Final 12.6h gap then session resumed next day for unrelated hardware questions (Bluetooth mouse, Samsung monitor resolution). Home-dir project_dir is a reliable SYSOPS/ambient signal. Script-generate-then-execute (Write + Bash) pattern distinct from BUILD.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

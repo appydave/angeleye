@@ -1,0 +1,79 @@
+{
+  "session_id": "78a153a0-9b30-46b7-b569-6b513a50c86f",
+  "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-78a153a0-9b30-46b7-b569-6b513a50c86f.jsonl",
+  "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+  "shape": {
+    "event_count": 53,
+    "user_prompt_count": 14,
+    "tool_use_count": 39,
+    "stop_count": 0,
+    "subagent_start_count": 0,
+    "subagent_stop_count": 0,
+    "first_event_ts": "2026-02-19T11:18:31.109000+00:00",
+    "last_event_ts": "2026-02-19T12:51:17.428000+00:00",
+    "duration_minutes": 92,
+    "active_minutes": 92,
+    "idle_gaps_over_1h": 0,
+    "idle_gap_details": null
+  },
+  "tools": {
+    "Bash": 17,
+    "Read": 7,
+    "Edit": 6,
+    "Task": 3,
+    "Glob": 3,
+    "Write": 3
+  },
+  "file_paths": {
+    "read": [],
+    "write": [],
+    "edit": []
+  },
+  "bash_commands_sample": [],
+  "first_real_prompt": {
+    "text": "  /Users/davidcruwys/dev/video-projects/v-appydave/.poem-core/docs/architecture/open-questions-for-poem-os.md\n\nRate this and give me an assessment of what you think it means. ",
+    "full_length": 175,
+    "ts": "2026-02-19T11:18:31.109Z"
+  },
+  "skill_invocations": null,
+  "subagents": null,
+  "detections": {
+    "compaction_resume": {
+      "detected": false,
+      "count": 0
+    },
+    "loop_runaway": {
+      "detected": false
+    },
+    "write_then_open": {
+      "detected": false,
+      "count": 0
+    },
+    "unauthorized_edit_before_prompt": {
+      "detected": false,
+      "count": 0
+    },
+    "search_without_read": {
+      "detected": false,
+      "count": 2
+    },
+    "ralphy_mode": {
+      "detected": false,
+      "has_ralphy_skill": false,
+      "has_impl_plan": false,
+      "has_agent_calls": false
+    },
+    "form_filling": {
+      "detected": false
+    },
+    "cron_polling": {
+      "detected": false,
+      "creates": 0,
+      "deletes": 0
+    }
+  },
+  "project_inference": {
+    "inferred_project": null,
+    "cwd_reliable": null
+  }
+}

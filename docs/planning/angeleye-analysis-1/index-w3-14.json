@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "d5fa9524-5648-4a4b-9e82-3e8aa140eb98",
+  "machine": "m4-mini",
+  "project": "ansible",
+  "project_dir": "/Users/davidcruwys/dev/ad/agent-os/ansible",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "operations.provisioning_debug",
+  "file_size_bytes": 76551,
+  "event_count": 33,
+  "disposition": "ended",
+  "interest_level": "medium",
+  "notes": "Reclassified from BUILD to operations.provisioning_debug. Session is entirely about repairing broken Ansible provisioning on mac-mini-m2: Claude not found after SSH, Node missing, Node version divergence across M4 (24.13.0) vs M2 (22.14.0). Run/fail/paste cycle across 14 user prompts in 43 minutes. Frustration burst cluster in minutes 2-4 (4 rapid short angry prompts). Agent reads playbook files (Read x9) and patches them (Edit x4). Minor feature addition (add tmux) at end. Post-session summary prompts (~2h later) are a new pattern — David asking Claude to describe the session, likely for documentation. Committed next day via commit skill. Key classifier signals: (1) ansible cwd + pasted playbook output in prompts = operations not BUILD, (2) frustration burst = operational failure signal, (3) cross-machine state divergence question. Proposed new type: operations.provisioning_debug.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

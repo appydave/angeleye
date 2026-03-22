@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "05ce5c2a-610d-4c9d-8dbb-8b225f55b583",
+  "machine": "m4-mini",
+  "project": "prompt.supportsignal",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "build.iterative_design",
+  "file_size_bytes": 140556,
+  "event_count": 349,
+  "disposition": "active",
+  "interest_level": "medium-high",
+  "notes": "WUI Display Manifest highlight/inspect feature build for POEM OS. Two worktrees (wui-highlight-inspect, wui-template-modal), two context compactions, 24 user prompts (21 real + 3 compaction). Registry bash-heavy misclassification — Bash inflated by worktree/git overhead, real work is Read/Edit loop. Key signal: cross-session panel placement constraint violated repeatedly after compactions (prompt 12 frustration). No Playwright verification — voice-only feedback loop. 11h gap before final commit cleanup.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

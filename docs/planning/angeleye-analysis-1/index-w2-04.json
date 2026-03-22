@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "3461a2ff-89f4-4d8e-9397-1193529a48a2",
+  "machine": "m4-mini",
+  "project": "digital-stage-summit-2026",
+  "project_dir": "/Users/davidcruwys/dev/ad/apps/digital-stage-summit-2026",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "BUILD / campaign",
+  "file_size_bytes": 118400,
+  "event_count": 178,
+  "disposition": "active",
+  "interest_level": "high",
+  "notes": "55-minute Ralphy campaign session. 13 turns, 144 tools (47 Edit, 14 Write, 48 Read, 28 Bash). Voice brain dump opening with cross-session paste. /ralphy skill invoked. Built: Swagger API nav, David-Jan relay folder, Wave 2 scaffolding, NotebookLM export backlog. Provenance chain teaching moment (Turns 9-10) — David catches Claude authoring content that should only be synced from source brain. Three correction turns (23%) show real-time mental model alignment. Registry classification BUILD confirmed correct.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

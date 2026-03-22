@@ -1,0 +1,77 @@
+{
+  "session_id": "67c6f182-1d27-4001-860f-f96045cebbc6",
+  "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-67c6f182-1d27-4001-860f-f96045cebbc6.jsonl",
+  "cwd": "/Users/davidcruwys/dev",
+  "shape": {
+    "event_count": 32,
+    "user_prompt_count": 8,
+    "tool_use_count": 24,
+    "stop_count": 0,
+    "subagent_start_count": 0,
+    "subagent_stop_count": 0,
+    "first_event_ts": "2026-03-12T13:35:49.050000+00:00",
+    "last_event_ts": "2026-03-12T16:03:07.349000+00:00",
+    "duration_minutes": 147,
+    "active_minutes": 46,
+    "idle_gaps_over_1h": 0,
+    "idle_gap_details": null
+  },
+  "tools": {
+    "Bash": 18,
+    "Read": 4,
+    "Glob": 1,
+    "Skill": 1
+  },
+  "file_paths": {
+    "read": [],
+    "write": [],
+    "edit": []
+  },
+  "bash_commands_sample": [],
+  "first_real_prompt": {
+    "text": "What did we do with my sites directory? Where is it now? Do I have a new one as of today as well?",
+    "full_length": 97,
+    "ts": "2026-03-12T13:35:49.050Z"
+  },
+  "skill_invocations": [{}],
+  "subagents": null,
+  "detections": {
+    "compaction_resume": {
+      "detected": false,
+      "count": 0
+    },
+    "loop_runaway": {
+      "detected": false
+    },
+    "write_then_open": {
+      "detected": false,
+      "count": 0
+    },
+    "unauthorized_edit_before_prompt": {
+      "detected": false,
+      "count": 0
+    },
+    "search_without_read": {
+      "detected": false,
+      "count": 0
+    },
+    "ralphy_mode": {
+      "detected": false,
+      "has_ralphy_skill": false,
+      "has_impl_plan": false,
+      "has_agent_calls": false
+    },
+    "form_filling": {
+      "detected": false
+    },
+    "cron_polling": {
+      "detected": false,
+      "creates": 0,
+      "deletes": 0
+    }
+  },
+  "project_inference": {
+    "inferred_project": null,
+    "cwd_reliable": null
+  }
+}

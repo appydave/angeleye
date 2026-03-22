@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "057682ee-cd55-44fd-bf41-8525d627126c",
+  "machine": "m4-mini",
+  "project": "brains",
+  "project_dir": "/Users/davidcruwys/dev/ad/brains",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "KNOWLEDGE / knowledge.brain_ingestion",
+  "file_size_bytes": 14000,
+  "event_count": 62,
+  "disposition": "active",
+  "interest_level": "low",
+  "notes": "Registry override: BUILD -> KNOWLEDGE. User ingested agentic-os knowledge from a 4000-line SupportSignal workflow file into the agentic-os brain. 5 Task agents for segmented comparison, 28 Edits updating brain files, architecture.json promoted from snapshots to canonical. Voice transcription artifacts in all 4 prompts (agnetic-os = agentic-os). 20-minute focused session, no phase changes. Edit-heavy pattern misclassified as BUILD — project_dir discriminator corrects to KNOWLEDGE.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

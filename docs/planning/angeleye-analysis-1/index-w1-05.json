@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "30391e74-c705-4b3a-a689-65e8dbb79d98",
+  "machine": "m4-mini",
+  "project": "lars",
+  "project_dir": "/Users/davidcruwys/dev/clients/lars",
+  "session_type_registry": "ORIENTATION",
+  "session_type_analysed": "orientation.cold_start",
+  "file_size_bytes": 8489,
+  "event_count": 17,
+  "disposition": "active",
+  "interest_level": "medium",
+  "notes": "Bookend session: context loading before a 2.5h in-person meeting with Lars, then memory capture after. Two active windows totalling ~1 minute separated by 19 hours. Clean cold_start with closing ceremony and MEMORY.md handover write.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

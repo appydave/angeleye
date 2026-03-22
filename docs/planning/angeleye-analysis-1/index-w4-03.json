@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "ecaced22-76f9-4239-b8bf-51cdb12a5ee3",
+  "machine": "m4-mini",
+  "project": "prompt.supportsignal",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+  "session_type_registry": "ORIENTATION",
+  "session_type_analysed": "orientation.bookend",
+  "file_size_bytes": 20177,
+  "event_count": 11,
+  "disposition": "active",
+  "interest_level": "low-medium",
+  "notes": "2-prompt, ~3-minute bookend session. Opens with a full paste of prior-session output from v-appydave (diff of generate-schema.md v1→v2, commit confirmations for both repos, Claude's root-cause analysis of the gap analysis failure). The prior session had already applied the fix and committed — this session does a read-only verification pass (Glob×4, Read×3, Bash×1, zero writes/edits) then closes with 'so are you suggesting any changes or not'. No mutations. File size (20KB) is almost entirely the prior-session paste, not active content. Clean archetype instance of orientation.bookend: cross-project paste as briefing, read-only verification, terse clarifying close. The embedded meta-commentary (Claude analysing its own prior analytical failure on gap analysis) is the only substantive content but belongs to the v-appydave session.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

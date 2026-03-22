@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "724b1165-684d-4711-906b-8cd7c98937c6",
+  "machine": "m4-mini",
+  "project": "prompt.supportsignal",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+  "session_type_registry": "ORIENTATION",
+  "session_type_analysed": "orientation.artifact_retrieval",
+  "file_size_bytes": 34845,
+  "event_count": 89,
+  "disposition": "active",
+  "interest_level": "medium",
+  "notes": "Oscar orchestration session executing *run 107 (incident workflow). Three-phase: preflight scan (Glob/Grep/Read), parallel agent waves (15 Task + 13 TaskOutput), single Write output. Medication predicate flipped NO→YES vs prior run. Mid-session context compaction at 09:47 (auto-compact summary injected). 18h gap then stale revival (Feb 18 03:42) — AskUserQuestion gate, ends ambiguously with write-or-not unclear. Three-prompt Oscar commit flow (*run → 1 → yes). No handover produced, no /rename. Consider orientation.orchestration_run subtype if Oscar sessions become frequent.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

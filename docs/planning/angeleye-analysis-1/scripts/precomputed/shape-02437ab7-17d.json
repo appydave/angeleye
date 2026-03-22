@@ -1,0 +1,77 @@
+{
+  "session_id": "02437ab7-17de-4964-846e-c53d207dd5be",
+  "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-02437ab7-17de-4964-846e-c53d207dd5be.jsonl",
+  "cwd": "/Users/davidcruwys",
+  "shape": {
+    "event_count": 61,
+    "user_prompt_count": 13,
+    "tool_use_count": 48,
+    "stop_count": 0,
+    "subagent_start_count": 0,
+    "subagent_stop_count": 0,
+    "first_event_ts": "2026-02-28T13:01:09.125000+00:00",
+    "last_event_ts": "2026-02-28T14:34:47.611000+00:00",
+    "duration_minutes": 93,
+    "active_minutes": 93,
+    "idle_gaps_over_1h": 0,
+    "idle_gap_details": null
+  },
+  "tools": {
+    "Bash": 43,
+    "Read": 3,
+    "Edit": 1,
+    "TaskOutput": 1
+  },
+  "file_paths": {
+    "read": [],
+    "write": [],
+    "edit": []
+  },
+  "bash_commands_sample": [],
+  "first_real_prompt": {
+    "text": "do you have the abilit to see my external hardrive, it has the name T7",
+    "full_length": 70,
+    "ts": "2026-02-28T13:01:09.125Z"
+  },
+  "skill_invocations": null,
+  "subagents": null,
+  "detections": {
+    "compaction_resume": {
+      "detected": false,
+      "count": 0
+    },
+    "loop_runaway": {
+      "detected": false
+    },
+    "write_then_open": {
+      "detected": false,
+      "count": 0
+    },
+    "unauthorized_edit_before_prompt": {
+      "detected": false,
+      "count": 0
+    },
+    "search_without_read": {
+      "detected": false,
+      "count": 0
+    },
+    "ralphy_mode": {
+      "detected": false,
+      "has_ralphy_skill": false,
+      "has_impl_plan": false,
+      "has_agent_calls": false
+    },
+    "form_filling": {
+      "detected": false
+    },
+    "cron_polling": {
+      "detected": false,
+      "creates": 0,
+      "deletes": 0
+    }
+  },
+  "project_inference": {
+    "inferred_project": null,
+    "cwd_reliable": null
+  }
+}

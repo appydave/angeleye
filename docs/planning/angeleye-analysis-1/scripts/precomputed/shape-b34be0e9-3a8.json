@@ -1,0 +1,90 @@
+{
+  "session_id": "b34be0e9-3a8e-42c5-965f-6bfcd10ba54f",
+  "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-b34be0e9-3a8e-42c5-965f-6bfcd10ba54f.jsonl",
+  "cwd": "/Users/davidcruwys/dev/ad/agent-os/ansible",
+  "shape": {
+    "event_count": 131,
+    "user_prompt_count": 36,
+    "tool_use_count": 95,
+    "stop_count": 0,
+    "subagent_start_count": 0,
+    "subagent_stop_count": 0,
+    "first_event_ts": "2026-02-18T08:48:21.909000+00:00",
+    "last_event_ts": "2026-02-19T00:24:59.638000+00:00",
+    "duration_minutes": 936,
+    "active_minutes": 119,
+    "idle_gaps_over_1h": 2,
+    "idle_gap_details": [
+      {
+        "start": "2026-02-18T09:58:23.746000+00:00",
+        "end": "2026-02-18T13:02:53.587000+00:00",
+        "gap_minutes": 184
+      },
+      {
+        "start": "2026-02-18T13:42:23.803000+00:00",
+        "end": "2026-02-19T00:15:07.039000+00:00",
+        "gap_minutes": 632
+      }
+    ]
+  },
+  "tools": {
+    "Bash": 33,
+    "Read": 27,
+    "Edit": 21,
+    "Glob": 10,
+    "Write": 3,
+    "Skill": 1
+  },
+  "file_paths": {
+    "read": [],
+    "write": [],
+    "edit": []
+  },
+  "bash_commands_sample": [],
+  "first_real_prompt": {
+    "text": "How many computers have I got set up with Ansible, and which is the most full-featured, and what do I do to make all three of them have similar capabilities? Is it a central file, or is it three separate files? ",
+    "full_length": 211,
+    "ts": "2026-02-18T08:48:21.909Z"
+  },
+  "skill_invocations": [{}],
+  "subagents": null,
+  "detections": {
+    "compaction_resume": {
+      "detected": false,
+      "count": 0
+    },
+    "loop_runaway": {
+      "detected": false
+    },
+    "write_then_open": {
+      "detected": false,
+      "count": 0
+    },
+    "unauthorized_edit_before_prompt": {
+      "detected": false,
+      "count": 0
+    },
+    "search_without_read": {
+      "detected": false,
+      "count": 0
+    },
+    "ralphy_mode": {
+      "detected": false,
+      "has_ralphy_skill": false,
+      "has_impl_plan": false,
+      "has_agent_calls": false
+    },
+    "form_filling": {
+      "detected": false
+    },
+    "cron_polling": {
+      "detected": false,
+      "creates": 0,
+      "deletes": 0
+    }
+  },
+  "project_inference": {
+    "inferred_project": null,
+    "cwd_reliable": null
+  }
+}

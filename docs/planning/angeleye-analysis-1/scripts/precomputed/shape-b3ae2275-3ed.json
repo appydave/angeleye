@@ -1,0 +1,79 @@
+{
+  "session_id": "b3ae2275-3ed1-42df-ba95-47a18731bdae",
+  "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-b3ae2275-3ed1-42df-ba95-47a18731bdae.jsonl",
+  "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+  "shape": {
+    "event_count": 74,
+    "user_prompt_count": 17,
+    "tool_use_count": 57,
+    "stop_count": 0,
+    "subagent_start_count": 0,
+    "subagent_stop_count": 0,
+    "first_event_ts": "2026-03-13T04:34:43.772000+00:00",
+    "last_event_ts": "2026-03-13T07:03:25.669000+00:00",
+    "duration_minutes": 148,
+    "active_minutes": 76,
+    "idle_gaps_over_1h": 0,
+    "idle_gap_details": null
+  },
+  "tools": {
+    "Bash": 21,
+    "Read": 21,
+    "Agent": 7,
+    "Glob": 3,
+    "Write": 3,
+    "Edit": 2
+  },
+  "file_paths": {
+    "read": [],
+    "write": [],
+    "edit": []
+  },
+  "bash_commands_sample": [],
+  "first_real_prompt": {
+    "text": "I did a lot of changes yesterday to AWB A lot of it was related to new visual components and display capabilities that affected the YouTube launch optimizer YAML, maybe the schema, definitely the code.\n\nDo you have a clear understanding of all these changes? Are they currently checked into the system?",
+    "full_length": 302,
+    "ts": "2026-03-13T04:34:43.772Z"
+  },
+  "skill_invocations": null,
+  "subagents": null,
+  "detections": {
+    "compaction_resume": {
+      "detected": true,
+      "count": 1
+    },
+    "loop_runaway": {
+      "detected": false
+    },
+    "write_then_open": {
+      "detected": false,
+      "count": 0
+    },
+    "unauthorized_edit_before_prompt": {
+      "detected": false,
+      "count": 0
+    },
+    "search_without_read": {
+      "detected": false,
+      "count": 2
+    },
+    "ralphy_mode": {
+      "detected": false,
+      "has_ralphy_skill": false,
+      "has_impl_plan": false,
+      "has_agent_calls": true
+    },
+    "form_filling": {
+      "detected": false
+    },
+    "cron_polling": {
+      "detected": false,
+      "creates": 0,
+      "deletes": 0
+    }
+  },
+  "project_inference": {
+    "inferred_project": null,
+    "cwd_reliable": null
+  }
+}

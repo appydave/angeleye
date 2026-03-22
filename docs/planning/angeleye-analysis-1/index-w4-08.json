@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "1604fbd4-7cb4-4246-94a4-bb4bf361acb1",
+  "machine": "m4-mini",
+  "project": "prompt.supportsignal",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+  "session_type_registry": "ORIENTATION",
+  "session_type_analysed": "orientation.artifact_retrieval",
+  "file_size_bytes": 6157,
+  "event_count": 23,
+  "disposition": "active",
+  "interest_level": "medium",
+  "notes": "7-minute recipe-invocation session. *run 106 prompt triggers POEM OS incident workflow. Pattern: 2 auto-Glob calls before any user prompt, Read×8 orientation burst, mcp__codex__codex×2 recipe lookup, yes confirmation gate at 4-min gap, Task×5 dispatch terminus. Session ends after agent dispatch — no TaskOutput, no commits, no handover. Exemplar of orientation.artifact_retrieval subtype: reads serve dispatch, not exploration. registry read-heavy label accurate but misses the Task-burst terminus as the defining signal.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

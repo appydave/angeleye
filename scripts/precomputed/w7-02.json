@@ -1,0 +1,750 @@
+[
+  {
+    "session_id": "b198584c-3b85-4e5d-85cc-b29aa65562f5",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-b198584c-3b85-4e5d-85cc-b29aa65562f5.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brain-dynamous",
+    "shape": {
+      "event_count": 2,
+      "user_prompt_count": 1,
+      "tool_use_count": 1,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-28T09:12:36.044000+00:00",
+      "last_event_ts": "2026-02-28T09:12:43.807000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Task": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Pre-compaction memory flush. The session is near auto-compaction.\n\nReview the conversation context below and respond with a concise summary of important items.\nDo NOT use any tools \u2014 just return plain text.\n\nFormat your response as bullet points covering:\n- Decisions made and their rationale\n- Lessons learned or mistakes to avoid\n- Important facts, configurations, or patterns discovered\n- Action items or follow-ups mentioned\n- Key context that would be lost after compaction\n\nSkip anything that i",
+      "full_length": 8790,
+      "ts": "2026-02-28T09:12:36.044Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "aca9259c-d0a2-42d1-858a-ba5b057134bc",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-aca9259c-d0a2-42d1-858a-ba5b057134bc.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad",
+    "shape": {
+      "event_count": 4,
+      "user_prompt_count": 1,
+      "tool_use_count": 3,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-01T12:47:48.307000+00:00",
+      "last_event_ts": "2026-03-01T12:47:59.379000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 2,
+      "Read": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Can you go and have a look at the M4 Pro? For the images directory, tell me how big it is as well and how many files. ",
+      "full_length": 118,
+      "ts": "2026-03-01T12:47:48.307Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "fb3b3aa3-54bf-4cb7-911e-e6a9e5fe0f7c",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-fb3b3aa3-54bf-4cb7-911e-e6a9e5fe0f7c.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/signal-studio",
+    "shape": {
+      "event_count": 8,
+      "user_prompt_count": 1,
+      "tool_use_count": 7,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-11T09:10:56.389000+00:00",
+      "last_event_ts": "2026-03-11T09:11:39.220000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 7
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "We have a repository where some stuff has been worked on with Waves and Ralph Wiggum, but we also did an update on it. Probably dumb to do it without cleaning the repository first, but here's some information: Was anything overwritten other than SkillMD that matters? With SkillMD, what did we change? \n\n can be found in: /Users/davidcruwys/.npm/_logs/2026-03-11T08_56_42_952Z-debug-0.log\n\u279c  signal-studio git:(main) \u2717\n\n\u23fa Two separate things happened in that terminal:\n\n  Issue 1 \u2014 the accidental npm",
+      "full_length": 19952,
+      "ts": "2026-03-11T09:10:56.389Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "752b7415-2a0d-4d08-8619-ee7d238b7a7c",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-752b7415-2a0d-4d08-8619-ee7d238b7a7c.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/deckhand",
+    "shape": {
+      "event_count": 14,
+      "user_prompt_count": 3,
+      "tool_use_count": 11,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-10T01:40:11.398000+00:00",
+      "last_event_ts": "2026-03-10T01:45:32.879000+00:00",
+      "duration_minutes": 5,
+      "active_minutes": 5,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 7,
+      "Bash": 4
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "We recently did image renaming in the downloads directory. We built a skill for it. What's it called? How do I use it?",
+      "full_length": 118,
+      "ts": "2026-03-10T01:40:11.398Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "b0215876-3ee9-46dd-ae7d-221f691972d8",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-b0215876-3ee9-46dd-ae7d-221f691972d8.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/thumbrack",
+    "shape": {
+      "event_count": 25,
+      "user_prompt_count": 4,
+      "tool_use_count": 21,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-08T03:13:43.042000+00:00",
+      "last_event_ts": "2026-03-08T03:17:15.919000+00:00",
+      "duration_minutes": 3,
+      "active_minutes": 3,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 16,
+      "Read": 3,
+      "Glob": 1,
+      "Write": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I've just manually created a Git for you, but I think we need to run through this and maybe even push it up to \n\nRead 1 file (ctrl+o to expand)\n\n\u23fa Simple answer: it was just never added. The CLI does copy template \u2192\n  customise \u2192 npm install, then stops. No git init, no initial commit.\n\n  Every other scaffolding tool (create-react-app, create-vite,\n  create-next-app) does git init by default. It should be straightforward\n   to add after the npm install step:\n\n  execSync('git init && git add -A &",
+      "full_length": 1774,
+      "ts": "2026-03-08T03:13:43.042Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "bda59a13-915c-488f-a833-81e2485d95d6",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-bda59a13-915c-488f-a833-81e2485d95d6.jsonl",
+    "cwd": "/Users/davidcruwys/dev/video-projects/v-voz",
+    "shape": {
+      "event_count": 38,
+      "user_prompt_count": 8,
+      "tool_use_count": 21,
+      "stop_count": 8,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-16T00:36:35.944000+00:00",
+      "last_event_ts": "2026-03-16T01:25:21.009000+00:00",
+      "duration_minutes": 48,
+      "active_minutes": 48,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 9,
+      "Read": 5,
+      "Write": 3,
+      "Glob": 2,
+      "Skill": 2
+    },
+    "file_paths": {
+      "read": [
+        "/Users/davidcruwys/dev/video-projects/v-voz/docs/handovers/index.md",
+        "/Users/davidcruwys/dev/video-projects/v-voz/docs/handovers/voz-jan-feb-11.md",
+        "/Users/davidcruwys/dev/video-projects/v-voz/.claude/commands/voz/byron-brand-strategist.md",
+        "/Users/davidcruwys/dev/video-projects/v-voz/.voz-core/agents/byron-brand-strategist.md",
+        "/Users/davidcruwys/dev/video-projects/v-voz/.claude/skills/voz-storytelling/SKILL.md"
+      ],
+      "write": [
+        "/Users/davidcruwys/dev/video-projects/v-voz/.claude/skills/voz-kate-kdd/SKILL.md",
+        "/Users/davidcruwys/dev/video-projects/v-voz/.claude/skills/voz-kate-kdd/references/session-template.md",
+        "/Users/davidcruwys/dev/video-projects/v-voz/docs/voz-learnings/kate-kdd-why-and-how.md"
+      ],
+      "edit": []
+    },
+    "bash_commands_sample": [
+      "ls /Users/davidcruwys/.claude/skills/ | head -40",
+      "ls /Users/davidcruwys/.claude/skills/agents 2>/dev/null || file /Users/davidcruwys/.claude/skills/agents",
+      "mkdir -p /Users/davidcruwys/dev/video-projects/v-voz/.claude/skills/voz-kate-kdd/references",
+      "pwd && git status",
+      "git add -A && git commit -m \"$(cat <<'EOF'\nfeat(skills): add Kate KDD session capture skill\n\nIntroduces voz-kate-kdd \u2014 Kate, VOZ's Knowledge-Driven Development\nsession capture agent. Captures learnings, confusion, and open\nquestions from sessions into dated files in docs/sessions/ as a\nstaging area ",
+      "git push origin main",
+      "ls /Users/davidcruwys/dev/video-projects/v-voz/docs/",
+      "ls /Users/davidcruwys/dev/video-projects/v-voz/docs/voz-learnings/",
+      "git add docs/voz-learnings/kate-kdd-why-and-how.md && git commit -m \"$(cat <<'EOF'\ndocs(voz-learnings): add Kate KDD handover guide for VOZ and Jan\n\nExplains why Kate was built, the problem she solves (session knowledge\nloss and Claude's tendency to evaluate rather than capture), and how\nVOZ and Jan"
+    ],
+    "first_real_prompt": {
+      "text": "Tell me about the last session review.",
+      "full_length": 38,
+      "ts": "2026-03-16T00:36:35.944Z"
+    },
+    "skill_invocations": [
+      {
+        "keys": ["skill"]
+      },
+      {
+        "keys": ["skill"]
+      }
+    ],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": "/Users/davidcruwys/dev/video-projects/v-voz",
+      "cwd_reliable": true,
+      "edit_write_count": 3
+    }
+  },
+  {
+    "session_id": "9e87b170-2335-45c2-a751-6b80e626e5dc",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-9e87b170-2335-45c2-a751-6b80e626e5dc.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/lars",
+    "shape": {
+      "event_count": 50,
+      "user_prompt_count": 11,
+      "tool_use_count": 39,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-03T05:58:43.830000+00:00",
+      "last_event_ts": "2026-03-03T12:43:43.380000+00:00",
+      "duration_minutes": 404,
+      "active_minutes": 32,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-03T05:59:18.625000+00:00",
+          "end": "2026-03-03T11:33:15.122000+00:00",
+          "gap_minutes": 333
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 17,
+      "Read": 9,
+      "Write": 6,
+      "Edit": 5,
+      "Agent": 1,
+      "Grep": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "How old is his brain? How much of the information in it would be relevant for now? We're re-activating the client today. How much of it is related to, say, billing and who the person is? Should any of it go into a historical context? Should we have a clean start from today? ",
+      "full_length": 275,
+      "ts": "2026-03-03T05:58:43.830Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "b2dbcddd-8186-4893-98ae-8e40f3d6f177",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-b2dbcddd-8186-4893-98ae-8e40f3d6f177.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/supportsignal-v2-planning",
+    "shape": {
+      "event_count": 55,
+      "user_prompt_count": 13,
+      "tool_use_count": 42,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-09T07:53:48.818000+00:00",
+      "last_event_ts": "2026-03-10T13:40:07.981000+00:00",
+      "duration_minutes": 1786,
+      "active_minutes": 83,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-09T08:40:39.860000+00:00",
+          "end": "2026-03-10T12:16:52.591000+00:00",
+          "gap_minutes": 1656
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 29,
+      "Read": 6,
+      "Agent": 4,
+      "Edit": 3
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "You realise that you are the intersection of the old app.supportsignal.com plus the prompt.supportsignal.com.edu, where we've been doing work with the agent workflow builder, plus the new signal studio system. I believe you should have some overview document of all those concepts and fairly recent and up-to-date documentation around how everything's hanging together. Is this true? ",
+      "full_length": 384,
+      "ts": "2026-03-09T07:53:48.818Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "779fef13-a5d9-4e01-94fd-11691221654b",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-779fef13-a5d9-4e01-94fd-11691221654b.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 97,
+      "user_prompt_count": 32,
+      "tool_use_count": 65,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-21T00:42:02.637000+00:00",
+      "last_event_ts": "2026-02-21T15:20:51.554000+00:00",
+      "duration_minutes": 878,
+      "active_minutes": 162,
+      "idle_gaps_over_1h": 3,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-21T01:18:36.554000+00:00",
+          "end": "2026-02-21T03:13:51.822000+00:00",
+          "gap_minutes": 115
+        },
+        {
+          "start": "2026-02-21T03:16:12.267000+00:00",
+          "end": "2026-02-21T07:21:32.154000+00:00",
+          "gap_minutes": 245
+        },
+        {
+          "start": "2026-02-21T10:02:43.188000+00:00",
+          "end": "2026-02-21T14:35:50.162000+00:00",
+          "gap_minutes": 273
+        }
+      ]
+    },
+    "tools": {
+      "Task": 17,
+      "Edit": 14,
+      "Glob": 8,
+      "Write": 7,
+      "Read": 6,
+      "Bash": 4,
+      "WebSearch": 3,
+      "Grep": 3,
+      "Skill": 2,
+      "EnterWorktree": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "lets have a quick convo about building out an idea, we are not writing any files, just brainstorm",
+      "full_length": 97,
+      "ts": "2026-02-21T00:42:02.637Z"
+    },
+    "skill_invocations": [{}, {}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": true,
+        "count": 8
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "bb54ff44-0b39-48d6-bca4-ec6aa95e371b",
+  "machine": "m4-mini",
+  "project": "v-appydave",
+  "project_dir": "/Users/davidcruwys/dev/video-projects/v-appydave",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "review.refine",
+  "file_size_bytes": 49043,
+  "event_count": 84,
+  "disposition": "ended",
+  "interest_level": "medium-high",
+  "notes": "Schema audit + workflow gap review for YLO v2. Claude made unauthorised edits early (7 Edits before explicit instruction). Key findings: configure step has no output schema and is effectively broken; video_cta deprecated; createChapters from SRT never worked; content analysis needs 12-parallel redesign; title/thumbnail outputs return freeform text where JSON is required; brandConfig variables unresolved — FliHub publish proposed as the injection mechanism. Session spans two days with long idle gaps; actual working time ~2-3 hours.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

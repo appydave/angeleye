@@ -1,0 +1,869 @@
+{
+  "_summary": {
+    "total_skills": 101,
+    "used_count": 15,
+    "unused_count": 86,
+    "total_skill_sessions": 46,
+    "total_sessions_in_registry": 783,
+    "skill_session_percentage": 5.9,
+    "generated_at": "2026-03-22",
+    "note": "Usage based on first_real_prompt only \u2014 skills invoked mid-session are not captured here"
+  },
+  "skills": {
+    "focus": {
+      "description": "",
+      "category": "unknown \u2014 not in plugin inventory",
+      "namespace": "unknown \u2014 likely project-local",
+      "in_inventory": false,
+      "usage_count": 15,
+      "session_ids": [
+        "171ad14c-96be-483e-8c24-840c320d38be",
+        "26171bb1-1a1a-4ce7-bb08-b53afa1b7186",
+        "2a247732-e083-4229-b2eb-f71a4fe0eed5",
+        "2ddad06e-f36b-4ebb-870d-18c1097e4602",
+        "2ddee32c-1a89-4e91-8b7b-f9da75f61ddf",
+        "3fa5e03b-f5ef-4f44-8a48-13251a9e4e99",
+        "689892a5-0811-4f66-91d6-946f48ccafb1",
+        "78f31f8c-83b4-47dd-8366-99d3f6c1e732",
+        "8ab976fa-6db3-4ef1-afdc-7602598cf948",
+        "9d1d85be-3a95-42fc-acf8-3aac53005c08",
+        "9d7c9ad6-74ea-4874-84ce-d446d0310a89",
+        "c15e692a-b502-4503-ac54-3eb156fb350a",
+        "c4961eaa-37af-4a71-bfd3-fc642acb88ce",
+        "cd9616ed-2d0a-49a6-b7d6-75f118a82e2d",
+        "ef02ac0f-f640-48bb-b89c-6d38690e98dd"
+      ]
+    },
+    "ralphy": {
+      "description": "Autonomous batch campaign runner with Requirements, Plan, Build, Extend modes",
+      "category": "development-workflow",
+      "namespace": "appydave",
+      "in_inventory": true,
+      "usage_count": 6,
+      "session_ids": [
+        "699cab47-79c9-4f09-8a67-004fa77fddd4",
+        "79cfee06-28c5-48c0-a19f-885c56b0cf34",
+        "99b75591-5c74-4342-97cb-2fba77e11d93",
+        "9ef7a313-a853-44b1-baf9-7c481912f24e",
+        "d08d1b10-6a61-467f-84c9-70288e51a50b",
+        "e868366b-bb95-48db-aece-bede7eb1c2d5"
+      ]
+    },
+    "bmad-oversight": {
+      "description": "",
+      "category": "unknown \u2014 not in plugin inventory",
+      "namespace": "unknown \u2014 likely project-local",
+      "in_inventory": false,
+      "usage_count": 5,
+      "session_ids": [
+        "08152bc4-48eb-4395-b42b-518db6f20297",
+        "30ac4f13-7e3a-4680-9942-05c7e3954258",
+        "3701e9b8-8004-4ecb-8865-68c6f5b2b968",
+        "6d25d5ae-e2be-4605-8cda-369ca87f57b5",
+        "a4fd902a-cdbe-4533-b563-d9f86a3333a2"
+      ]
+    },
+    "who-am-i": {
+      "description": "AppyDave ecosystem identity and fact sheet",
+      "category": "brand-content",
+      "namespace": "brand-dave",
+      "in_inventory": true,
+      "usage_count": 3,
+      "session_ids": [
+        "101bf7ba-9def-4008-ab70-123617c03341",
+        "c9349da5-18d3-41b1-b4c3-7cb2a7e8a170",
+        "cb7b8ffa-7d15-4318-afd2-eb7675057f36"
+      ]
+    },
+    "radar": {
+      "description": "Personal organisation daily briefing (reads todo brain)",
+      "category": "utilities",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 3,
+      "session_ids": [
+        "32d200a1-4234-459c-984f-d713dd6c712b",
+        "4a9592bd-c191-45f0-ab31-175ace1ae281",
+        "fb9d73f9-0f4a-4860-9e02-bf9660afa4d2"
+      ]
+    },
+    "bmad-help": {
+      "description": "",
+      "category": "unknown \u2014 not in plugin inventory",
+      "namespace": "unknown \u2014 likely project-local",
+      "in_inventory": false,
+      "usage_count": 3,
+      "session_ids": [
+        "6ba65a37-5b76-47fe-8d6a-c88a8c6be907",
+        "9e97e108-ca50-4a74-99d9-3f44a6dfa44e",
+        "dc3e550b-0425-4376-a6a7-4aa5a189b4cc"
+      ]
+    },
+    "bmad-ux-designer": {
+      "description": "",
+      "category": "unknown \u2014 not in plugin inventory",
+      "namespace": "unknown \u2014 likely project-local",
+      "in_inventory": false,
+      "usage_count": 2,
+      "session_ids": [
+        "50cfaae9-3995-4284-ad92-1d90f0caec6b",
+        "656018b4-0c07-48a7-b33c-d346f75956b7"
+      ]
+    },
+    "bmad-sm": {
+      "description": "",
+      "category": "unknown \u2014 not in plugin inventory",
+      "namespace": "unknown \u2014 likely project-local",
+      "in_inventory": false,
+      "usage_count": 2,
+      "session_ids": [
+        "dca77664-1b2d-4ab3-ba39-6e9c68850e60",
+        "e8b25fc5-b4a7-4df3-a431-1958a7327a74"
+      ]
+    },
+    "refresh-bmad-brain": {
+      "description": "Refresh/discover updates in BMAD Method second brain docs",
+      "category": "brain-refresh",
+      "namespace": "brand-dave",
+      "in_inventory": true,
+      "usage_count": 1,
+      "session_ids": ["4e8c5897-9951-4e85-aee4-a01ef46df76c"]
+    },
+    "refresh-claude-brain": {
+      "description": "Refresh/discover updates in Claude Code second brain docs",
+      "category": "brain-refresh",
+      "namespace": "brand-dave",
+      "in_inventory": true,
+      "usage_count": 1,
+      "session_ids": ["2df59d61-85fd-44c5-89ea-083a1514fda3"]
+    },
+    "omi-fetch": {
+      "description": "Fetch conversations and transcripts from OMI wearable device API",
+      "category": "utilities",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 1,
+      "session_ids": ["1e529a9a-42dc-43e3-ac0f-411525bc1eb4"]
+    },
+    "flivideo:dev": {
+      "description": "",
+      "category": "unknown \u2014 not in plugin inventory",
+      "namespace": "unknown \u2014 likely project-local",
+      "in_inventory": false,
+      "usage_count": 1,
+      "session_ids": ["4693345b-0260-445b-95e5-01250801e8e7"]
+    },
+    "bmad-architect": {
+      "description": "",
+      "category": "unknown \u2014 not in plugin inventory",
+      "namespace": "unknown \u2014 likely project-local",
+      "in_inventory": false,
+      "usage_count": 1,
+      "session_ids": ["28779669-f351-4249-8a44-8696766f6bf7"]
+    },
+    "bmad-check-implementation-readiness": {
+      "description": "",
+      "category": "unknown \u2014 not in plugin inventory",
+      "namespace": "unknown \u2014 likely project-local",
+      "in_inventory": false,
+      "usage_count": 1,
+      "session_ids": ["9b34fa2f-707f-4134-9bd6-6a32aac419c4"]
+    },
+    "bmad-sprint-status": {
+      "description": "",
+      "category": "unknown \u2014 not in plugin inventory",
+      "namespace": "unknown \u2014 likely project-local",
+      "in_inventory": false,
+      "usage_count": 1,
+      "session_ids": ["73dff618-5eea-4ded-900b-9abdaac1da4d"]
+    },
+    "adapt": {
+      "description": "Adapt designs for different screen sizes, devices, platforms",
+      "category": "frontend-design",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "agentic-capability": {
+      "description": "Design advisor for choosing the right Claude Code extension mechanism",
+      "category": "development-workflow",
+      "namespace": "appydave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "algorithmic-art": {
+      "description": "Create algorithmic art using p5.js with seeded randomness",
+      "category": "utilities",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "angela": {
+      "description": "Angela feedback evaluation and knowledge transfer for SupportSignal",
+      "category": "client-specific",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "angeleye-context": {
+      "description": "Fetch AngelEye session event history for handover or analysis",
+      "category": "angeleye",
+      "namespace": "angeleye-local",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "angeleye:install": {
+      "description": "Wire Claude Code hooks into settings.json for AngelEye events",
+      "category": "angeleye",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "angeleye:name-session": {
+      "description": "Tag current session with a human name/tags for AngelEye Observer",
+      "category": "angeleye",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "animate": {
+      "description": "Add purposeful animations and micro-interactions",
+      "category": "frontend-design",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "app-launcher": {
+      "description": "Launch, stop, restart, and check status of local dev apps",
+      "category": "development-workflow",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "architect": {
+      "description": "Software architect for system design, technical strategy, tradeoffs",
+      "category": "consultants",
+      "namespace": "consultants",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "architectural-review": {
+      "description": "Structural and design quality review of system architecture",
+      "category": "code-quality",
+      "namespace": "appydave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "arrange": {
+      "description": "Improve layout, spacing, and visual rhythm",
+      "category": "frontend-design",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "audit-orchestrator": {
+      "description": "Runs all three audit lenses in parallel as subagents",
+      "category": "code-quality",
+      "namespace": "appydave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "audit-ui": {
+      "description": "Comprehensive interface quality audit (a11y, perf, theming, responsive)",
+      "category": "frontend-design",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "bolder": {
+      "description": "Amplify safe/boring designs to be more visually impactful",
+      "category": "frontend-design",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "brain-bridge": {
+      "description": "Store knowledge into a named second brain collection",
+      "category": "context-management",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "brand-appydave": {
+      "description": "AppyDave brand visual identity (colors, fonts, logo)",
+      "category": "brand-content",
+      "namespace": "brand-dave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "browse-with-me": {
+      "description": "Browser automation where David watches and Claude drives",
+      "category": "browser-automation",
+      "namespace": "appydave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "capture-context": {
+      "description": "Capture and summarize session context for continuity across sessions",
+      "category": "context-management",
+      "namespace": "appydave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "clarify": {
+      "description": "Improve unclear UX copy, error messages, labels",
+      "category": "frontend-design",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "clauding-lab-events": {
+      "description": "Create recurring Clauding Lab events on app.sola.day",
+      "category": "browser-automation",
+      "namespace": "appydave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "clipboard": {
+      "description": "Copy file paths or content to macOS clipboard via pbcopy",
+      "category": "utilities",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "code-quality-audit": {
+      "description": "Deep code quality audit of production source files",
+      "category": "code-quality",
+      "namespace": "appydave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "code-reviewer": {
+      "description": "Senior engineer code review focusing on bugs, security, maintainability",
+      "category": "consultants",
+      "namespace": "consultants",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "colorize": {
+      "description": "Add strategic color to monochromatic interfaces",
+      "category": "frontend-design",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "commit": {
+      "description": "Stage all changes and commit with autogenerated message",
+      "category": "development-workflow",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "consultant-discovery": {
+      "description": "List available external AI consultants and experts",
+      "category": "consultants",
+      "namespace": "consultants",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "context-modes": {
+      "description": "Three output context modes (default/video/project) for Brand Dave agents",
+      "category": "brand-content",
+      "namespace": "brand-dave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "conversation-triage": {
+      "description": "Surface open questions, loose threads, and decisions in current session",
+      "category": "context-management",
+      "namespace": "appydave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "create-appystack": {
+      "description": "Scaffold a new RVETS project from scratch",
+      "category": "development-workflow",
+      "namespace": "appydave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "critique": {
+      "description": "Evaluate design effectiveness from a UX perspective",
+      "category": "frontend-design",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "delegation-router": {
+      "description": "Route consultation requests to external AI experts via CLI",
+      "category": "consultants",
+      "namespace": "consultants",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "delight": {
+      "description": "Add moments of joy and personality to interfaces",
+      "category": "frontend-design",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "distill": {
+      "description": "Strip designs to their essence, remove unnecessary complexity",
+      "category": "frontend-design",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "doc-coauthoring": {
+      "description": "Structured workflow for co-authoring documentation",
+      "category": "utilities",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "ecamm": {
+      "description": "Control and reverse-engineer Ecamm Live streaming software",
+      "category": "browser-automation",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "ecosystem-locations": {
+      "description": "AppyDave ecosystem file paths and project locations",
+      "category": "brand-content",
+      "namespace": "brand-dave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "extract": {
+      "description": "Extract reusable components and design tokens into design system",
+      "category": "frontend-design",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "find-skills": {
+      "description": "Skill discovery tool (directory exists in global skills)",
+      "category": "utilities",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "flideck": {
+      "description": "Interact with FliDeck presentation system",
+      "category": "video-media",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "flihub": {
+      "description": "Interact with FliHub video project system",
+      "category": "video-media",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "flihub-integration": {
+      "description": "FliHub API integration for reading/writing video project files",
+      "category": "video-media",
+      "namespace": "brand-dave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "frontend-design": {
+      "description": "Create distinctive, production-grade frontend interfaces",
+      "category": "frontend-design",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "frontmatter-indexer": {
+      "description": "Index markdown frontmatter with schema detection and validation",
+      "category": "utilities",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "gathering-context": {
+      "description": "Gather project files for AI context (clipboard or file output)",
+      "category": "utilities",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "grab-downloads": {
+      "description": "Move and rename files from ~/Downloads into current project",
+      "category": "utilities",
+      "namespace": "appydave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "handover-pattern": {
+      "description": "Standard PO-to-Developer handover format",
+      "category": "context-management",
+      "namespace": "appydave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "harden": {
+      "description": "Improve resilience: error handling, i18n, edge cases",
+      "category": "frontend-design",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "improve": {
+      "description": "Review conversation for reusable patterns and workflow improvements",
+      "category": "development-workflow",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "jump": {
+      "description": "Find development folder locations across 70+ projects",
+      "category": "utilities",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "knowledge-capture": {
+      "description": "Write durable reusable knowledge to Claude memory files",
+      "category": "context-management",
+      "namespace": "appydave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "managing-assets": {
+      "description": "Explore and manage video projects via DAM",
+      "category": "video-media",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "mochaccino": {
+      "description": "UI/UX mockup workshop creating standalone HTML mockups",
+      "category": "frontend-design",
+      "namespace": "appydave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "nano-banana": {
+      "description": "Generate images using Nano Banana 2 API (kie.ai / Gemini Flash)",
+      "category": "video-media",
+      "namespace": "appydave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "near-compaction": {
+      "description": "Orchestrate all context-saving actions before context window fills up",
+      "category": "context-management",
+      "namespace": "appydave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "normalize": {
+      "description": "Normalize design to match the project design system",
+      "category": "frontend-design",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "notebooklm": {
+      "description": "Prepare files for NotebookLM upload and process returned images",
+      "category": "brand-content",
+      "namespace": "brand-dave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "onboard": {
+      "description": "Design onboarding flows and first-time user experiences",
+      "category": "frontend-design",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "optimize": {
+      "description": "Improve interface performance (loading, rendering, bundle size)",
+      "category": "frontend-design",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "overdrive": {
+      "description": "Push interfaces past conventional limits with ambitious implementations",
+      "category": "frontend-design",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "plan-reviewer": {
+      "description": "Work plan review expert catching gaps and missing context",
+      "category": "consultants",
+      "namespace": "consultants",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "planning": {
+      "description": "Resume or save planning work for architectural refactoring projects",
+      "category": "development-workflow",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "po-templates": {
+      "description": "Scaffold product documentation files for FliVideo projects",
+      "category": "video-media",
+      "namespace": "flivideo",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "poem-slides-workflow": {
+      "description": "POEM OS / BMAD slide creation workflow",
+      "category": "brand-content",
+      "namespace": "brand-dave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "polish": {
+      "description": "Final quality pass fixing alignment, spacing, consistency details",
+      "category": "frontend-design",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "push": {
+      "description": "Stage, commit, and push in one step with autogenerated message",
+      "category": "development-workflow",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "quieter": {
+      "description": "Tone down overly bold or visually aggressive designs",
+      "category": "frontend-design",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "recipe": {
+      "description": "App architecture recipes for scaffolding features within an AppyStack project",
+      "category": "development-workflow",
+      "namespace": "angeleye-local",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "refresh-openclaw-brain": {
+      "description": "Refresh/discover updates in OpenClaw second brain docs",
+      "category": "brain-refresh",
+      "namespace": "brand-dave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "refresh-paperclip-brain": {
+      "description": "Refresh/discover updates in Paperclip second brain docs",
+      "category": "brain-refresh",
+      "namespace": "brand-dave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "remote-machines": {
+      "description": "Run commands or copy files to other Macs via SSH",
+      "category": "development-workflow",
+      "namespace": "appydave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "rename-images": {
+      "description": "Batch rename images based on visual content inspection",
+      "category": "video-media",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "revert": {
+      "description": "Revert all working directory changes to last commit state",
+      "category": "development-workflow",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "scope-analyst": {
+      "description": "Pre-planning consultant analyzing requirements before planning",
+      "category": "consultants",
+      "namespace": "consultants",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "security-analyst": {
+      "description": "Application security, threat modeling, vulnerability assessment",
+      "category": "consultants",
+      "namespace": "consultants",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "session-checkpoint": {
+      "description": "Checkpoint task/workflow progress mid-session for precise resume",
+      "category": "context-management",
+      "namespace": "appydave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "skill-creator": {
+      "description": "Guide for creating new Claude Code skills",
+      "category": "development-workflow",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "skill-forge": {
+      "description": "Automated eval loop to iteratively improve a skill SKILL.md prompt",
+      "category": "development-workflow",
+      "namespace": "appydave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "supportsignal-planning-sync": {
+      "description": "Keep SupportSignal v2 planning repo in sync with satellite apps",
+      "category": "client-specific",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "teach-impeccable": {
+      "description": "One-time setup to gather and persist design context for a project",
+      "category": "frontend-design",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "test-quality-audit": {
+      "description": "Deep test quality audit of the test suite",
+      "category": "code-quality",
+      "namespace": "appydave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "typeset": {
+      "description": "Improve typography: font choices, hierarchy, sizing, readability",
+      "category": "frontend-design",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "wistia-transcript": {
+      "description": "Fetch transcripts from Wistia-hosted videos",
+      "category": "video-media",
+      "namespace": "appydave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "workflow-orchestrator": {
+      "description": "Design optimal execution workflows from task descriptions",
+      "category": "brand-content",
+      "namespace": "brand-dave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "youtube-transcript": {
+      "description": "Fetch complete transcripts from YouTube videos via TranscriptAPI",
+      "category": "video-media",
+      "namespace": "appydave",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    },
+    "zsh-history": {
+      "description": "Parse, filter, search, and manage ZSH shell history",
+      "category": "utilities",
+      "namespace": "global",
+      "in_inventory": true,
+      "usage_count": 0,
+      "session_ids": []
+    }
+  }
+}

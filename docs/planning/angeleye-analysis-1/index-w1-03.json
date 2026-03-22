@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "a4fd902a-cdbe-4533-b563-d9f86a3333a2",
+  "machine": "m4-mini",
+  "project": "app.supportsignal.com.au",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
+  "session_type_registry": "ORIENTATION",
+  "session_type_analysed": "knowledge.advisory",
+  "file_size_bytes": 503991,
+  "event_count": 269,
+  "disposition": "active",
+  "interest_level": "high",
+  "notes": "Multi-day BMAD oversight advisor session. User pastes terminal output from other Claude sessions for review, gets corrections drafted, and navigates BMAD agent orchestration (Winston readiness check, Bob sprint planning). 504KB size driven by subagent_stop events with full MCP research report embedded inline.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

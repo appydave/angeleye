@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "9fe2fca6-4ced-42ca-bdfa-c2678d4a0aa9",
+  "machine": "m4-mini",
+  "project": "signal-studio",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/signal-studio",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "BUILD",
+  "file_size_bytes": 183930,
+  "event_count": 349,
+  "disposition": "ended",
+  "interest_level": "high",
+  "notes": "6-hour product development session building entity CRUD edit flows, relationship filtering, dashboard live counts, and moments UX for signal-studio (SupportSignal NDIS app). 32 user prompts, 106 Edit + 28 Write ops. Two context-limit handovers survived. Notable: task decomposition spike (14 TaskCreate at start), background agent UAT and test runs, live data/git architecture decision (data/ removed from gitignore). BUILD classification confirmed — this is a client product repo, not tooling.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

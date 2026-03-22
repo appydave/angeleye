@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "ee880a6a-2bd2-461a-874a-dd682cf9e1d8",
+  "machine": "m4-mini",
+  "project": "signal-studio",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/signal-studio",
+  "session_type_registry": "TEST",
+  "session_type_analysed": "test.uat_playwright_sequential",
+  "file_size_bytes": 123095,
+  "event_count": 345,
+  "disposition": "active",
+  "interest_level": "high",
+  "notes": "Full 8-workflow UAT campaign (W01–W08) for Signal Studio using Playwright MCP. 3 context overflows in ~55 min. 36-min autonomous execution gap (W07/W08). 9 backlog items found. Loop (CronCreate) set up reactively mid-run, not proactively. File upload workaround via browser_run_code + setInputFiles. David raised loop observability gap in closing prompt — loop ran but output not visible across context boundaries. High interest: longest autonomous gap in campaign, novel file-upload pattern, clear loop observability design finding relevant to AngelEye.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

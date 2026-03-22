@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "da13f544-5151-4536-af37-28e5cd0f6050",
+  "machine": "m4-mini",
+  "project": "signal-studio",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/signal-studio",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "debug.e2e_campaign",
+  "file_size_bytes": 148975,
+  "event_count": 379,
+  "disposition": "active",
+  "interest_level": "high",
+  "notes": "14-hour E2E debugging marathon. 45 user prompts, 3 context window continuations, 182 Bash calls (execution-loop bash: test runner, git ops, process mgmt). 24 Agent spawns + 7 CronCreate/Delete pairs show attempted background E2E orchestration. Heavy user frustration throughout — data state bleed (seeded JSON records regenerated with new IDs on each test run), flaky test timeouts, repeated unmet cleanup requests. Session resolves with test.skip pragmatic park, commit, but untracked data files unresolved at session end. BUILD classification challenged: no feature code written, primary activity is test infrastructure stabilization. Correct subtype: debug.e2e_campaign. Key signals: Angela-feedback vs UAT-testing distinction clarified (prompt 5); Ralph Wiggum worktree E2E pattern proposed but not fully applied; 4-hour idle gap mid-session; final prompt about untracked files with no confirmed resolution.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "dc3e550b-0425-4376-a6a7-4aa5a189b4cc",
+  "machine": "m4-mini",
+  "project": "app.supportsignal.com.au",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "KNOWLEDGE / knowledge.skill_authoring",
+  "file_size_bytes": 228000,
+  "event_count": 232,
+  "disposition": "active",
+  "interest_level": "medium",
+  "notes": "BMAD PRD creation session for SupportSignal v2. Opened with /bmad-help (orientation), then ran bmad-create-prd 12-step workflow. All 42 Edits target prd.md (a planning artifact), no application source code touched. Greenfield project — zero source code in target repo. 33 real prompts but 9 are single-char workflow navigation ('c'/'a'). David provided deep NDIS domain expertise through elicitation; 7+ correction prompts fixed Claude's assumptions. Session spans 6 calendar days but only ~4 hours active across 3 work windows on March 16, plus brief returns March 18 (skill debugging: why /Sally doesn't work) and March 20 (context recovery). No closing ceremony. Registry BUILD classification is incorrect — this is KNOWLEDGE (output is a BMAD planning document, not product code). Skills invoked: bmad-help, bmad-bmm-create-prd, bmad-check-implementation-readiness. Proposes new subtype: knowledge.planning_artifact.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "e73d7fc7-bd73-476c-8454-2fb5fd1ff7a4",
+  "machine": "m4-mini",
+  "project": "ad",
+  "project_dir": "/Users/davidcruwys/dev/ad",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "research.external_intake",
+  "file_size_bytes": 10385,
+  "event_count": 2,
+  "disposition": "active",
+  "interest_level": "medium",
+  "notes": "27-minute session at ad monorepo root. 2 user_prompt events only — zero tool calls, zero assistant_response captured. Prompt 1: terminal history of failed git clone attempts against coleam00/dynamous-engine (SSH key missing, bad HTTPS credentials) + full Dynamous Engine README paste + 'Why can't I access it?'. Prompt 2 (22-min gap): naming question for dynamous-community/workshops clone. Session is research intake of Cole Medin Second Brain architecture — likely inspirational input for AngelEye design. BUILD mis-classification: no construction activity, no tools, 10KB is paste volume not work volume. New subtype proposed: research.external_intake — large external README paste + interpretive questions, no tool calls. ad-root sessions should be weighted away from BUILD unless Edit/Write/Bash evidence present.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

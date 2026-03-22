@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "d7ca10ed-7e18-49ba-b977-10f5c27594f1",
+  "machine": "mbp",
+  "project": "flideck",
+  "project_dir": "/Users/davidcruwys/dev/ad/flivideo/flideck",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "BUILD / build.migration",
+  "file_size_bytes": 194560,
+  "event_count": 524,
+  "disposition": "active",
+  "interest_level": "high",
+  "notes": "Multi-day Ralphy Mode 3 autonomous migration campaign (3 calendar days, 4 context continuations). Migrated ~519 HTML presentation slides from iframe rendering to harness/web-component system across ~14 decks. Custom toolchain: migrate-type-a.js, migrate-type-b.js, pipeline.js (Playwright pixel-diff verification with quality tiers). Key discoveries: CSS token injection gap (addStyleTag fix), CORS blocker forcing approach change, viewport-lock architectural limitation. Voice-transcribed prompts with 3 frustration/correction episodes. Closing architectural debate: harness injection vs Web Components/Shadow DOM. Tools: Bash x265, Edit x102, Read x47, Agent x17. Used git worktrees for parallel application versions. Highest observed context exhaustion count (4). Skills: ralphy (Mode 2 then 3), plus 4 additional invocations.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

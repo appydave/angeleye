@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "4c858f8a-401d-4983-93c4-5cb6fe97c0dc",
+  "machine": "m4-mini",
+  "project": "appystack",
+  "project_dir": "/Users/davidcruwys/dev/ad/apps/appystack",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "build.template_maintenance",
+  "file_size_bytes": 151362,
+  "event_count": 44,
+  "disposition": "ended",
+  "interest_level": "high",
+  "notes": "Architectural fix: moved data/ from server/src/ to monorepo root to prevent nodemon EADDRINUSE crash. Fix applied to appystack template then propagated to create-appystack CLI generator (cwd shifts at event 25). Session ends with npm publish. Key signals: (1) opening prompt contains full pasted deckhand/Ecamm conversation — false-project-signal via paste injection; (2) 'We're at dots for AppyStack' is clearest command-token voice mistranscription in corpus — 'dot MD' phonetically rendered as 'dots'; (3) close-down prompt at event 34 acts as integration check, surfaces missed generator propagation; (4) David's angry correction at event 37 is a human-feedback-to-agent-error signal. Subtype candidates: build.template_maintenance (primary), build.monorepo_propagation (secondary). Voice artifact signal: voice.mistranscription.command_token.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

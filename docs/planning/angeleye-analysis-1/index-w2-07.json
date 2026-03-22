@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "2ed25517-9969-4471-b996-05c7223959bf",
+  "machine": "m4-mini",
+  "project": "brains",
+  "project_dir": "/Users/davidcruwys/dev/ad/brains",
+  "session_type_registry": "TEST",
+  "session_type_analysed": "RESEARCH / research.web_scraping",
+  "file_size_bytes": 298000,
+  "event_count": 722,
+  "disposition": "active",
+  "interest_level": "high",
+  "notes": "Reclassified from TEST to RESEARCH. Marathon Dynamous Circle community scraping — 59 Zoom transcript VTTs downloaded to ~/dev/upstream/community/dynamous/live-events/. 9 context continuations (most in dataset). Playwright used for web scraping not UAT. Phase 4 contains novel brain discoverability eval loop — 5 questions tested in fresh Claude instances with results graded. Credential exposure in prompt (Circle login). Closing ceremony with commit+push. Voice transcription throughout.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

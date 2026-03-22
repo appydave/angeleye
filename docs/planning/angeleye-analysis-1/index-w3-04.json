@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "54577c11-c22d-4b79-80e3-4c25d2af274d",
+  "machine": "m4-mini",
+  "project": "appydave-plugins",
+  "project_dir": "/Users/davidcruwys/dev/ad/appydave-plugins",
+  "session_type_registry": "TEST",
+  "session_type_analysed": "skill.creation",
+  "file_size_bytes": 16391,
+  "event_count": 60,
+  "disposition": "active",
+  "interest_level": "medium",
+  "notes": "Misclassified as TEST — no assertions or test loop present. Playwright used instrumentally for scraping and live web automation (sola.day calendar app). Primary output is a new skill file (Claude Lab Events / 4Cs trigger). Pattern: skill authored immediately after Claude demonstrates workflow in live browser session. Notable: human-in-the-loop auth handoff (David completed MFA step while Claude waited). Two new tool_pattern subtypes proposed: playwright_as_scraper and playwright_live_automation.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

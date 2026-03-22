@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "58f43cdd-1c86-4082-b89d-ad06dd48283d",
+  "machine": "m4-mini",
+  "project": "brains",
+  "project_dir": "/Users/davidcruwys/dev/ad/brains",
+  "session_type_registry": "KNOWLEDGE",
+  "session_type_analysed": "brand.speaker_submission",
+  "file_size_bytes": 31878,
+  "event_count": 48,
+  "disposition": "active",
+  "interest_level": "medium",
+  "notes": "False positive KNOWLEDGE — session is brand copywriting for the Digital Stage Summit speaker application (March 2026). Claude reads brand-dave brain files for background context then acts as a copywriter across 27 user prompts. No brain files durably updated except a minor identity-preference Edit (AppyDave over David Cruwys). Form-filling assistant pattern with iterative bio compression. Reveals need for BRAND or CONTENT top-level session type in the taxonomy.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

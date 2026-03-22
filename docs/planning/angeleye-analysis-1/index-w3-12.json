@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "c17de345-db76-4b49-8a83-ca5801785d42",
+  "machine": "m4-mini",
+  "project": "v-appydave",
+  "project_dir": "/Users/davidcruwys/dev/video-projects/v-appydave",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "build.config",
+  "file_size_bytes": 85489,
+  "event_count": 6,
+  "disposition": "ended",
+  "interest_level": "medium-high",
+  "notes": "Misleading event count — 6 registry events but 58KB of prior session transcript embedded in the single user_prompt event via resume-via-transcript-injection pattern. Registry timestamps cover only ~36 seconds (the git commit phase). Real content: design and creation of the POEM YouTube Launch Optimizer (YLO) workflow YAML (442 lines) and 20 co-located JSON schemas for sections 1/2/4/5/6/7. BUILD classification is too coarse — no application code written; all artefacts are pipeline configuration. Correct subtype: build.config. Key signals: bash-heavy reflects git ops only, not compilation. Central design decision: transcriptAbridgement (1-4-abridge-v2) is the pipeline's most critical dependency (15+ consumers). Section 4 content analysis runs as action/llm-parallel producing 12-field shaped data. Two human checkpoint steps. Known open issue: Section 4 HBS templates return fenced code blocks not JSON — needs fixing before compiler run. Compiler not run in this session — explicitly deferred.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

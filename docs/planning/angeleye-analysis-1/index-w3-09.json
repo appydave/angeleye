@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "2421e5c5-e54d-4348-9118-90e95b207ca1",
+  "machine": "m4-mini",
+  "project": "appystack",
+  "project_dir": "/Users/davidcruwys/dev/ad/apps/appystack",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "build.audit.publish",
+  "file_size_bytes": 98455,
+  "event_count": 182,
+  "disposition": "active",
+  "interest_level": "high",
+  "notes": "Three-phase session: boilerplate gap analysis (46 issues found), Ralphy wave execution A-D in a worktree, then extended NPM publishing friction (OTP confusion, vitest peer version mismatch, distribution mechanism misalignment). Contains context window rollover marker as user_prompt event. Emotional escalation clusters around publish failures, not build waves. Strong candidate for classifier training: multi-label build+audit+publish pattern, context continuation detection, user terminal paste as diagnostic prompt.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

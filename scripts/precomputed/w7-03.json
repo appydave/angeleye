@@ -1,0 +1,791 @@
+[
+  {
+    "session_id": "38579dc4-2aa7-422c-adbc-d2ffc122d4d2",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-38579dc4-2aa7-422c-adbc-d2ffc122d4d2.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 3,
+      "user_prompt_count": 1,
+      "tool_use_count": 0,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-17T07:20:21.043000+00:00",
+      "last_event_ts": "2026-03-17T07:20:33.441000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {},
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "What is the nature x",
+      "full_length": 20,
+      "ts": "2026-03-17T07:20:31.144Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "a9605418-1b2b-4852-b33f-7099b5b13c5d",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-a9605418-1b2b-4852-b33f-7099b5b13c5d.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/agent-os/ansible",
+    "shape": {
+      "event_count": 2,
+      "user_prompt_count": 1,
+      "tool_use_count": 1,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-27T02:58:58.924000+00:00",
+      "last_event_ts": "2026-02-27T02:59:06.084000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Can we ensure that the package manager uv Is on each of our machines ",
+      "full_length": 69,
+      "ts": "2026-02-27T02:58:58.924Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "24adc102-7a6c-444a-95f2-adb299cc4019",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-24adc102-7a6c-444a-95f2-adb299cc4019.jsonl",
+    "cwd": "/Users/davidcruwys/.oh-my-zsh/custom",
+    "shape": {
+      "event_count": 9,
+      "user_prompt_count": 3,
+      "tool_use_count": 6,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-23T02:53:26.048000+00:00",
+      "last_event_ts": "2026-02-24T02:54:15.324000+00:00",
+      "duration_minutes": 1440,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-23T02:53:56.627000+00:00",
+          "end": "2026-02-24T02:54:04.252000+00:00",
+          "gap_minutes": 1440
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 3,
+      "Glob": 1,
+      "Write": 1,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Do we currently have any aliases related to SSH? If I wanted aliases to get under my machines easier, like the following, and I've got the same thing for the Mac Mini M4, what alias would you call it? Where would you put it? \n\n\u279c  brains git:(main) \u2717 ssh davidcruwys@mac-mini-m2.local",
+      "full_length": 283,
+      "ts": "2026-02-23T02:53:26.048Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "ac9d117b-17a2-4e33-bad2-1dbb3ea83720",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-ac9d117b-17a2-4e33-bad2-1dbb3ea83720.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/appydave-plugins",
+    "shape": {
+      "event_count": 11,
+      "user_prompt_count": 3,
+      "tool_use_count": 8,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-13T06:55:03.098000+00:00",
+      "last_event_ts": "2026-03-13T06:56:58.587000+00:00",
+      "duration_minutes": 1,
+      "active_minutes": 1,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Edit": 3,
+      "Bash": 2,
+      "Read": 2,
+      "Glob": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Is the Ralph Williams loop inside of one of my plug-ins?",
+      "full_length": 56,
+      "ts": "2026-03-13T06:55:03.098Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "fd6cb997-823d-4b65-a85a-3bd12e30fdb8",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-fd6cb997-823d-4b65-a85a-3bd12e30fdb8.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/voz",
+    "shape": {
+      "event_count": 26,
+      "user_prompt_count": 2,
+      "tool_use_count": 24,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-03T11:45:31.948000+00:00",
+      "last_event_ts": "2026-03-03T11:53:10.469000+00:00",
+      "duration_minutes": 7,
+      "active_minutes": 7,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Write": 9,
+      "Read": 8,
+      "Bash": 2,
+      "TaskUpdate": 2,
+      "Glob": 1,
+      "TaskCreate": 1,
+      "Edit": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Do you understand, from a ClaudeMD point of view and potentially a skills point of view, though I don't know if we did that, the communication folder that I have with vOz? How I have it as a template, how I can create emails, how I can deal with looms. Do you have a clear understanding of all the files involved, and you're doing it from the point of view of what would happen if we had to adapt it for a different client? \n\nclient: /Users/davidcruwys/dev/clients/lars\n",
+      "full_length": 470,
+      "ts": "2026-03-03T11:45:31.948Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "ca8ef6a7-66d5-4119-99b5-34cdf6642a29",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-ca8ef6a7-66d5-4119-99b5-34cdf6642a29.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps",
+    "shape": {
+      "event_count": 36,
+      "user_prompt_count": 10,
+      "tool_use_count": 26,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-02T10:54:59.172000+00:00",
+      "last_event_ts": "2026-03-02T11:39:27.027000+00:00",
+      "duration_minutes": 44,
+      "active_minutes": 44,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 9,
+      "Edit": 7,
+      "Bash": 5,
+      "Grep": 2,
+      "Agent": 2,
+      "Write": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "What are we doing in Deckhand, and what sort of content is there? Give me a bit of a tree, I guess. ",
+      "full_length": 100,
+      "ts": "2026-03-02T10:54:59.172Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "c3bae9c6-7b6a-4cfc-b028-2b30fba9ef73",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-c3bae9c6-7b6a-4cfc-b028-2b30fba9ef73.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/deckhand",
+    "shape": {
+      "event_count": 55,
+      "user_prompt_count": 7,
+      "tool_use_count": 48,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-11T23:26:25.514000+00:00",
+      "last_event_ts": "2026-03-11T23:41:09.545000+00:00",
+      "duration_minutes": 14,
+      "active_minutes": 14,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 16,
+      "Edit": 15,
+      "Bash": 11,
+      "Glob": 4,
+      "Grep": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "kill deck so we can run it\n\n\nLast login: Thu Mar 12 06:25:33 on ttys001\n\u26a1 Shell loaded in 5ms\n\u279c  deckhand git:(main) \u2717 nrd\n\u2009WARN\u2009 The \"workspaces\" field in package.json is not supported by pnpm. Create a \"pnpm-workspace.yaml\" file instead.\n\n> @appydave/deckhand@0.1.0 dev /Users/davidcruwys/dev/ad/apps/deckhand\n> npm run build -w shared && concurrently -n server,client -c blue,green \"npm run dev -w server\" \"npm run dev -w client\"\n\nnpm warn Unknown env config \"npm-globalconfig\". This will stop wor",
+      "full_length": 4393,
+      "ts": "2026-03-11T23:26:25.514Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": true,
+        "first_prompt_length": 4393,
+        "short_prompt_ratio": 0.67
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "7a146e68-a489-4e90-a80d-d15da3755b73",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-7a146e68-a489-4e90-a80d-d15da3755b73.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/flivideo/flihub",
+    "shape": {
+      "event_count": 77,
+      "user_prompt_count": 3,
+      "tool_use_count": 69,
+      "stop_count": 2,
+      "subagent_start_count": 1,
+      "subagent_stop_count": 1,
+      "first_event_ts": "2026-03-22T16:25:37.969000+00:00",
+      "last_event_ts": "2026-03-22T16:45:29.524000+00:00",
+      "duration_minutes": 19,
+      "active_minutes": 19,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 20,
+      "Edit": 13,
+      "Bash": 10,
+      "Glob": 7,
+      "Grep": 6,
+      "Write": 4,
+      "mcp__playwright__browser_click": 3,
+      "ToolSearch": 2,
+      "mcp__playwright__browser_navigate": 2,
+      "Skill": 1,
+      "Agent": 1
+    },
+    "file_paths": {
+      "read": [
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/docs/planning/next-round-brief.md",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/docs/planning/manage-relay-refactor-w2/IMPLEMENTATION_PLAN.md",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/docs/planning/BACKLOG.md",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/client/src/components/shared/ToolsSidebar.tsx",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/client/src/components/shared/RelayTool.tsx",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/client/src/components/ManagePanel.tsx",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/client/src/components/shared/SlideOutDrawer.tsx",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/client/src/components/shared/PageHeader.tsx",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/client/src/components/shared/ChapterListPanel.tsx",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/client/src/components/shared/GlingEditTool.tsx",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/client/src/App.tsx",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/docs/planning/manage-relay-refactor-w2/assessment.md",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/docs/planning/manage-relay-refactor-w2/AGENTS.md",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/docs/planning/flihub-feedback.md",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/docs/planning/manage-page-redesign/AGENTS.md"
+      ],
+      "write": [
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/docs/planning/manage-page-redesign/IMPLEMENTATION_PLAN.md",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/docs/planning/manage-page-redesign/AGENTS.md",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/client/src/components/ManagePanel.tsx",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/client/src/components/shared/ToolsSidebar.tsx"
+      ],
+      "edit": [
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/client/src/components/shared/ToolsSidebar.tsx",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/client/src/components/ManagePanel.tsx",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/client/src/components/shared/RelayTool.tsx",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/docs/planning/BACKLOG.md",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/docs/planning/flihub-feedback.md",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/docs/planning/manage-page-redesign/IMPLEMENTATION_PLAN.md",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/client/src/App.tsx"
+      ]
+    },
+    "bash_commands_sample": [
+      "git status --short",
+      "npm run build -w client 2>&1 | tail -20",
+      "npm test 2>&1 | tail -15",
+      "lsof -i :5100 -i :5101 | grep LISTEN 2>/dev/null || echo \"No dev servers running\"",
+      "git diff --stat",
+      "git add client/src/components/ManagePanel.tsx client/src/components/shared/RelayTool.tsx client/src/components/shared/ToolsSidebar.tsx && git commit -m \"$(cat <<'EOF'\nfix: remove Regen Chapters button (B042) and clear stale diff after push\n\nB042: Remove Regen Chapters from ToolsSidebar \u2014 temporary c",
+      "mkdir -p docs/planning/manage-page-redesign/{learnings,patterns,decisions}",
+      "npm run build -w client 2>&1",
+      "npm test 2>&1",
+      "tail -20 /Users/davidcruwys/.claude/projects/-Users-davidcruwys-dev-ad-flivideo-flihub/7a146e68-a489-4e90-a80d-d15da3755b73/tool-results/bwzh40u6n.txt"
+    ],
+    "first_real_prompt": {
+      "text": "/ralphy   Then: \"Continue from the next-round brief. Start with the quick fixes (B042, stale diff), then run /critique on the Manage page for B041.\"",
+      "full_length": 148,
+      "ts": "2026-03-22T16:25:48.637Z"
+    },
+    "skill_invocations": [
+      {
+        "keys": ["skill", "args"]
+      }
+    ],
+    "subagents": [
+      {
+        "agent_id": "a905c3c1612ad2d88",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-22T16:41:49.400Z",
+        "stopped_at": "2026-03-22T16:44:36.865Z"
+      }
+    ],
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 3
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": true,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": "/Users/davidcruwys/dev/ad/flivideo/flihub",
+      "cwd_reliable": true,
+      "edit_write_count": 11
+    }
+  },
+  {
+    "session_id": "1dda164f-d7c1-4908-afb3-8eeda00efa0f",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-1dda164f-d7c1-4908-afb3-8eeda00efa0f.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
+    "shape": {
+      "event_count": 98,
+      "user_prompt_count": 26,
+      "tool_use_count": 72,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-24T03:57:36.852000+00:00",
+      "last_event_ts": "2026-02-25T00:06:40.073000+00:00",
+      "duration_minutes": 1209,
+      "active_minutes": 128,
+      "idle_gaps_over_1h": 5,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-24T04:26:28.159000+00:00",
+          "end": "2026-02-24T05:55:52.110000+00:00",
+          "gap_minutes": 89
+        },
+        {
+          "start": "2026-02-24T07:03:47.367000+00:00",
+          "end": "2026-02-24T08:06:40.434000+00:00",
+          "gap_minutes": 62
+        },
+        {
+          "start": "2026-02-24T08:06:40.434000+00:00",
+          "end": "2026-02-24T10:09:58.761000+00:00",
+          "gap_minutes": 123
+        },
+        {
+          "start": "2026-02-24T10:09:58.761000+00:00",
+          "end": "2026-02-24T11:12:09.204000+00:00",
+          "gap_minutes": 62
+        },
+        {
+          "start": "2026-02-24T11:43:31.858000+00:00",
+          "end": "2026-02-25T00:06:32.552000+00:00",
+          "gap_minutes": 743
+        }
+      ]
+    },
+    "tools": {
+      "Write": 22,
+      "Read": 15,
+      "Bash": 12,
+      "Edit": 9,
+      "Glob": 5,
+      "Grep": 5,
+      "Task": 2,
+      "ToolSearch": 1,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "How clean is our application, and what stage in the epics and sprints are we up to? Tell me a little bit about what we've done with the unit tests. what stage in the application are we up to? Tell me a bit about the epics and the stories. Tell me about recent work we've done on unit testing. Just give me a general overview for now. I'll give you more details soon.",
+      "full_length": 366,
+      "ts": "2026-02-24T03:57:36.852Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 2
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  }
+]

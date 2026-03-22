@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "40c44dee-3e1c-4b76-8be0-f792e761e6dd",
+  "machine": "m4-mini",
+  "project": "brains",
+  "project_dir": "/Users/davidcruwys/dev/ad/brains",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "KNOWLEDGE / knowledge.brain_update",
+  "file_size_bytes": 23676,
+  "event_count": 89,
+  "disposition": "active",
+  "interest_level": "low",
+  "notes": "Port registry consolidation session. David needed a port allocation reference after AppyStack prompted for a port number. Claude searched across brain files, discovered fragmented port info, then co-designed a port allocation scheme through 5 iterative voice prompts. Created new port registry doc and updated application registry with cross-references. Registry BUILD classification is incorrect — this is knowledge.brain_update (all outputs are brain markdown files, project_dir is brains, no product code touched). Voice transcription pervasive with domain-name errors (AngelEye -> 'answer ball', agentic-os -> 'Agentico s', POEM -> 'PIME').",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}

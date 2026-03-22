@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "session_id": "11553588-c7ab-4e0b-b9bc-23fad00c5fe7",
+  "machine": "m4-mini",
+  "project": "angeleye",
+  "project_dir": "/Users/davidcruwys/dev/ad/apps/angeleye",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "ORIENTATION / cold_start",
+  "file_size_bytes": 8647,
+  "event_count": 19,
+  "disposition": "active",
+  "interest_level": "medium",
+  "notes": "Misclassified BUILD — actually a single-turn artifact retrieval session (77 seconds). User searched for a mochaccino HTML mock from a prior session. All 13 tool calls were read-only search (find/ls/glob). Demonstrates that bash-heavy heuristic needs read-vs-write Bash distinction. Proposes new subtype: orientation.artifact_retrieval.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
