@@ -1,22 +1,58 @@
 # AngelEye
 
-> Session intelligence for Claude Code — live observability, classification, and workspace management for people who run many concurrent AI sessions.
+> Session intelligence for Claude Code — the only tool that understands your AI sessions at the event level.
 
-AngelEye watches your Claude Code sessions in real time via hook events, classifies what type of work each session is doing, and gives you a live dashboard to monitor, organise, and annotate your AI workflow. It also backfills historical sessions from Claude Code's native JSONL transcripts so you can see your full session history from day one.
+When you run 5-10 concurrent Claude Code sessions across multiple projects, you don't need a chat log viewer. You need a command center. AngelEye is that command center.
+
+It watches your Claude Code sessions in real time via hook events, classifies what type of work each session is doing, and gives you a live dashboard to monitor, organise, and annotate your AI workflow. It also backfills historical sessions from Claude Code's native JSONL transcripts so you can see your full session history from day one.
+
+---
+
+## Why AngelEye?
+
+Claude Code generates a firehose of session data — JSONL transcripts, tool calls, prompts, subagent spawns — but provides no way to see across sessions. When you're running concurrent agents on a real codebase, the questions that matter aren't "what did this session say?" but:
+
+- **Which of my 8 active sessions actually need my attention right now?**
+- **Is that background agent still building, or did it stall 20 minutes ago?**
+- **What kind of work is each session doing — and did I already start something similar in another terminal?**
+- **Where did that session I renamed last Tuesday end up?**
+
+AngelEye answers these by parsing Claude Code's own event model — 7 hook event types, normalised into a durable session registry — and projecting them into a live operational view. It doesn't wrap or replace Claude Code. It sits alongside it, the way a team lead uses a project board while engineers use their IDEs.
+
+No other tool in the Claude Code ecosystem does this. Paperclip and similar orchestrators optimise for autonomous execution. AngelEye optimises for operator awareness — giving you the visibility to decide when to intervene, when to let agents run, and when to redirect.
 
 ---
 
 ## What It Does
 
-**Observer** — a live session feed showing every active and recent Claude Code session. Each row shows status (active/idle/ended), session type, workspace, the opening prompt, and a real-time idle timer. Click any session to expand its full event history with tool call details and a note field.
+**Observer** — Your running sessions are invisible by default. AngelEye's live feed turns them into a status board: every active and recent session with real-time status indicators (active/warm/inactive), session type, workspace, opening prompt, and idle timer. Click any session to expand its full event history with tool call details and a note field. When a session goes quiet, you see it immediately — not 30 minutes later when you switch terminals.
 
-**Organiser** — drag-and-drop workspace management. Sessions start in an inbox; drag them into named workspaces to group related work. AngelEye suggests workspace assignments based on project directory patterns.
+**Classification** — Claude Code doesn't know what kind of work a session is doing. AngelEye does. A pure rule-based classifier (no LLM) runs automatically on every session, detecting BUILD, TEST, RESEARCH, KNOWLEDGE, OPS, and ORIENTATION sessions from tool usage patterns and project directory signals. It also catches junk — accidental starts, single-event abandoned sessions, subagent noise — so your session list shows real work, not debris.
 
-**Classification** — rule-based session typing that runs automatically on every session. Detects BUILD, TEST, RESEARCH, KNOWLEDGE, OPS, and ORIENTATION sessions based on tool usage patterns and project directory signals. Also detects junk sessions (accidental starts, single-event abandoned sessions).
+**Organiser** — Sessions start in an inbox; drag them into named workspaces to group related work. AngelEye suggests workspace assignments based on project directory patterns. This is how you go from "I have 40 sessions from this week" to "these 6 are the FliVideo feature branch, these 4 are the brain update campaign."
 
-**Backfill** — imports historical sessions from `~/.claude/projects/` transcripts, extracting prompts, tool calls, and user-assigned session names. Runs automatically at server startup and on-demand via the Settings view.
+**Backfill** — Every Claude Code session you've ever run left a JSONL transcript behind. AngelEye imports them all — prompts, tool calls, user-assigned session names — so your session history goes back to day one, not just to when you installed the hook. Runs automatically at server startup and on-demand via the Settings view.
 
-**Session naming** — rename sessions from the UI, and AngelEye writes the name back to Claude Code's native JSONL so `claude --resume "my-name"` works.
+**Session Naming** — Rename sessions from the UI, and AngelEye writes the name back to Claude Code's native JSONL format so `claude --resume "my-name"` still works. Your session names live in both systems.
+
+---
+
+## Analysis Campaign
+
+AngelEye includes an ongoing analysis campaign (`docs/planning/angeleye-analysis-1/`) that systematically analyses session JSONL files to stress-test and improve the classification system. The findings so far reveal how much is hidden in Claude Code session data:
+
+- **268 sessions analysed** across 30+ projects
+- **155+ subtypes discovered** — the 6 top-level types (BUILD, TEST, etc.) are just the surface; underneath are fine-grained patterns like "spike-prototype", "config-migration", "brain-curation", "ci-fix"
+- **8 classifiers identified** with 12 predicates and 5 gated observations — a taxonomy far richer than the current rule-based system
+- **BUILD accuracy is ~20%** — the most common classification is also the least precise. What the registry calls BUILD is actually a grab-bag of prototyping, refactoring, debugging, config work, and feature development. The analysis campaign is producing the evidence to fix this.
+
+This research feeds directly back into AngelEye's classifier. The goal: when you glance at your session list, the type badges actually tell you what's happening.
+
+### Complementary to `/insights`
+
+Claude Code's built-in `/insights` command generates retrospective HTML reports using Haiku-extracted facets (friction categories, satisfaction signals, goal categories). AngelEye's analysis campaign has independently discovered a richer taxonomy — 15 session types vs 5, 52 subtypes vs none, plus session chain tracking, subagent awareness, and CWD attribution that `/insights` doesn't attempt.
+
+The two systems are complementary: `/insights` captures quality-of-experience metrics (was the user satisfied? did Claude's code work? was there friction?) while AngelEye captures work-type classification (what kind of session is this? how does it relate to other sessions? what project does it actually belong to?). A gap analysis (`docs/planning/insights-angeleye-comparison.md`) maps the two schemas and identifies where each system is stronger, plus opportunities to ingest `/insights` cached facets as a free supplementary data source.
 
 ---
 
@@ -215,14 +251,6 @@ Each session in `registry.json` tracks:
 - **Organisation**: `workspace_id`, `note`
 
 The registry currently holds 794 sessions across 30+ projects.
-
----
-
-## Analysis Campaign
-
-AngelEye includes an ongoing analysis campaign (`docs/planning/angeleye-analysis-1/`) that systematically analyses session JSONL files to improve the classification system. As of wave 7: 268 sessions analysed, ~155 subtypes discovered across 15+ parent types, with evidence that the current rule-based classifier over-classifies BUILD (only ~20% accuracy vs ~80% for the registry's BUILD label).
-
-This research is producing a richer classification taxonomy with 8 classifiers, 12 predicates, and 5 gated observations — knowledge that will feed back into AngelEye's classifier in future.
 
 ---
 
