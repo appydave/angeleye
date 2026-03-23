@@ -492,3 +492,17 @@ Not all waves are the same. The coordinator should identify which type each wave
 - **Discovery rate 0.80/session**: ~55 new subtypes. Rebounded again — light sessions still productive.
 - **80-90 new voice artifacts**: Highest single-wave count. Catalog becoming large enough for automated correction detection.
 - **~360+ subtypes across 22+ parent types from 586 sessions**.
+
+### Wave 12 (2026-03-23)
+
+- **BUILD accuracy 2.5% (2/80)**: Lowest ever. 7 of 9 agents at 0%. This batch was 100% light scale, mostly brains/ CWD. BUILD classifier is useless at this scale.
+- **Voice dictation causes P13**: "codecs" for "codex" and "E-cam" for "Ecamm" directly caused misunderstandings. Pronunciation-aware entity dictionary would reduce P13.
+- **CLAUDE.md auto-load at extreme severity**: 32:1 tool-to-prompt ratio in W12-01 (32 unauthorized tool calls before single "commit this" prompt). P16 fires exclusively from this cause.
+- **"Context available but ignored" failure mode**: Claude gave wrong TDAC advice despite correct answer in own brain file. Distinct from P13.
+- **ChatGPT-to-Claude knowledge bridge**: Novel cross-platform capture pattern — user pasted ChatGPT transcript into Claude for brain storage.
+- **Skill self-documentation gap**: User asked loaded Ralphy what it can do, Claude searched filesystem instead of using skill's self-knowledge.
+- **Playwright role: media_access**: Loom video navigation for documentation. Now 9-10 confirmed roles.
+- **PII rate highest ever**: 15% of sessions (12/80). 3 live API keys in one session. Medical PII, business ABN/ACN.
+- **Cross-session correction pattern**: 3 sessions returning to fix prior session failures — error-correction, not continuation.
+- **Discovery rate 0.63/session**: ~50 new subtypes. Declining as expected for lighter sessions.
+- **~400+ subtypes across 22+ parent types from 666 sessions**.

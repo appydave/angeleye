@@ -1,0 +1,747 @@
+{
+  "2ddad06e-f36b-4ebb-870d-18c1097e4602": {
+    "session_id": "2ddad06e-f36b-4ebb-870d-18c1097e4602",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-2ddad06e-f36b-4ebb-870d-18c1097e4602.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 33,
+      "user_prompt_count": 13,
+      "tool_use_count": 5,
+      "stop_count": 13,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-17T11:15:08.606000+00:00",
+      "last_event_ts": "2026-03-17T14:14:06.750000+00:00",
+      "duration_minutes": 178,
+      "active_minutes": 22,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-17T11:37:24.639000+00:00",
+          "end": "2026-03-17T14:14:06.750000+00:00",
+          "gap_minutes": 156
+        }
+      ]
+    },
+    "tools": {
+      "Edit": 3,
+      "Read": 2
+    },
+    "file_paths": {
+      "read": [
+        "/Users/davidcruwys/dev/ad/brains/skool/INDEX.md",
+        "/Users/davidcruwys/dev/ad/brains/skool/skool-monetization.md"
+      ],
+      "write": [],
+      "edit": ["/Users/davidcruwys/dev/ad/brains/skool/skool-monetization.md"]
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "/focus skool",
+      "full_length": 12,
+      "ts": "2026-03-17T11:15:12.801Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false,
+        "stop_ratio": 0.39
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": "/Users/davidcruwys/dev/ad/brains/skool",
+      "cwd_reliable": true,
+      "edit_write_count": 1
+    }
+  },
+  "d1eca273-fe38-46c3-bf64-7404e5ba830b": {
+    "session_id": "d1eca273-fe38-46c3-bf64-7404e5ba830b",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-d1eca273-fe38-46c3-bf64-7404e5ba830b.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 33,
+      "user_prompt_count": 9,
+      "tool_use_count": 13,
+      "stop_count": 9,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-20T05:02:26.612000+00:00",
+      "last_event_ts": "2026-03-20T05:38:37.936000+00:00",
+      "duration_minutes": 36,
+      "active_minutes": 36,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 4,
+      "Edit": 4,
+      "Write": 2,
+      "Bash": 2,
+      "Glob": 1
+    },
+    "file_paths": {
+      "read": [
+        "/Users/davidcruwys/.claude/projects/-Users-davidcruwys-dev-ad-brains/memory/MEMORY.md",
+        "/Users/davidcruwys/dev/ad/brains/todo/today.md",
+        "/Users/davidcruwys/dev/ad/brains/til/2026-03-11-a2a-protocol-mcp-claude-code-agent-teams.md",
+        "/Users/davidcruwys/dev/ad/brains/todo/waiting.md"
+      ],
+      "write": [
+        "/Users/davidcruwys/.claude/projects/-Users-davidcruwys-dev-ad-brains/memory/anthropic-remote-control-ticket.md",
+        "/Users/davidcruwys/dev/ad/brains/til/2026-03-20-claude-remote-control-feature-flag-anthropic-support.md"
+      ],
+      "edit": [
+        "/Users/davidcruwys/.claude/projects/-Users-davidcruwys-dev-ad-brains/memory/MEMORY.md",
+        "/Users/davidcruwys/.claude/projects/-Users-davidcruwys-dev-ad-brains/memory/anthropic-remote-control-ticket.md",
+        "/Users/davidcruwys/dev/ad/brains/todo/waiting.md"
+      ]
+    },
+    "bash_commands_sample": [
+      "ls /Users/davidcruwys/dev/ad/brains/todo/",
+      "ls /Users/davidcruwys/dev/ad/brains/til/ | head -20"
+    ],
+    "first_real_prompt": {
+      "text": "Did you Have background information on a support ticket that I sent to Anthropic around my still not having access to remote control in the Claude Code environment after it has been available for two months. And that we'd worked out that it seemed to be a feature flag, and that I did submit an incident request, but I still have no background. I have no support from them",
+      "full_length": 372,
+      "ts": "2026-03-20T05:03:42.348Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": "/Users/davidcruwys",
+      "cwd_reliable": true,
+      "edit_write_count": 5
+    }
+  },
+  "faf76383-e628-4444-8da2-512ac8d28b7e": {
+    "session_id": "faf76383-e628-4444-8da2-512ac8d28b7e",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-faf76383-e628-4444-8da2-512ac8d28b7e.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 31,
+      "user_prompt_count": 9,
+      "tool_use_count": 22,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-22T14:43:26.719000+00:00",
+      "last_event_ts": "2026-02-22T15:14:30.793000+00:00",
+      "duration_minutes": 31,
+      "active_minutes": 31,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 13,
+      "Bash": 3,
+      "Edit": 3,
+      "Glob": 2,
+      "Task": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "is this relevant?\n\nDone. Here's what's now in place:\n\n  https://github.com/appydave/dotfiles (private)\n\n  dotfiles/\n  \u251c\u2500\u2500 git/\n  \u2502   \u251c\u2500\u2500 .gitconfig          \u2190 fixed hardcoded path\n  \u2502   \u2514\u2500\u2500 config/ignore       \u2190 global gitignore\n  \u251c\u2500\u2500 hammerspoon/\n  \u2502   \u2514\u2500\u2500 init.lua\n  \u251c\u2500\u2500 install.sh              \u2190 symlinks everything on a new machine\n  \u2514\u2500\u2500 .gitignore\n\n  On a new machine (M4 Mini etc.):\n  git clone git@github.com:appydave/dotfiles.git ~/dotfiles\n  cd ~/dotfiles && ./install.sh\n\n  The install scri",
+      "full_length": 603,
+      "ts": "2026-02-22T14:46:21.063Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "230d8859-ef10-4755-9357-7252ad6da3bf": {
+    "session_id": "230d8859-ef10-4755-9357-7252ad6da3bf",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-230d8859-ef10-4755-9357-7252ad6da3bf.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 31,
+      "user_prompt_count": 4,
+      "tool_use_count": 27,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-17T09:17:28.996000+00:00",
+      "last_event_ts": "2026-02-17T09:24:23.384000+00:00",
+      "duration_minutes": 6,
+      "active_minutes": 6,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 14,
+      "Edit": 5,
+      "Bash": 4,
+      "Glob": 2,
+      "Task": 1,
+      "Grep": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "*validate",
+      "full_length": 9,
+      "ts": "2026-02-17T09:17:28.996Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "e907c7f1-957a-4823-844f-156a78c6fbb9": {
+    "session_id": "e907c7f1-957a-4823-844f-156a78c6fbb9",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-e907c7f1-957a-4823-844f-156a78c6fbb9.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/appystack",
+    "shape": {
+      "event_count": 30,
+      "user_prompt_count": 10,
+      "tool_use_count": 20,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-04T13:46:45.041000+00:00",
+      "last_event_ts": "2026-03-05T00:34:32.314000+00:00",
+      "duration_minutes": 647,
+      "active_minutes": 22,
+      "idle_gaps_over_1h": 2,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-04T14:06:43.296000+00:00",
+          "end": "2026-03-04T17:19:56.206000+00:00",
+          "gap_minutes": 193
+        },
+        {
+          "start": "2026-03-04T17:22:20.542000+00:00",
+          "end": "2026-03-05T00:34:32.314000+00:00",
+          "gap_minutes": 432
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 7,
+      "Read": 6,
+      "Edit": 4,
+      "Glob": 2,
+      "Write": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "What do you know about the concept of recipes inside of the skill and inside of the README document? ",
+      "full_length": 101,
+      "ts": "2026-03-04T13:46:45.041Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "1a55ad83-9d0d-4940-90c6-da81895431ff": {
+    "session_id": "1a55ad83-9d0d-4940-90c6-da81895431ff",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-1a55ad83-9d0d-4940-90c6-da81895431ff.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 30,
+      "user_prompt_count": 7,
+      "tool_use_count": 23,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-19T05:25:21.706000+00:00",
+      "last_event_ts": "2026-02-19T05:37:10.856000+00:00",
+      "duration_minutes": 11,
+      "active_minutes": 11,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 13,
+      "Read": 5,
+      "Grep": 2,
+      "WebSearch": 2,
+      "Edit": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "do you have access to any conversations where we cleaned up the secretes and put them here /Users/davidcruwys/.secrets,\n\ndid we keep a backup of the original env file?",
+      "full_length": 167,
+      "ts": "2026-02-19T05:25:21.706Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 2
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "f45b1521-3405-4ad6-aa8b-47ae59eb685a": {
+    "session_id": "f45b1521-3405-4ad6-aa8b-47ae59eb685a",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-f45b1521-3405-4ad6-aa8b-47ae59eb685a.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 30,
+      "user_prompt_count": 11,
+      "tool_use_count": 19,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-06T07:58:21.077000+00:00",
+      "last_event_ts": "2026-03-06T08:24:36.319000+00:00",
+      "duration_minutes": 26,
+      "active_minutes": 26,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 16,
+      "ToolSearch": 2,
+      "Write": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I have a command-line tool; the alias is SCC. I think it's screen capture. I love it because it can do three things for me:\n1. capture to clipboard\n2. capture to file\n3. capture in either format with a 5-second delayAnd when I do it from the file system, it does it to the location I'm in. I'd appreciate it if you have a look at what I've got in place. It's not just SCC; there's also an SCCT and SC. You have to have a look at probably the environment or something or aliases to figure out what I'v",
+      "full_length": 772,
+      "ts": "2026-03-06T07:58:21.077Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "5a85b671-da62-4027-b43d-f982ae8f4bfd": {
+    "session_id": "5a85b671-da62-4027-b43d-f982ae8f4bfd",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-5a85b671-da62-4027-b43d-f982ae8f4bfd.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 29,
+      "user_prompt_count": 6,
+      "tool_use_count": 23,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-01T09:06:38.344000+00:00",
+      "last_event_ts": "2026-03-01T12:47:11.290000+00:00",
+      "duration_minutes": 220,
+      "active_minutes": 27,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-01T09:33:25.486000+00:00",
+          "end": "2026-03-01T12:04:49.687000+00:00",
+          "gap_minutes": 151
+        }
+      ]
+    },
+    "tools": {
+      "Read": 7,
+      "Write": 7,
+      "Bash": 3,
+      "Edit": 3,
+      "Agent": 2,
+      "Glob": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I want you to think through. I want you to unpack what I'm about to say. In the realm of prompt engineering You have prompt engineering from the point of view of interaction with other systems. A classic negative version of it is prompt injection for whatever nefarious task you're trying to do. But the other one is a discovery system. If I'm an agent, skills are a great example of discovery systems. They put a little bit of front matter description, which helps a large language model identify wh",
+      "full_length": 1685,
+      "ts": "2026-03-01T09:06:38.344Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "8b0fad92-04cd-4079-8ff0-1f743a7221d5": {
+    "session_id": "8b0fad92-04cd-4079-8ff0-1f743a7221d5",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-8b0fad92-04cd-4079-8ff0-1f743a7221d5.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 29,
+      "user_prompt_count": 2,
+      "tool_use_count": 27,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-20T12:11:22.504000+00:00",
+      "last_event_ts": "2026-02-20T12:23:15.415000+00:00",
+      "duration_minutes": 11,
+      "active_minutes": 11,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Write": 11,
+      "WebSearch": 5,
+      "Bash": 4,
+      "Read": 3,
+      "TaskUpdate": 2,
+      "Task": 1,
+      "TaskCreate": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I want to create a new brain for n8n, come up with a plan for researching.\n\nJSON strcutre or other ideas related to building n8n workflows\nThink about best practices for workflows, parallel agents, regular agents, calling apis\n\nThink of what an expert in n8n would know.\n\nSearch the net for uptodate tutes\n\nInfact unpack this message so that you can come up with better ideas.\n\n",
+      "full_length": 378,
+      "ts": "2026-02-20T12:11:22.504Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  }
+}

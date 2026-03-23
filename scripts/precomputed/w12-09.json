@@ -1,0 +1,630 @@
+{
+  "114c6d78-c12c-48c1-98aa-4763da786414": {
+    "session_id": "114c6d78-c12c-48c1-98aa-4763da786414",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-114c6d78-c12c-48c1-98aa-4763da786414.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 15,
+      "user_prompt_count": 4,
+      "tool_use_count": 11,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-11T14:31:09.729000+00:00",
+      "last_event_ts": "2026-03-11T14:45:37.198000+00:00",
+      "duration_minutes": 14,
+      "active_minutes": 14,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 5,
+      "Glob": 3,
+      "Agent": 1,
+      "Write": 1,
+      "Edit": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Did we recently do some research around the cloning lab with being able to use some sort of loader to load data into folders, or what do we know about our installer capabilities in APpyStack",
+      "full_length": 190,
+      "ts": "2026-03-11T14:31:09.729Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "7e10b733-68cf-405d-b91b-84bf61cf73bf": {
+    "session_id": "7e10b733-68cf-405d-b91b-84bf61cf73bf",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-7e10b733-68cf-405d-b91b-84bf61cf73bf.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 15,
+      "user_prompt_count": 4,
+      "tool_use_count": 11,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-03T03:50:17.070000+00:00",
+      "last_event_ts": "2026-03-03T05:59:04.582000+00:00",
+      "duration_minutes": 128,
+      "active_minutes": 28,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-03T04:19:09.822000+00:00",
+          "end": "2026-03-03T05:59:04.582000+00:00",
+          "gap_minutes": 99
+        }
+      ]
+    },
+    "tools": {
+      "Read": 3,
+      "mcp__playwright__browser_click": 2,
+      "Glob": 2,
+      "Edit": 2,
+      "WebFetch": 1,
+      "mcp__playwright__browser_navigate": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "\n \u2590\u259b\u2588\u2588\u2588\u259c\u258c   Claude Code v2.1.63\n\u259d\u259c\u2588\u2588\u2588\u2588\u2588\u259b\u2598  Sonnet 4.6 \u00b7 Claude API\n  \u2598\u2598 \u259d\u259d    ~/dev/ad/brains\n\n\u276f /focus ecamm line And/or anything connected to my microphones Just so you know, I've got a solo cast and a quad cast from whoever they're from.\nYeah, we're going to be talking about audio problems, so just get ready for the questions.\n\n\u23fa Read 1 file (ctrl+o to expand)\n\n\u23fa Focused on the ecamm brain. Here's the orientation:\n\n  ---\n  Ecamm Brain \u2014 Overview\n\n  Status: stable | Activity: low | Files: 25 |",
+      "full_length": 2904,
+      "ts": "2026-03-03T03:52:28.132Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "93fdc8eb-31e9-45c2-aee8-98ce80a75df9": {
+    "session_id": "93fdc8eb-31e9-45c2-aee8-98ce80a75df9",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-93fdc8eb-31e9-45c2-aee8-98ce80a75df9.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 15,
+      "user_prompt_count": 3,
+      "tool_use_count": 12,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-09T01:18:48.621000+00:00",
+      "last_event_ts": "2026-03-09T01:23:41.959000+00:00",
+      "duration_minutes": 4,
+      "active_minutes": 4,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Edit": 4,
+      "Bash": 3,
+      "Read": 2,
+      "Skill": 1,
+      "Write": 1,
+      "Glob": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "These times don't make any sense. I'm sitting in Bangkok. What time zone are they using?",
+      "full_length": 88,
+      "ts": "2026-03-09T01:20:12.185Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "afc2e110-d6f0-4e1c-95c1-724e2af43266": {
+    "session_id": "afc2e110-d6f0-4e1c-95c1-724e2af43266",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-afc2e110-d6f0-4e1c-95c1-724e2af43266.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 15,
+      "user_prompt_count": 3,
+      "tool_use_count": 12,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-01T00:26:15.975000+00:00",
+      "last_event_ts": "2026-03-01T00:28:01.895000+00:00",
+      "duration_minutes": 1,
+      "active_minutes": 1,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Grep": 6,
+      "Bash": 3,
+      "Agent": 2,
+      "Glob": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "what does remote contorl and remote env do and how do I use them",
+      "full_length": 64,
+      "ts": "2026-03-01T00:26:15.975Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": true,
+        "count": 7
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "ed421e41-dbba-434c-9119-ca77da724a29": {
+    "session_id": "ed421e41-dbba-434c-9119-ca77da724a29",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-ed421e41-dbba-434c-9119-ca77da724a29.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 15,
+      "user_prompt_count": 3,
+      "tool_use_count": 12,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-06T08:10:43.758000+00:00",
+      "last_event_ts": "2026-03-06T08:12:06.752000+00:00",
+      "duration_minutes": 1,
+      "active_minutes": 1,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 10,
+      "ToolSearch": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "If you can, can you search my system for where I might have tools and scripts that I've just written, little bash commands? Where would be the best folder for me to put things? ",
+      "full_length": 177,
+      "ts": "2026-03-06T08:10:43.758Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "398e91fa-4723-4a36-878e-24035e8cb891": {
+    "session_id": "398e91fa-4723-4a36-878e-24035e8cb891",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-398e91fa-4723-4a36-878e-24035e8cb891.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 15,
+      "user_prompt_count": 2,
+      "tool_use_count": 13,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-20T07:13:16.817000+00:00",
+      "last_event_ts": "2026-02-20T07:23:35.654000+00:00",
+      "duration_minutes": 10,
+      "active_minutes": 10,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 11,
+      "Skill": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I get an execute command for 105. ",
+      "full_length": 34,
+      "ts": "2026-02-20T07:18:37.674Z"
+    },
+    "skill_invocations": [{}, {}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "c7e8d6c5-f071-4dbd-a468-b86c05cf0882": {
+    "session_id": "c7e8d6c5-f071-4dbd-a468-b86c05cf0882",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-c7e8d6c5-f071-4dbd-a468-b86c05cf0882.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 14,
+      "user_prompt_count": 4,
+      "tool_use_count": 10,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-03T06:22:32.555000+00:00",
+      "last_event_ts": "2026-03-03T11:37:55.302000+00:00",
+      "duration_minutes": 315,
+      "active_minutes": 24,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-03T06:32:08.897000+00:00",
+          "end": "2026-03-03T11:23:29.169000+00:00",
+          "gap_minutes": 291
+        }
+      ]
+    },
+    "tools": {
+      "Agent": 5,
+      "Bash": 5
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "What brains do I have available? ",
+      "full_length": 33,
+      "ts": "2026-03-03T06:22:32.555Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "da0932c0-1a68-4061-8933-0a04b4cd4cfa": {
+    "session_id": "da0932c0-1a68-4061-8933-0a04b4cd4cfa",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-da0932c0-1a68-4061-8933-0a04b4cd4cfa.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 14,
+      "user_prompt_count": 2,
+      "tool_use_count": 12,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-08T13:02:56.316000+00:00",
+      "last_event_ts": "2026-03-08T13:23:01.534000+00:00",
+      "duration_minutes": 20,
+      "active_minutes": 20,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 3,
+      "mcp__brave-search__brave_web_search": 3,
+      "Grep": 3,
+      "Agent": 2,
+      "ToolSearch": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Look on the internet. I also look in the files by Take1tech and Alek Johnson. We've already put them in the upstream area, but we're trying to figure out how we can set hotkeys. You can look at this from any angle you want. I'll just tell you my outcome, not how to get there.\nI have two buttons on my Stream Deck:\n1. I want to be able to press and then capture an image to the clipboard.\n2. I want to be able to press and capture an image to the clipboard after a four-second delay. It's using a mul",
+      "full_length": 614,
+      "ts": "2026-03-08T13:08:10.122Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  }
+}

@@ -1,0 +1,718 @@
+{
+  "2469e85c-0044-4727-8e3b-5d43775f2ff3": {
+    "session_id": "2469e85c-0044-4727-8e3b-5d43775f2ff3",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-2469e85c-0044-4727-8e3b-5d43775f2ff3.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 18,
+      "user_prompt_count": 5,
+      "tool_use_count": 13,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-16T10:30:33.783000+00:00",
+      "last_event_ts": "2026-02-17T02:22:29.164000+00:00",
+      "duration_minutes": 951,
+      "active_minutes": 32,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-16T11:02:06.209000+00:00",
+          "end": "2026-02-17T02:21:15.759000+00:00",
+          "gap_minutes": 919
+        }
+      ]
+    },
+    "tools": {
+      "Read": 4,
+      "Bash": 4,
+      "Edit": 3,
+      "Grep": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Illustrations - do we have about SSHing into my Mac Mini M2? You want to look in the Agentic OS for this information? ",
+      "full_length": 118,
+      "ts": "2026-02-16T10:30:33.783Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "41762dc8-43d5-4cf3-b0a1-3d255d34e9cd": {
+    "session_id": "41762dc8-43d5-4cf3-b0a1-3d255d34e9cd",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-41762dc8-43d5-4cf3-b0a1-3d255d34e9cd.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 18,
+      "user_prompt_count": 6,
+      "tool_use_count": 12,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-20T09:16:42.993000+00:00",
+      "last_event_ts": "2026-02-20T09:28:00.155000+00:00",
+      "duration_minutes": 11,
+      "active_minutes": 11,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 7,
+      "Read": 2,
+      "Glob": 2,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Here. how do we install the vercel agent browseer",
+      "full_length": 49,
+      "ts": "2026-02-20T09:16:42.993Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "9711e0d6-a095-4991-ab2c-174ad55e77a5": {
+    "session_id": "9711e0d6-a095-4991-ab2c-174ad55e77a5",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-9711e0d6-a095-4991-ab2c-174ad55e77a5.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 18,
+      "user_prompt_count": 1,
+      "tool_use_count": 17,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-13T23:07:18.989000+00:00",
+      "last_event_ts": "2026-02-13T23:09:08.477000+00:00",
+      "duration_minutes": 1,
+      "active_minutes": 1,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 8,
+      "Grep": 6,
+      "Task": 1,
+      "Read": 1,
+      "Write": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Using the jump command, notice that we just recently added Jos I also added a brand new folder I haven't done anything in it yet, called ~/dev/ad/apps\n\nBut the GitHub organisation that these apps will go under will be here? \n\nhttps://github.com/orgs/appydave\n\nI already have a little readme document there. Can you just make sure it's clear in the readme? Can you give me a jump command? I think it should be called \n\njapp",
+      "full_length": 422,
+      "ts": "2026-02-13T23:07:18.989Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": true,
+        "count": 6
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "c4c30dc9-eda6-4bab-84ec-ccbaa8af05bc": {
+    "session_id": "c4c30dc9-eda6-4bab-84ec-ccbaa8af05bc",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-c4c30dc9-eda6-4bab-84ec-ccbaa8af05bc.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 18,
+      "user_prompt_count": 2,
+      "tool_use_count": 16,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-28T04:58:11.041000+00:00",
+      "last_event_ts": "2026-02-28T05:08:18.916000+00:00",
+      "duration_minutes": 10,
+      "active_minutes": 10,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 6,
+      "Glob": 5,
+      "Edit": 4,
+      "Write": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "where would this info go?\n\nwhat is a heartbeat.md and how does it relate to cron jobs both technically but also other ways (is it same same or different)\n\n\u23fa They're related but different things.\n\n  HEARTBEAT.md is a checklist prompt \u2014 plain text that tells Claude what to check and think about during a heartbeat run. It's not executable. It gets loaded\n  into the Claude agent's context and shapes its reasoning: \"check email, check calendar, flag overdue tasks, etc.\"\n\n  The cron job is what actual",
+      "full_length": 4533,
+      "ts": "2026-02-28T04:58:11.041Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "a3d4ed83-8b24-4d5f-9d78-e1b1f062abcf": {
+    "session_id": "a3d4ed83-8b24-4d5f-9d78-e1b1f062abcf",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-a3d4ed83-8b24-4d5f-9d78-e1b1f062abcf.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 18,
+      "user_prompt_count": 4,
+      "tool_use_count": 8,
+      "stop_count": 4,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-18T09:48:05.170000+00:00",
+      "last_event_ts": "2026-03-18T10:03:15.552000+00:00",
+      "duration_minutes": 15,
+      "active_minutes": 15,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 4,
+      "Read": 2,
+      "Glob": 1,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [
+        "/Users/davidcruwys/dev/ad/brains/dtv/land-border-crossings.md",
+        "/Users/davidcruwys/dev/ad/brains/dtv/border-run-options.md"
+      ],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [
+      "pwd && git status && git diff --stat",
+      "git diff INDEX.md && git diff agentic-os/angeleye-concepts.md | head -50 && ls angeleye/ && ls team/",
+      "git add -A && git commit -m \"$(cat <<'EOF'\nfeat(brains): add angeleye brain + update index\n\n- Add new angeleye/ brain (5 files) covering session intelligence layer,\n  ambient intelligence, ingestion architecture, communication patterns,\n  and data concepts\n- Add team/ directory with jan-reyes and ma",
+      "git push origin main"
+    ],
+    "first_real_prompt": {
+      "text": "I've got to do my visa run in, I guess, in 12 hours. I gotta get ready; it's 13 hours. What is the absolute stuff that I got to do right now before the end of day?",
+      "full_length": 163,
+      "ts": "2026-03-18T09:48:28.115Z"
+    },
+    "skill_invocations": [
+      {
+        "keys": ["skill"]
+      }
+    ],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "56fd3f82-793b-423c-a5fd-49de724a573e": {
+    "session_id": "56fd3f82-793b-423c-a5fd-49de724a573e",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-56fd3f82-793b-423c-a5fd-49de724a573e.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 17,
+      "user_prompt_count": 2,
+      "tool_use_count": 15,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-11T11:48:39.101000+00:00",
+      "last_event_ts": "2026-03-11T11:50:03.536000+00:00",
+      "duration_minutes": 1,
+      "active_minutes": 1,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 7,
+      "Glob": 4,
+      "Edit": 3,
+      "Grep": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Have we been discussing recently the issues of port conflicts when trying to run our applications and how to resolve them?",
+      "full_length": 122,
+      "ts": "2026-03-11T11:48:39.101Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "576c9c23-0871-441c-9fca-c07a9bd7d88d": {
+    "session_id": "576c9c23-0871-441c-9fca-c07a9bd7d88d",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-576c9c23-0871-441c-9fca-c07a9bd7d88d.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 17,
+      "user_prompt_count": 4,
+      "tool_use_count": 13,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-20T02:00:47.488000+00:00",
+      "last_event_ts": "2026-02-20T02:03:39.222000+00:00",
+      "duration_minutes": 2,
+      "active_minutes": 2,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 11,
+      "Glob": 1,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "why do I have 2x refresh brain-claude\n/brand-dave:solo-deck                             (brand-dave) /solo-deck \u2014 Standalone Visual Assets\n  /focus                                            Read the INDEX.md for the brain at ~/dev/ad/brains/$ARGUMENTS/INDEX.md. (project)\n  /refresh-claude-brain                             Use this skill when the user wants to refresh, update, or discover what's new in the Claude Code s\u2026\n  /refresh-claude-brain                             (brand-dave) Use this s",
+      "full_length": 667,
+      "ts": "2026-02-20T02:00:47.488Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "5eb6cff1-41d9-48da-b48a-a0013edee922": {
+    "session_id": "5eb6cff1-41d9-48da-b48a-a0013edee922",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-5eb6cff1-41d9-48da-b48a-a0013edee922.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 17,
+      "user_prompt_count": 3,
+      "tool_use_count": 14,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-14T00:49:43.434000+00:00",
+      "last_event_ts": "2026-03-14T02:13:23.204000+00:00",
+      "duration_minutes": 83,
+      "active_minutes": 7,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-14T00:49:43.434000+00:00",
+          "end": "2026-03-14T02:05:57.878000+00:00",
+          "gap_minutes": 76
+        }
+      ]
+    },
+    "tools": {
+      "Edit": 9,
+      "Read": 5
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "What was this comment session about?  \u2590\u259b\u2588\u2588\u2588\u259c\u258c   Claude Code v2.1.74\n\u259d\u259c\u2588\u2588\u2588\u2588\u2588\u259b\u2598  Sonnet 4.6 with medium effort \u00b7 Claude API\n  \u2598\u2598 \u259d\u259d    ~/dev/ad/brains\n  \u23bf \u00a0Killed\n\n\u23fa Done. Both the API server (4000) and the dashboard (5175) are stopped.\n\n\u276f Okay, what happens is I use Claude Code. Let's say I start a session. There are different ways things I do on a regular basis when I start a\nsession. Maybe it's just a simple prompt. Maybe I'm getting ready for a Ralph Wiggum loop. Maybe I'm in the BMAD method.\n",
+      "full_length": 84257,
+      "ts": "2026-03-14T00:49:43.434Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "ed7ad85a-bfed-4837-a6bc-d0e09b556a56": {
+    "session_id": "ed7ad85a-bfed-4837-a6bc-d0e09b556a56",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-ed7ad85a-bfed-4837-a6bc-d0e09b556a56.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 17,
+      "user_prompt_count": 1,
+      "tool_use_count": 16,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-15T04:05:23.632000+00:00",
+      "last_event_ts": "2026-02-16T00:53:47.854000+00:00",
+      "duration_minutes": 1248,
+      "active_minutes": 4,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-15T04:09:51.276000+00:00",
+          "end": "2026-02-16T00:53:47.854000+00:00",
+          "gap_minutes": 1243
+        }
+      ]
+    },
+    "tools": {
+      "Write": 10,
+      "Read": 5,
+      "Bash": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": null,
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  }
+}

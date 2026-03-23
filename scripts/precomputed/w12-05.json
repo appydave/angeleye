@@ -1,0 +1,745 @@
+{
+  "ad22e674-b691-4f92-aed5-520dede75c20": {
+    "session_id": "ad22e674-b691-4f92-aed5-520dede75c20",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-ad22e674-b691-4f92-aed5-520dede75c20.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 24,
+      "user_prompt_count": 8,
+      "tool_use_count": 16,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-01T05:47:22.378000+00:00",
+      "last_event_ts": "2026-03-01T07:56:23.797000+00:00",
+      "duration_minutes": 129,
+      "active_minutes": 28,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-01T05:47:31.813000+00:00",
+          "end": "2026-03-01T07:28:27.045000+00:00",
+          "gap_minutes": 100
+        }
+      ]
+    },
+    "tools": {
+      "Read": 10,
+      "Write": 4,
+      "Edit": 1,
+      "Bash": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Session Context: Brains / DeckHand / Infrastructure \u2014 2026-03-01\n\n  Working On\n\n  Setting up the M4 Mini as part of the Agentic OS \u2014 package manager\n  decisions, Stream Deck automation project (DeckHand), SSH cross-machine\n   access, Tailscale installation, and syncing a missing\n  .ai-conventions.md file from the MacBook Pro.\n\n  Current State\n\n  - pnpm installed (v10.30.3) on M4 Mini via npm install -g pnpm\n  - DeckHand project created at ~/dev/ad/apps/deckhand/ \u2014 docs-only, not\n  yet built\n  - ",
+      "full_length": 5501,
+      "ts": "2026-03-01T05:47:22.378Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false,
+        "first_prompt_length": 5501,
+        "short_prompt_ratio": 0.57
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "33a95b6c-3f47-44b1-b3c1-7ae3d144378f": {
+    "session_id": "33a95b6c-3f47-44b1-b3c1-7ae3d144378f",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-33a95b6c-3f47-44b1-b3c1-7ae3d144378f.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 24,
+      "user_prompt_count": 2,
+      "tool_use_count": 18,
+      "stop_count": 2,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-22T16:20:19.235000+00:00",
+      "last_event_ts": "2026-03-22T16:23:01.271000+00:00",
+      "duration_minutes": 2,
+      "active_minutes": 2,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 8,
+      "Bash": 6,
+      "Edit": 2,
+      "Grep": 1,
+      "Glob": 1
+    },
+    "file_paths": {
+      "read": [
+        "/Users/davidcruwys/dev/ad/brains/todo/today.md",
+        "/Users/davidcruwys/dev/ad/brains/todo/inbox.md",
+        "/Users/davidcruwys/dev/ad/brains/lars/INDEX.md",
+        "/Users/davidcruwys/dev/clients/lars/CLAUDE.md",
+        "/Users/davidcruwys/dev/clients/lars/correspondence/2026-03-21-paperclip-getting-started/paperclip-getting-started.md",
+        "/Users/davidcruwys/dev/clients/lars/docs/communication/CLAUDE.md",
+        "/Users/davidcruwys/dev/clients/lars/docs/communication/email-drafts/todo-topics.md"
+      ],
+      "write": [],
+      "edit": [
+        "/Users/davidcruwys/dev/ad/brains/todo/inbox.md",
+        "/Users/davidcruwys/dev/clients/lars/docs/communication/email-drafts/todo-topics.md"
+      ]
+    },
+    "bash_commands_sample": [
+      "ls /Users/davidcruwys/dev/clients/ 2>/dev/null || echo \"no /dev/clients\"; ls /Users/davidcruwys/dev/ad/clients/ 2>/dev/null || echo \"no /dev/ad/clients\"",
+      "ls -la /Users/davidcruwys/dev/clients/lars/",
+      "ls -la /Users/davidcruwys/dev/clients/lars/correspondence/",
+      "ls -la /Users/davidcruwys/dev/clients/lars/correspondence/2026-03-21-paperclip-getting-started/",
+      "ls -la /Users/davidcruwys/dev/clients/lars/docs/",
+      "ls -la /Users/davidcruwys/dev/clients/lars/docs/communication/"
+    ],
+    "first_real_prompt": {
+      "text": "Add a to-do list tomorrow to send a message to Lars. In particular, that idea of paperclip AI Being an autonomous system and the conversation I had with ChatGPT is interesting. I should send it through to him, but I still got to find an alternative that's more manual in control",
+      "full_length": 278,
+      "ts": "2026-03-22T16:20:52.721Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": "/Users/davidcruwys/dev",
+      "cwd_reliable": true,
+      "edit_write_count": 2
+    }
+  },
+  "f3395cf9-b6a2-4f37-a93b-8b6395588a29": {
+    "session_id": "f3395cf9-b6a2-4f37-a93b-8b6395588a29",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-f3395cf9-b6a2-4f37-a93b-8b6395588a29.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 23,
+      "user_prompt_count": 4,
+      "tool_use_count": 19,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-09T05:01:18.272000+00:00",
+      "last_event_ts": "2026-03-09T05:10:18.055000+00:00",
+      "duration_minutes": 8,
+      "active_minutes": 8,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Glob": 9,
+      "Read": 7,
+      "Edit": 2,
+      "ToolSearch": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "\u276f\u00a0Can you have? Have we got a record somewhere of how we're naming our\n  applications at the moment? Do we have rules written into the system\n  for picking names for new micro apps in the AppyStack layer?",
+      "full_length": 204,
+      "ts": "2026-03-09T05:01:18.272Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "e26387f7-1563-4484-ac92-d4df43b7280b": {
+    "session_id": "e26387f7-1563-4484-ac92-d4df43b7280b",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-e26387f7-1563-4484-ac92-d4df43b7280b.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 23,
+      "user_prompt_count": 8,
+      "tool_use_count": 7,
+      "stop_count": 8,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-16T04:50:48.605000+00:00",
+      "last_event_ts": "2026-03-16T10:35:29.978000+00:00",
+      "duration_minutes": 344,
+      "active_minutes": 10,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-16T04:56:11.679000+00:00",
+          "end": "2026-03-16T10:30:15.171000+00:00",
+          "gap_minutes": 334
+        }
+      ]
+    },
+    "tools": {
+      "ToolSearch": 3,
+      "mcp__brave-search__brave_web_search": 2,
+      "mcp__playwright__browser_navigate": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "We got some audio problems now. I don't know whether they're related to Wispr Flow or whether they're related to Krisp AI or whether they're related to my HyperX Quad Cast. I see the problems in Ecamm Live, which is as Krisp.AI as an input. I see the problems in Wispr Flow, which also has it as an input. I think. And what the problem is, is that I keep seeing trailing end of words being cut off. It's clipping my videos and it's clipping my conversation.",
+      "full_length": 457,
+      "ts": "2026-03-16T04:50:48.605Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "2f22e5b7-9361-4991-9e9e-9f411dbecb1f": {
+    "session_id": "2f22e5b7-9361-4991-9e9e-9f411dbecb1f",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-2f22e5b7-9361-4991-9e9e-9f411dbecb1f.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 21,
+      "user_prompt_count": 5,
+      "tool_use_count": 16,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-01T07:58:17.534000+00:00",
+      "last_event_ts": "2026-03-01T08:45:08.683000+00:00",
+      "duration_minutes": 46,
+      "active_minutes": 46,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 7,
+      "Edit": 4,
+      "Agent": 2,
+      "Read": 2,
+      "Write": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I think you need to go have a look at FliHub, but I think Actually, it may even be POEM. We have some sort of system where we understand the ports that we start our applications on. And now, as I say that, what's probably smarter is that we understand what our applications are. And we may already have that documented somewhere in our brain. David, Content Pillars: maybe it's the applications we've got, but can you identify all the applications I've built and where you think they're located? Go a",
+      "full_length": 833,
+      "ts": "2026-03-01T07:58:17.534Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "44d4d314-62e1-4739-a01a-466e185efc36": {
+    "session_id": "44d4d314-62e1-4739-a01a-466e185efc36",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-44d4d314-62e1-4739-a01a-466e185efc36.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 21,
+      "user_prompt_count": 7,
+      "tool_use_count": 14,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-04T13:49:59.348000+00:00",
+      "last_event_ts": "2026-03-04T17:20:09.477000+00:00",
+      "duration_minutes": 210,
+      "active_minutes": 20,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-04T14:10:08.262000+00:00",
+          "end": "2026-03-04T17:20:05.031000+00:00",
+          "gap_minutes": 189
+        }
+      ]
+    },
+    "tools": {
+      "Read": 6,
+      "Bash": 2,
+      "mcp__brave-search__brave_web_search": 2,
+      "Glob": 1,
+      "Grep": 1,
+      "Write": 1,
+      "Edit": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Where have we been keeping documentation around stream decks? And also the application called DeckHand, And how detailed is the documentation in both areas? ",
+      "full_length": 157,
+      "ts": "2026-03-04T13:49:59.348Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "ef6529fa-9bc1-4ef3-8b0b-a87ace8206ec": {
+    "session_id": "ef6529fa-9bc1-4ef3-8b0b-a87ace8206ec",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-ef6529fa-9bc1-4ef3-8b0b-a87ace8206ec.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 21,
+      "user_prompt_count": 1,
+      "tool_use_count": 20,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-17T08:43:45.095000+00:00",
+      "last_event_ts": "2026-02-17T08:48:41.353000+00:00",
+      "duration_minutes": 4,
+      "active_minutes": 4,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 5,
+      "TaskUpdate": 4,
+      "Bash": 4,
+      "Glob": 3,
+      "TaskCreate": 2,
+      "Write": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Read docs/oscar-preflight-proposal.md \u2014 it describes Oscar's pre-flight phase, step validation loop, and deviation protocol. Implement it: write\n  preflight-workflow.yaml, update Oscar's agent definition with *preflight and *validate-plan commands, and update the *run flow to include the step\n  validation loop. Use .poem-core/workflows/validate-workflow.yaml as the YAML format reference.",
+      "full_length": 390,
+      "ts": "2026-02-17T08:43:45.095Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "101bf7ba-9def-4008-ab70-123617c03341": {
+    "session_id": "101bf7ba-9def-4008-ab70-123617c03341",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-101bf7ba-9def-4008-ab70-123617c03341.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 21,
+      "user_prompt_count": 4,
+      "tool_use_count": 11,
+      "stop_count": 4,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-22T10:07:08.655000+00:00",
+      "last_event_ts": "2026-03-22T10:20:09.631000+00:00",
+      "duration_minutes": 13,
+      "active_minutes": 13,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 6,
+      "Read": 5
+    },
+    "file_paths": {
+      "read": ["/Users/davidcruwys/dev/ad/brains/brand-dave/operations.md"],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [
+      "df -h / && echo \"---\" && diskutil info / | grep -E \"Volume Name|Total Space|Free Space|Available|Container\"",
+      "diskutil list && echo \"===\" && diskutil apfs list",
+      "hostname && system_profiler SPHardwareDataType 2>/dev/null | grep -E \"Model Name|Chip|Memory|Serial\"",
+      "ssh MacBook-Pro.local \"ls -1 /\" 2>/dev/null || ssh macbook-pro.local \"ls -1 /\" 2>/dev/null",
+      "ssh MacBook-Pro.local \"ls -1 /Users/davidcruwys/ 2>/dev/null | head -40\"",
+      "ssh MacBook-Pro.local \"diskutil info / | grep -E 'Total Space|Free Space|Volume Name'\""
+    ],
+    "first_real_prompt": {
+      "text": "/who-am-i",
+      "full_length": 9,
+      "ts": "2026-03-22T10:07:13.384Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "587c3f05-c3b2-47eb-9df9-e24701f739c2": {
+    "session_id": "587c3f05-c3b2-47eb-9df9-e24701f739c2",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-587c3f05-c3b2-47eb-9df9-e24701f739c2.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 20,
+      "user_prompt_count": 3,
+      "tool_use_count": 17,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-05T05:59:45.644000+00:00",
+      "last_event_ts": "2026-03-05T06:03:16.837000+00:00",
+      "duration_minutes": 3,
+      "active_minutes": 3,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 10,
+      "ToolSearch": 3,
+      "mcp__brave-search__brave_web_search": 3,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "When you search the internet for the new Claude Code remote control Which has been talked about by everyone, and I'm now two weeks later and about five or six versions on from it. I'll do a release note so that you can see that, by the way. I'm still without the capability, and I want to find out if other people are having the same problem, because it doesn't feel like a rollout issue; it feels like something corrupted. \n\n/rel",
+      "full_length": 430,
+      "ts": "2026-03-05T05:59:45.644Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  }
+}
