@@ -1,0 +1,720 @@
+[
+  {
+    "session_id": "b0b9ca8d-a342-45ef-8a93-28d5ec3dd661",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-b0b9ca8d-a342-45ef-8a93-28d5ec3dd661.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/signal-studio",
+    "shape": {
+      "event_count": 124,
+      "user_prompt_count": 8,
+      "tool_use_count": 116,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-02T03:05:50.122000+00:00",
+      "last_event_ts": "2026-03-02T06:22:07.934000+00:00",
+      "duration_minutes": 196,
+      "active_minutes": 32,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-02T04:54:24.613000+00:00",
+          "end": "2026-03-02T06:22:01.386000+00:00",
+          "gap_minutes": 87
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 47,
+      "Write": 20,
+      "Read": 13,
+      "mcp__playwright__browser_click": 10,
+      "Edit": 7,
+      "mcp__playwright__browser_navigate": 5,
+      "mcp__playwright__browser_take_screenshot": 3,
+      "Skill": 2,
+      "Agent": 2,
+      "TaskUpdate": 2,
+      "mcp__playwright__browser_type": 2,
+      "Glob": 1,
+      "TaskCreate": 1,
+      "mcp__playwright__browser_fill_form": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "We've just installed this application for the first time. What do you know about recipes? ",
+      "full_length": 90,
+      "ts": "2026-03-02T03:05:50.122Z"
+    },
+    "skill_invocations": [{}, {}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "60bc9223-c007-44bc-a88a-e32e598a9023",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-60bc9223-c007-44bc-a88a-e32e598a9023.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/flivideo/flihub",
+    "shape": {
+      "event_count": 37,
+      "user_prompt_count": 8,
+      "tool_use_count": 18,
+      "stop_count": 8,
+      "subagent_start_count": 1,
+      "subagent_stop_count": 1,
+      "first_event_ts": "2026-03-16T11:51:50.424000+00:00",
+      "last_event_ts": "2026-03-16T14:27:52.308000+00:00",
+      "duration_minutes": 156,
+      "active_minutes": 40,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-16T12:32:23.620000+00:00",
+          "end": "2026-03-16T14:27:52.308000+00:00",
+          "gap_minutes": 115
+        }
+      ]
+    },
+    "tools": {
+      "Read": 11,
+      "Edit": 4,
+      "Write": 1,
+      "Agent": 1,
+      "Grep": 1
+    },
+    "file_paths": {
+      "read": [
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/docs/backlog.md",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/docs/changelog.md",
+        "/Users/davidcruwys/.claude/projects/-Users-davidcruwys-dev-ad-flivideo-flihub/60bc9223-c007-44bc-a88a-e32e598a9023/tool-results/toolu_011PG2kTAzAFaYViV7Z1gc43.txt",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/docs/prd/fr-145-escape-closes-video-modal.md",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/docs/prd/fr-139-folders-tool-specification.md",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/docs/prd/fr-144-workflow-intake.md",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/docs/prd/fr-132-dual-transcription-progress.md",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/docs/prd/ux-improvements.md"
+      ],
+      "write": [
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/docs/prd/fr-145-escape-closes-video-modal.md"
+      ],
+      "edit": [
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/docs/backlog.md",
+        "/Users/davidcruwys/dev/ad/flivideo/flihub/docs/changelog.md"
+      ]
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I just want to add to the backlog the idea that when you're watching a video, either on the recording screen or The incoming screen might as well be on the watch screen as well. That if you press escape, the modal dialogue closes",
+      "full_length": 229,
+      "ts": "2026-03-16T11:51:50.424Z"
+    },
+    "skill_invocations": null,
+    "subagents": [
+      {
+        "agent_id": "a29be7c1b24610c69",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-16T12:07:41.026Z",
+        "stopped_at": "2026-03-16T12:07:57.095Z"
+      }
+    ],
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": "/Users/davidcruwys/dev/ad/flivideo/flihub/docs",
+      "cwd_reliable": true,
+      "edit_write_count": 3
+    }
+  },
+  {
+    "session_id": "eb6cbbe3-f540-4ccb-9303-00251de9af39",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-eb6cbbe3-f540-4ccb-9303-00251de9af39.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/appystack",
+    "shape": {
+      "event_count": 25,
+      "user_prompt_count": 6,
+      "tool_use_count": 19,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-20T01:42:03.586000+00:00",
+      "last_event_ts": "2026-02-21T04:08:32.454000+00:00",
+      "duration_minutes": 1586,
+      "active_minutes": 5,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-20T01:42:22.520000+00:00",
+          "end": "2026-02-21T04:03:41.823000+00:00",
+          "gap_minutes": 1581
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 8,
+      "Read": 7,
+      "Glob": 2,
+      "Grep": 1,
+      "Write": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "how do I install this application in to a new folder?",
+      "full_length": 53,
+      "ts": "2026-02-20T01:42:03.586Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "c10ebc70-f558-4481-89d5-a8697571cffb",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-c10ebc70-f558-4481-89d5-a8697571cffb.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
+    "shape": {
+      "event_count": 15,
+      "user_prompt_count": 1,
+      "tool_use_count": 14,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-18T08:04:04.965000+00:00",
+      "last_event_ts": "2026-02-18T08:05:36.605000+00:00",
+      "duration_minutes": 1,
+      "active_minutes": 1,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Grep": 6,
+      "Read": 4,
+      "Glob": 4
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Uh, none of these are correct. We are on epic eleven. ",
+      "full_length": 54,
+      "ts": "2026-02-18T08:05:31.998Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": true,
+        "count": 4
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "63fa0330-465f-4003-b522-889aa39c43f0",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-63fa0330-465f-4003-b522-889aa39c43f0.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/appystack",
+    "shape": {
+      "event_count": 7,
+      "user_prompt_count": 3,
+      "tool_use_count": 4,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-14T01:57:16.991000+00:00",
+      "last_event_ts": "2026-02-14T02:01:50.277000+00:00",
+      "duration_minutes": 4,
+      "active_minutes": 4,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 3,
+      "Task": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "~/.claude/plans/velvety-rolling-flute.md\n\n/Users/davidcruwys/dev/ad/apps/appystack/docs/plans/appystack-boilerplate-template.md\n\nAre these the same files? ",
+      "full_length": 155,
+      "ts": "2026-02-14T01:57:16.991Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "3016dfad-1cc1-4953-9b56-3ef80e9c6a87",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-3016dfad-1cc1-4953-9b56-3ef80e9c6a87.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 2,
+      "user_prompt_count": 2,
+      "tool_use_count": 0,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-20T01:12:39.968000+00:00",
+      "last_event_ts": "2026-02-20T01:42:21.095000+00:00",
+      "duration_minutes": 29,
+      "active_minutes": 29,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {},
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "\u276f have we done a ralph loop in this system, is it in a ux folder",
+      "full_length": 64,
+      "ts": "2026-02-20T01:12:39.968Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "2efc01af-79aa-4514-9041-3dd935e6d4f5",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-2efc01af-79aa-4514-9041-3dd935e6d4f5.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 1,
+      "user_prompt_count": 1,
+      "tool_use_count": 0,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-16T03:01:52.671000+00:00",
+      "last_event_ts": "2026-03-16T03:01:52.671000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {},
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": null,
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "8e9252e0-aa15-4220-a55c-f8028357ea62",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-8e9252e0-aa15-4220-a55c-f8028357ea62.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 1,
+      "user_prompt_count": 1,
+      "tool_use_count": 0,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-17T09:34:40.148000+00:00",
+      "last_event_ts": "2026-02-17T09:34:40.148000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {},
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "What is 2+2? Reply with just the number.\n",
+      "full_length": 41,
+      "ts": "2026-02-17T09:34:40.148Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "fb5dada6-8dc8-4425-a299-e987fe23b235",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-fb5dada6-8dc8-4425-a299-e987fe23b235.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 1,
+      "user_prompt_count": 1,
+      "tool_use_count": 0,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-13T22:46:19.381000+00:00",
+      "last_event_ts": "2026-02-13T22:46:19.381000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {},
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "When you're making a boilerplate for JavaScript What are the basic concepts that most boilerplates do, and how do they get discovered on GitHub, I guess, or NPN, I ",
+      "full_length": 164,
+      "ts": "2026-02-13T22:46:19.381Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  }
+]

@@ -1,0 +1,730 @@
+[
+  {
+    "session_id": "e34013a3-adfc-42eb-bd9f-cac7017dd322",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-e34013a3-adfc-42eb-bd9f-cac7017dd322.jsonl",
+    "cwd": "/Users/davidcruwys/dev/video-projects/v-appydave",
+    "shape": {
+      "event_count": 73,
+      "user_prompt_count": 10,
+      "tool_use_count": 63,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-23T13:45:16.769000+00:00",
+      "last_event_ts": "2026-02-23T16:08:35.877000+00:00",
+      "duration_minutes": 143,
+      "active_minutes": 51,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-23T13:54:14.551000+00:00",
+          "end": "2026-02-23T15:25:34.505000+00:00",
+          "gap_minutes": 91
+        }
+      ]
+    },
+    "tools": {
+      "Read": 27,
+      "Bash": 19,
+      "Write": 13,
+      "TaskUpdate": 2,
+      "AskUserQuestion": 1,
+      "TaskCreate": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "from preivvous confo, don't act on it just yet, just read, give me a 1 sentence opinion and say yay\n\nSession Context: YouTube Launch Optimizer Cleanup & WUI Alignment \u2014 2026-02-23\n\n  Working On\n\n  Cleaning up the YouTube Launch Optimizer workflow (v-appydave POEM system) and aligning its YAML, prompt templates, and JSON schemas with the SupportSignal WUI\n  (Workflow UI) so the same human-in-the-loop renderer can drive both workflows.\n\n  Current State\n\n  YouTube data files are done \u2014 YAML, all 20",
+      "full_length": 6413,
+      "ts": "2026-02-23T13:45:16.769Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false,
+        "first_prompt_length": 6413,
+        "short_prompt_ratio": 0.44
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "ed786725-eb80-4937-a9c9-3d8fc8f3e5ed",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-ed786725-eb80-4937-a9c9-3d8fc8f3e5ed.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
+    "shape": {
+      "event_count": 61,
+      "user_prompt_count": 7,
+      "tool_use_count": 54,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-18T04:21:35.470000+00:00",
+      "last_event_ts": "2026-02-18T05:46:30.236000+00:00",
+      "duration_minutes": 84,
+      "active_minutes": 13,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Edit": 14,
+      "Read": 13,
+      "Bash": 11,
+      "Glob": 7,
+      "Skill": 4,
+      "Write": 3,
+      "Grep": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Hang on, did you Do the YAML QA. I see that the file is created, but I never saw you do it. Actually, I can say it now. Are you actually happy with work? It was pretty quick, I guess. Are you solid and happy? Are you happy with the work that the other agents have been doing on the story? ",
+      "full_length": 289,
+      "ts": "2026-02-18T05:00:11.923Z"
+    },
+    "skill_invocations": [{}, {}, {}, {}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": true,
+        "count": 8
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 3
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "0d6cbb83-2762-419f-af6f-1c1aa6b0d3d1",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-0d6cbb83-2762-419f-af6f-1c1aa6b0d3d1.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/appydave-plugins",
+    "shape": {
+      "event_count": 30,
+      "user_prompt_count": 5,
+      "tool_use_count": 19,
+      "stop_count": 5,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-16T03:38:37.902000+00:00",
+      "last_event_ts": "2026-03-16T03:54:58.152000+00:00",
+      "duration_minutes": 16,
+      "active_minutes": 16,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 10,
+      "Edit": 5,
+      "Bash": 4
+    },
+    "file_paths": {
+      "read": [
+        "/Users/davidcruwys/dev/ad/appydave-plugins/appydave/skills/ralphy/SKILL.md",
+        "/Users/davidcruwys/dev/ad/appydave-plugins/appydave/skills/code-quality-audit/SKILL.md",
+        "/Users/davidcruwys/dev/ad/appydave-plugins/appydave/skills/test-quality-audit/SKILL.md",
+        "/Users/davidcruwys/dev/ad/appydave-plugins/appydave/skills/architectural-review/SKILL.md",
+        "/Users/davidcruwys/dev/ad/appydave-plugins/appydave/.claude-plugin/plugin.json",
+        "/Users/davidcruwys/dev/ad/appydave-plugins/appydave/skills/clauding-lab-events/SKILL.md",
+        "/Users/davidcruwys/dev/ad/appydave-plugins/clauding-lab-events.skill",
+        "/Users/davidcruwys/dev/ad/appydave-plugins/appydave/skills/nano-banana/SKILL.md",
+        "/Users/davidcruwys/dev/ad/appydave-plugins/appydave/skills/create-appystack/SKILL.md",
+        "/Users/davidcruwys/dev/ad/appydave-plugins/reload-plugins.sh"
+      ],
+      "write": [],
+      "edit": [
+        "/Users/davidcruwys/dev/ad/appydave-plugins/appydave/skills/ralphy/SKILL.md",
+        "/Users/davidcruwys/dev/ad/appydave-plugins/appydave/.claude-plugin/plugin.json"
+      ]
+    },
+    "bash_commands_sample": [
+      "git status && git log --oneline -3",
+      "git add appydave/.claude-plugin/plugin.json appydave/skills/ralphy/SKILL.md appydave/skills/create-appystack/SKILL.md reload-plugins.sh appydave/skills/architectural-review/ appydave/skills/code-quality-audit/ appydave/skills/test-quality-audit/ appydave/skills/nano-banana/ appydave/skills/clauding-",
+      "git commit -m \"$(cat <<'EOF'\nfeat(appydave): add 5 new skills + wire quality audits into Ralphy (v1.13.0)\n\nNew skills: architectural-review, code-quality-audit, test-quality-audit,\nnano-banana, clauding-lab-events\n\nRalphy (v1.9.0): quality audit integration \u2014 code+test audits offered at\nBuild comple",
+      "git push"
+    ],
+    "first_real_prompt": {
+      "text": "Can you just get Ralphy's plug-in loaded into your Context? I'll give you some instructions.",
+      "full_length": 92,
+      "ts": "2026-03-16T03:38:37.902Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": "/Users/davidcruwys/dev/ad/appydave-plugins/appydave",
+      "cwd_reliable": true,
+      "edit_write_count": 2
+    }
+  },
+  {
+    "session_id": "9e97e108-ca50-4a74-99d9-3f44a6dfa44e",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-9e97e108-ca50-4a74-99d9-3f44a6dfa44e.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
+    "shape": {
+      "event_count": 23,
+      "user_prompt_count": 5,
+      "tool_use_count": 11,
+      "stop_count": 5,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-22T05:02:19.341000+00:00",
+      "last_event_ts": "2026-03-22T05:29:07.349000+00:00",
+      "duration_minutes": 26,
+      "active_minutes": 26,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 5,
+      "Bash": 5,
+      "Grep": 1
+    },
+    "file_paths": {
+      "read": [
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/.claude/skills/bmad-help/workflow.md",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/_bmad/_config/bmad-help.csv",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/.claude/skills/bmad-sprint-planning/workflow.md",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/_bmad-output/implementation-artifacts/sprint-status.yaml",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/.claude/skills/bmad-shard-doc/workflow.md"
+      ],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [
+      "ls /Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/_bmad/",
+      "ls /Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/_bmad/bmm/ 2>/dev/null && echo \"---\" && cat /Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/_bmad/bmm/config.yaml 2>/dev/null",
+      "ls /Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/_bmad-output/planning-artifacts/ 2>/dev/null | head -30",
+      "ls /Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/_bmad-output/implementation-artifacts/ 2>/dev/null | head -30",
+      "wc -l /Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/_bmad-output/planning-artifacts/*.md"
+    ],
+    "first_real_prompt": {
+      "text": "/bmad-help",
+      "full_length": 10,
+      "ts": "2026-03-22T05:05:46.336Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "bfaa39a7-1f60-478c-8f2f-8859590e8b2d",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-bfaa39a7-1f60-478c-8f2f-8859590e8b2d.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/appydave-plugins",
+    "shape": {
+      "event_count": 13,
+      "user_prompt_count": 2,
+      "tool_use_count": 11,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-02T04:12:43.213000+00:00",
+      "last_event_ts": "2026-03-02T04:44:45.256000+00:00",
+      "duration_minutes": 32,
+      "active_minutes": 32,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 4,
+      "Edit": 4,
+      "Glob": 1,
+      "Grep": 1,
+      "Agent": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "What do you know about the Gather command? ",
+      "full_length": 43,
+      "ts": "2026-03-02T04:12:43.213Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "9de68412-dead-4853-9ed2-9261bc22ff33",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-9de68412-dead-4853-9ed2-9261bc22ff33.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/appystack",
+    "shape": {
+      "event_count": 8,
+      "user_prompt_count": 3,
+      "tool_use_count": 5,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-20T01:02:34.097000+00:00",
+      "last_event_ts": "2026-02-20T02:22:14.072000+00:00",
+      "duration_minutes": 79,
+      "active_minutes": 11,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-20T01:14:12.976000+00:00",
+          "end": "2026-02-20T02:22:08.059000+00:00",
+          "gap_minutes": 67
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 4,
+      "Read": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "what were we doing here?\n\n\n \u2590\u259b\u2588\u2588\u2588\u259c\u258c   Claude Code v2.1.42\n\u259d\u259c\u2588\u2588\u2588\u2588\u2588\u259b\u2598  Opus 4.6 \u00b7 Claude Max\n  \u2598\u2598 \u259d\u259d    ~/dev/ad/apps/appystack\n\n\u276f /Users/davidcruwys/dev/ad/apps/appystack/docs/review\n\n  Tell me about this folder. I think it's all for the Ralph Wiggum loop. How much of it is review, how much of it is Ralph Wiggum, and how much of\n  it is historical?\n\n\u23fa Read 1 file (ctrl+o to expand)\n\n\u23fa abridge(Summarize review folder contents) Haiku 4.5\n  \u23bf \u00a0Done (10 tool uses \u00b7 84.7k tokens \u00b7 22s)\n  (ctrl+o to ex",
+      "full_length": 21711,
+      "ts": "2026-02-20T01:02:34.097Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "6344adc1-c197-4da3-b1f4-edebffc1b690",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-6344adc1-c197-4da3-b1f4-edebffc1b690.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 2,
+      "user_prompt_count": 1,
+      "tool_use_count": 1,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-03T04:45:47.962000+00:00",
+      "last_event_ts": "2026-03-03T04:46:06.609000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "mcp__brave-search__brave_web_search": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I just do a bit of a web search. I've checked in on this a fair few times, but I just need to know when they think the M5 chip from the Mac is going to get released and whether they think it's going to be on a mini or on something else. ",
+      "full_length": 237,
+      "ts": "2026-03-03T04:45:47.962Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "75c10afe-2bda-44e4-8a62-e8d4a2ffa400",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-75c10afe-2bda-44e4-8a62-e8d4a2ffa400.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 1,
+      "user_prompt_count": 1,
+      "tool_use_count": 0,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-01T04:19:52.814000+00:00",
+      "last_event_ts": "2026-03-01T04:19:52.814000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {},
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "When I create a new tab in iTerm2 How do I get it to go to the same folder I'm currently in? ",
+      "full_length": 93,
+      "ts": "2026-03-01T04:19:52.814Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "ccd2223e-bed9-4b2c-a202-2643abac191c",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-ccd2223e-bed9-4b2c-a202-2643abac191c.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 1,
+      "user_prompt_count": 1,
+      "tool_use_count": 0,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-12T06:51:51.453000+00:00",
+      "last_event_ts": "2026-03-12T06:51:51.453000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {},
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I got an MX Master mouse, and I think I was pressing the button on the wheel, and it came up with Apple Music. What would it do?",
+      "full_length": 128,
+      "ts": "2026-03-12T06:51:51.453Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  }
+]

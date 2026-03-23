@@ -437,3 +437,20 @@ Not all waves are the same. The coordinator should identify which type each wave
 - **New voice artifacts**: "Ralph William"=Ralphy, "stask"=stack, plus 5 more.
 - **Discovery rate 0.70/session**: ~55 new subtypes from 79 sessions. Not declining at 347 sessions deep.
 - **~210+ subtypes across 15+ parent types from 347 sessions**.
+
+### Wave 9 (2026-03-23)
+
+- **BUILD accuracy ~11% (9/79)**: Significantly lower than waves 6-8 (~20-25%). This wave is 49% micro, 44% light — micro sessions are almost never BUILD. Pattern now clear: micro 0-5%, light 10-15%, moderate 30-40%, heavy 50%+, marathon 60-70%.
+- **Micro sessions have distinct taxonomies**: orientation/artifact_retrieval (most common), meta/smoke_test, meta/accidental, research/quick_answer, sysops/secret_management, orientation/memory_probe.
+- **"Home terminal" CWD patterns**: brains/ used as home terminal for quick Q&A unrelated to brain content (N=10+). CWD incidental rate ~60% across micro/light sessions.
+- **Playwright semantic role #6**: design_extraction — systematic crawl of own production app for reusable UI patterns. Now 6 confirmed roles.
+- **Product-owner workflow detected**: Backlog management, developer handovers, agent report review — zero code edits but classified BUILD. Should be PLANNING or REVIEW.
+- **Claude as in-meeting assistant**: Voice-querying Claude during live calls for quick lookups. 1-2 prompt sessions.
+- **"Vent sessions" confirmed**: Voice dictation lowers barrier to accidental emotional sessions. Zero tool calls, should be META/junk.
+- **AngelEye birth session found**: Session e154b011 is the @appystack scaffold that created this project.
+- **Cross-session commit pattern confirmed**: Paste prior session's change summary → verify → commit = OPERATIONS, not BUILD. 3+ instances across waves 8-9.
+- **CLAUDE.md auto-load anti-pattern**: CLAUDE.md context triggers 12+ searches for wrong sprint/epic before user speaks. Token waste.
+- **Micro sessions need different quality gates**: "All assessable predicates evaluated" rather than "N observations produced."
+- **Discovery rate 0.51/session**: ~40 new subtypes. Declining from 0.70 (wave 8) but still productive.
+- **9 parallel agents, zero conflicts**: 426 entries, 0 duplicates. Still bulletproof.
+- **~250+ subtypes across 18+ parent types from 426 sessions**.

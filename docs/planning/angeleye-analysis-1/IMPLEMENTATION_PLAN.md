@@ -13,7 +13,7 @@
 
 ## Summary
 
-- Total: 347 | Complete: 347 | In Progress: 0 | Pending: 0 | Failed: 0
+- Total: 426 | Complete: 426 | In Progress: 0 | Pending: 0 | Failed: 0
 
 ## In Progress
 
@@ -126,6 +126,116 @@
 - [x] W8-e726cab1 — `e726cab1-bd0d-400a-a5d1-cbae1dbe0574` poem / light
 - [x] W8-1b0559b7 — `1b0559b7-e299-486a-aa73-6ee358d0028c` video-projects / light
 - [x] W8-a22e8c1a — `a22e8c1a-6457-408c-a0dd-10d1fe18c5ce` voz / micro
+
+### Wave 9 — 79 sessions across 9 agents (lighter wave: no heavy/marathon, 49% micro)
+
+**Pool shift**: All heavy/marathon sessions consumed in waves 1-8. Remaining pool is 49% micro, 44% light, 7% moderate. Dominated by brains (59%) and prompt.supportsignal (24%). P13-P16 now permanent predicates.
+
+**Agent W9-01** — 7 sessions | appystack(2), brains(2), signal-studio(1), app.supportsignal.com.au(1), prompt.supportsignal.com.au(1)
+
+- [x] W9-63ea6186 — `63ea6186-cf11-44fd-829e-741f7dd6fde6` signal-studio / moderate
+- [x] W9-c12fa493 — `c12fa493-6aab-47b1-892b-66feb81781b8` appystack / light
+- [x] W9-d1fed7ab — `d1fed7ab-9cdf-4266-bb69-845fa173be4d` app.supportsignal.com.au / light
+- [x] W9-fa148947 — `fa148947-4b0c-46fb-b28c-684dc6d06aea` appystack / micro
+- [x] W9-39bd6350 — `39bd6350-8f8e-48cd-b178-876aff820050` brains / micro
+- [x] W9-6634407e — `6634407e-6972-485a-8942-6ea1e14a32a9` brains / micro
+- [x] W9-d5844007 — `d5844007-4eb1-4528-8aef-ce878165ba9f` prompt.supportsignal.com.au / micro
+
+**Agent W9-02** — 9 sessions | appystack(2), prompt.supportsignal.com.au(2), brains(2), signal-studio(1), flihub(1), app.supportsignal.com.au(1)
+
+- [x] W9-b0b9ca8d — `b0b9ca8d-a342-45ef-8a93-28d5ec3dd661` signal-studio / moderate
+- [x] W9-60bc9223 — `60bc9223-c007-44bc-a88a-e32e598a9023` flihub / light
+- [x] W9-eb6cbbe3 — `eb6cbbe3-f540-4ccb-9303-00251de9af39` appystack / light
+- [x] W9-c10ebc70 — `c10ebc70-f558-4481-89d5-a8697571cffb` app.supportsignal.com.au / light
+- [x] W9-63fa0330 — `63fa0330-465f-4003-b522-889aa39c43f0` appystack / micro
+- [x] W9-3016dfad — `3016dfad-1cc1-4953-9b56-3ef80e9c6a87` prompt.supportsignal.com.au / micro
+- [x] W9-2efc01af — `2efc01af-79aa-4514-9041-3dd935e6d4f5` brains / micro
+- [x] W9-8e9252e0 — `8e9252e0-aa15-4220-a55c-f8028357ea62` prompt.supportsignal.com.au / micro
+- [x] W9-fb5dada6 — `fb5dada6-8dc8-4425-a299-e987fe23b235` brains / micro
+
+**Agent W9-03** — 9 sessions | brains(2), prompt.supportsignal.com.au(2), signal-studio(1), appydave-plugins(1), appystack(1), app.supportsignal.com.au(1), angeleye(1)
+
+- [x] W9-7e7da3b8 — `7e7da3b8-2a1d-4c15-a649-49ac551b3607` signal-studio / moderate
+- [x] W9-c121ef35 — `c121ef35-1a54-46c0-be05-5bbebbb8cfec` appydave-plugins / light
+- [x] W9-2738f3e0 — `2738f3e0-2bba-4f42-8918-ba7dc5df1d97` appystack / light
+- [x] W9-71d5df75 — `71d5df75-2724-4655-b78c-561686648271` app.supportsignal.com.au / light
+- [x] W9-123b11a5 — `123b11a5-f91a-4009-8955-ac6756cd0895` angeleye / micro
+- [x] W9-4344a6bd — `4344a6bd-03a2-4c97-b5c8-5e10fc956fd3` brains / micro
+- [x] W9-2cba7b11 — `2cba7b11-bd15-4362-ac90-8b533a83231f` prompt.supportsignal.com.au / micro
+- [x] W9-9287d18d — `9287d18d-39f0-4976-b509-77a1e4081368` brains / micro
+- [x] W9-d81b6338 — `d81b6338-8f8b-441d-bbd7-86911a02a6ad` prompt.supportsignal.com.au / micro
+
+**Agent W9-04** — 9 sessions | appystack(2), prompt.supportsignal.com.au(2), v-appydave(1), angeleye(1), app.supportsignal.com.au(1), appydave-plugins(1), v-voz(1)
+
+- [x] W9-81523aec — `81523aec-8804-410e-9c66-052c2a4b465a` v-appydave / moderate
+- [x] W9-dac8662a — `dac8662a-8549-4269-abe0-2fbccd1449b4` angeleye / light
+- [x] W9-bdd8313a — `bdd8313a-3feb-4f84-be4e-a9c144265d0d` app.supportsignal.com.au / light
+- [x] W9-e17bce3d — `e17bce3d-c030-4e8b-b1c2-7ff1a1cace1d` appydave-plugins / light
+- [x] W9-96f1f5c7 — `96f1f5c7-59aa-4b4c-aee9-3d358479e4c3` v-voz / light
+- [x] W9-73f4a83e — `73f4a83e-446f-4534-bc76-93eb0f9b926b` appystack / micro
+- [x] W9-edba69e5 — `edba69e5-9336-46fe-84ac-6c212d1d6754` appystack / micro
+- [x] W9-b00b08e1 — `b00b08e1-717c-458e-ac34-f52ced1093e9` prompt.supportsignal.com.au / micro
+- [x] W9-e564df88 — `e564df88-a765-4b0d-adad-b6d6b5bb1134` prompt.supportsignal.com.au / micro
+
+**Agent W9-05** — 9 sessions | brains(2), signal-studio(1), voz(1), app.supportsignal.com.au(1), appydave-plugins(1), v-appydave(1), angeleye(1), prompt.supportsignal.com.au(1)
+
+- [x] W9-7c8f91e4 — `7c8f91e4-d34f-4599-9512-25403579a2ae` signal-studio / moderate
+- [x] W9-dd804b93 — `dd804b93-0ae9-4c20-ae0f-776b8e1048c8` voz / light
+- [x] W9-eddd4bbb — `eddd4bbb-d8a8-43dd-8380-41492fc226eb` app.supportsignal.com.au / light
+- [x] W9-8f7420da — `8f7420da-fa7f-4afb-8302-2af7445922bb` appydave-plugins / light
+- [x] W9-9debb0ee — `9debb0ee-9915-4f35-a7c2-d91a2e564818` v-appydave / light
+- [x] W9-bfd7fd99 — `bfd7fd99-004c-4b3c-a1b7-d076841c284e` angeleye / micro
+- [x] W9-3d6ee983 — `3d6ee983-6bec-4877-ab15-d4bf6f016284` prompt.supportsignal.com.au / micro
+- [x] W9-66b88531 — `66b88531-27df-440a-a36d-94018ff4f526` brains / micro
+- [x] W9-ae92065b — `ae92065b-62f1-4c92-9332-8fb44cf0f430` brains / micro
+
+**Agent W9-06** — 9 sessions | appystack(3), app.supportsignal.com.au(2), v-appydave(2), brains(1), prompt.supportsignal.com.au(1)
+
+- [x] W9-e8b25fc5 — `e8b25fc5-b4a7-4df3-a431-1958a7327a74` app.supportsignal.com.au / moderate
+- [x] W9-eea00425 — `eea00425-8e4d-40f8-97e0-edd6933c16b1` v-appydave / light
+- [x] W9-d844716d — `d844716d-6450-4746-94a6-5854c96cc091` app.supportsignal.com.au / light
+- [x] W9-8ca94a94 — `8ca94a94-2076-420b-bdd9-c1248fa5b947` appystack / light
+- [x] W9-e5687c61 — `e5687c61-2c22-46e1-ba7e-e05c6a9cee59` appystack / light
+- [x] W9-36ea26e4 — `36ea26e4-209d-4ee3-8212-e15adc1fc1f9` v-appydave / micro
+- [x] W9-2be6a6d2 — `2be6a6d2-626f-49b5-965c-722c3c9eb621` appystack / micro
+- [x] W9-5fe1e918 — `5fe1e918-db7a-47bb-b5c5-f8c8083a48c9` brains / micro
+- [x] W9-b61e8341 — `b61e8341-e99c-477d-8e1a-d54a0e4c4242` prompt.supportsignal.com.au / micro
+
+**Agent W9-07** — 9 sessions | appystack(2), brains(2), signal-studio(1), app.supportsignal.com.au(1), flihub(1), angeleye(1), prompt.supportsignal.com.au(1)
+
+- [x] W9-a8e8a27e — `a8e8a27e-caaa-43a9-9cdd-2cad3bdfd8c8` signal-studio / moderate
+- [x] W9-1f23c692 — `1f23c692-b266-41ab-8438-14bfca8022c7` app.supportsignal.com.au / light
+- [x] W9-d9348668 — `d9348668-cf36-4208-a641-5df937a2b0a1` flihub / light
+- [x] W9-e154b011 — `e154b011-a9d5-423f-b61c-ae513878711b` angeleye / light
+- [x] W9-d2750b5f — `d2750b5f-1bdc-4359-ad6a-f24f0ddce47f` appystack / light
+- [x] W9-3c42e049 — `3c42e049-fc28-4f8f-b4fc-a84abb5c0c11` appystack / micro
+- [x] W9-2102ddd1 — `2102ddd1-f45b-4848-84b0-6b4fded956b2` brains / micro
+- [x] W9-943cab68 — `943cab68-fa0f-49ed-a04c-269e82f24d9f` prompt.supportsignal.com.au / micro
+- [x] W9-bf6e01af — `bf6e01af-edd9-4b50-ad0b-4d44d3e11ead` brains / micro
+
+**Agent W9-08** — 9 sessions | app.supportsignal.com.au(3), v-appydave(2), prompt.supportsignal.com.au(2), signal-studio(1), brains(1)
+
+- [x] W9-88e68402 — `88e68402-6d62-4ee2-a71c-9045d7e5a93b` v-appydave / moderate
+- [x] W9-9b34fa2f — `9b34fa2f-707f-4134-9bd6-6a32aac419c4` app.supportsignal.com.au / light
+- [x] W9-a7b733ff — `a7b733ff-271a-4e28-b9c1-47ff09dc0854` signal-studio / light
+- [x] W9-dc3ef96a — `dc3ef96a-3a20-4c0a-a443-17d12587baf9` v-appydave / light
+- [x] W9-dca77664 — `dca77664-1b2d-4ab3-ba39-6e9c68850e60` app.supportsignal.com.au / light
+- [x] W9-2cc722f0 — `2cc722f0-cebc-4c19-941e-dc2c16136e03` app.supportsignal.com.au / micro
+- [x] W9-47bbfd78 — `47bbfd78-6df6-4a58-a472-84e06d19375c` brains / micro
+- [x] W9-8926fda8 — `8926fda8-6926-4a53-b157-f454d24b3e54` prompt.supportsignal.com.au / micro
+- [x] W9-d4eb3b4a — `d4eb3b4a-047f-4858-ac24-40aceb8c44b1` prompt.supportsignal.com.au / micro
+
+**Agent W9-09** — 9 sessions | app.supportsignal.com.au(2), appydave-plugins(2), brains(2), v-appydave(1), appystack(1), prompt.supportsignal.com.au(1)
+
+- [x] W9-e34013a3 — `e34013a3-adfc-42eb-bd9f-cac7017dd322` v-appydave / moderate
+- [x] W9-ed786725 — `ed786725-eb80-4937-a9c9-3d8fc8f3e5ed` app.supportsignal.com.au / moderate
+- [x] W9-0d6cbb83 — `0d6cbb83-2762-419f-af6f-1c1aa6b0d3d1` appydave-plugins / light
+- [x] W9-9e97e108 — `9e97e108-ca50-4a74-99d9-3f44a6dfa44e` app.supportsignal.com.au / light
+- [x] W9-bfaa39a7 — `bfaa39a7-1f60-478c-8f2f-8859590e8b2d` appydave-plugins / light
+- [x] W9-9de68412 — `9de68412-dead-4853-9ed2-9261bc22ff33` appystack / micro
+- [x] W9-6344adc1 — `6344adc1-c197-4da3-b1f4-edebffc1b690` prompt.supportsignal.com.au / micro
+- [x] W9-75c10afe — `75c10afe-2bda-44e4-8a62-e8d4a2ffa400` brains / micro
+- [x] W9-ccd2223e — `ccd2223e-bed9-4b2c-a202-2643abac191c` brains / micro
 
 ## Pending
 

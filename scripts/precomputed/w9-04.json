@@ -1,0 +1,732 @@
+[
+  {
+    "session_id": "81523aec-8804-410e-9c66-052c2a4b465a",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-81523aec-8804-410e-9c66-052c2a4b465a.jsonl",
+    "cwd": "/Users/davidcruwys/dev/video-projects/v-appydave",
+    "shape": {
+      "event_count": 104,
+      "user_prompt_count": 23,
+      "tool_use_count": 81,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-22T05:13:44.456000+00:00",
+      "last_event_ts": "2026-02-22T14:08:33.221000+00:00",
+      "duration_minutes": 534,
+      "active_minutes": 100,
+      "idle_gaps_over_1h": 2,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-22T06:12:31.922000+00:00",
+          "end": "2026-02-22T10:30:15.851000+00:00",
+          "gap_minutes": 257
+        },
+        {
+          "start": "2026-02-22T12:22:26.692000+00:00",
+          "end": "2026-02-22T13:54:29.238000+00:00",
+          "gap_minutes": 92
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 68,
+      "TaskOutput": 6,
+      "Read": 6,
+      "Write": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Look at all the video projects that we got. You notice that there's also a trash can in most of them? Can you just check them all and tell me how many files you think are in all of them and how many GB of data it is? ",
+      "full_length": 217,
+      "ts": "2026-02-22T05:13:44.456Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "dac8662a-8549-4269-abe0-2fbccd1449b4",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-dac8662a-8549-4269-abe0-2fbccd1449b4.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/angeleye",
+    "shape": {
+      "event_count": 38,
+      "user_prompt_count": 4,
+      "tool_use_count": 27,
+      "stop_count": 4,
+      "subagent_start_count": 1,
+      "subagent_stop_count": 1,
+      "first_event_ts": "2026-03-16T05:00:00.287000+00:00",
+      "last_event_ts": "2026-03-16T05:19:50.258000+00:00",
+      "duration_minutes": 19,
+      "active_minutes": 19,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 16,
+      "Read": 7,
+      "Glob": 1,
+      "Agent": 1,
+      "Skill": 1,
+      "Edit": 1
+    },
+    "file_paths": {
+      "read": [
+        "/Users/davidcruwys/.config/appydave/locations.json",
+        "/Users/davidcruwys/dev/ad/apps/appystack/create-appystack/bin/upgrade.js",
+        "/Users/davidcruwys/dev/ad/apps/appystack/create-appystack/bin/lib/classify.js",
+        "/Users/davidcruwys/dev/ad/apps/appystack/create-appystack/bin/lib/diff.js",
+        "/Users/davidcruwys/dev/ad/apps/appystack/template/scripts/start.sh",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/scripts/start.sh",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/.gitignore"
+      ],
+      "write": [],
+      "edit": ["/Users/davidcruwys/dev/ad/apps/angeleye/.gitignore"]
+    },
+    "bash_commands_sample": [
+      "git status && echo \"---\" && git diff --stat",
+      "git diff scripts/start.sh",
+      "git diff .claude/skills/recipe/SKILL.md",
+      "cat .claude/skills/recipe/references/appydave-palette.md | head -20 && echo \"---\" && cat .claude/skills/recipe/references/wizard-shell.md | head -20",
+      "cat appystack.json",
+      "git checkout scripts/start.sh",
+      "head -10 scripts/start.sh",
+      "find /Users/davidcruwys/dev/ad -name \"appystack\" -type d 2>/dev/null | head -20",
+      "find /Users/davidcruwys/dev/ad/apps/appystack -name \"*upgrade*\" -o -name \"*update*\" 2>/dev/null",
+      "ls -la /Users/davidcruwys/dev/ad/apps/appystack/appystack-upgrade/"
+    ],
+    "first_real_prompt": {
+      "text": "I just did a bunch of upgrades. I wouldn't mind you doing a commit and push, but before we do, can you just do a check that I didn't blow anything important out of the road?",
+      "full_length": 173,
+      "ts": "2026-03-16T05:00:00.287Z"
+    },
+    "skill_invocations": [
+      {
+        "keys": ["skill"]
+      }
+    ],
+    "subagents": [
+      {
+        "agent_id": "ab3f666e4511f8fc4",
+        "agent_type": "Explore",
+        "started_at": "2026-03-16T05:08:56.625Z",
+        "stopped_at": "2026-03-16T05:09:29.279Z"
+      }
+    ],
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": "/Users/davidcruwys/dev/ad/apps/angeleye",
+      "cwd_reliable": true,
+      "edit_write_count": 1
+    }
+  },
+  {
+    "session_id": "bdd8313a-3feb-4f84-be4e-a9c144265d0d",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-bdd8313a-3feb-4f84-be4e-a9c144265d0d.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
+    "shape": {
+      "event_count": 30,
+      "user_prompt_count": 4,
+      "tool_use_count": 20,
+      "stop_count": 4,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-22T13:38:58.987000+00:00",
+      "last_event_ts": "2026-03-22T14:17:23.737000+00:00",
+      "duration_minutes": 38,
+      "active_minutes": 38,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 18,
+      "ToolSearch": 1,
+      "Write": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": ["/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/.gitignore"],
+      "edit": []
+    },
+    "bash_commands_sample": [
+      "ls -d /Users/davidcruwys/dev/clients/supportsignal/*/",
+      "git status 2>&1 || echo \"NOT A GIT REPO\"",
+      "cd /Users/davidcruwys/dev/clients/supportsignal/legacy.supportsignal.com.au && git remote -v 2>&1 && echo \"---\" && git log --oneline -3 2>&1",
+      "gh repo view SupportSignal/app.supportsignal.com.au --json name,url,description 2>&1",
+      "gh repo list SupportSignal --json name,url --limit 20 2>&1",
+      "gh repo view SupportSignal/legacy.supportsignal.com.au --json name,url 2>&1",
+      "cd /Users/davidcruwys/dev/clients/supportsignal/legacy.supportsignal.com.au && git remote set-url origin git@github.com:SupportSignal/legacy.supportsignal.com.au.git && git remote -v",
+      "git init",
+      "gh repo create SupportSignal/app.supportsignal.com.au --private --source=. --remote=origin 2>&1",
+      "git status"
+    ],
+    "first_real_prompt": {
+      "text": "I want to think about The git repository we got for legacy.supportsignal.com.au. Check if you can find that folder and the one we are in now, which doesn't currently have a repo, which is called app.supportsignal.com.au. Plus, we also have a repository which is meant to be legacy. It's here. https://github.com/SupportSignal/app.supportsignal.com.au\n\nAnd I want to make sure I can take the old app.support.signal.com.au repository and rename it to legacy so that the current app.support.signal.com.a",
+      "full_length": 554,
+      "ts": "2026-03-22T13:40:21.632Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
+      "cwd_reliable": true,
+      "edit_write_count": 1
+    }
+  },
+  {
+    "session_id": "e17bce3d-c030-4e8b-b1c2-7ff1a1cace1d",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-e17bce3d-c030-4e8b-b1c2-7ff1a1cace1d.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/appydave-plugins",
+    "shape": {
+      "event_count": 19,
+      "user_prompt_count": 3,
+      "tool_use_count": 16,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-08T02:48:49.718000+00:00",
+      "last_event_ts": "2026-03-08T02:58:51.363000+00:00",
+      "duration_minutes": 10,
+      "active_minutes": 10,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 12,
+      "Read": 2,
+      "Edit": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "We should have made updates to a plugin in this folder, but we did it from another folder. Here's what we did. Do you need to do anything, or is everything okay? Also, can we do a commit and push? \n\n\n\u23fa 1. Would that extra information have helped me?\n\n  Yes \u2014 significantly. The key thing I was missing was knowing\n  brand-dave/app-port-registry.md exists at all. I searched AppyStack's\n  own docs and only found the partial FliVideo table. If MEMORY.md had\n  already contained \"Port registry:\n  ~/dev",
+      "full_length": 2149,
+      "ts": "2026-03-08T02:48:49.718Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "96f1f5c7-59aa-4b4c-aee9-3d358479e4c3",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-96f1f5c7-59aa-4b4c-aee9-3d358479e4c3.jsonl",
+    "cwd": "/Users/davidcruwys/dev/video-projects/v-voz",
+    "shape": {
+      "event_count": 13,
+      "user_prompt_count": 3,
+      "tool_use_count": 10,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-20T00:48:17.505000+00:00",
+      "last_event_ts": "2026-02-20T00:58:29.891000+00:00",
+      "duration_minutes": 10,
+      "active_minutes": 10,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 8,
+      "TaskOutput": 1,
+      "Read": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "can You commit this. If possible, can you also give it a label that we can come back to if we need to, a really obvious label in the community history? ",
+      "full_length": 152,
+      "ts": "2026-02-20T00:48:17.505Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "73f4a83e-446f-4534-bc76-93eb0f9b926b",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-73f4a83e-446f-4534-bc76-93eb0f9b926b.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/appystack",
+    "shape": {
+      "event_count": 3,
+      "user_prompt_count": 1,
+      "tool_use_count": 2,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-04T16:04:26.537000+00:00",
+      "last_event_ts": "2026-03-04T16:04:33.105000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "What are your thoughts on the quality of the new recipe for the API generation system? ",
+      "full_length": 87,
+      "ts": "2026-03-04T16:04:26.537Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "edba69e5-9336-46fe-84ac-6c212d1d6754",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-edba69e5-9336-46fe-84ac-6c212d1d6754.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/appystack",
+    "shape": {
+      "event_count": 3,
+      "user_prompt_count": 1,
+      "tool_use_count": 2,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-26T00:46:54.900000+00:00",
+      "last_event_ts": "2026-02-26T00:47:08.246000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I just asked a Ralph Wiggum loop to go and do 18 different extensions to the AppyStack. And for some reason I was working in the template directory. I thought the template directory is what we installed, but it wasn't the main part of the application. Shouldn't. If you're going to do a git init and a work tree, would you do it in the appystack folder or the appystack/template folder? ",
+      "full_length": 387,
+      "ts": "2026-02-26T00:46:54.900Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "b00b08e1-717c-458e-ac34-f52ced1093e9",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-b00b08e1-717c-458e-ac34-f52ced1093e9.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 1,
+      "user_prompt_count": 1,
+      "tool_use_count": 0,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-17T09:35:47.029000+00:00",
+      "last_event_ts": "2026-02-17T09:35:47.029000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {},
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "What is 2+2?\n",
+      "full_length": 13,
+      "ts": "2026-02-17T09:35:47.029Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "e564df88-a765-4b0d-adad-b6d6b5bb1134",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-e564df88-a765-4b0d-adad-b6d6b5bb1134.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 1,
+      "user_prompt_count": 1,
+      "tool_use_count": 0,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-12T15:59:47.127000+00:00",
+      "last_event_ts": "2026-03-12T15:59:47.127000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {},
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "On Android, how do I turn off notifications for TikTok?",
+      "full_length": 55,
+      "ts": "2026-03-12T15:59:47.127Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  }
+]
