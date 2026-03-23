@@ -1,0 +1,752 @@
+[
+  {
+    "session_id": "8b021832-b3c8-4a81-b883-4f58034fa58b",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-8b021832-b3c8-4a81-b883-4f58034fa58b.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 76,
+      "user_prompt_count": 4,
+      "tool_use_count": 72,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-17T07:06:36.856000+00:00",
+      "last_event_ts": "2026-02-17T07:23:29.615000+00:00",
+      "duration_minutes": 16,
+      "active_minutes": 16,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Edit": 38,
+      "Read": 10,
+      "TaskUpdate": 10,
+      "Bash": 5,
+      "TaskCreate": 5,
+      "Grep": 3,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Can you switch to the BMAD version 6 brain and then tell me what command we run to keep it up to date? ",
+      "full_length": 103,
+      "ts": "2026-02-17T07:06:36.856Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "5ba8b355-8ee6-4b5d-9460-1667fbc562d0",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-5ba8b355-8ee6-4b5d-9460-1667fbc562d0.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 68,
+      "user_prompt_count": 2,
+      "tool_use_count": 66,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-22T14:50:21.652000+00:00",
+      "last_event_ts": "2026-02-22T14:55:36.532000+00:00",
+      "duration_minutes": 5,
+      "active_minutes": 5,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 34,
+      "Read": 20,
+      "Edit": 11,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Session Context: Brain Librarian Health Checks \u2014 2026-02-22\n\n  Working On\n\n  Running brain librarian health checks across the second brains collection at ~/dev/ad/brains/. Each check follows the 13-step process from\n  .claude/skills/brain-librarian/references/health-check-process.md \u2014 finding broken links, orphaned files, stale badges, wrong file counts, and build\n  artifacts, then fixing and committing.\n\n  Current State\n\n  10 brains checked, 9 committed, 1 clean pass. All changes committed to m",
+      "full_length": 5071,
+      "ts": "2026-02-22T14:50:21.652Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "aedc4c79-2e87-419b-9b0e-def3ddeea0ac",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-aedc4c79-2e87-419b-9b0e-def3ddeea0ac.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 65,
+      "user_prompt_count": 7,
+      "tool_use_count": 48,
+      "stop_count": 7,
+      "subagent_start_count": 1,
+      "subagent_stop_count": 2,
+      "first_event_ts": "2026-03-20T02:04:39.260000+00:00",
+      "last_event_ts": "2026-03-20T02:48:56.642000+00:00",
+      "duration_minutes": 44,
+      "active_minutes": 44,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 18,
+      "Read": 17,
+      "Edit": 6,
+      "Grep": 6,
+      "Agent": 1
+    },
+    "file_paths": {
+      "read": [
+        "/Users/davidcruwys/dev/ad/brains/angeleye/conversation-analysis-framework.md",
+        "/Users/davidcruwys/dev/ad/brains/angeleye/workspace-example-supportsignal-ux.md",
+        "/Users/davidcruwys/dev/ad/brains/anthropic-claude/claude-code/hooks-reference.md",
+        "/Users/davidcruwys/dev/ad/brains/anthropic-claude/claude-code/observability.md",
+        "/Users/davidcruwys/dev/ad/brains/anthropic-claude/claude-code/session-management.md",
+        "/Users/davidcruwys/dev/ad/brains/anthropic-claude/INDEX.md",
+        "/Users/davidcruwys/dev/ad/brains/angeleye/INDEX.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/CLAUDE.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/.mochaccino/index.html"
+      ],
+      "write": [],
+      "edit": [
+        "/Users/davidcruwys/dev/ad/brains/angeleye/INDEX.md",
+        "/Users/davidcruwys/dev/ad/brains/angeleye/ingestion-architecture.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/CLAUDE.md",
+        "/Users/davidcruwys/dev/ad/brains/anthropic-claude/INDEX.md"
+      ]
+    },
+    "bash_commands_sample": [
+      "head -12 /Users/davidcruwys/dev/ad/brains/angeleye/INDEX.md && echo \"---\" && grep -n \"workspace-example\" /Users/davidcruwys/dev/ad/brains/angeleye/INDEX.md",
+      "grep -n \"Key Concepts\\|Session Pivot\\|Cross-Session Contradiction\\|Real Workspace Validation\" /Users/davidcruwys/dev/ad/brains/angeleye/conversation-analysis-framework.md",
+      "git log --since=\"2026-03-18\" --oneline -- anthropic-claude/",
+      "git diff HEAD~5 --name-only -- anthropic-claude/ | head -20",
+      "git diff HEAD~2 -- anthropic-claude/claude-code/hooks-reference.md | head -150",
+      "git show 974aa7c --stat",
+      "git show 974aa7c | head -200",
+      "grep -E \"^\\| \\`[A-Z]\" /Users/davidcruwys/dev/ad/brains/anthropic-claude/claude-code/hooks-reference.md | head -25",
+      "git diff HEAD~2 -- anthropic-claude/claude-code/observability.md | head -100",
+      "git log --oneline -10 -- anthropic-claude/claude-code/observability.md"
+    ],
+    "first_real_prompt": {
+      "text": "<task-notification>\n<task-id>a174570ece5d0b674</task-id>\n<tool-use-id>toolu_015b3WgTTkt2zao3Jb27uiRB</tool-use-id>\n<output-file>/private/tmp/claude-501/-Users-davidcruwys-dev-ad-brains/aedc4c79-2e87-419b-9b0e-def3ddeea0ac/tasks/a174570ece5d0b674.output</output-file>\n<status>completed</status>\n<summary>Agent \"Save 5-session analysis findings to AngelEye brain\" completed</summary>\n<result>All three files are correct. Here is a summary of what was done:\n\n**FILE 1 created:** `/Users/davidcruwys/dev/",
+      "full_length": 2039,
+      "ts": "2026-03-20T02:05:03.601Z"
+    },
+    "skill_invocations": null,
+    "subagents": [
+      {
+        "agent_id": "ac3e13732b46c2384",
+        "agent_type": "Explore",
+        "started_at": "2026-03-20T02:16:40.829Z",
+        "stopped_at": "2026-03-20T02:17:46.009Z"
+      }
+    ],
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": true,
+        "count": 2
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 3
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false,
+        "first_prompt_length": 2039,
+        "short_prompt_ratio": 0.5
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": "/Users/davidcruwys/dev/ad",
+      "cwd_reliable": true,
+      "edit_write_count": 4
+    }
+  },
+  {
+    "session_id": "59e26047-c727-4d60-aff7-87e9557a811e",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-59e26047-c727-4d60-aff7-87e9557a811e.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 59,
+      "user_prompt_count": 1,
+      "tool_use_count": 58,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-17T05:05:04.047000+00:00",
+      "last_event_ts": "2026-02-17T05:17:17.169000+00:00",
+      "duration_minutes": 12,
+      "active_minutes": 12,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 18,
+      "TaskOutput": 16,
+      "Task": 15,
+      "Glob": 8,
+      "Write": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "*run 105",
+      "full_length": 8,
+      "ts": "2026-02-17T05:07:18.614Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "a7b6b827-0e1c-4b53-af01-c93984803d44",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-a7b6b827-0e1c-4b53-af01-c93984803d44.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 56,
+      "user_prompt_count": 7,
+      "tool_use_count": 49,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-20T10:17:50.964000+00:00",
+      "last_event_ts": "2026-02-20T11:26:04.046000+00:00",
+      "duration_minutes": 68,
+      "active_minutes": 15,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 42,
+      "Read": 4,
+      "Write": 2,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "how do we download and get transcript from the wistia videos",
+      "full_length": 60,
+      "ts": "2026-02-20T10:18:25.277Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "41b69014-470e-45ab-a16f-91f89d2ef751",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-41b69014-470e-45ab-a16f-91f89d2ef751.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 49,
+      "user_prompt_count": 2,
+      "tool_use_count": 47,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-25T04:08:11.562000+00:00",
+      "last_event_ts": "2026-02-25T04:21:13.244000+00:00",
+      "duration_minutes": 13,
+      "active_minutes": 13,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 18,
+      "Edit": 18,
+      "Read": 10,
+      "Task": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": " Tell me more about these two features.\n\n New CLI commands:\n  - claude remote-control \u2014 serve local environment for external builds (v2.1.51)\n  - claude agents \u2014 list all configured agents (v2.1.50)\n\nTell it to me in regards to me using an orchestrator Claude to control another Claude through SSH yesterday. Would this have helped me instead? ",
+      "full_length": 344,
+      "ts": "2026-02-25T04:15:56.931Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": true,
+        "count": 13
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "98c9150d-92a3-4f4b-a48e-d073793c9ff5",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-98c9150d-92a3-4f4b-a48e-d073793c9ff5.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 43,
+      "user_prompt_count": 3,
+      "tool_use_count": 40,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-20T04:17:23.893000+00:00",
+      "last_event_ts": "2026-02-20T04:38:52.983000+00:00",
+      "duration_minutes": 21,
+      "active_minutes": 21,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Write": 12,
+      "Edit": 8,
+      "Read": 7,
+      "Bash": 7,
+      "AskUserQuestion": 2,
+      "TaskUpdate": 2,
+      "TaskCreate": 1,
+      "Grep": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Session Context: Vercel Brain Creation \u2014 2026-02-20\n\n  Working On\n\n  Designing and creating a new vercel/ second brain in /Users/davidcruwys/dev/ad/brains/vercel/ \u2014 a primary brain with sub-brains for Vercel AI SDK and\n  Agent Browser, plus a single file for Agent Skills.\n\n  Current State\n\n  Design phase complete, nothing created yet. Structure is agreed, two clarifying questions were asked but not yet answered (see What's Next).\n\n  Key Decisions Made\n\n  - Primary brain, not a collection: Vercel",
+      "full_length": 4267,
+      "ts": "2026-02-20T04:17:23.893Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "3df09cf3-dd2e-4627-bd2f-f23845f8a89b",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-3df09cf3-dd2e-4627-bd2f-f23845f8a89b.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 39,
+      "user_prompt_count": 3,
+      "tool_use_count": 36,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-28T04:30:33.176000+00:00",
+      "last_event_ts": "2026-02-28T05:18:11.395000+00:00",
+      "duration_minutes": 47,
+      "active_minutes": 47,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Write": 11,
+      "Bash": 9,
+      "Agent": 5,
+      "Edit": 5,
+      "TaskCreate": 2,
+      "TaskUpdate": 2,
+      "AskUserQuestion": 1,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": " I want you to unpack this statment into something that can be researched, use AskTool if you need more info from me.\n\n  CONTEXT GRAPHS (GRAPH RAG, Knowledge Rag), Semantic ontology, taxonomy, intent, patterns, content curation\n\n",
+      "full_length": 229,
+      "ts": "2026-02-28T04:30:33.176Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "ce158a14-8d66-4907-99f8-1c04dd3211e3",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-ce158a14-8d66-4907-99f8-1c04dd3211e3.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 36,
+      "user_prompt_count": 12,
+      "tool_use_count": 24,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-11T04:51:45.484000+00:00",
+      "last_event_ts": "2026-03-11T09:16:27.093000+00:00",
+      "duration_minutes": 264,
+      "active_minutes": 37,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-11T04:57:58.599000+00:00",
+          "end": "2026-03-11T08:44:53.388000+00:00",
+          "gap_minutes": 226
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 12,
+      "Read": 6,
+      "Edit": 3,
+      "Glob": 1,
+      "Write": 1,
+      "Agent": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "What do you know about AppyDave, his brand, the projects he works on?",
+      "full_length": 69,
+      "ts": "2026-03-11T04:51:45.484Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  }
+]

@@ -13,7 +13,7 @@
 
 ## Summary
 
-- Total: 506 | Complete: 506 | In Progress: 0 | Pending: 0 | Failed: 0
+- Total: 586 | Complete: 586 | In Progress: 0 | Pending: 0 | Failed: 0
 
 ## In Progress
 
@@ -127,6 +127,117 @@
 - [x] W10-4f7716c8 — `4f7716c8-6573-4fd2-b10b-1d159f5db378` brains / moderate
 - [x] W10-134e47bc — `134e47bc-4a83-49d4-a9fe-ba98f5fb8912` app.supportsignal.com.au / moderate
 - [x] W10-26171bb1 — `26171bb1-1a1a-4ce7-bb08-b53afa1b7186` brains / moderate
+
+### Wave 11 — 80 sessions across 9 agents (campaign-status.py selected, all light/micro/trivial)
+
+**Second wave using campaign-status.py**. All remaining substantive sessions after moderate/heavy were consumed in waves 8-10. BUILD accuracy dropped to ~12% as expected for lighter sessions.
+
+**Agent W11-01** — 9 sessions | brains, prompt.supportsignal.com.au
+
+- [x] W11-01-bfe3e2e1 — `bfe3e2e1-eb45-4fb4-afd4-53d421069eb4` prompt.supportsignal.com.au / light
+- [x] W11-01-ce3de2cd — `ce3de2cd-82e9-443f-a35b-9b37c7b9cd3e` brains / light
+- [x] W11-01-ab707b60 — `ab707b60-575f-4984-9efc-2c6e60f21ec8` prompt.supportsignal.com.au / light
+- [x] W11-01-b2c6988b — `b2c6988b-31e3-46a4-b10b-dfd30884938d` prompt.supportsignal.com.au / light
+- [x] W11-01-8efb371e — `8efb371e-90e2-424c-9aac-8f495311751a` brains / light
+- [x] W11-01-9d0485d5 — `9d0485d5-adec-4d20-a3d8-72f608dc259b` prompt.supportsignal.com.au / light
+- [x] W11-01-a2dd3f2d — `a2dd3f2d-bd45-45b4-9644-fb6d161edd20` prompt.supportsignal.com.au / light
+- [x] W11-01-377e6d56 — `377e6d56-e8d9-4713-8c6e-a66cbd762aee` brains / light
+- [x] W11-01-248480a0 — `248480a0-a5b3-4e09-96e7-673c6ccdf2e9` brains / light
+
+**Agent W11-02** — 9 sessions | appystack, brains, prompt.supportsignal.com.au
+
+- [x] W11-02-b76d267b — `b76d267b-bdd9-4a92-87c5-6ed851b477b8` brains / light
+- [x] W11-02-3a66b975 — `3a66b975-a7f4-4e4b-b2a5-0dcf6ac61773` prompt.supportsignal.com.au / light
+- [x] W11-02-df50ec48 — `df50ec48-5378-451f-b196-107336cb9ae7` prompt.supportsignal.com.au / light
+- [x] W11-02-52b9a192 — `52b9a192-f958-4fe3-b598-50b8ed336e38` brains / light
+- [x] W11-02-dfc912b1 — `dfc912b1-1d0b-4925-a701-78ded66f74b3` brains / light
+- [x] W11-02-17f663ad — `17f663ad-faaa-4533-99d6-90a4d68aafa3` appystack / light
+- [x] W11-02-9d1d85be — `9d1d85be-3a95-42fc-acf8-3aac53005c08` brains / light
+- [x] W11-02-9182b9b9 — `9182b9b9-fe49-4867-a303-e21b5737a71d` brains / light
+- [x] W11-02-13b51e25 — `13b51e25-9587-45b5-b71a-e1f1c47d1fc1` brains / light
+
+**Agent W11-03** — 9 sessions | appystack, brains, prompt.supportsignal.com.au
+
+- [x] W11-03-cd9616ed — `cd9616ed-2d0a-49a6-b7d6-75f118a82e2d` brains / light
+- [x] W11-03-ba8b5426 — `ba8b5426-ef58-42f4-b2ec-82122821e05c` appystack / light
+- [x] W11-03-f9a5c85d — `f9a5c85d-b506-4742-ae8b-6a65dbfb82e6` prompt.supportsignal.com.au / light
+- [x] W11-03-5723519d — `5723519d-d05a-4d45-a2f6-a168a93c087b` brains / light
+- [x] W11-03-ef02ac0f — `ef02ac0f-f640-48bb-b89c-6d38690e98dd` brains / light
+- [x] W11-03-5ce05994 — `5ce05994-935c-41f3-9ab9-ef1239c8c96e` prompt.supportsignal.com.au / light
+- [x] W11-03-d1961749 — `d1961749-4379-4fa4-8144-15cf30cc0667` brains / light
+- [x] W11-03-5f57d757 — `5f57d757-4172-4a28-b692-8ddc15ce673f` brains / light
+- [x] W11-03-bfaf7605 — `bfaf7605-d7aa-43a7-99ca-9ca0f000d910` brains / light
+
+**Agent W11-04** — 9 sessions | appystack, brains, prompt.supportsignal.com.au
+
+- [x] W11-04-9d04778f — `9d04778f-64ee-4e2a-abca-40d272d6d849` prompt.supportsignal.com.au / light
+- [x] W11-04-5fb45f56 — `5fb45f56-a066-4753-8514-00a1206e0b05` prompt.supportsignal.com.au / light
+- [x] W11-04-2c28f388 — `2c28f388-3ac4-41d8-8fbe-039fae5aac80` brains / light
+- [x] W11-04-5e18711f — `5e18711f-14c0-4b6b-918d-2bd11e686b0d` prompt.supportsignal.com.au / light
+- [x] W11-04-4dbdeb60 — `4dbdeb60-a5ad-47c0-a0da-5c6f00ec37e2` brains / light
+- [x] W11-04-8bf22f75 — `8bf22f75-c034-4572-af6c-06b762ab244b` brains / light
+- [x] W11-04-4ad6aae9 — `4ad6aae9-f9b1-4d2c-ac26-e023f0f8b807` brains / light
+- [x] W11-04-8790b0c4 — `8790b0c4-a0ed-4fd9-92a2-51bf61695b85` brains / light
+- [x] W11-04-a2fdbf5b — `a2fdbf5b-733a-4db4-9d59-07917d61c0fd` appystack / light
+
+**Agent W11-05** — 9 sessions | brains, prompt.supportsignal.com.au
+
+- [x] W11-05-c1bb9b58 — `c1bb9b58-0ed4-41c0-a289-85c800a2518e` prompt.supportsignal.com.au / light
+- [x] W11-05-f78f14d7 — `f78f14d7-920d-4b43-987a-bb92a29396a7` brains / light
+- [x] W11-05-3651f99e — `3651f99e-e425-4088-b5f1-e72eda4ef06a` prompt.supportsignal.com.au / light
+- [x] W11-05-de769e18 — `de769e18-8eca-4895-bc93-d9f12c0b28de` brains / light
+- [x] W11-05-15c34b92 — `15c34b92-5c7f-4ed8-96e9-29b403d77a2f` brains / light
+- [x] W11-05-aebac8d2 — `aebac8d2-ab93-40f2-9f15-91ba1f7a223b` brains / light
+- [x] W11-05-551bdcf8 — `551bdcf8-e165-4310-8957-07776f8d0297` brains / light
+- [x] W11-05-9ec9aa64 — `9ec9aa64-d947-4f02-8ccc-f4d6fcedb894` brains / light
+- [x] W11-05-5794a3f6 — `5794a3f6-a43a-41a0-ac59-3df6a33d047f` brains / light
+
+**Agent W11-06** — 9 sessions | brains, prompt.supportsignal.com.au
+
+- [x] W11-06-689892a5 — `689892a5-0811-4f66-91d6-946f48ccafb1` brains / light
+- [x] W11-06-f4b02724 — `f4b02724-3891-4135-ba9f-2abba01a2e27` brains / light
+- [x] W11-06-ddd63cda — `ddd63cda-622a-487c-9086-d6be95e2bb50` prompt.supportsignal.com.au / light
+- [x] W11-06-ed94c847 — `ed94c847-4df9-4106-9fff-3a9871088635` prompt.supportsignal.com.au / light
+- [x] W11-06-4f494a9c — `4f494a9c-edb6-45c4-b6c2-b2dc3521cbbc` brains / light
+- [x] W11-06-cb90d421 — `cb90d421-4da4-4fcc-9ead-8d9406b3b168` brains / light
+- [x] W11-06-5ab3c274 — `5ab3c274-44b0-41f0-8614-dcecc05b3cd1` brains / light
+- [x] W11-06-b3fcbf07 — `b3fcbf07-ef79-4eb8-ae0b-063a3d5505da` brains / light
+- [x] W11-06-83734245 — `83734245-1e13-4e69-9a89-86b73c5c32e1` brains / light
+
+**Agent W11-07** — 9 sessions | brains, prompt.supportsignal.com.au
+
+- [x] W11-07-8b021832 — `8b021832-b3c8-4a81-b883-4f58034fa58b` brains / light
+- [x] W11-07-5ba8b355 — `5ba8b355-8ee6-4b5d-9460-1667fbc562d0` brains / light
+- [x] W11-07-aedc4c79 — `aedc4c79-2e87-419b-9b0e-def3ddeea0ac` brains / light
+- [x] W11-07-59e26047 — `59e26047-c727-4d60-aff7-87e9557a811e` prompt.supportsignal.com.au / light
+- [x] W11-07-a7b6b827 — `a7b6b827-0e1c-4b53-af01-c93984803d44` brains / light
+- [x] W11-07-41b69014 — `41b69014-470e-45ab-a16f-91f89d2ef751` brains / light
+- [x] W11-07-98c9150d — `98c9150d-92a3-4f4b-a48e-d073793c9ff5` brains / light
+- [x] W11-07-3df09cf3 — `3df09cf3-dd2e-4627-bd2f-f23845f8a89b` brains / light
+- [x] W11-07-ce158a14 — `ce158a14-8d66-4907-99f8-1c04dd3211e3` brains / light
+
+**Agent W11-08** — 9 sessions | brains, prompt.supportsignal.com.au
+
+- [x] W11-08-d8a72400 — `d8a72400-50d2-49df-8a40-5edfaa8a755c` prompt.supportsignal.com.au / light
+- [x] W11-08-b4a33efb — `b4a33efb-e9c0-4689-8882-71a2746d6c8c` brains / light
+- [x] W11-08-8ee65d81 — `8ee65d81-f644-4f94-be48-df31b11f4e71` brains / light
+- [x] W11-08-c05895fc — `c05895fc-9753-4e89-a60b-727b637a4b38` prompt.supportsignal.com.au / light
+- [x] W11-08-f3f48d9f — `f3f48d9f-7135-465e-9a4c-672636f6d313` brains / light
+- [x] W11-08-ae9475ba — `ae9475ba-1225-4c9d-b328-334e1852c14d` brains / light
+- [x] W11-08-d22cbb1c — `d22cbb1c-e8e7-4178-8682-0b2a658400f4` prompt.supportsignal.com.au / light
+- [x] W11-08-c3b01cb4 — `c3b01cb4-364c-4604-a598-1a83c57a55de` brains / light
+- [x] W11-08-31ad7630 — `31ad7630-0760-4fa2-94bd-292599907e62` prompt.supportsignal.com.au / light
+
+**Agent W11-09** — 8 sessions | brains, prompt.supportsignal.com.au
+
+- [x] W11-09-e05f8858 — `e05f8858-db03-4fd3-ae9b-7b96e6e04d06` prompt.supportsignal.com.au / light
+- [x] W11-09-6a182630 — `6a182630-c9d0-46e9-afd5-a2155117ad8e` prompt.supportsignal.com.au / light
+- [x] W11-09-c2460616 — `c2460616-5e34-40fc-9c67-a2d153aa3237` brains / light
+- [x] W11-09-f0a50528 — `f0a50528-a363-4157-8bc5-a90db0f054a4` prompt.supportsignal.com.au / light
+- [x] W11-09-f5e0d853 — `f5e0d853-1ea2-48a5-b4f5-79fb910c1d4b` brains / light
+- [x] W11-09-8e27eff4 — `8e27eff4-da08-4348-8ec6-c7e521de0a76` brains / light
+- [x] W11-09-339a580a — `339a580a-4150-4715-aa3c-ecc1a358d389` brains / light
+- [x] W11-09-c15e692a — `c15e692a-b502-4503-ac54-3eb156fb350a` brains / light
 
 ### Wave 8 — 79 sessions across 9 agents (20 distinct projects, /insights-informed predicates)
 

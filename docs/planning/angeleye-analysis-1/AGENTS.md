@@ -473,3 +473,22 @@ Not all waves are the same. The coordinator should identify which type each wave
 - **PII incidents**: Passport/DOB via voice dictation, credential exposure in infra sessions. PII detection still needed.
 - **20+ new voice artifacts**: "Verso"=Vercel, "Bart"=Claude, "angel hands"=AngelEye, "Cold Med"=Cole Medin, and more.
 - **~310+ subtypes across 20+ parent types from 506 sessions**.
+
+### Wave 11 (2026-03-23)
+
+- **BUILD accuracy ~12% (8-10/81)**: Sharp drop from wave 10's 43% — this batch was entirely light/micro/trivial. Accuracy-by-scale curve now conclusive across 11 waves.
+- **Three classifier rules ready to ship**: (1) `*run NNN` as first prompt = `operations.poem_execution` (7/9 agents confirm), (2) brains/ CWD + light scale = never BUILD, (3) prompt:tool ratio >0.5:1 = not BUILD.
+- **POEM executor is dominant operations pattern**: `*run NNN` + Task/TaskOutput parallel workers. Autonomy ratios up to 1:64. Zero Edit calls. Confirmed by 7/9 agents.
+- **Playwright semantic roles now 8-9**: New `product_onboarding` (user learns third-party product, zero test assertions) and `visual_comparison` (screenshot comparison between systems).
+- **CLAUDE.md auto-load anti-pattern worsening**: 13 unauthorized pre-prompt tool calls in W11-07 (worst ever). 38 tool calls including 11 Edits before user speaks in W11-01. Needs dedicated hook or mitigation.
+- **P13+P14 co-occurrence is dominant friction pattern**: ~14 P13 and ~12 P14 firings. Always co-occur. P16 (excessive_changes) had zero firings — may only apply at moderate+ scale.
+- **"Context poisoning" named by user**: Stale/aspirational memory misleads Claude. Distinct from P13.
+- **Provenance chain genesis**: Session ce158a14 — user articulates canonical truth vs derived document distinction. Origin of provenance methodology.
+- **New parent type: DEBUG.process_correction**: Debugging Claude's process, not code. NotebookLM skill not loading caused convention violations.
+- **Form-filling copilot pattern**: Claude reads form screenshots field-by-field in real time. Self-correcting brain (discovered own brain had wrong info, searched web, corrected).
+- **Race condition in parallel agents**: 2 agents edited same file simultaneously; agent introduced `\!` syntax bug in 3 places.
+- **PII correlates with brain path**: `davidcruwys/` or `dtv/` brain paths should trigger PII scrub flag. 4 incidents across 81 sessions (4.9%).
+- **52-hour idle gaps are valid continuations**: Multi-phase detection should not split on idle duration alone.
+- **Discovery rate 0.80/session**: ~55 new subtypes. Rebounded again — light sessions still productive.
+- **80-90 new voice artifacts**: Highest single-wave count. Catalog becoming large enough for automated correction detection.
+- **~360+ subtypes across 22+ parent types from 586 sessions**.

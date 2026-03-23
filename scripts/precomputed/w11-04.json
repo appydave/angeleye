@@ -1,0 +1,785 @@
+[
+  {
+    "session_id": "9d04778f-64ee-4e2a-abca-40d272d6d849",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-9d04778f-64ee-4e2a-abca-40d272d6d849.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 78,
+      "user_prompt_count": 10,
+      "tool_use_count": 68,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-16T10:19:51.432000+00:00",
+      "last_event_ts": "2026-02-17T02:17:30.554000+00:00",
+      "duration_minutes": 957,
+      "active_minutes": 33,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-16T10:24:59.683000+00:00",
+          "end": "2026-02-17T01:49:06.554000+00:00",
+          "gap_minutes": 924
+        }
+      ]
+    },
+    "tools": {
+      "Edit": 38,
+      "Read": 13,
+      "Glob": 8,
+      "Write": 3,
+      "Grep": 2,
+      "Bash": 2,
+      "Task": 1,
+      "TaskOutput": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Do we have the severity prompt in the workflow sitting between \"Event Capture\" and \"A question is asked\"? ",
+      "full_length": 106,
+      "ts": "2026-02-16T10:20:14.445Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": true,
+        "count": 4
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "5fb45f56-a066-4753-8514-00a1206e0b05",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-5fb45f56-a066-4753-8514-00a1206e0b05.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 72,
+      "user_prompt_count": 9,
+      "tool_use_count": 63,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-16T03:03:54.794000+00:00",
+      "last_event_ts": "2026-02-16T09:42:35.297000+00:00",
+      "duration_minutes": 398,
+      "active_minutes": 33,
+      "idle_gaps_over_1h": 2,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-16T03:37:08.918000+00:00",
+          "end": "2026-02-16T06:13:16.016000+00:00",
+          "gap_minutes": 156
+        },
+        {
+          "start": "2026-02-16T06:13:53.540000+00:00",
+          "end": "2026-02-16T09:42:35.297000+00:00",
+          "gap_minutes": 208
+        }
+      ]
+    },
+    "tools": {
+      "Read": 30,
+      "Edit": 22,
+      "Glob": 5,
+      "Bash": 4,
+      "Task": 1,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Can I get you to go have a look at the database export, and then what I want you to do is have a look at The 000 through the 006 incident. According to Angela, they've all got the same data. What's going on? She's gone and then manually added 100 to 108. They're her own ones. But that was a bit embarrassing for me to go, \"How did that happen?\" You're going to have to have a look at how we gather data. I can't remember which agent we used to get data. ",
+      "full_length": 455,
+      "ts": "2026-02-16T03:03:54.794Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "2c28f388-3ac4-41d8-8fbe-039fae5aac80",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-2c28f388-3ac4-41d8-8fbe-039fae5aac80.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 66,
+      "user_prompt_count": 13,
+      "tool_use_count": 38,
+      "stop_count": 13,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-18T09:51:13.562000+00:00",
+      "last_event_ts": "2026-03-20T01:14:12.642000+00:00",
+      "duration_minutes": 2362,
+      "active_minutes": 37,
+      "idle_gaps_over_1h": 2,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-18T10:28:24.672000+00:00",
+          "end": "2026-03-18T14:10:52.089000+00:00",
+          "gap_minutes": 222
+        },
+        {
+          "start": "2026-03-18T14:11:19.506000+00:00",
+          "end": "2026-03-20T01:14:12.642000+00:00",
+          "gap_minutes": 2102
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 26,
+      "Read": 7,
+      "Glob": 3,
+      "Write": 1,
+      "Edit": 1
+    },
+    "file_paths": {
+      "read": [
+        "/Users/davidcruwys/dev/ad/agent-os/ansible/inventory/group_vars/david.yml",
+        "/Users/davidcruwys/dev/ad/agent-os/ansible/inventory/hosts.yml",
+        "/Users/davidcruwys/dev/ad/brains/agentic-os/tech-stack-hotel/future-renovation-plans.md",
+        "/Users/davidcruwys/dev/ad/brains/agentic-os/research-topics.md",
+        "/Users/davidcruwys/dev/ad/brains/ansible/macos-provisioning-lessons.md",
+        "/Users/davidcruwys/dev/ad/brains/ansible/INDEX.md",
+        "/Users/davidcruwys/dotfiles/install.sh"
+      ],
+      "write": ["/Users/davidcruwys/.ssh/config"],
+      "edit": ["/Users/davidcruwys/dotfiles/install.sh"]
+    },
+    "bash_commands_sample": [
+      "cat ~/.config/appydave/locations.json | python3 -c \"import json,sys; data=json.load(sys.stdin); [print(e.get('alias','')) for e in data.get('locations',[]) if e.get('alias','').startswith('jb')]\" 2>/dev/null || echo \"checking...\"",
+      "python3 -c \"\nimport json\nwith open('/Users/davidcruwys/.config/appydave/locations.json') as f:\n    data = json.load(f)\nlocations = data.get('locations', [])\njb = [e for e in locations if e.get('alias','').startswith('jb')]\njbrain = [e for e in locations if e.get('alias','').startswith('jbrain')]\npri",
+      "python3 -c \"\nimport json\nwith open('/Users/davidcruwys/.config/appydave/locations.json') as f:\n    data = json.load(f)\nlocations = data.get('locations', [])\nbrain_related = [e for e in locations if 'brain' in e.get('alias','').lower()]\nprint(f'Total locations: {len(locations)}')\nprint(f'\\\\n=== Brain",
+      "python3 -c \"\nimport json\nwith open('/Users/davidcruwys/.config/appydave/locations.json') as f:\n    data = json.load(f)\nlocations = data.get('locations', [])\n# Show sample to understand structure\nprint('Sample entry keys:', list(locations[0].keys()) if locations else 'empty')\nprint('\\\\nFirst 3:')\nfor",
+      "python3 -c \"\nimport json\nwith open('/Users/davidcruwys/.config/appydave/locations.json') as f:\n    data = json.load(f)\nlocations = data.get('locations', [])\nbrain_related = [e for e in locations if 'brain' in e.get('jump','').lower() or 'brain' in e.get('key','').lower()]\nprint(f'=== Brain-related j",
+      "systemsetup -getremotelogin 2>/dev/null || echo \"need sudo\"",
+      "ssh -v -o ConnectTimeout=5 davidcruwys@macbook-pro-m4.local 'echo connected' 2>&1 | head -40",
+      "hostname && scutil --get LocalHostName && scutil --get ComputerName",
+      "ping -c 2 100.89.32.35 2>&1",
+      "cat ~/.ssh/config 2>/dev/null || echo \"NO CONFIG FILE\""
+    ],
+    "first_real_prompt": {
+      "text": "Session Context: Ansible Multi-Machine + locations.json \u2014 2026-03-18\n\n  Working On\n\n  Provisioning Mary and Jan's Philippines machines via Ansible over Tailscale, cleaning up the Ansible inventory structure, and doing a gap analysis +\n   bulk fill of git_remote fields in locations.json.\n\n  Current State\n\n  - Mary \u2705 fully provisioned (all packages, shell, locale en_PH, Antigravity)\n  - Jan \u2705 fully provisioned (same)\n  - M4 Mini and MacBook Pro playbooks ran but failed on cloudflare/cloudflare/clo",
+      "full_length": 4950,
+      "ts": "2026-03-18T09:51:15.119Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false,
+        "stop_ratio": 0.2
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": true,
+        "first_prompt_length": 4950,
+        "short_prompt_ratio": 1.0
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": "/Users/davidcruwys",
+      "cwd_reliable": true,
+      "edit_write_count": 2
+    }
+  },
+  {
+    "session_id": "5e18711f-14c0-4b6b-918d-2bd11e686b0d",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-5e18711f-14c0-4b6b-918d-2bd11e686b0d.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 63,
+      "user_prompt_count": 3,
+      "tool_use_count": 60,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-16T09:45:41.427000+00:00",
+      "last_event_ts": "2026-02-16T10:02:58.534000+00:00",
+      "duration_minutes": 17,
+      "active_minutes": 17,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 22,
+      "Task": 15,
+      "TaskOutput": 13,
+      "Glob": 6,
+      "TaskUpdate": 2,
+      "TaskCreate": 1,
+      "Write": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "What does this information mean to you? \nhis session made significant structural changes to the new-incident workflow. Here's everything in one place:\n\n  Gate Checks (NEW)\n\n  - gate-questions-ready (after Step 2): checks if questions exist, skips Step 3 if they do\n  - gate-qa-ready (after Step 5): hard stop \u2014 blocks analysis unless both questions AND answers exist\n  - Step 5: Collect or Generate Answers \u2014 human checkpoint with three options:\n    - Skip (answers already present)\n    - Generate mo",
+      "full_length": 7306,
+      "ts": "2026-02-16T09:47:26.518Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 3
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "4dbdeb60-a5ad-47c0-a0da-5c6f00ec37e2",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-4dbdeb60-a5ad-47c0-a0da-5c6f00ec37e2.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 57,
+      "user_prompt_count": 5,
+      "tool_use_count": 45,
+      "stop_count": 5,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-18T01:47:57.481000+00:00",
+      "last_event_ts": "2026-03-18T02:24:00.053000+00:00",
+      "duration_minutes": 36,
+      "active_minutes": 36,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 40,
+      "Read": 3,
+      "Write": 1,
+      "Edit": 1
+    },
+    "file_paths": {
+      "read": [
+        "/Users/davidcruwys/.config/appydave/locations.json",
+        "/Users/davidcruwys/.claude/projects/-Users-davidcruwys-dev-ad-brains/memory/MEMORY.md"
+      ],
+      "write": [
+        "/Users/davidcruwys/.claude/projects/-Users-davidcruwys-dev-ad-brains/memory/locations-git-audit.md"
+      ],
+      "edit": [
+        "/Users/davidcruwys/.claude/projects/-Users-davidcruwys-dev-ad-brains/memory/MEMORY.md"
+      ]
+    },
+    "bash_commands_sample": [
+      "\nfind ~/dev -maxdepth 4 -name \".git\" -type d 2>/dev/null | sed 's|/.git||' | sort | while read repo_path; do\n  dirty=$(git -C \"$repo_path\" status --porcelain 2>/dev/null | wc -l | tr -d ' ')\n  unpushed=$(git -C \"$repo_path\" log --branches --not --remotes --oneline 2>/dev/null | wc -l | tr -d ' ')\n  ",
+      "\n# Get more detail on the \"unpushed only\" repos (clean but not pushed \u2014 easiest to fix)\nfor repo in \\\n  \"/Users/davidcruwys/dev/ad/apps/deckhand\" \\\n  \"/Users/davidcruwys/dev/ad/flivideo/flideck\" \\\n  \"/Users/davidcruwys/dev/ad/flivideo/storyline-app\" \\\n  \"/Users/davidcruwys/dev/clients/kiros/kiros-hq",
+      "echo \"=== UPSTREAM ===\" && git -C ~/dev/upstream status --short && echo \"\" && git -C ~/dev/upstream log --oneline --branches --not --remotes 2>/dev/null",
+      "echo \"=== VIBEDECK ===\" && git -C ~/dev/clients/vibedeck log --oneline -10 2>/dev/null && echo \"\" && echo \"--- status ---\" && git -C ~/dev/clients/vibedeck status --short && echo \"\" && echo \"--- remote ---\" && git -C ~/dev/clients/vibedeck remote -v 2>/dev/null",
+      "cat ~/.config/appydave/locations.json | head -60",
+      "cat ~/.config/appydave/locations.json | python3 -c \"\nimport json, sys\ndata = json.load(sys.stdin)\nlocs = data.get('locations', [])\nprint(f'Total locations: {len(locs)}')\nprint()\n# Show first 3 entries as sample\nfor loc in locs[:3]:\n    print(json.dumps(loc, indent=2))\n    print()\n# Show what fields ",
+      "echo \"=== signal-studio ===\" && git -C ~/dev/clients/supportsignal/signal-studio status --short | head -20 && echo \"[...$(git -C ~/dev/clients/supportsignal/signal-studio status --short | wc -l | tr -d ' ') total]\"",
+      "echo \"=== digital-stage-summit-2026 ===\" && git -C ~/dev/ad/apps/digital-stage-summit-2026 status --short | head -20 && echo \"[...$(git -C ~/dev/ad/apps/digital-stage-summit-2026 status --short | wc -l | tr -d ' ') total]\"",
+      "echo \"=== flihub ===\" && git -C ~/dev/ad/flivideo/flihub status --short | head -20 && echo \"[...$(git -C ~/dev/ad/flivideo/flihub status --short | wc -l | tr -d ' ') total]\"",
+      "echo \"=== thumbrack ===\" && git -C ~/dev/ad/apps/thumbrack status --short && echo \"=== angeleye ===\" && git -C ~/dev/ad/apps/angeleye status --short && echo \"=== prompt.ss ===\" && git -C ~/dev/clients/supportsignal/prompt.supportsignal.com.au status --short && echo \"=== appydave-plugins ===\" && git "
+    ],
+    "first_real_prompt": {
+      "text": "I need you to do a thorough audit of everything on my computer, from the apps to the brains, anything that's generally listed as one of my locations that have regular updates to them, so that we know what we need to commit to a repository today. I might be away from this computer longer than I want. I'm hoping I'm just away for 24 hours, but it could be longer, and I just need to make sure everything is backed up.\n\nWhen you do this, make sure you tag the location's directory, because Jason, I th",
+      "full_length": 710,
+      "ts": "2026-03-18T01:48:59.170Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": "/Users/davidcruwys/.claude/projects/-Users-davidcruwys-dev-ad-brains/memory",
+      "cwd_reliable": false,
+      "edit_write_count": 2
+    }
+  },
+  {
+    "session_id": "8bf22f75-c034-4572-af6c-06b762ab244b",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-8bf22f75-c034-4572-af6c-06b762ab244b.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 50,
+      "user_prompt_count": 11,
+      "tool_use_count": 39,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-28T09:40:48.607000+00:00",
+      "last_event_ts": "2026-02-28T09:58:57.773000+00:00",
+      "duration_minutes": 18,
+      "active_minutes": 18,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 31,
+      "TaskCreate": 4,
+      "Skill": 1,
+      "TaskUpdate": 1,
+      "Read": 1,
+      "Agent": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Rebooted my computer and I've lost all my terminal sessions. This is problematic. This is iTerm. Do I have any way of getting them back? ",
+      "full_length": 137,
+      "ts": "2026-02-28T09:40:48.607Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "4ad6aae9-f9b1-4d2c-ac26-e023f0f8b807",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-4ad6aae9-f9b1-4d2c-ac26-e023f0f8b807.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 45,
+      "user_prompt_count": 2,
+      "tool_use_count": 43,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-27T23:46:42.840000+00:00",
+      "last_event_ts": "2026-02-27T23:56:28.483000+00:00",
+      "duration_minutes": 9,
+      "active_minutes": 9,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 20,
+      "Read": 12,
+      "Edit": 8,
+      "TaskUpdate": 2,
+      "TaskCreate": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I should have updated everything, and we have decisions on when to use each if I ever need to know. Keep in mind that this is something we'll want to refresh from time to time. ",
+      "full_length": 177,
+      "ts": "2026-02-27T23:52:45.419Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": true,
+        "count": 7
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "8790b0c4-a0ed-4fd9-92a2-51bf61695b85",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-8790b0c4-a0ed-4fd9-92a2-51bf61695b85.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 41,
+      "user_prompt_count": 13,
+      "tool_use_count": 28,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-03T01:48:03.818000+00:00",
+      "last_event_ts": "2026-03-03T02:21:43.719000+00:00",
+      "duration_minutes": 33,
+      "active_minutes": 33,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 11,
+      "Bash": 7,
+      "Edit": 4,
+      "Skill": 3,
+      "Write": 2,
+      "AskUserQuestion": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I just did a focus on the inbox or the to-do, whatever it's meant to be. So we can call it to do, but what should happen when I hit this button is that I should see a nice formatted set of information related to the concepts it talks about. What do you think you should present to me? Show me two examples. Or maybe one example and maybe a couple of diagrams. ",
+      "full_length": 360,
+      "ts": "2026-03-03T01:48:54.704Z"
+    },
+    "skill_invocations": [{}, {}, {}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "a2fdbf5b-733a-4db4-9d59-07917d61c0fd",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-a2fdbf5b-733a-4db4-9d59-07917d61c0fd.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/appystack",
+    "shape": {
+      "event_count": 36,
+      "user_prompt_count": 13,
+      "tool_use_count": 23,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-27T15:49:22.082000+00:00",
+      "last_event_ts": "2026-02-27T16:13:24.268000+00:00",
+      "duration_minutes": 24,
+      "active_minutes": 24,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 13,
+      "Glob": 3,
+      "Write": 3,
+      "Task": 1,
+      "AskUserQuestion": 1,
+      "Read": 1,
+      "Edit": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I want to talk about two scenarios. For using AppyDave that don't warrant us adding code to the system They don't even warrant us putting them in the main documentation as something to be aware of. There are more optional concepts that we might want to consider. I don't even know. I think one generally exists on top of the other. Actually, I'm giving you too much with that statement. Let me just describe them. The first one is If I wanted to write an application that had some sort of context-awa",
+      "full_length": 4339,
+      "ts": "2026-02-27T15:49:22.082Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 3
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": true,
+        "first_prompt_length": 4339,
+        "short_prompt_ratio": 0.75
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  }
+]
