@@ -506,3 +506,19 @@ Not all waves are the same. The coordinator should identify which type each wave
 - **Cross-session correction pattern**: 3 sessions returning to fix prior session failures — error-correction, not continuation.
 - **Discovery rate 0.63/session**: ~50 new subtypes. Declining as expected for lighter sessions.
 - **~400+ subtypes across 22+ parent types from 666 sessions**.
+
+### Wave 13 (2026-03-23) — FINAL WAVE
+
+- **BUILD accuracy 0% across 133 sessions**: Not a single correct BUILD at micro/trivial scale. Definitive: micro 0%, light 0-15%, moderate 30-45%, heavy 50-70%, marathon 60-70%.
+- **KNOWLEDGE accuracy ~33% at micro scale**: Registry defaults brains/ CWD to KNOWLEDGE, but most micro sessions are RESEARCH or ORIENTATION. True KNOWLEDGE requires brain file writes.
+- **Ghost session clusters**: 7 sessions with exactly 2 events (start+end), zero prompts, spawned within 3 seconds. New subtype: `meta.ghost_session`.
+- **Agent warmup probes**: Simultaneous warmup-and-die subagent sessions. New subtype: `meta.agent_warmup`.
+- **Coordinator-spawned checklist spray**: User dispatches numbered questions to N micro sessions from a single mental list. Detectable via timestamp clustering + numbered prefix.
+- **CWD incidental 40-100% at micro scale**: brains/ is a "home terminal". CWD only reliable when prompt topic matches CWD content.
+- **Phantom duration**: `duration_minutes` misleading for idle sessions (413 min wall clock, 0 active). Use `active_minutes` as true signal.
+- **task-notification inflation confirmed**: Machine-generated XML callbacks inflate `user_prompt` counts. Not human intent.
+- **Junk rate 28%**: 37/133 sessions were non-human (ghost, accidental, warmup). Filter before aggregates.
+- **Cross-platform bridge confirmed (second instance)**: 9.1KB ChatGPT-to-Claude paste.
+- **Discovery rate 0.32/session**: Lowest ever — trivial tail as expected. Taxonomy approaching saturation.
+- **799/800 sessions processed. 0 duplicates across 13 waves. Campaign essentially complete.**
+- **~440+ subtypes across 22+ parent types from 799 sessions**.

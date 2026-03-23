@@ -13,7 +13,7 @@
 
 ## Summary
 
-- Total: 666 | Complete: 666 | In Progress: 0 | Pending: 0 | Failed: 0
+- Total: 799 | Complete: 799 | In Progress: 0 | Pending: 0 | Failed: 0
 
 ## In Progress
 
@@ -127,6 +127,29 @@
 - [x] W10-4f7716c8 — `4f7716c8-6573-4fd2-b10b-1d159f5db378` brains / moderate
 - [x] W10-134e47bc — `134e47bc-4a83-49d4-a9fe-ba98f5fb8912` app.supportsignal.com.au / moderate
 - [x] W10-26171bb1 — `26171bb1-1a1a-4ce7-bb08-b53afa1b7186` brains / moderate
+
+### Wave 13 — 133 sessions across 9 agents (final wave — all remaining trivial/micro/light)
+
+**Final wave**. Processed every remaining session: 71 trivial + 39 micro + 23 light. BUILD accuracy 0% across entire wave. 28% of sessions were non-human junk (ghost sessions, accidental opens, agent warmups). Registry grew from 799→800 during processing; 1 session remains pending.
+
+**Agent W13-01** — 15 sessions (2 micro, 13 light) — [x] all complete
+**Agent W13-02** — 15 sessions (all micro) — [x] all complete
+**Agent W13-03** — 15 sessions (all micro) — [x] all complete
+**Agent W13-04** — 15 sessions (all micro, all brains/ CWD) — [x] all complete
+**Agent W13-05** — 15 sessions (all micro) — [x] all complete
+**Agent W13-06** — 15 sessions (all micro, exactly 3 events each) — [x] all complete
+**Agent W13-07** — 15 sessions (7 ghost, 7 micro with prompts, 1 empty) — [x] all complete
+**Agent W13-08** — 14 sessions (all empty/accidental) — [x] all complete
+**Agent W13-09** — 14 sessions (all single-event junk) — [x] all complete
+
+133/133 sessions analysed. 799 unique entries in session-index.jsonl, 0 duplicates.
+
+### Wave 12 — 80 sessions across 9 agents (campaign-status.py selected, all light scale)
+
+**Third wave using campaign-status.py**. 100% light scale, mostly brains/ CWD. BUILD accuracy 2.5% — lowest of any wave. Discovery rate 0.63/session.
+
+**Agents W12-01 through W12-09** — 80 sessions total, all [x] complete.
+666 unique entries in session-index.jsonl after wave, 0 duplicates.
 
 ### Wave 11 — 80 sessions across 9 agents (campaign-status.py selected, all light/micro/trivial)
 

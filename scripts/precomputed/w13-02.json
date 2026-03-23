@@ -1,0 +1,1144 @@
+{
+  "34d3e768-29a6-4494-b50b-0985ac4bfe40": {
+    "session_id": "34d3e768-29a6-4494-b50b-0985ac4bfe40",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-34d3e768-29a6-4494-b50b-0985ac4bfe40.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 10,
+      "user_prompt_count": 10,
+      "tool_use_count": 0,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-18T07:18:38.672000+00:00",
+      "last_event_ts": "2026-02-18T08:27:15.957000+00:00",
+      "duration_minutes": 68,
+      "active_minutes": 12,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {},
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "davidcruwys What does Who Am I say, but it still fails? \n\nSo when I went to screen sharing, it said \"Screen sharing is off,\" but it also said it's currently controlled by the remote management service. What does that mean? ",
+      "full_length": 223,
+      "ts": "2026-02-18T07:18:38.672Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "532c0410-d800-4177-9598-5e4e43ea8a8b": {
+    "session_id": "532c0410-d800-4177-9598-5e4e43ea8a8b",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-532c0410-d800-4177-9598-5e4e43ea8a8b.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 10,
+      "user_prompt_count": 3,
+      "tool_use_count": 7,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-02T13:34:40.510000+00:00",
+      "last_event_ts": "2026-03-02T13:36:41.103000+00:00",
+      "duration_minutes": 2,
+      "active_minutes": 2,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 3,
+      "Bash": 3,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Do you know what the details are for the Mac M4 Pro, the MacBook? Do you know how to connect to it?",
+      "full_length": 99,
+      "ts": "2026-03-02T13:35:00.894Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "708c452a-e1ab-4aca-b9d6-b892852390c6": {
+    "session_id": "708c452a-e1ab-4aca-b9d6-b892852390c6",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-708c452a-e1ab-4aca-b9d6-b892852390c6.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 10,
+      "user_prompt_count": 2,
+      "tool_use_count": 8,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-18T13:08:00.417000+00:00",
+      "last_event_ts": "2026-02-18T13:23:12.370000+00:00",
+      "duration_minutes": 15,
+      "active_minutes": 15,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 7,
+      "Read": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "did we finish this work, was it documented and filed away corerctly, where can I visualize it?, was there more to do?\n\n\n \u2590\u259b\u2588\u2588\u2588\u259c\u258c   Claude Code v2.1.42\n\u259d\u259c\u2588\u2588\u2588\u2588\u2588\u259b\u2598  Sonnet 4.5 \u00b7 Claude API\n  \u2598\u2598 \u259d\u259d    ~/dev/ad/brains\n\n\u276f read: and absorb:\n\n   I'll create a detailed implementation guide explaining the HTML and JavaScript architecture:\n\n  \u23fa Write(implementation-guide.md)\n    \u23bf \u00a0Wrote 1014 lines to implementation-guide.md\n        1 # Tech Stack Hotel - Implementation Guide\n        2\n        3 **Purpose*",
+      "full_length": 20937,
+      "ts": "2026-02-18T13:08:00.417Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "78344524-0e9a-4369-91ec-e8d759d0d8cc": {
+    "session_id": "78344524-0e9a-4369-91ec-e8d759d0d8cc",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-78344524-0e9a-4369-91ec-e8d759d0d8cc.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 10,
+      "user_prompt_count": 6,
+      "tool_use_count": 4,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-09T01:42:52.138000+00:00",
+      "last_event_ts": "2026-03-09T02:01:40.839000+00:00",
+      "duration_minutes": 18,
+      "active_minutes": 18,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 2,
+      "Edit": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I have a light turned on. It's fairly bright. It's for my camera lighting, by the way, and I've got a diffusion mesh. Now the brand is Y-Y-U. I bought it in South-East Asia. It's over an E27, which is 6500 lumens, or it's a B22, which is 300 kelvin. I should say not watts; it is a 60 W bulb. It's really quite big; it's a massive bulb. What I'm finding is that I'm seeing almost like an interlace refresh when I turn it on, and it's showing up in Ecamm live. I thought I'd do a record, and I did the",
+      "full_length": 577,
+      "ts": "2026-03-09T01:45:04.107Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "267a8725-b1ed-4ae6-b952-c25b4e2522a7": {
+    "session_id": "267a8725-b1ed-4ae6-b952-c25b4e2522a7",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-267a8725-b1ed-4ae6-b952-c25b4e2522a7.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 10,
+      "user_prompt_count": 2,
+      "tool_use_count": 8,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-19T00:33:37.196000+00:00",
+      "last_event_ts": "2026-02-19T00:35:11.703000+00:00",
+      "duration_minutes": 1,
+      "active_minutes": 1,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 7,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "tell me the nature of this?\n\nmodified:   .gitignore\n    deleted:    tools/poem-executor/docs/planning/implementation-plan.md\n    deleted:    tools/poem-executor/docs/planning/oscar-round1-issues.md\n    deleted:    tools/poem-executor/docs/planning/oscar-round2-issues.md\n    deleted:    tools/poem-executor/docs/planning/oscar-round3-issues.md\n    modified:   tools/poem-executor/package.json\n    modified:   tools/poem-executor/src/cli.js\n    modified:   tools/poem-executor/src/lib/input-mapper.js\n",
+      "full_length": 2194,
+      "ts": "2026-02-19T00:33:37.196Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "9bb2eec8-1dc1-41d5-9e52-1fb4c0eea4f6": {
+    "session_id": "9bb2eec8-1dc1-41d5-9e52-1fb4c0eea4f6",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-9bb2eec8-1dc1-41d5-9e52-1fb4c0eea4f6.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 10,
+      "user_prompt_count": 2,
+      "tool_use_count": 8,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-24T04:49:49.530000+00:00",
+      "last_event_ts": "2026-02-24T04:51:56.046000+00:00",
+      "duration_minutes": 2,
+      "active_minutes": 2,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 4,
+      "Glob": 3,
+      "AskUserQuestion": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I a quick list of outstanding issues",
+      "full_length": 36,
+      "ts": "2026-02-24T04:51:27.215Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "1e529a9a-42dc-43e3-ac0f-411525bc1eb4": {
+    "session_id": "1e529a9a-42dc-43e3-ac0f-411525bc1eb4",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-1e529a9a-42dc-43e3-ac0f-411525bc1eb4.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 10,
+      "user_prompt_count": 2,
+      "tool_use_count": 4,
+      "stop_count": 2,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-17T09:42:22.187000+00:00",
+      "last_event_ts": "2026-03-17T09:45:42.276000+00:00",
+      "duration_minutes": 3,
+      "active_minutes": 3,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 3,
+      "Read": 1
+    },
+    "file_paths": {
+      "read": [
+        "/Users/davidcruwys/.claude/projects/-Users-davidcruwys-dev-ad-brains/1e529a9a-42dc-43e3-ac0f-411525bc1eb4/tool-results/b638cx29w.txt"
+      ],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [
+      "echo $OMI_API_KEY | head -c 10",
+      "source ~/.secrets 2>/dev/null; echo ${OMI_API_KEY:0:10}",
+      "source ~/.secrets && python3 - << 'EOF' 2>&1\nimport os, urllib.request, urllib.parse, json\n\nAPI_KEY = os.environ.get(\"OMI_API_KEY\")\nheaders = {\"Authorization\": f\"Bearer {API_KEY}\"}\nparams = {\"limit\": \"25\", \"offset\": \"0\", \"include_transcript\": \"true\", \"start_date\": \"2026-03-17\"}\n\nurl = \"https://api.o"
+    ],
+    "first_real_prompt": {
+      "text": "/omi-fetch What conversations have I been having today with Jan?",
+      "full_length": 64,
+      "ts": "2026-03-17T09:43:15.438Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "933fb9a9-0cf6-450b-ae39-6aa3074047e6": {
+    "session_id": "933fb9a9-0cf6-450b-ae39-6aa3074047e6",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-933fb9a9-0cf6-450b-ae39-6aa3074047e6.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 10,
+      "user_prompt_count": 2,
+      "tool_use_count": 4,
+      "stop_count": 2,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-22T15:41:10.292000+00:00",
+      "last_event_ts": "2026-03-22T15:45:50.923000+00:00",
+      "duration_minutes": 4,
+      "active_minutes": 4,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 3,
+      "Glob": 1
+    },
+    "file_paths": {
+      "read": [
+        "/Users/davidcruwys/dev/ad/brains/machine-control/INDEX.md",
+        "/Users/davidcruwys/dev/ad/brains/machine-control/machine-roles.md",
+        "/Users/davidcruwys/dev/ad/brains/machine-control/new-machine-runbook.md"
+      ],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I'm over on the M4 Macbook Pro Looking at a message in front of me that says m4 mini, I can't find the SSH host name. No tilde in the SSH config, and the remote machine's shell didn't have a machine reference file I could read. Do you know the hostname or IP for the m4 mini? I can check it in the repo. Has been pulled, and once I can connect, why would I get this? It's on the other machine, not this one. It used to work. Are there reasons why it can be flaky, and can you give me the answers anyw",
+      "full_length": 503,
+      "ts": "2026-03-22T15:42:09.491Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "27087f60-adf4-4c4a-9efc-d12999f9b7b1": {
+    "session_id": "27087f60-adf4-4c4a-9efc-d12999f9b7b1",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-27087f60-adf4-4c4a-9efc-d12999f9b7b1.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 9,
+      "user_prompt_count": 6,
+      "tool_use_count": 1,
+      "stop_count": 1,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-13T01:47:47.995000+00:00",
+      "last_event_ts": "2026-03-16T03:00:40.582000+00:00",
+      "duration_minutes": 4392,
+      "active_minutes": 9,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-13T01:55:00.481000+00:00",
+          "end": "2026-03-16T02:58:21.824000+00:00",
+          "gap_minutes": 4383
+        }
+      ]
+    },
+    "tools": {
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "We're going to be working with prompts for Notebook LM. I'll give you some context.",
+      "full_length": 83,
+      "ts": "2026-03-13T01:47:47.995Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "4fb12fb7-cb0a-4d75-8d45-3b14ba6622db": {
+    "session_id": "4fb12fb7-cb0a-4d75-8d45-3b14ba6622db",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-4fb12fb7-cb0a-4d75-8d45-3b14ba6622db.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 9,
+      "user_prompt_count": 3,
+      "tool_use_count": 6,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-13T23:48:46.963000+00:00",
+      "last_event_ts": "2026-02-13T23:51:39.721000+00:00",
+      "duration_minutes": 2,
+      "active_minutes": 2,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Grep": 3,
+      "Task": 2,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "It's so cluaed to put plans into your own folder. Is it a config system, or is it just a prompt that you tell it to do? In the Anthropic Claude Codebrain, I'd also use the Claude Documentation skill. ",
+      "full_length": 200,
+      "ts": "2026-02-13T23:48:46.963Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 3
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "2c59011a-b101-4195-b104-d4d5be6238ab": {
+    "session_id": "2c59011a-b101-4195-b104-d4d5be6238ab",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-2c59011a-b101-4195-b104-d4d5be6238ab.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 9,
+      "user_prompt_count": 3,
+      "tool_use_count": 6,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-26T15:46:33.379000+00:00",
+      "last_event_ts": "2026-02-26T15:47:26.358000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 6
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Is there an outstanding work tree that needs to be closed off? ",
+      "full_length": 63,
+      "ts": "2026-02-26T15:46:33.379Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "603f4daf-50ad-439c-9bbf-475dce68df86": {
+    "session_id": "603f4daf-50ad-439c-9bbf-475dce68df86",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-603f4daf-50ad-439c-9bbf-475dce68df86.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 9,
+      "user_prompt_count": 2,
+      "tool_use_count": 7,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-18T05:04:05.044000+00:00",
+      "last_event_ts": "2026-02-18T05:08:28.758000+00:00",
+      "duration_minutes": 4,
+      "active_minutes": 4,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 5,
+      "Read": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Can you run an execution for 108? ",
+      "full_length": 34,
+      "ts": "2026-02-18T05:04:55.867Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "8ab976fa-6db3-4ef1-afdc-7602598cf948": {
+    "session_id": "8ab976fa-6db3-4ef1-afdc-7602598cf948",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-8ab976fa-6db3-4ef1-afdc-7602598cf948.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 9,
+      "user_prompt_count": 2,
+      "tool_use_count": 3,
+      "stop_count": 2,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-20T00:39:59.973000+00:00",
+      "last_event_ts": "2026-03-20T01:13:53.060000+00:00",
+      "duration_minutes": 33,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 2,
+      "Edit": 1
+    },
+    "file_paths": {
+      "read": [
+        "/Users/davidcruwys/dev/ad/brains/INDEX.md",
+        "/Users/davidcruwys/dev/ad/brains/todo/today.md"
+      ],
+      "write": [],
+      "edit": ["/Users/davidcruwys/dev/ad/brains/todo/today.md"]
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "/focus",
+      "full_length": 6,
+      "ts": "2026-03-20T00:40:02.961Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": "/Users/davidcruwys/dev/ad/brains/todo",
+      "cwd_reliable": true,
+      "edit_write_count": 1
+    }
+  },
+  "06c51966-824e-48b4-a3d7-09fed7b8c5ca": {
+    "session_id": "06c51966-824e-48b4-a3d7-09fed7b8c5ca",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-06c51966-824e-48b4-a3d7-09fed7b8c5ca.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 8,
+      "user_prompt_count": 1,
+      "tool_use_count": 7,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-02T04:23:20.876000+00:00",
+      "last_event_ts": "2026-03-02T04:26:27.044000+00:00",
+      "duration_minutes": 3,
+      "active_minutes": 3,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 6,
+      "Glob": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "On the old M4 Pro, I used to be able to press (I think it was Option-Command and left arrow or right arrow), and it would shift, it would do tiling of some of my Windows applications. Now on that computer I had both Rectangle and Moom, I believe. I don't know whether I've put them onto the M4 Mini. \n\nAre you able to either look at the M4 Pro directly through whatever mechanism you can, or look at the Ansible config and just see if you've got some information about this? ",
+      "full_length": 475,
+      "ts": "2026-03-02T04:26:09.773Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  "18c0c0c8-480c-4b30-8ebe-3769a11cdff2": {
+    "session_id": "18c0c0c8-480c-4b30-8ebe-3769a11cdff2",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-18c0c0c8-480c-4b30-8ebe-3769a11cdff2.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 8,
+      "user_prompt_count": 4,
+      "tool_use_count": 4,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-20T09:45:33.138000+00:00",
+      "last_event_ts": "2026-02-20T09:55:15.653000+00:00",
+      "duration_minutes": 9,
+      "active_minutes": 9,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 4
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "how do we access: \n\nhttps://gsd.keypersonofinfluence.com/courses/caos-value-canvas?nav=AI+Builder&resumeLesson=61",
+      "full_length": 113,
+      "ts": "2026-02-20T09:45:33.138Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  }
+}
