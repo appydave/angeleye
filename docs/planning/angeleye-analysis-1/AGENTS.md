@@ -536,3 +536,19 @@ Not all waves are the same. The coordinator should identify which type each wave
 **Agents must**: use pre-computed shapes from `scripts/precomputed/w14-NN.json` (already contains full session shape data fetched via SSH). Agents do NOT need SSH access — all data is in the shape files. For sessions needing deeper analysis, the shape file includes `first_real_prompt`, `bash_commands_sample`, `file_paths`, and `detections`.
 
 **Important**: set `"machine": "m4-pro"` in all session-index.jsonl entries for M4 Pro sessions.
+
+### Wave 14 (2026-03-23) — M4 Pro complete
+
+- **Registry BUILD accuracy 17-33% on M4 Pro**: Root cause — registry defaults to BUILD for everything. Classifier lacks discrimination for SYSOPS, RESEARCH, MIXED, ORIENTATION, META, BRAND, DEBUG. Zero writes/edits/tools = never BUILD.
+- **M4 Pro machine character**: Evening mega-sprints, multi-topic marathons, voice dictation 7-9/12 sessions. Hub for 5-machine fleet. More personal integration (Joy Juice business, Thai visa, meetups).
+- **Paperclip/JJ Agent is production autonomous**: UUID `27231022-d305-4069-a16a-472c98259e33`. Prompt fingerprint: "You are agent 27231022... Continue your Paperclip work." 4 subtypes: marathon (952 events), work bursts, hourly polling (21 identical prompts), micro pings. Correct classification: `operations.paperclip_agent` for automated, `build.autonomous_agent_work` only when writes occur.
+- **CWD=brains/ most unreliable signal in entire dataset**: Majority of brains/ CWD sessions doing something else entirely (Ansible, SSH, alias gen, support tickets). Treat as nearly meaningless for project attribution.
+- **New projects discovered**: joy-juice (15, Thai juice bar), appydave.com (9, website prototyping), beauty-and-joy (6, Joy's brand), voice-agent (Rust, fn key processor), flideck (6, Ralphy campaign + Playwright QA).
+- **Command center pattern**: Single session dispatching 9 parallel background agents (93fe2159). 95K char first prompt (compaction resume). Orchestration-at-scale, not BUILD.
+- **"Agents in the Wild" meetup**: Recurring Friday event. `knowledge.meetup_capture` subtype (N=2).
+- **Unauthorized edit anti-pattern confirmed**: "why did you update something, I asked a question" — real-world P16 occurrence.
+- **Skill gap discovery**: Adapt, Animate, Polish skill names don't exist. Only `frontend-design` and `impeccable` valid. Need skill inventory mechanism.
+- **~60+ new subtypes proposed**: operations.paperclip_agent, operations.scheduled_agent, operations.agent_ping, build.autonomous_agent_work, build.ralphy_campaign, build.prototype, knowledge.meetup_capture, sysops.remote_provisioning, sysops.fleet_management, research.tool_evaluation, brand.design_review, and more.
+- **Voice dictation artifacts (~20 new)**: "nvideo nemoclaw"=NVIDIA NemoClaw, "papwerclip"=Paperclip, "AngelLie"=AngelEye, "Tailwindow"=Tailwind, "angents"=agents, "fetsch"/"fetsh"=fetch.
+- **Discovery rate 0.55/session**: Rebounded from 0.32 (wave 13). New machine = new projects = new patterns. Confirms taxonomy saturation was scale effect, not true exhaustion.
+- **910/910 sessions processed across 14 waves. 0 duplicates. ~500+ subtypes across 24+ parent types.**

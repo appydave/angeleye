@@ -13,12 +13,12 @@
 
 ## Summary
 
-- Total: 910 | Complete: 800 | In Progress: 110 | Pending: 0 | Failed: 0
-- M4 Mini: 800/800 complete | M4 Pro: 0/110 in progress
+- Total: 910 | Complete: 910 | In Progress: 0 | Pending: 0 | Failed: 0
+- M4 Mini: 800/800 complete | M4 Pro: 110/110 complete
 
-## In Progress
+## Complete
 
-### Wave 14 — 110 sessions across 9 agents (M4 Pro, all pending sessions)
+### Wave 14 — 110 sessions across 9 agents (M4 Pro, all pending sessions) ✓
 
 **First wave on M4 Pro machine**. Sessions accessed via `ssh macbook-pro-m4`. Mix of scales: 1 marathon, 5 heavy, 35 moderate, 40 light, 14 micro, 15 trivial. New projects not seen on M4 Mini: joy-juice (15), appydave.com (9), beauty-and-joy (6), flideck (6), davidcruwys (6).
 
