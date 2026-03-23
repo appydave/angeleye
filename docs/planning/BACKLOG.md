@@ -1,7 +1,7 @@
 # Project Backlog — AngelEye
 
-**Last updated**: 2026-03-17
-**Total**: 37 | Pending: 4 | In Progress: 0 | Done: 31 | Deferred: 2 | Rejected: 0
+**Last updated**: 2026-03-23
+**Total**: 44 | Pending: 11 | In Progress: 0 | Done: 31 | Deferred: 2 | Rejected: 0
 
 ## Pending
 
@@ -15,10 +15,20 @@
 
 - [ ] B037 — Named session elevated row treatment: amber left rail, name as flex-1 hero (no 140px cap), project+cwd on secondary dim line, ⚑ named micro-tag. Observer currently truncates long names like "solo-deck-flideck-slide-system" to fit the fixed column. Mockup designed 2026-03-17. | Priority: medium
 
+### Intelligence — Classifier improvements (from angeleye-analysis-1)
+
+- [ ] B038 — Scale-aware BUILD guard: reject BUILD classification for micro (0% accuracy) and light (<15% accuracy) sessions. Use event_count thresholds from the 910-session analysis. | Priority: high
+- [ ] B039 — Iron-clad classifier rules: (a) `*run NNN` first prompt = operations.poem_execution, (b) brains/ CWD + light scale = never BUILD, (c) zero tool calls = never BUILD. | Priority: high
+- [ ] B040 — PII detection pass: regex scan during backfill for names, emails, IPs, birthdates. Flag sessions with PII in registry. 14 waves of evidence says this is needed. | Priority: medium
+- [ ] B041 — Paperclip/autonomous agent detection: identify machine-initiated sessions by prompt fingerprint ("You are agent {uuid}"). Classify as operations.paperclip_agent, not BUILD. | Priority: medium
+- [ ] B042 — Voice dictation entity dictionary: canonical lookup of 220+ misheard terms (e.g. "AngelLie"=AngelEye, "nvideo nemoclaw"=NVIDIA NemoClaw). Pre-process prompts before classification. | Priority: low
+- [ ] B043 — Promote confirmed subtypes (N >= 3) from 500+ candidates to canonical taxonomy. Analysis complete — needs curation pass. | Priority: medium
+
 ### Infrastructure
 
 - [ ] B025 — launchd plist for AngelEye server: always-on persistent service, auto-restart on crash/reboot | Priority: medium
 - [ ] B026 — Update create-appystack template with: resilient start.sh (port conflict detection + human-in-loop), dotenv override:true fix, correct VITE_SOCKET_URL | Priority: medium
+- [ ] B044 — Multi-machine registry sync: classification rules should apply across machines. M4 Pro registry defaults everything to BUILD. | Priority: low
 
 ## In Progress
 
