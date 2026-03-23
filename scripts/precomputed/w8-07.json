@@ -1,0 +1,720 @@
+[
+  {
+    "session_id": "7b2157e9-6e98-4e56-9d3d-6b16028024a0",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-7b2157e9-6e98-4e56-9d3d-6b16028024a0.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/signal-studio",
+    "shape": {
+      "event_count": 255,
+      "user_prompt_count": 16,
+      "tool_use_count": 239,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-10T15:55:23.306000+00:00",
+      "last_event_ts": "2026-03-11T09:40:49.341000+00:00",
+      "duration_minutes": 1065,
+      "active_minutes": 312,
+      "idle_gaps_over_1h": 3,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-10T18:43:23.380000+00:00",
+          "end": "2026-03-11T01:23:04.002000+00:00",
+          "gap_minutes": 399
+        },
+        {
+          "start": "2026-03-11T03:07:49.674000+00:00",
+          "end": "2026-03-11T05:00:04.535000+00:00",
+          "gap_minutes": 112
+        },
+        {
+          "start": "2026-03-11T05:25:35.418000+00:00",
+          "end": "2026-03-11T08:55:10.956000+00:00",
+          "gap_minutes": 209
+        }
+      ]
+    },
+    "tools": {
+      "Edit": 81,
+      "Bash": 60,
+      "Read": 40,
+      "Agent": 30,
+      "Glob": 14,
+      "Write": 8,
+      "Grep": 4,
+      "ToolSearch": 1,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "You think we could do a plan around running all the UAT system, and as a result of running it all, have one or two actions:\n- a recommendation document being built of things that you need me, David, to address\n- otherwise, just fix problems if you encounter them\n\nAnd it's about running through every UAT. \n\nThe UAT suite as it stands \u2014 15 files, full coverage:\n\n  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n  \u2502           File            \u2502                 TCs                ",
+      "full_length": 3922,
+      "ts": "2026-03-10T15:56:12.529Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": true,
+        "count": 1
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 2
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": true,
+        "first_prompt_length": 3922,
+        "short_prompt_ratio": 0.73
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "e3c9e049-46b5-4537-93e0-8cda15c3f513",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-e3c9e049-46b5-4537-93e0-8cda15c3f513.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/deckhand",
+    "shape": {
+      "event_count": 202,
+      "user_prompt_count": 20,
+      "tool_use_count": 182,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-10T04:57:37.653000+00:00",
+      "last_event_ts": "2026-03-11T09:17:22.304000+00:00",
+      "duration_minutes": 1699,
+      "active_minutes": 178,
+      "idle_gaps_over_1h": 4,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-10T04:57:49.440000+00:00",
+          "end": "2026-03-10T13:06:58.739000+00:00",
+          "gap_minutes": 489
+        },
+        {
+          "start": "2026-03-10T13:07:16.989000+00:00",
+          "end": "2026-03-10T14:39:18.725000+00:00",
+          "gap_minutes": 92
+        },
+        {
+          "start": "2026-03-10T16:29:18.912000+00:00",
+          "end": "2026-03-11T01:36:23.416000+00:00",
+          "gap_minutes": 547
+        },
+        {
+          "start": "2026-03-11T02:43:57.905000+00:00",
+          "end": "2026-03-11T09:17:22.304000+00:00",
+          "gap_minutes": 393
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 36,
+      "Read": 32,
+      "Edit": 31,
+      "Write": 16,
+      "Agent": 15,
+      "mcp__playwright__browser_take_screenshot": 14,
+      "mcp__playwright__browser_click": 9,
+      "ToolSearch": 7,
+      "mcp__playwright__browser_navigate": 7,
+      "Glob": 7,
+      "mcp__playwright__browser_snapshot": 2,
+      "Skill": 2,
+      "mcp__playwright__browser_evaluate": 2,
+      "Grep": 1,
+      "mcp__playwright__browser_resize": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Okay, so the mental model for Ian's application is that he's set up buttons in his StreamDeck, but all they're doing is HTTP requests through to his application, so it can do certain things. Is that correct?\n\nThat then leads me to wonder: why would he even need the SDK? Can you investigate why he needed the SDK? Is there something I'm missing? I would have thought you just create a button pointed at a HTTP endpoint and everything's ok.\n\nNow he told me that he did add a plug-in, so was he adding ",
+      "full_length": 679,
+      "ts": "2026-03-10T13:06:58.739Z"
+    },
+    "skill_invocations": [{}, {}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": true,
+        "count": 2
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 2
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "201aec50-56a8-449c-b619-8f8dafe71fe2",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-201aec50-56a8-449c-b619-8f8dafe71fe2.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/angeleye",
+    "shape": {
+      "event_count": 125,
+      "user_prompt_count": 13,
+      "tool_use_count": 112,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-13T01:40:42.251000+00:00",
+      "last_event_ts": "2026-03-14T02:41:39.956000+00:00",
+      "duration_minutes": 1500,
+      "active_minutes": 55,
+      "idle_gaps_over_1h": 2,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-13T02:06:14.901000+00:00",
+          "end": "2026-03-14T00:58:43.277000+00:00",
+          "gap_minutes": 1372
+        },
+        {
+          "start": "2026-03-14T01:00:53.105000+00:00",
+          "end": "2026-03-14T02:13:49.927000+00:00",
+          "gap_minutes": 72
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 44,
+      "mcp__playwright__browser_navigate": 14,
+      "mcp__playwright__browser_take_screenshot": 12,
+      "Glob": 10,
+      "mcp__playwright__browser_tabs": 8,
+      "Agent": 6,
+      "Read": 5,
+      "Write": 5,
+      "Edit": 4,
+      "ToolSearch": 3,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Read and absorb this information, and at the end of it, just give me a bullet point list of the things that we're likely to achieve if we were to implement this. What is this essentially about, these requirements? Please be aware that the issue of AngelicEye being on Claude has been Removed and also be aware Of the two little applications that we tested from our upstream repository What they were, what they did, how we would start them, and how we would start them, also with a little bit of sess",
+      "full_length": 86079,
+      "ts": "2026-03-13T01:40:42.251Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": true,
+        "count": 5
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false,
+        "first_prompt_length": 86079,
+        "short_prompt_ratio": 0.33
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "0248f3ad-a518-4aa4-98cd-047ccbcfd3de",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-0248f3ad-a518-4aa4-98cd-047ccbcfd3de.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/klueless",
+    "shape": {
+      "event_count": 104,
+      "user_prompt_count": 17,
+      "tool_use_count": 87,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-01-29T02:16:09.725000+00:00",
+      "last_event_ts": "2026-02-19T13:16:24.675000+00:00",
+      "duration_minutes": 30900,
+      "active_minutes": 65,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-01-29T02:19:25.522000+00:00",
+          "end": "2026-02-19T12:13:44.351000+00:00",
+          "gap_minutes": 30834
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 49,
+      "Read": 11,
+      "Write": 11,
+      "Task": 9,
+      "Glob": 3,
+      "Edit": 2,
+      "AskUserQuestion": 1,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "How good is the index file of this application of ClaudeMD file?Clueless is well documented and is it all about coding or is it all about documentation? Documentation is more important to me but knowing where the code is is important. I don't know whether there is documentation for clueless like detailed specifications, strategies, ideas,",
+      "full_length": 340,
+      "ts": "2026-01-29T02:16:09.725Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 2
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "0daf8585-2151-4a8c-ae36-3380185e2c1e",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-0daf8585-2151-4a8c-ae36-3380185e2c1e.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 66,
+      "user_prompt_count": 25,
+      "tool_use_count": 41,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-25T00:24:28.164000+00:00",
+      "last_event_ts": "2026-02-25T13:35:51.937000+00:00",
+      "duration_minutes": 791,
+      "active_minutes": 65,
+      "idle_gaps_over_1h": 2,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-25T00:24:57.282000+00:00",
+          "end": "2026-02-25T04:44:47.038000+00:00",
+          "gap_minutes": 259
+        },
+        {
+          "start": "2026-02-25T06:26:56.615000+00:00",
+          "end": "2026-02-25T13:35:45.847000+00:00",
+          "gap_minutes": 428
+        }
+      ]
+    },
+    "tools": {
+      "Read": 17,
+      "Edit": 12,
+      "Glob": 7,
+      "Bash": 4,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "read: poc/wui/docs/angela-feedback.md\n\nDoes the following information seem correct? Is there anything we need to enhance or think through? \n\n---\n  Prompt engineering backlog\n\n  11 items in two main clusters:\n\n  - Restrictive practice detection (F009, F013, F018) \u2014 missed hourly cigarettes, missed physical prompting, endorsed physical prompting as\n  \"proactive management\". The detection prompt needs significant expansion.\n  - Data boundary / hallucination (F007, F008, F012) \u2014 AI referencing BSP a",
+      "full_length": 910,
+      "ts": "2026-02-25T00:24:28.164Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "5309922c-ffc1-4e64-b54e-c574b92bb471",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-5309922c-ffc1-4e64-b54e-c574b92bb471.jsonl",
+    "cwd": "/Users/davidcruwys/dev/video-projects/v-appydave",
+    "shape": {
+      "event_count": 66,
+      "user_prompt_count": 4,
+      "tool_use_count": 62,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-21T00:39:31.494000+00:00",
+      "last_event_ts": "2026-02-21T07:26:48.206000+00:00",
+      "duration_minutes": 407,
+      "active_minutes": 28,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-21T00:45:02.006000+00:00",
+          "end": "2026-02-21T07:03:28.030000+00:00",
+          "gap_minutes": 378
+        }
+      ]
+    },
+    "tools": {
+      "Read": 25,
+      "Write": 21,
+      "Bash": 5,
+      "Task": 4,
+      "Glob": 4,
+      "TaskUpdate": 2,
+      "TaskCreate": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "what do we know about poem, pome-core, the agetns alex, penny and oscer and the work we have been doing recently in /Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au\non a compiler for yml, also what do we know about our youtubelanuch optimize3r yaml vs the new-incident.yaml and /Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au\n\n\nand oare our prompt.hbs and .json files as cotherent and true to the spec as from /Users/davidcruwys/dev/clients/supportsig",
+      "full_length": 718,
+      "ts": "2026-02-21T00:39:31.494Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "78dd3b7f-be2f-4341-b03f-4b0ddd5c0de6",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-78dd3b7f-be2f-4341-b03f-4b0ddd5c0de6.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/appydave-plugins",
+    "shape": {
+      "event_count": 10,
+      "user_prompt_count": 3,
+      "tool_use_count": 7,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-20T07:06:48.019000+00:00",
+      "last_event_ts": "2026-02-20T07:17:07.486000+00:00",
+      "duration_minutes": 10,
+      "active_minutes": 10,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 4,
+      "WebSearch": 2,
+      "WebFetch": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "\u279c  appydave-plugins git:(main)   npm install -g @vercel/agent-b\nrowser\nnpm notice Access token expired or revoked. Please try logging in again.\nnpm error code E404\nnpm error 404 Not Found - GET https://registry.npmjs.org/@vercel%2fagent-browser - Not found\nnpm error 404\nnpm error 404  '@vercel/agent-browser@*' is not in this registry.\nnpm error 404\nnpm error 404 Note that you can also install from a\nnpm error 404 tarball, folder, http url, or git url.\nnpm error A complete log of this run can be ",
+      "full_length": 576,
+      "ts": "2026-02-20T07:10:30.482Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "e7b6060d-b0a6-481a-b1fd-c33a9875372f",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-e7b6060d-b0a6-481a-b1fd-c33a9875372f.jsonl",
+    "cwd": "/Users/davidcruwys/dev/video-projects/v-aitldr",
+    "shape": {
+      "event_count": 6,
+      "user_prompt_count": 2,
+      "tool_use_count": 4,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-16T10:19:00.872000+00:00",
+      "last_event_ts": "2026-02-16T10:19:53.743000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 4
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "v-aitldr git:(main) gs\nOn branch main\nYour branch is ahead of 'origin/main' by 1 commit.\n  (use \"git push\" to publish your local commits)\n\nnothing to commit, working tree clean\n\u279c  v-aitldr git:(main) git push\n../v-ap    To github.com:appydave-video-projects/v-aitldr.git\n ! [rejected]        main -> main (fetch first)\nerror: failed to push some refs to 'github.com:appydave-video-projects/v-aitldr.git'\nhint: Updates were rejected because the remote contains work that you do not\nhint: have locally.",
+      "full_length": 1746,
+      "ts": "2026-02-16T10:19:00.872Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  }
+]

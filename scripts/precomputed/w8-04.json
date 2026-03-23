@@ -1,0 +1,809 @@
+[
+  {
+    "session_id": "557fd04a-7cfc-492f-8b1e-693fbd5c521a",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-557fd04a-7cfc-492f-8b1e-693fbd5c521a.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/flivideo/flideck",
+    "shape": {
+      "event_count": 312,
+      "user_prompt_count": 6,
+      "tool_use_count": 306,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-13T09:41:45.304000+00:00",
+      "last_event_ts": "2026-02-13T14:38:03.756000+00:00",
+      "duration_minutes": 296,
+      "active_minutes": 47,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-13T10:45:16.843000+00:00",
+          "end": "2026-02-13T14:13:00.744000+00:00",
+          "gap_minutes": 207
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 108,
+      "Read": 87,
+      "Edit": 41,
+      "TaskUpdate": 18,
+      "TaskCreate": 12,
+      "Write": 12,
+      "TaskOutput": 11,
+      "Task": 9,
+      "Grep": 6,
+      "Glob": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "\ud83c\udfaf The 3 Apps Ready for Replication\n\n  1. FliHub - /Users/davidcruwys/dev/ad/flivideo/flihub\n\n  - Ports: 5101 (server), Vite dev (client)\n  - Status: No tooling configured yet\n  - Structure: npm workspaces (client, server, shared)\n\n  2. Storyline App - /Users/davidcruwys/dev/ad/flivideo/storyline-app\n\n  - Ports: 5301 (server), 5300 (client)\n  - Status: Partial ESLint 9 in client only\n  - Structure: npm workspaces (client, server, shared)\n\n  3. FliDeck - /Users/davidcruwys/dev/ad/flivideo/flideck\n",
+      "full_length": 1990,
+      "ts": "2026-02-13T09:41:45.304Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": true,
+        "count": 2
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 2
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "68c33d9f-b0da-41c7-97e8-001689315cd8",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-68c33d9f-b0da-41c7-97e8-001689315cd8.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/angeleye",
+    "shape": {
+      "event_count": 163,
+      "user_prompt_count": 27,
+      "tool_use_count": 102,
+      "stop_count": 27,
+      "subagent_start_count": 3,
+      "subagent_stop_count": 3,
+      "first_event_ts": "2026-03-16T02:32:05.611000+00:00",
+      "last_event_ts": "2026-03-16T05:44:41.887000+00:00",
+      "duration_minutes": 192,
+      "active_minutes": 158,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 53,
+      "Read": 28,
+      "Edit": 10,
+      "Agent": 3,
+      "Glob": 2,
+      "Skill": 2,
+      "Write": 1,
+      "ToolSearch": 1,
+      "mcp__playwright__browser_navigate": 1,
+      "mcp__playwright__browser_evaluate": 1
+    },
+    "file_paths": {
+      "read": [
+        "/Users/davidcruwys/dev/ad/apps/angeleye/scripts/start.sh",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/services/registry.service.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/shared/src/angeleye.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/routes/hooks.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/services/backfill.service.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/routes/backfill.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/routes/sessions.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/routes/workspaces.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/client/src/views/ObserverView.tsx",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/.env.example",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/index.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/client/src/views/OrganiserView.tsx",
+        "/private/tmp/claude-501/-Users-davidcruwys-dev-ad-apps-angeleye/1505eb5a-dc61-4313-97f7-9b433e1257c9/tasks/af05941abc94fb514.output",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/BACKLOG.md"
+      ],
+      "write": ["/Users/davidcruwys/dev/ad/apps/angeleye/scripts/start.sh"],
+      "edit": [
+        "/Users/davidcruwys/dev/ad/apps/angeleye/client/src/views/ObserverView.tsx",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/BACKLOG.md"
+      ]
+    },
+    "bash_commands_sample": [
+      "lsof -i :5050 | grep LISTEN",
+      "kill 33326",
+      "chmod +x /Users/davidcruwys/dev/ad/apps/angeleye/scripts/start.sh",
+      "ls /Users/davidcruwys/dev/ad/apps/angeleye/data 2>/dev/null || echo \"NO DATA DIR\"",
+      "ls ~/.claude/angeleye 2>/dev/null && echo \"EXISTS\" || echo \"NO ANGELEYE DIR\"",
+      "cat ~/.claude/angeleye/registry.json | python3 -c \"import json,sys; d=json.load(sys.stdin); print(f'Entry count: {len(d)}'); print('Sample keys:', list(d.keys())[:3] if d else 'EMPTY')\"",
+      "ls ~/.claude/angeleye/sessions/ | wc -l && ls ~/.claude/angeleye/archive/ | wc -l",
+      "ls ~/.claude/projects/ | head -5 && ls ~/.claude/projects/ | wc -l",
+      "cat ~/.claude/settings.json | python3 -c \"import json,sys; d=json.load(sys.stdin); hooks=d.get('hooks',{}); print(json.dumps(hooks, indent=2))\" 2>/dev/null || echo \"No settings.json or no hooks\"",
+      "cat ~/.claude/angeleye/registry.json | python3 -c \"\nimport json,sys\nd=json.load(sys.stdin)\n# Sample first entry to see structure\nif d:\n    first_key = list(d.keys())[0]\n    print('Sample entry:')\n    print(json.dumps(d[first_key], indent=2))\n    print()\n    # Count by status\n    statuses = {}\n    fo"
+    ],
+    "first_real_prompt": {
+      "text": "Why did this fail? \u279c  angeleye git:(main) \u2717 ./scripts/start.sh\n================================================\nAppyStack Template - Development Server\n================================================\n\nBuilding shared types...\n\n> @appystack/shared@0.1.0 build\n> tsc\n\n\nStarting dev server (client: 5500, server: 5501) via Overmind...\n  overmind connect client  \u2014 attach to client logs\n  overmind connect server  \u2014 attach to server logs\n  overmind stop            \u2014 stop all processes\n\nsystem | Tmux so",
+      "full_length": 1844,
+      "ts": "2026-03-16T02:32:05.611Z"
+    },
+    "skill_invocations": [
+      {
+        "keys": ["skill"]
+      },
+      {
+        "keys": ["skill"]
+      }
+    ],
+    "subagents": [
+      {
+        "agent_id": "a4692171c1c06860d",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-16T02:42:38.087Z",
+        "stopped_at": "2026-03-16T02:45:41.636Z"
+      },
+      {
+        "agent_id": "af05941abc94fb514",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-16T03:58:53.537Z",
+        "stopped_at": "2026-03-16T03:59:59.180Z"
+      },
+      {
+        "agent_id": "ac19ce1b0013b45bd",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-16T03:59:04.896Z",
+        "stopped_at": "2026-03-16T04:00:12.425Z"
+      }
+    ],
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false,
+        "stop_ratio": 0.17
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 2
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": "/Users/davidcruwys/dev/ad/apps/angeleye",
+      "cwd_reliable": true,
+      "edit_write_count": 3
+    }
+  },
+  {
+    "session_id": "03127725-f0c7-411b-9584-5e8b84675487",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-03127725-f0c7-411b-9584-5e8b84675487.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 108,
+      "user_prompt_count": 18,
+      "tool_use_count": 90,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-11T02:03:41.647000+00:00",
+      "last_event_ts": "2026-03-11T04:50:40.415000+00:00",
+      "duration_minutes": 166,
+      "active_minutes": 85,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-11T03:11:09.927000+00:00",
+          "end": "2026-03-11T04:32:58.491000+00:00",
+          "gap_minutes": 81
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 55,
+      "Read": 12,
+      "Edit": 12,
+      "Agent": 4,
+      "Glob": 3,
+      "Write": 2,
+      "Grep": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "What do you know about my brand? What do you know about my skill community? What do you know about my content pillars? What do you know about all the repositories that are managed, the applications I'm managing? Can I get you to go deeper across everything related to me, the content creator known as AppyDave? That includes looking into the agentic OS as well. \n\nAnd I want you to think of it from the point of view that I'm probably going to need to start making information available to people. \n\n",
+      "full_length": 758,
+      "ts": "2026-03-11T02:03:41.647Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "1b4cb19a-2c2c-486f-844c-9996b27dbd3b",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-1b4cb19a-2c2c-486f-844c-9996b27dbd3b.jsonl",
+    "cwd": "/Users/davidcruwys/dev/video-projects/v-appydave",
+    "shape": {
+      "event_count": 101,
+      "user_prompt_count": 14,
+      "tool_use_count": 87,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-19T01:27:15.153000+00:00",
+      "last_event_ts": "2026-02-19T11:17:50.447000+00:00",
+      "duration_minutes": 590,
+      "active_minutes": 126,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-19T02:57:04.171000+00:00",
+          "end": "2026-02-19T10:40:44.022000+00:00",
+          "gap_minutes": 463
+        }
+      ]
+    },
+    "tools": {
+      "Read": 21,
+      "Bash": 15,
+      "TaskUpdate": 13,
+      "Task": 8,
+      "TaskCreate": 8,
+      "Edit": 8,
+      "Write": 8,
+      "Glob": 3,
+      "Skill": 2,
+      "TaskList": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "refresh your understanding of poem-core, poem-app and @poem/ folders and give me summary on each",
+      "full_length": 96,
+      "ts": "2026-02-19T01:27:15.153Z"
+    },
+    "skill_invocations": [{}, {}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": true,
+        "count": 1
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 3
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "2238b9f1-d4c3-49db-a74d-db8312a8d61f",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-2238b9f1-d4c3-49db-a74d-db8312a8d61f.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/appystack",
+    "shape": {
+      "event_count": 72,
+      "user_prompt_count": 15,
+      "tool_use_count": 57,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-09T04:50:55.787000+00:00",
+      "last_event_ts": "2026-03-10T02:35:41.982000+00:00",
+      "duration_minutes": 1304,
+      "active_minutes": 49,
+      "idle_gaps_over_1h": 2,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-09T05:31:17.974000+00:00",
+          "end": "2026-03-10T00:38:43.923000+00:00",
+          "gap_minutes": 1147
+        },
+        {
+          "start": "2026-03-10T00:45:12.354000+00:00",
+          "end": "2026-03-10T02:32:55.287000+00:00",
+          "gap_minutes": 107
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 23,
+      "Read": 13,
+      "Edit": 9,
+      "Write": 6,
+      "Skill": 3,
+      "ToolSearch": 2,
+      "Agent": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Two questions about AppyStack. Can you, using the installer, install into a directory that already exists? The reason I'm asking is that I've got this folder   \u279c  ~/dev/ad/apps/deckhand [12%]It's already pre-configured with a couple of files, but they're mostly documentation. I want to build the application here, and I'm not sure whether I'm meant to move them out and start again or whether I can just install straight into it.",
+      "full_length": 430,
+      "ts": "2026-03-09T04:50:55.787Z"
+    },
+    "skill_invocations": [{}, {}, {}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "21d6ffaf-30ec-4a34-bdbf-0450be5c583f",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-21d6ffaf-30ec-4a34-bdbf-0450be5c583f.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/signal-studio",
+    "shape": {
+      "event_count": 33,
+      "user_prompt_count": 6,
+      "tool_use_count": 27,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-04T05:11:27.102000+00:00",
+      "last_event_ts": "2026-03-04T06:30:30.898000+00:00",
+      "duration_minutes": 79,
+      "active_minutes": 21,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Glob": 8,
+      "Read": 6,
+      "Edit": 5,
+      "Bash": 5,
+      "Write": 2,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I am about to give you a bunch of feedback from Angela. She may actually have other feedback in a document, but this is also useful. \n\nDid we recently get a document from Angela? ",
+      "full_length": 179,
+      "ts": "2026-03-04T05:11:27.102Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 3
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "13d25fdf-7420-4b25-9d33-349f4eca4d01",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-13d25fdf-7420-4b25-9d33-349f4eca4d01.jsonl",
+    "cwd": "/Users/davidcruwys/dev/video-projects/v-voz",
+    "shape": {
+      "event_count": 26,
+      "user_prompt_count": 9,
+      "tool_use_count": 17,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-18T00:41:39.089000+00:00",
+      "last_event_ts": "2026-02-18T01:19:44.638000+00:00",
+      "duration_minutes": 38,
+      "active_minutes": 38,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Task": 6,
+      "Bash": 5,
+      "Write": 2,
+      "Edit": 2,
+      "Grep": 1,
+      "Read": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I've just done a git pull, and a whole lot of files have been changed. I'm going to give you a list of the files. I understand the brand strategist and the git leaks. In fact, I think I understand the first five files, but I'm not sure why the rest of the files changed. Can you run some background agents and look at each file and just tell me what I need to know about the changes, whether I need to be worried about them or whether they're okay? \n\n\n.claude/commands/voz/byron-brand-strategist.md  ",
+      "full_length": 6229,
+      "ts": "2026-02-18T00:41:39.089Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": true,
+        "first_prompt_length": 6229,
+        "short_prompt_ratio": 0.62
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "8447409a-666b-4d52-aa56-4a6242b72f13",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-8447409a-666b-4d52-aa56-4a6242b72f13.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/appydave-plugins",
+    "shape": {
+      "event_count": 15,
+      "user_prompt_count": 5,
+      "tool_use_count": 10,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-27T14:58:10.356000+00:00",
+      "last_event_ts": "2026-02-27T15:13:06.185000+00:00",
+      "duration_minutes": 14,
+      "active_minutes": 14,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Edit": 5,
+      "Read": 3,
+      "Bash": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "what do you know about our ralphy loop",
+      "full_length": 38,
+      "ts": "2026-02-27T14:58:10.356Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "885eb51c-8fe7-468b-a435-142b7f09c4a6",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-885eb51c-8fe7-468b-a435-142b7f09c4a6.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps",
+    "shape": {
+      "event_count": 5,
+      "user_prompt_count": 1,
+      "tool_use_count": 1,
+      "stop_count": 1,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-17T01:18:53.877000+00:00",
+      "last_event_ts": "2026-03-17T01:19:43.725000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [
+      "cd /Users/davidcruwys/dev/ad/apps/appystack && git branch -a 2>/dev/null | head -30"
+    ],
+    "first_real_prompt": {
+      "text": "Do we have a branch devoted to Appy stask",
+      "full_length": 41,
+      "ts": "2026-03-17T01:19:01.642Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  }
+]

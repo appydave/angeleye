@@ -422,3 +422,18 @@ Not all waves are the same. The coordinator should identify which type each wave
 - **Corrective followup session chain**: User returns to fix Claude's prior mistake. Frustration + destructive cleanup = new session_chain type.
 - **Micro bucket exhausted**: All 5 remaining micro sessions consumed. Wave 8 will have 0 micro sessions.
 - **~155 subtypes across 15+ parent types from 268 sessions**.
+
+### Wave 8 (2026-03-23)
+
+- **BUILD accuracy ~25% (20/79)**: Consistent with waves 6-7. Accuracy scales with session complexity.
+- **Friction predicates P13-P16 validated**: P15 (buggy_output) most common (9/79), P13 (misunderstood_request) 8/79, P14 (wrong_approach) 7/79, P16 (excessive_changes) 2/79. All four add signal beyond binary P02. Promote to permanent predicate set.
+- **P13-P14 co-occurrence in handover sessions**: Literal instructions followed but broader context missed — distinct failure mode from buggy code.
+- **"Context poisoning" anti-pattern**: Stale/aspirational docs mislead Claude into building to docs rather than code. Named by user.
+- **Plan-paste-then-execute workflow**: 5K-86KB context pastes as session openers. Deviation from explicit plan causes severe frustration.
+- **Bidirectional confusion pattern**: Both user and Claude co-create a misunderstanding. Harder to detect than unilateral P13.
+- **Playwright semantic role #5**: web_scraping_for_knowledge (produces durable brain artifacts, distinct from external_research).
+- **4+ concurrent session pairs confirmed**: Automation candidate for AngelEye conflict detection.
+- **Record extremes**: 21-day idle gap (longest), 86KB context paste (largest), live stakeholder session.
+- **New voice artifacts**: "Ralph William"=Ralphy, "stask"=stack, plus 5 more.
+- **Discovery rate 0.70/session**: ~55 new subtypes from 79 sessions. Not declining at 347 sessions deep.
+- **~210+ subtypes across 15+ parent types from 347 sessions**.

@@ -13,9 +13,119 @@
 
 ## Summary
 
-- Total: 268 | Complete: 268 | In Progress: 0 | Pending: 0 | Failed: 0
+- Total: 347 | Complete: 347 | In Progress: 0 | Pending: 0 | Failed: 0
 
 ## In Progress
+
+### Wave 8 — 79 sessions across 9 agents (20 distinct projects, /insights-informed predicates)
+
+**Improvements over wave 7**: Micro sessions back in rotation (120 available), all 11 heavy sessions selected (rare/high-value), new predicates P13-P16 (friction decomposition) trialled from /insights comparison.
+
+**Agent W8-01** — 9 sessions | brains(2), signal-studio(1), app.supportsignal.com.au(1), appystack(1), kgems(1), flihub(1), ad(1), flivoice(1)
+
+- [x] W8-79c7317b — `79c7317b-2efb-49cd-806f-aeb076ddad30` signal-studio / heavy
+- [x] W8-042f3f13 — `042f3f13-98ae-4c86-8d01-00abffd54910` app.supportsignal.com.au / moderate
+- [x] W8-085f085c — `085f085c-d4a5-4ce5-b7d2-413ef98b24c5` brains / moderate
+- [x] W8-cfc63f23 — `cfc63f23-ba4b-4467-9522-4d3d8e86d550` appystack / moderate
+- [x] W8-895ef55e — `895ef55e-5dfc-49dc-ba35-f6327f796a00` kgems / moderate
+- [x] W8-72b40144 — `72b40144-7a61-4311-8104-943d5deee011` flihub / light
+- [x] W8-0c47ba35 — `0c47ba35-bbdc-4020-9c41-40a954246c30` brains / light
+- [x] W8-379ecf4c — `379ecf4c-ce3d-4484-b08d-19f270d0e756` ad / light
+- [x] W8-0bd1e0d7 — `0bd1e0d7-3bc9-45a0-bd02-6e87aa4604e9` flivoice / micro
+
+**Agent W8-02** — 8 sessions | signal-studio(2), flihub(1), brains(1), prompt.supportsignal.com.au(1), v-appydave(1), voz(1), poem(1)
+
+- [x] W8-0e6fe5b8 — `0e6fe5b8-875e-47b8-b2ab-9bbd063ca99b` signal-studio / heavy
+- [x] W8-849e7e62 — `849e7e62-7848-44d7-8546-3cb3cfe5762c` flihub / moderate
+- [x] W8-12c159ac — `12c159ac-6d56-4858-9a6b-f0c9b6c5e964` signal-studio / moderate
+- [x] W8-0115fcb4 — `0115fcb4-66af-4700-8c2c-6747e6108143` brains / moderate
+- [x] W8-31ffb14e — `31ffb14e-e775-434b-821b-ad275f4df570` prompt.supportsignal.com.au / moderate
+- [x] W8-5f04c048 — `5f04c048-f051-445d-80e1-7cc077696fe4` v-appydave / light
+- [x] W8-7115c088 — `7115c088-d7b6-4278-a916-b5095c91e7fc` voz / light
+- [x] W8-e53117f9 — `e53117f9-1b00-4848-9b8b-4cb8a452b4d1` poem / micro
+
+**Agent W8-03** — 9 sessions | appystack(2), digital-stage-summit-2026(1), poem(1), deckhand(1), signal-studio(1), angeleye(1), prompt.supportsignal.com.au(1), ad(1)
+
+- [x] W8-05ff3ec4 — `05ff3ec4-1a63-4386-848e-45738a1de454` digital-stage-summit-2026 / heavy
+- [x] W8-02a273f8 — `02a273f8-a3b3-4570-b6bf-f4d674e749bc` poem / moderate
+- [x] W8-1af0ff41 — `1af0ff41-d66d-4f96-bdf9-35d74473b7bb` deckhand / moderate
+- [x] W8-1f948dc1 — `1f948dc1-bca3-4829-8945-3a7bbab57881` appystack / moderate
+- [x] W8-170f2ec1 — `170f2ec1-bc96-452d-8129-269fac13be2e` signal-studio / moderate
+- [x] W8-0ae7df7c — `0ae7df7c-19de-455d-8156-d06335136e2c` appystack / light
+- [x] W8-651ffc0f — `651ffc0f-ca7c-4898-8cdb-af7b4bbb9d13` angeleye / light
+- [x] W8-074e257f — `074e257f-6ff9-4db1-81a5-a1d27cc5f6bb` prompt.supportsignal.com.au / light
+- [x] W8-9c0419b7 — `9c0419b7-7f35-4c14-8f63-732d40191990` ad / micro
+
+**Agent W8-04** — 9 sessions | flideck(1), angeleye(1), brains(1), v-appydave(1), appystack(1), signal-studio(1), v-voz(1), appydave-plugins(1), apps(1)
+
+- [x] W8-557fd04a — `557fd04a-7cfc-492f-8b1e-693fbd5c521a` flideck / heavy
+- [x] W8-68c33d9f — `68c33d9f-b0da-41c7-97e8-001689315cd8` angeleye / moderate
+- [x] W8-03127725 — `03127725-f0c7-411b-9584-5e8b84675487` brains / moderate
+- [x] W8-1b4cb19a — `1b4cb19a-2c2c-486f-844c-9996b27dbd3b` v-appydave / moderate
+- [x] W8-2238b9f1 — `2238b9f1-d4c3-49db-a74d-db8312a8d61f` appystack / moderate
+- [x] W8-21d6ffaf — `21d6ffaf-30ec-4a34-bdbf-0450be5c583f` signal-studio / light
+- [x] W8-13d25fdf — `13d25fdf-7420-4b25-9d33-349f4eca4d01` v-voz / light
+- [x] W8-8447409a — `8447409a-666b-4d52-aa56-4a6242b72f13` appydave-plugins / light
+- [x] W8-885eb51c — `885eb51c-8fe7-468b-a435-142b7f09c4a6` apps / micro
+
+**Agent W8-05** — 9 sessions | prompt.supportsignal.com.au(3), angeleye(1), supportsignal(1), flihub(1), brains(1), signal-studio(1), fligen(1)
+
+- [x] W8-c9d68534 — `c9d68534-3304-4f4c-af64-ed9cf364af7a` prompt.supportsignal.com.au / heavy
+- [x] W8-26e20d70 — `26e20d70-6110-444e-bd22-807b1e28b628` angeleye / moderate
+- [x] W8-95f33c73 — `95f33c73-667b-4a98-8ee0-d19b28a13866` supportsignal / moderate
+- [x] W8-0057da96 — `0057da96-30b5-4ec3-9ceb-c0eea49826d1` prompt.supportsignal.com.au / moderate
+- [x] W8-1793e80e — `1793e80e-f324-4202-8d64-cd645764d234` flihub / moderate
+- [x] W8-027ffbfe — `027ffbfe-af16-434c-9e5a-d907c32e57d5` prompt.supportsignal.com.au / light
+- [x] W8-0b728ed0 — `0b728ed0-6340-4369-b58e-a0289e6b4e33` brains / light
+- [x] W8-41346d6a — `41346d6a-5a9a-4af8-9e0f-26b5edcff7d4` signal-studio / light
+- [x] W8-0f7ea98d — `0f7ea98d-3d3b-450e-af34-54c76b16a92b` fligen / micro
+
+**Agent W8-06** — 9 sessions | app.supportsignal.com.au(3), flivideo(1), signal-studio(1), v-appydave(1), supportsignal(1), storyline-app(1), ad(1)
+
+- [x] W8-3eedefa5 — `3eedefa5-bf46-41b5-9d04-efecbabfbeba` flivideo / heavy
+- [x] W8-11553e41 — `11553e41-d6bb-407f-8f03-3f6119edd8d5` app.supportsignal.com.au / moderate
+- [x] W8-1cd5963d — `1cd5963d-c263-4a80-a8bb-691d7ea4a3a6` signal-studio / moderate
+- [x] W8-53e79368 — `53e79368-2d35-44e5-9bca-2188911c41fd` v-appydave / moderate
+- [x] W8-959a8309 — `959a8309-b887-4393-8ef9-76763cbc551a` app.supportsignal.com.au / moderate
+- [x] W8-5a04f602 — `5a04f602-d9df-4583-b132-663037e94448` app.supportsignal.com.au / light
+- [x] W8-07cdb085 — `07cdb085-b38f-4cc4-ba06-c24ff86967d5` supportsignal / light
+- [x] W8-5cc3079e — `5cc3079e-25cd-4a0c-bdd7-a051ea9aa68c` storyline-app / light
+- [x] W8-51c6e510 — `51c6e510-6464-4e24-b191-d9636b142980` ad / micro
+
+**Agent W8-07** — 8 sessions | signal-studio(1), deckhand(1), angeleye(1), klueless(1), prompt.supportsignal.com.au(1), v-appydave(1), appydave-plugins(1), v-aitldr(1)
+
+- [x] W8-7b2157e9 — `7b2157e9-6e98-4e56-9d3d-6b16028024a0` signal-studio / heavy
+- [x] W8-e3c9e049 — `e3c9e049-46b5-4537-93e0-8cda15c3f513` deckhand / heavy
+- [x] W8-201aec50 — `201aec50-56a8-449c-b619-8f8dafe71fe2` angeleye / moderate
+- [x] W8-0248f3ad — `0248f3ad-a518-4aa4-98cd-047ccbcfd3de` klueless / moderate
+- [x] W8-0daf8585 — `0daf8585-2151-4a8c-ae36-3380185e2c1e` prompt.supportsignal.com.au / moderate
+- [x] W8-5309922c — `5309922c-ffc1-4e64-b54e-c574b92bb471` v-appydave / moderate
+- [x] W8-78dd3b7f — `78dd3b7f-be2f-4341-b03f-4b0ddd5c0de6` appydave-plugins / light
+- [x] W8-e7b6060d — `e7b6060d-b0a6-481a-b1fd-c33a9875372f` v-aitldr / micro
+
+**Agent W8-08** — 9 sessions | brains(2), flihub(2), appystack(2), app.supportsignal.com.au(1), angeleye(1), flideck(1)
+
+- [x] W8-3fa5e03b — `3fa5e03b-f5ef-4f44-8a48-13251a9e4e99` brains / heavy
+- [x] W8-61cb8a2b — `61cb8a2b-0bf3-43e6-ac2b-ac8836fd73de` flihub / moderate
+- [x] W8-1258366a — `1258366a-99ab-422e-9fee-251dda4e9521` brains / moderate
+- [x] W8-47015dde — `47015dde-cb28-44b4-a81d-fdd8052eb844` flihub / moderate
+- [x] W8-06c69d58 — `06c69d58-0402-4f73-90cf-5c18620a1f2c` appystack / moderate
+- [x] W8-19e974c6 — `19e974c6-0021-4d1c-b477-91a26244a49c` appystack / light
+- [x] W8-47852ec4 — `47852ec4-6368-420d-9e40-70852d34ca75` app.supportsignal.com.au / light
+- [x] W8-2faac85b — `2faac85b-e8f8-43d0-b342-8d9035c0283e` angeleye / light
+- [x] W8-4666a543 — `4666a543-74f6-4bc8-82b3-cf5652236737` flideck / micro
+
+**Agent W8-09** — 9 sessions | brains(2), supportsignal-v2-planning(1), deckhand(1), app.supportsignal.com.au(1), flihub(1), poem(1), video-projects(1), voz(1)
+
+- [x] W8-8e8dac5b — `8e8dac5b-6c14-4f83-9159-da97e6b71a71` brains / heavy
+- [x] W8-febc6280 — `febc6280-cd80-4512-b1da-6de160ebf762` brains / heavy
+- [x] W8-9fe901a0 — `9fe901a0-981f-49d4-aee4-343aec48fcf1` supportsignal-v2-planning / moderate
+- [x] W8-0af58053 — `0af58053-907e-4fe5-b507-893ea68ade6d` deckhand / moderate
+- [x] W8-392ad41e — `392ad41e-1999-4706-bc94-f1cda41058d9` app.supportsignal.com.au / moderate
+- [x] W8-bc7f7f7a — `bc7f7f7a-f402-43ba-9e3e-51d615473002` flihub / light
+- [x] W8-e726cab1 — `e726cab1-bd0d-400a-a5d1-cbae1dbe0574` poem / light
+- [x] W8-1b0559b7 — `1b0559b7-e299-486a-aa73-6ee358d0028c` video-projects / light
+- [x] W8-a22e8c1a — `a22e8c1a-6457-408c-a0dd-10d1fe18c5ce` voz / micro
 
 ## Pending
 

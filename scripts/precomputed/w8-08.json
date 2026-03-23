@@ -1,0 +1,863 @@
+[
+  {
+    "session_id": "3fa5e03b-f5ef-4f44-8a48-13251a9e4e99",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-3fa5e03b-f5ef-4f44-8a48-13251a9e4e99.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 255,
+      "user_prompt_count": 13,
+      "tool_use_count": 208,
+      "stop_count": 13,
+      "subagent_start_count": 10,
+      "subagent_stop_count": 10,
+      "first_event_ts": "2026-03-22T05:26:44.093000+00:00",
+      "last_event_ts": "2026-03-22T05:50:11.684000+00:00",
+      "duration_minutes": 23,
+      "active_minutes": 23,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 68,
+      "Edit": 65,
+      "Read": 60,
+      "Agent": 10,
+      "Grep": 2,
+      "Glob": 2,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [
+        "/Users/davidcruwys/dev/ad/brains/bmad-method/INDEX.md",
+        "/Users/davidcruwys/dev/ad/brains/bmad-method/SOURCES.md",
+        "/Users/davidcruwys/dev/upstream/repos/BMAD-METHOD/CHANGELOG.md",
+        "/Users/davidcruwys/dev/upstream/repos/BMAD-METHOD/README.md",
+        "/Users/davidcruwys/dev/upstream/repos/BMAD-METHOD/docs/explanation/quick-dev.md",
+        "/Users/davidcruwys/dev/upstream/repos/BMAD-METHOD/docs/how-to/customize-bmad.md",
+        "/Users/davidcruwys/dev/upstream/repos/BMAD-METHOD/AGENTS.md",
+        "/Users/davidcruwys/dev/ad/brains/bmad-method/v4/v4-agents-reference.md",
+        "/Users/davidcruwys/dev/ad/brains/bmad-method/v4/v4-fundamentals.md",
+        "/Users/davidcruwys/dev/ad/brains/bmad-method/v4/v4-workflows.md",
+        "/Users/davidcruwys/dev/ad/brains/bmad-method/v6/v6-agents-reference.md",
+        "/Users/davidcruwys/dev/ad/brains/bmad-method/v6/v6-fundamentals.md",
+        "/Users/davidcruwys/dev/ad/brains/bmad-method/sources/bmad-v4-research/bmad-v4-workflow-reference.md",
+        "/Users/davidcruwys/dev/upstream/repos/BMAD-METHOD/src/bmm-skills/2-plan-workflows/bmad-agent-pm/SKILL.md",
+        "/Users/davidcruwys/dev/upstream/repos/BMAD-METHOD/src/bmm-skills/4-implementation/bmad-agent-dev/SKILL.md",
+        "/Users/davidcruwys/dev/ad/brains/bmad-method/sources/bmad-v4-research/v4-research-summary.md",
+        "/Users/davidcruwys/dev/ad/brains/bmad-method/sources/bmad-v4-research/bmad-v4-index.md",
+        "/Users/davidcruwys/dev/upstream/repos/BMAD-METHOD/src/bmm-skills/2-plan-workflows/bmad-agent-pm/bmad-skill-manifest.yaml",
+        "/Users/davidcruwys/dev/upstream/repos/BMAD-METHOD/src/bmm-skills/2-plan-workflows/bmad-create-prd/workflow.md",
+        "/Users/davidcruwys/dev/upstream/repos/BMAD-METHOD/src/bmm-skills/2-plan-workflows/bmad-create-prd/steps-c/step-01-init.md"
+      ],
+      "write": [],
+      "edit": [
+        "/Users/davidcruwys/dev/ad/brains/bmad-method/v6/v6-fundamentals.md",
+        "/Users/davidcruwys/dev/ad/brains/bmad-method/v6/v6-workflows.md",
+        "/Users/davidcruwys/dev/ad/brains/bmad-method/v6/v6-agents-reference.md",
+        "/Users/davidcruwys/dev/ad/brains/bmad-method/INDEX.md",
+        "/Users/davidcruwys/dev/ad/brains/bmad-method/SOURCES.md"
+      ]
+    },
+    "bash_commands_sample": [
+      "ls -d ~/dev/upstream/repos/BMAD-METHOD 2>/dev/null || find ~/dev -maxdepth 4 -name \"BMAD-METHOD\" -type d 2>/dev/null | head -5",
+      "cd ~/dev/upstream/repos/BMAD-METHOD && git checkout main 2>&1 && git pull 2>&1",
+      "cd ~/dev/upstream/repos/BMAD-METHOD && git log --oneline cc300b39..e3f935fd | head -40",
+      "cd ~/dev/upstream/repos/BMAD-METHOD && git log --oneline cc300b39..e3f935fd | wc -l",
+      "ls /Users/davidcruwys/dev/upstream/repos/BMAD-METHOD/",
+      "ls /Users/davidcruwys/dev/upstream/repos/BMAD-METHOD/src/ 2>/dev/null || echo \"NO src/ DIR\"",
+      "ls /Users/davidcruwys/dev/upstream/repos/BMAD-METHOD/src/bmm-skills/ && echo \"---\" && ls /Users/davidcruwys/dev/upstream/repos/BMAD-METHOD/src/core-skills/",
+      "ls /Users/davidcruwys/dev/upstream/repos/BMAD-METHOD/docs/",
+      "ls /Users/davidcruwys/dev/upstream/repos/BMAD-METHOD/.ai-notes/ 2>/dev/null || echo \"NO .ai-notes/ DIR\"",
+      "ls /Users/davidcruwys/dev/upstream/repos/BMAD-METHOD/src/bmm-skills/1-analysis/ && echo \"---\" && ls /Users/davidcruwys/dev/upstream/repos/BMAD-METHOD/src/bmm-skills/2-plan-workflows/ && echo \"---\" && ls /Users/davidcruwys/dev/upstream/repos/BMAD-METHOD/src/bmm-skills/3-solutioning/ && echo \"---\" && "
+    ],
+    "first_real_prompt": {
+      "text": "/focus bmad-v6",
+      "full_length": 14,
+      "ts": "2026-03-22T05:26:50.252Z"
+    },
+    "skill_invocations": [
+      {
+        "keys": ["skill"]
+      }
+    ],
+    "subagents": [
+      {
+        "agent_id": "aeace04c3d0061c5d",
+        "agent_type": "abridge",
+        "started_at": "2026-03-22T05:28:15.859Z",
+        "stopped_at": "2026-03-22T05:28:35.136Z"
+      },
+      {
+        "agent_id": "af8e27eb661384193",
+        "agent_type": "abridge",
+        "started_at": "2026-03-22T05:28:23.125Z",
+        "stopped_at": "2026-03-22T05:29:24.939Z"
+      },
+      {
+        "agent_id": "a8dee80045e8dc0e1",
+        "agent_type": "abridge",
+        "started_at": "2026-03-22T05:30:40.879Z",
+        "stopped_at": "2026-03-22T05:31:15.591Z"
+      },
+      {
+        "agent_id": "a64a3763abdc29a78",
+        "agent_type": "Explore",
+        "started_at": "2026-03-22T05:31:37.790Z",
+        "stopped_at": "2026-03-22T05:34:27.160Z"
+      },
+      {
+        "agent_id": "ae8dd0702e5a7b623",
+        "agent_type": "Explore",
+        "started_at": "2026-03-22T05:31:45.687Z",
+        "stopped_at": "2026-03-22T05:34:07.026Z"
+      },
+      {
+        "agent_id": "a3fa038d44b1059f5",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-22T05:36:24.617Z",
+        "stopped_at": "2026-03-22T05:38:38.842Z"
+      },
+      {
+        "agent_id": "a79a5a1338828a596",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-22T05:36:33.483Z",
+        "stopped_at": "2026-03-22T05:37:41.823Z"
+      },
+      {
+        "agent_id": "a566ee3cd0bf70c1d",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-22T05:36:44.722Z",
+        "stopped_at": "2026-03-22T05:40:36.425Z"
+      },
+      {
+        "agent_id": "ad4e87d5a3bf33673",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-22T05:36:51.751Z",
+        "stopped_at": "2026-03-22T05:39:18.931Z"
+      },
+      {
+        "agent_id": "a75ce06346c292a06",
+        "agent_type": "Explore",
+        "started_at": "2026-03-22T05:48:10.580Z",
+        "stopped_at": "2026-03-22T05:49:52.942Z"
+      }
+    ],
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false,
+        "stop_ratio": 0.05
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 2
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": "/Users/davidcruwys/dev/ad/brains/bmad-method",
+      "cwd_reliable": true,
+      "edit_write_count": 5
+    }
+  },
+  {
+    "session_id": "61cb8a2b-0bf3-43e6-ac2b-ac8836fd73de",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-61cb8a2b-0bf3-43e6-ac2b-ac8836fd73de.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/flivideo/flihub",
+    "shape": {
+      "event_count": 199,
+      "user_prompt_count": 9,
+      "tool_use_count": 190,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-13T09:40:08.473000+00:00",
+      "last_event_ts": "2026-02-13T14:34:36.895000+00:00",
+      "duration_minutes": 294,
+      "active_minutes": 56,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-13T11:50:55.387000+00:00",
+          "end": "2026-02-13T14:08:00.045000+00:00",
+          "gap_minutes": 137
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 127,
+      "Edit": 23,
+      "Write": 18,
+      "Read": 16,
+      "Grep": 4,
+      "Task": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "\u23fa \u2705 Background agent completed! The replication briefs are ready.\n\n  ---\n  \ud83d\udcc4 Document Created\n\n  Location: /Users/davidcruwys/dev/ad/flivideo/docs/replication-briefs-for-remaining-apps.md\n\n  ---\n  \ud83c\udfaf The 3 Apps Ready for Replication\n\n  1. FliHub - /Users/davidcruwys/dev/ad/flivideo/flihub\n\n  - Ports: 5101 (server), Vite dev (client)\n  - Status: No tooling configured yet\n  - Structure: npm workspaces (client, server, shared)\n\n  2. Storyline App - /Users/davidcruwys/dev/ad/flivideo/storyline-app\n\n ",
+      "full_length": 2152,
+      "ts": "2026-02-13T09:40:08.473Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": true,
+        "count": 1
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 3
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false,
+        "first_prompt_length": 2152,
+        "short_prompt_ratio": 0.5
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "1258366a-99ab-422e-9fee-251dda4e9521",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-1258366a-99ab-422e-9fee-251dda4e9521.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 130,
+      "user_prompt_count": 28,
+      "tool_use_count": 102,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-04T07:12:12.909000+00:00",
+      "last_event_ts": "2026-03-10T02:34:43.334000+00:00",
+      "duration_minutes": 8362,
+      "active_minutes": 94,
+      "idle_gaps_over_1h": 7,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-04T07:28:00.890000+00:00",
+          "end": "2026-03-04T10:27:10.447000+00:00",
+          "gap_minutes": 179
+        },
+        {
+          "start": "2026-03-04T10:52:14.342000+00:00",
+          "end": "2026-03-04T13:39:44.028000+00:00",
+          "gap_minutes": 167
+        },
+        {
+          "start": "2026-03-04T14:32:44.990000+00:00",
+          "end": "2026-03-04T16:00:21.941000+00:00",
+          "gap_minutes": 87
+        },
+        {
+          "start": "2026-03-04T16:00:46.396000+00:00",
+          "end": "2026-03-04T17:19:32.666000+00:00",
+          "gap_minutes": 78
+        },
+        {
+          "start": "2026-03-04T17:52:08.507000+00:00",
+          "end": "2026-03-05T00:34:23.276000+00:00",
+          "gap_minutes": 402
+        },
+        {
+          "start": "2026-03-05T00:34:23.276000+00:00",
+          "end": "2026-03-06T05:14:27.812000+00:00",
+          "gap_minutes": 1720
+        },
+        {
+          "start": "2026-03-06T05:14:48.852000+00:00",
+          "end": "2026-03-10T02:33:22.699000+00:00",
+          "gap_minutes": 5598
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 77,
+      "Edit": 9,
+      "Read": 7,
+      "Write": 6,
+      "Skill": 2,
+      "Agent": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I believe Ecamm Live or the new Deckhand application Has information about talking directly to Ecamm Live through the HTTP server. We've documented it today. Do you know what the situation is? ",
+      "full_length": 193,
+      "ts": "2026-03-04T07:12:12.909Z"
+    },
+    "skill_invocations": [{}, {}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": true,
+        "count": 2
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "47015dde-cb28-44b4-a81d-fdd8052eb844",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-47015dde-cb28-44b4-a81d-fdd8052eb844.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/flivideo/flihub",
+    "shape": {
+      "event_count": 97,
+      "user_prompt_count": 10,
+      "tool_use_count": 87,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-16T10:22:11.029000+00:00",
+      "last_event_ts": "2026-02-16T13:27:38.341000+00:00",
+      "duration_minutes": 185,
+      "active_minutes": 31,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-16T10:24:15.444000+00:00",
+          "end": "2026-02-16T12:28:07.901000+00:00",
+          "gap_minutes": 123
+        }
+      ]
+    },
+    "tools": {
+      "Read": 23,
+      "Edit": 22,
+      "Bash": 19,
+      "Grep": 16,
+      "Glob": 3,
+      "Skill": 2,
+      "Task": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Read and tell me what was not done. \n\nPerfect clarification! The DAM integration is in the S3 STAGING section of the new Export/S3\n  tool.\n\n  How You Get Files to Jan (Using DAM):\n\n  The buttons in S3 STAGING section:\n  - [Upload to S3] \u2190 Runs DAM command dam s3-up (sends your edit-1st files to Jan)\n  - [Download from S3] \u2190 Runs DAM command dam s3-down (gets Jan's files back)\n  - [Clean S3] \u2190 Runs DAM command dam s3-cleanup (deletes S3 files)\n\n  The Workflow:\n\n  1. You: Gling exports \u2192 edit-1st ",
+      "full_length": 4661,
+      "ts": "2026-02-16T10:22:11.029Z"
+    },
+    "skill_invocations": [{}, {}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": true,
+        "count": 12
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": true,
+        "first_prompt_length": 4661,
+        "short_prompt_ratio": 0.67
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "06c69d58-0402-4f73-90cf-5c18620a1f2c",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-06c69d58-0402-4f73-90cf-5c18620a1f2c.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/appystack",
+    "shape": {
+      "event_count": 73,
+      "user_prompt_count": 14,
+      "tool_use_count": 59,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-08T14:23:04.772000+00:00",
+      "last_event_ts": "2026-03-08T16:02:54.362000+00:00",
+      "duration_minutes": 99,
+      "active_minutes": 99,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Edit": 16,
+      "Bash": 15,
+      "Agent": 13,
+      "Read": 12,
+      "Grep": 2,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Yeah, I don't think so. \n\n Session Handover\n\n  What was shipped this session\n\n  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n  \u2502                              Item                               \u2502                                   Status                                    \u2502\n  \u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500",
+      "full_length": 5457,
+      "ts": "2026-03-08T14:23:04.772Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false,
+        "first_prompt_length": 5457,
+        "short_prompt_ratio": 0.38
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "19e974c6-0021-4d1c-b477-91a26244a49c",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-19e974c6-0021-4d1c-b477-91a26244a49c.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/appystack",
+    "shape": {
+      "event_count": 36,
+      "user_prompt_count": 3,
+      "tool_use_count": 33,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-15T00:20:12.298000+00:00",
+      "last_event_ts": "2026-03-15T00:29:08.841000+00:00",
+      "duration_minutes": 8,
+      "active_minutes": 8,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 19,
+      "Edit": 6,
+      "Glob": 4,
+      "Read": 4
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I'm just using a skill to create an AppyStack, and it seems like the skill has a lot of challenges, and I don't know what's going on. Can you have a look at this conversation? \n\n \u2590\u259b\u2588\u2588\u2588\u259c\u258c   Claude Code v2.1.76\n\u259d\u259c\u2588\u2588\u2588\u2588\u2588\u259b\u2598  Sonnet 4.6 with medium effort \u00b7 Claude API\n  \u2598\u2598 \u259d\u259d    ~/dev/ad/apps/angeleye\n\n\u276f /appydave:create-appystack\n\n\u23fa Searched for 1 pattern (ctrl+o to expand)\n\n\u23fa Good \u2014 not inside an existing AppyStack project. Now let me read the\n  port registry.\n\n\u23fa Read 1 file (ctrl+o to expand)\n\n\u23fa Po",
+      "full_length": 7319,
+      "ts": "2026-03-15T00:20:12.298Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "47852ec4-6368-420d-9e40-70852d34ca75",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-47852ec4-6368-420d-9e40-70852d34ca75.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
+    "shape": {
+      "event_count": 23,
+      "user_prompt_count": 4,
+      "tool_use_count": 19,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-17T01:51:38.596000+00:00",
+      "last_event_ts": "2026-02-17T02:14:29.992000+00:00",
+      "duration_minutes": 22,
+      "active_minutes": 22,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Task": 6,
+      "Bash": 5,
+      "TaskOutput": 5,
+      "Read": 1,
+      "Grep": 1,
+      "Write": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "What epic are we in? What story are we at? What is previous information about the epic we're on?",
+      "full_length": 96,
+      "ts": "2026-02-17T01:51:38.596Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "2faac85b-e8f8-43d0-b342-8d9035c0283e",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-2faac85b-e8f8-43d0-b342-8d9035c0283e.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/angeleye",
+    "shape": {
+      "event_count": 19,
+      "user_prompt_count": 3,
+      "tool_use_count": 16,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-15T01:20:14.707000+00:00",
+      "last_event_ts": "2026-03-15T01:23:49.681000+00:00",
+      "duration_minutes": 3,
+      "active_minutes": 3,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 7,
+      "Read": 5,
+      "Glob": 3,
+      "Edit": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Why can't I install it:\n /angeleye:install\n\n\n \u2590\u259b\u2588\u2588\u2588\u259c\u258c   Claude Code v2.1.76\n\u259d\u259c\u2588\u2588\u2588\u2588\u2588\u259b\u2598  Sonnet 4.6 with medium effort \u00b7 Claude API\n  \u2598\u2598 \u259d\u259d    ~/dev/ad/apps/angeleye\n\n\u23fa Now let's check if it builds:\n\n\u23fa Bash(npm run typecheck 2>&1 | tail -30)\n  \u23bf \u00a0> @appystack/angeleye@0.1.0 typecheck\n     > npm run typecheck -w shared -w server -w client\n     \u2026 +11 lines (ctrl+o to expand)\n  \u23bf \u00a0(timeout 1m)\n\n\u23fa Clean. Let's start it up to verify visually:\n\n\u23fa Bash(npm run dev 2>&1 &\n      sleep 4 && echo \"started\")\n",
+      "full_length": 32231,
+      "ts": "2026-03-15T01:20:14.707Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "4666a543-74f6-4bc8-82b3-cf5652236737",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-4666a543-74f6-4bc8-82b3-cf5652236737.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/flivideo/flideck",
+    "shape": {
+      "event_count": 1,
+      "user_prompt_count": 1,
+      "tool_use_count": 0,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-15T04:10:42.185000+00:00",
+      "last_event_ts": "2026-02-15T04:10:42.185000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {},
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "What are the hot keys that allow me to go from side to side in FliDeck? I thought it was the left and right arrows. They're not working. I don't know why. ",
+      "full_length": 155,
+      "ts": "2026-02-15T04:10:42.185Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  }
+]

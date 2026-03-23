@@ -1,0 +1,778 @@
+[
+  {
+    "session_id": "3eedefa5-bf46-41b5-9d04-efecbabfbeba",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-3eedefa5-bf46-41b5-9d04-efecbabfbeba.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/flivideo",
+    "shape": {
+      "event_count": 259,
+      "user_prompt_count": 33,
+      "tool_use_count": 226,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-11T11:37:57.239000+00:00",
+      "last_event_ts": "2026-02-13T23:33:48.526000+00:00",
+      "duration_minutes": 3595,
+      "active_minutes": 195,
+      "idle_gaps_over_1h": 5,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-11T11:42:08.006000+00:00",
+          "end": "2026-02-12T07:08:10.434000+00:00",
+          "gap_minutes": 1166
+        },
+        {
+          "start": "2026-02-12T07:15:59.416000+00:00",
+          "end": "2026-02-12T16:05:00.765000+00:00",
+          "gap_minutes": 529
+        },
+        {
+          "start": "2026-02-12T16:40:25.841000+00:00",
+          "end": "2026-02-13T01:23:04.732000+00:00",
+          "gap_minutes": 522
+        },
+        {
+          "start": "2026-02-13T02:10:13.387000+00:00",
+          "end": "2026-02-13T09:27:51.154000+00:00",
+          "gap_minutes": 437
+        },
+        {
+          "start": "2026-02-13T09:34:09.436000+00:00",
+          "end": "2026-02-13T21:58:45.671000+00:00",
+          "gap_minutes": 744
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 121,
+      "Read": 31,
+      "Edit": 30,
+      "Write": 19,
+      "TaskUpdate": 10,
+      "Task": 6,
+      "TaskCreate": 4,
+      "TaskOutput": 2,
+      "TaskList": 1,
+      "Grep": 1,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "what was athis about?\n\n\n\u256d\u2500\u2500\u2500 Claude Code v2.1.38 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256e\n\u2502                                                    \u2502 Recent activity                      \u2502\n\u2502                 Welcome back David!                \u2502 1d ago  @flivoice-prompt.md please \u2026 \u2502\n\u2502                                                    \u2502 1d ago  Why is it so hard to copy t\u2026 \u2502\n\u2502                                                    \u2502 1d ago  can you see: @flivoice-prom\u2026 \u2502\n\u2502     ",
+      "full_length": 20768,
+      "ts": "2026-02-11T11:37:57.239Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": true,
+        "count": 1
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false,
+        "first_prompt_length": 20768,
+        "short_prompt_ratio": 0.25
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "11553e41-d6bb-407f-8f03-3f6119edd8d5",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-11553e41-d6bb-407f-8f03-3f6119edd8d5.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
+    "shape": {
+      "event_count": 194,
+      "user_prompt_count": 12,
+      "tool_use_count": 182,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-17T07:43:19.449000+00:00",
+      "last_event_ts": "2026-02-18T03:53:07.030000+00:00",
+      "duration_minutes": 1209,
+      "active_minutes": 117,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-17T09:02:23.709000+00:00",
+          "end": "2026-02-18T03:15:05.582000+00:00",
+          "gap_minutes": 1092
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 91,
+      "Read": 26,
+      "Edit": 25,
+      "Glob": 12,
+      "TaskOutput": 8,
+      "Write": 7,
+      "Grep": 6,
+      "Task": 5,
+      "TaskStop": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I want you to test CI/CD for the application. When you do it, I want to find out if there's anything blocking CI/CD at the moment and pushing to production. I want you to lean heavily, I think, on the KDD. I think we have a lot of knowledge in there. You're not fixing anything; you're identifying. For now, you're identifying documentation, you're identifying a list of problems, and if you write a file, just put it in a temp file for now. Don't integrate it into our system. ",
+      "full_length": 478,
+      "ts": "2026-02-17T07:43:19.449Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": true,
+        "count": 1
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": true,
+        "count": 6
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "1cd5963d-c263-4a80-a8bb-691d7ea4a3a6",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-1cd5963d-c263-4a80-a8bb-691d7ea4a3a6.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/signal-studio",
+    "shape": {
+      "event_count": 136,
+      "user_prompt_count": 11,
+      "tool_use_count": 125,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-09T09:35:19.960000+00:00",
+      "last_event_ts": "2026-03-09T13:53:17.523000+00:00",
+      "duration_minutes": 257,
+      "active_minutes": 90,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-09T10:36:28.142000+00:00",
+          "end": "2026-03-09T13:23:31.023000+00:00",
+          "gap_minutes": 167
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 54,
+      "Edit": 24,
+      "Read": 23,
+      "Write": 10,
+      "Agent": 9,
+      "Glob": 3,
+      "Grep": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "If I asked you to look at the current state of incident data, because I don't think there is any state truly, then I think the main place you'd look is the app.support.signal, which is probably a smart place to start. I'd like you to understand it from a schema point of view. I also had POEM go and do some work on just noting some data that it had access to that had been part of the work we were doing on running new incident workflows. What I'm essentially trying to come up with at the moment is",
+      "full_length": 4045,
+      "ts": "2026-03-09T09:35:19.960Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": true,
+        "count": 1
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": true,
+        "count": 4
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false,
+        "first_prompt_length": 4045,
+        "short_prompt_ratio": 0.4
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "53e79368-2d35-44e5-9bca-2188911c41fd",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-53e79368-2d35-44e5-9bca-2188911c41fd.jsonl",
+    "cwd": "/Users/davidcruwys/dev/video-projects/v-appydave",
+    "shape": {
+      "event_count": 89,
+      "user_prompt_count": 25,
+      "tool_use_count": 64,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-10T12:35:36.178000+00:00",
+      "last_event_ts": "2026-03-10T15:51:16.170000+00:00",
+      "duration_minutes": 195,
+      "active_minutes": 129,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-10T14:21:32.708000+00:00",
+          "end": "2026-03-10T15:28:05.216000+00:00",
+          "gap_minutes": 66
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 33,
+      "Edit": 16,
+      "Read": 8,
+      "Write": 7
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I'm trying to understand why your generate titles HBS file is why you got input placeholders as you've listed just here, because this is what I thought it was. rompt Template \u2014 Write Chapter Titles\n\nPrompt Template\nShow Interpolated\nYou are creating YouTube chapter titles for a video. Your goal is to produce titles that are:\n\nCompressed: Under 49 characters (hover preview cutoff)\nInformative: Clearly describe what happens in that section\nScannable: Viewers skim chapters to find what they need\nIn",
+      "full_length": 1632,
+      "ts": "2026-03-10T12:43:31.772Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "959a8309-b887-4393-8ef9-76763cbc551a",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-959a8309-b887-4393-8ef9-76763cbc551a.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
+    "shape": {
+      "event_count": 79,
+      "user_prompt_count": 10,
+      "tool_use_count": 69,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-17T06:34:50.066000+00:00",
+      "last_event_ts": "2026-02-17T07:19:59.034000+00:00",
+      "duration_minutes": 45,
+      "active_minutes": 45,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 16,
+      "Grep": 15,
+      "Bash": 14,
+      "Edit": 12,
+      "Write": 4,
+      "Task": 3,
+      "Glob": 2,
+      "TaskUpdate": 2,
+      "TaskCreate": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I wanted to not bypass our BMAD knowledge workflows. We got four different ways I can deliver information. Of course, epics and stories are a big one, and epic 0 is another big one. What were the other two? What's the smallest one we do? ",
+      "full_length": 238,
+      "ts": "2026-02-17T06:34:50.066Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": true,
+        "count": 7
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "5a04f602-d9df-4583-b132-663037e94448",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-5a04f602-d9df-4583-b132-663037e94448.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
+    "shape": {
+      "event_count": 33,
+      "user_prompt_count": 3,
+      "tool_use_count": 30,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-18T05:50:46.288000+00:00",
+      "last_event_ts": "2026-02-18T06:18:03.702000+00:00",
+      "duration_minutes": 27,
+      "active_minutes": 27,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "TaskOutput": 16,
+      "Task": 7,
+      "Write": 5,
+      "Bash": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I've got a disaster in front of me. We've just found out that our whole application is built on Convex. And to use it legally in our application, we would have to make it work in Australia. Now apparently they don't have a region for Australia, which means we either have to self-host, which might be a lot harder than we can imagine. \n\nOr figure out how to pivot to super base. Which means we have two totally different sets of problems that we've got to work through. One is migration of the databa",
+      "full_length": 651,
+      "ts": "2026-02-18T05:50:46.288Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": true,
+        "count": 1
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "07cdb085-b38f-4cc4-ba06-c24ff86967d5",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-07cdb085-b38f-4cc4-ba06-c24ff86967d5.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal",
+    "shape": {
+      "event_count": 25,
+      "user_prompt_count": 7,
+      "tool_use_count": 18,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-11T01:40:51.270000+00:00",
+      "last_event_ts": "2026-03-11T04:44:18.968000+00:00",
+      "duration_minutes": 183,
+      "active_minutes": 62,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-11T03:13:19.607000+00:00",
+          "end": "2026-03-11T04:23:00.370000+00:00",
+          "gap_minutes": 69
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 9,
+      "Read": 3,
+      "Edit": 3,
+      "Agent": 2,
+      "Write": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I'm getting ready to build the support signal application using the BMAD method version 6. \n\nWe have a prompt support signal currently serving two different outcomes that have the prompts for a new incidents\n\nIt also has an in-development version of the agent workflow builder. They're both going to serve as strong source candidates for the BMAD requirements process. \n\nWe have a requirements planning version two. That's where a lot of the planning documents have been getting built. I think it's i",
+      "full_length": 2109,
+      "ts": "2026-03-11T01:40:51.270Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false,
+        "first_prompt_length": 2109,
+        "short_prompt_ratio": 0.17
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "5cc3079e-25cd-4a0c-bdd7-a051ea9aa68c",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-5cc3079e-25cd-4a0c-bdd7-a051ea9aa68c.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/flivideo/storyline-app",
+    "shape": {
+      "event_count": 12,
+      "user_prompt_count": 1,
+      "tool_use_count": 8,
+      "stop_count": 1,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-17T14:20:23+00:00",
+      "last_event_ts": "2026-03-17T14:23:11.387000+00:00",
+      "duration_minutes": 2,
+      "active_minutes": 2,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 8
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [
+      "ls && cat package.json",
+      "ls node_modules 2>/dev/null | head -5 || echo \"No root node_modules\"\nls client/node_modules 2>/dev/null | head -5 || echo \"No client node_modules\"\nls server/node_modules 2>/dev/null | head -5 || echo \"No server node_modules\"\nls shared/node_modules 2>/dev/null | head -5 || echo \"No shared node_module",
+      "[ -d node_modules ] && echo \"root: YES\" || echo \"root: NO\"\n[ -d client/node_modules ] && echo \"client: YES\" || echo \"client: NO\"\n[ -d server/node_modules ] && echo \"server: YES\" || echo \"server: NO\"\n[ -d shared/node_modules ] && echo \"shared: YES\" || echo \"shared: NO\"",
+      "npm install 2>&1",
+      "[ -d node_modules ] && echo \"root: YES\" || echo \"root: NO\"\n[ -d client/node_modules ] && echo \"client: YES\" || echo \"client: NO\"\n[ -d server/node_modules ] && echo \"server: YES\" || echo \"server: NO\"\n[ -d shared/node_modules ] && echo \"shared: YES\" || echo \"shared: NO\"",
+      "ls shared/",
+      "lsof -i :5300 | grep LISTEN && echo \"5300 is running\" || echo \"5300 is free\"\nlsof -i :5301 | grep LISTEN && echo \"5301 is running\" || echo \"5301 is free\"",
+      "npm run dev 2>&1 &\nsleep 5\nlsof -i :5300 | grep LISTEN && echo \"Client (5300): RUNNING\" || echo \"Client (5300): NOT running\"\nlsof -i :5301 | grep LISTEN && echo \"Server (5301): RUNNING\" || echo \"Server (5301): NOT running\""
+    ],
+    "first_real_prompt": {
+      "text": "Can you install this application? Make sure you get client and server running I don't know whether they both need npm installs or something else",
+      "full_length": 144,
+      "ts": "2026-03-17T14:20:35.641Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "51c6e510-6464-4e24-b191-d9636b142980",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-51c6e510-6464-4e24-b191-d9636b142980.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad",
+    "shape": {
+      "event_count": 7,
+      "user_prompt_count": 2,
+      "tool_use_count": 5,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-13T22:19:52.460000+00:00",
+      "last_event_ts": "2026-02-13T22:27:02.944000+00:00",
+      "duration_minutes": 7,
+      "active_minutes": 7,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Task": 2,
+      "Read": 1,
+      "Bash": 1,
+      "Edit": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "You're seeing the jump command. /Users/davidcruwys/dev/ad/appydave-agentic-os\n\nI need to consider the agentic operating system. Which is part of AppyDave But it's also going to be a lot of separate folders. You should probably analyse the Ansible directory just to understand the GitHub organisation and the current repo. \n\nBut I'm about to put a new application in there called \n\nappystack Which will just be a simple little stack for the way I like to do My micro apps. \n\nI may also put it into App",
+      "full_length": 1075,
+      "ts": "2026-02-13T22:19:52.460Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  }
+]
