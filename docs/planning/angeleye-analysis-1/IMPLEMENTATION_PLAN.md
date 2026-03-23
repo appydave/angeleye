@@ -13,7 +13,7 @@
 
 ## Summary
 
-- Total: 799 | Complete: 799 | In Progress: 0 | Pending: 0 | Failed: 0
+- Total: 800 | Complete: 800 | In Progress: 0 | Pending: 0 | Failed: 0
 
 ## In Progress
 
@@ -142,7 +142,8 @@
 **Agent W13-08** — 14 sessions (all empty/accidental) — [x] all complete
 **Agent W13-09** — 14 sessions (all single-event junk) — [x] all complete
 
-133/133 sessions analysed. 799 unique entries in session-index.jsonl, 0 duplicates.
+133/133 sessions analysed. Plus 1 late-arriving session (00befc58) processed separately.
+800/800 sessions analysed. 800 unique entries in session-index.jsonl, 0 duplicates.
 
 ### Wave 12 — 80 sessions across 9 agents (campaign-status.py selected, all light scale)
 
