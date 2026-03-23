@@ -18,7 +18,9 @@
 
 **M4 Pro (remote)**:
 
-- Same paths, accessed via: `ssh MacBook-Pro.local "cat ~/.claude/angeleye/sessions/session-{id}.jsonl"`
+- Same paths, accessed via: `ssh macbook-pro-m4 "cat ~/.claude/angeleye/sessions/session-{id}.jsonl"`
+- SSH alias `macbook-pro-m4` → Tailscale IP `100.89.32.35` (from `~/.ssh/config`)
+- Both `campaign-status.py` and `compute-session-shape.py` support `--machine m4-pro` flag
 
 ### JSONL Event Format
 

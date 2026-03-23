@@ -17,9 +17,20 @@ import json
 import sys
 import os
 import re
+import subprocess
 from datetime import datetime, timezone
 from collections import Counter
 from pathlib import Path
+
+
+# Machine SSH aliases — matches ~/.ssh/config
+MACHINE_SSH = {
+    "m4-mini": None,       # local machine, no SSH needed
+    "m4-pro": "macbook-pro-m4",
+}
+
+SESSIONS_SUBPATH = ".claude/angeleye/sessions"
+ARCHIVE_SUBPATH = ".claude/angeleye/archive"
 
 
 def parse_timestamp(ts_str):
@@ -31,7 +42,7 @@ def parse_timestamp(ts_str):
 
 
 def load_session_events(filepath):
-    """Load all events from a session JSONL file."""
+    """Load all events from a session JSONL file (local path)."""
     events = []
     with open(filepath) as f:
         for line in f:
@@ -43,6 +54,33 @@ def load_session_events(filepath):
             except json.JSONDecodeError:
                 pass
     return events
+
+
+def load_session_events_ssh(ssh_host, session_id):
+    """Load events from a remote session JSONL file via SSH."""
+    home = "/Users/davidcruwys"
+    for subpath in [SESSIONS_SUBPATH, ARCHIVE_SUBPATH]:
+        remote_path = f"{home}/{subpath}/session-{session_id}.jsonl"
+        try:
+            result = subprocess.run(
+                ["ssh", ssh_host, f"cat {remote_path}"],
+                capture_output=True, text=True, timeout=30
+            )
+            if result.returncode == 0 and result.stdout.strip():
+                events = []
+                for line in result.stdout.strip().split("\n"):
+                    line = line.strip()
+                    if not line:
+                        continue
+                    try:
+                        events.append(json.loads(line))
+                    except json.JSONDecodeError:
+                        pass
+                if events:
+                    return events
+        except subprocess.TimeoutExpired:
+            print(f"SSH timeout reading {session_id} from {ssh_host}", file=sys.stderr)
+    return []
 
 
 def compute_shape(events):
@@ -404,33 +442,81 @@ def process_session(filepath):
 def main():
     if len(sys.argv) < 2:
         print("Usage: python3 compute-session-shape.py <session.jsonl>")
-        print("       python3 compute-session-shape.py --batch <id-list.txt>")
+        print("       python3 compute-session-shape.py --batch <id-list.txt> [--machine m4-pro]")
         sys.exit(1)
 
-    if sys.argv[1] == "--batch":
+    # Parse --machine flag from anywhere in argv
+    machine = "m4-mini"
+    args = list(sys.argv[1:])
+    if "--machine" in args:
+        idx = args.index("--machine")
+        machine = args[idx + 1]
+        args.pop(idx)  # remove --machine
+        args.pop(idx)  # remove value
+
+    ssh_host = MACHINE_SSH.get(machine)
+
+    if args[0] == "--batch":
         # Batch mode: read session IDs from file, find and process each
-        id_file = sys.argv[2]
-        sessions_dir = Path.home() / ".claude/angeleye/sessions"
-        archive_dir = Path.home() / ".claude/angeleye/archive"
+        id_file = args[1]
+        sessions_dir = Path.home() / SESSIONS_SUBPATH
+        archive_dir = Path.home() / ARCHIVE_SUBPATH
 
         with open(id_file) as f:
             session_ids = [line.strip() for line in f if line.strip()]
 
         results = []
         for sid in session_ids:
-            # Try sessions/ first, then archive/
-            path = sessions_dir / f"session-{sid}.jsonl"
-            if not path.exists():
-                path = archive_dir / f"session-{sid}.jsonl"
-            if not path.exists():
-                results.append({"session_id": sid, "error": "file not found"})
-                continue
-            results.append(process_session(str(path)))
+            if ssh_host:
+                # Remote machine — fetch via SSH
+                events = load_session_events_ssh(ssh_host, sid)
+                if not events:
+                    results.append({"session_id": sid, "error": "file not found on remote"})
+                    continue
+                # Process from events directly
+                cwd = events[0].get("cwd", "")
+                shape = compute_shape(events)
+                tools = compute_tools(events)
+                file_paths = extract_file_paths(events)
+                bash_commands = extract_bash_commands(events)
+                first_prompt = extract_first_real_prompt(events)
+                subagents = extract_subagents(events)
+                skill_invocations = extract_skill_invocations(events)
+                detections = detect_patterns(events, tools, shape)
+                project_inference = infer_project_from_paths(file_paths, cwd)
+                results.append({
+                    "session_id": sid,
+                    "source_file": f"ssh://{ssh_host}/session-{sid}.jsonl",
+                    "machine": machine,
+                    "cwd": cwd,
+                    "shape": shape,
+                    "tools": tools,
+                    "file_paths": {
+                        "read": file_paths["read"][:20],
+                        "write": file_paths["write"],
+                        "edit": file_paths["edit"][:20],
+                    },
+                    "bash_commands_sample": bash_commands[:10],
+                    "first_real_prompt": first_prompt,
+                    "skill_invocations": skill_invocations,
+                    "subagents": subagents,
+                    "detections": detections,
+                    "project_inference": project_inference,
+                })
+            else:
+                # Local machine
+                path = sessions_dir / f"session-{sid}.jsonl"
+                if not path.exists():
+                    path = archive_dir / f"session-{sid}.jsonl"
+                if not path.exists():
+                    results.append({"session_id": sid, "error": "file not found"})
+                    continue
+                results.append(process_session(str(path)))
 
         print(json.dumps(results, indent=2))
     else:
         # Single file mode
-        result = process_session(sys.argv[1])
+        result = process_session(args[0])
         print(json.dumps(result, indent=2))
 
 
