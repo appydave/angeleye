@@ -13,10 +13,14 @@
 
 ## Summary
 
-- Total: 910 | Complete: 910 | In Progress: 0 | Pending: 0 | Failed: 0
-- M4 Mini: 800/800 complete | M4 Pro: 110/110 complete
+- Total: 924 | Complete: 924 | In Progress: 0 | Pending: 0 | Failed: 0
+- M4 Mini: 814/814 complete | M4 Pro: 110/110 complete
 
 ## Complete
+
+### Wave 15 — 14 sessions, single agent (M4 Mini, new arrivals) ✓
+
+**Catch-up wave** for sessions created since wave 13. 12 SupportSignal (BMAD sprint lifecycle), 1 FliHub (/ralphy), 1 brains (/focus). Reclassification rate 71% — BMAD story-management sessions over-classified as BUILD.
 
 ### Wave 14 — 110 sessions across 9 agents (M4 Pro, all pending sessions) ✓
 
