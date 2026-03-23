@@ -1,0 +1,815 @@
+[
+  {
+    "session_id": "da040e73-4313-41f3-acd5-5ecc28980858",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-da040e73-4313-41f3-acd5-5ecc28980858.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 325,
+      "user_prompt_count": 27,
+      "tool_use_count": 297,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-12T14:03:47.587000+00:00",
+      "last_event_ts": "2026-03-15T16:34:46.979000+00:00",
+      "duration_minutes": 4470,
+      "active_minutes": 232,
+      "idle_gaps_over_1h": 4,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-12T16:03:11.241000+00:00",
+          "end": "2026-03-13T04:38:24.236000+00:00",
+          "gap_minutes": 755
+        },
+        {
+          "start": "2026-03-13T04:40:54.431000+00:00",
+          "end": "2026-03-13T16:32:30.824000+00:00",
+          "gap_minutes": 711
+        },
+        {
+          "start": "2026-03-13T16:32:37.269000+00:00",
+          "end": "2026-03-14T00:54:47.502000+00:00",
+          "gap_minutes": 502
+        },
+        {
+          "start": "2026-03-14T02:44:49.497000+00:00",
+          "end": "2026-03-15T16:34:46.889000+00:00",
+          "gap_minutes": 2269
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 139,
+      "Read": 75,
+      "Edit": 52,
+      "Grep": 20,
+      "Glob": 6,
+      "Agent": 2,
+      "Skill": 2,
+      "Write": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Can you get an instance of AWB running for me",
+      "full_length": 45,
+      "ts": "2026-03-12T14:03:47.587Z"
+    },
+    "skill_invocations": [{}, {}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": true,
+        "count": 2
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": true,
+        "count": 6
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "580c428a-89f8-401f-a0ad-5e7949e9761a",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-580c428a-89f8-401f-a0ad-5e7949e9761a.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 171,
+      "user_prompt_count": 44,
+      "tool_use_count": 127,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-12T07:19:05.421000+00:00",
+      "last_event_ts": "2026-03-12T09:33:43.705000+00:00",
+      "duration_minutes": 134,
+      "active_minutes": 134,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 113,
+      "Glob": 2,
+      "Grep": 2,
+      "Read": 2,
+      "Agent": 2,
+      "ToolSearch": 2,
+      "mcp__playwright__browser_navigate": 2,
+      "mcp__playwright__browser_snapshot": 1,
+      "Write": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Do we have an understanding of how we moved files from my MacBook Pro over to my Mac Mini M4? This was a couple weeks ago when the screen got destroyed. How did we do it?And how did we Or I should say, how would we do a gap analysis since I've now got the computer back?",
+      "full_length": 270,
+      "ts": "2026-03-12T07:19:05.421Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "f7951cc3-69f0-4f7a-a08c-be0cb924c857",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-f7951cc3-69f0-4f7a-a08c-be0cb924c857.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 146,
+      "user_prompt_count": 24,
+      "tool_use_count": 122,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-04T00:41:22.595000+00:00",
+      "last_event_ts": "2026-03-04T03:59:41.380000+00:00",
+      "duration_minutes": 198,
+      "active_minutes": 139,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 26,
+      "Read": 19,
+      "Edit": 18,
+      "Grep": 11,
+      "Write": 10,
+      "mcp__brave-search__brave_web_search": 6,
+      "mcp__playwright__browser_evaluate": 6,
+      "Glob": 5,
+      "WebFetch": 5,
+      "Agent": 4,
+      "mcp__playwright__browser_navigate": 4,
+      "mcp__playwright__browser_take_screenshot": 4,
+      "mcp__playwright__browser_snapshot": 2,
+      "mcp__playwright__browser_click": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "What is the software I need to install that will clean up my audio in live streams? ",
+      "full_length": 84,
+      "ts": "2026-03-04T00:41:22.595Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": true,
+        "count": 1
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": true,
+        "count": 9
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "77148c1f-c5f2-4b4e-a569-41335c68109c",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-77148c1f-c5f2-4b4e-a569-41335c68109c.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 123,
+      "user_prompt_count": 19,
+      "tool_use_count": 104,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-19T14:11:04.209000+00:00",
+      "last_event_ts": "2026-02-19T15:12:00.087000+00:00",
+      "duration_minutes": 60,
+      "active_minutes": 60,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Edit": 38,
+      "Read": 20,
+      "Bash": 17,
+      "Grep": 9,
+      "TaskUpdate": 9,
+      "TaskCreate": 6,
+      "Task": 5
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "LOOK AT THHE LAST MESSAGFE\n\nLet me read the output file to give you accurate answers based on the actual stored data.\n\n\u23fa Read 1 file (ctrl+o to expand)\n\n\u23fa Now I can answer both questions accurately from the stored data.\n\n  ---\n  Question 1: Are all predicate=false results correct?\n\n  Checking each one against the stored data:\n\n  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n  \u2502          Predicate",
+      "full_length": 71506,
+      "ts": "2026-02-19T14:11:04.209Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": true,
+        "count": 1
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 3
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": true,
+        "first_prompt_length": 71506,
+        "short_prompt_ratio": 0.61
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "b82395cd-7330-444a-8716-f16d0a47d08f",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-b82395cd-7330-444a-8716-f16d0a47d08f.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
+    "shape": {
+      "event_count": 115,
+      "user_prompt_count": 10,
+      "tool_use_count": 105,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-18T07:14:36.682000+00:00",
+      "last_event_ts": "2026-02-18T13:26:22.043000+00:00",
+      "duration_minutes": 371,
+      "active_minutes": 119,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-18T09:05:09.969000+00:00",
+          "end": "2026-02-18T12:29:41.510000+00:00",
+          "gap_minutes": 204
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 59,
+      "Edit": 20,
+      "Read": 17,
+      "Task": 5,
+      "Skill": 2,
+      "Write": 1,
+      "Grep": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "It just seemed to lock up. It said it was running a bun test, but I was watching it for about an hour, so I don't know what was going on. \n\n \u2590\u259b\u2588\u2588\u2588\u259c\u258c   Claude Code v2.1.45\n\u259d\u259c\u2588\u2588\u2588\u2588\u2588\u259b\u2598  Opus 4.6 \u00b7 Claude Max\n  \u2598\u2598 \u259d\u259d    ~/dev/clients/supportsignal/app.supportsignal.com.au\n\n\u276f We recently did a whole lot of upgrading commits. They were all based on getting Support Signal published to production, and we had to work\n  through a lot of problems. And we uncovered a bunch of linting issues. Do we still have",
+      "full_length": 56093,
+      "ts": "2026-02-18T07:14:36.682Z"
+    },
+    "skill_invocations": [{}, {}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": true,
+        "first_prompt_length": 56093,
+        "short_prompt_ratio": 0.78
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "8eb0eb2c-0fea-4332-bfaf-19e827fd17e7",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-8eb0eb2c-0fea-4332-bfaf-19e827fd17e7.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 104,
+      "user_prompt_count": 12,
+      "tool_use_count": 92,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-05T06:01:35.322000+00:00",
+      "last_event_ts": "2026-03-05T09:53:47.706000+00:00",
+      "duration_minutes": 232,
+      "active_minutes": 122,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 42,
+      "Write": 15,
+      "Edit": 13,
+      "ToolSearch": 7,
+      "mcp__brave-search__brave_web_search": 7,
+      "Glob": 3,
+      "Read": 3,
+      "Agent": 1,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "When you think of my brains, where do you think stuff around me as a creator or the skills or the knowledge that I need to develop? What brains touch on that from a creator point of view? Look at every one of my brains and think of the connection. If I needed to become really good at YouTube or creators or monetization or that where or just understanding my brand, what brains would be involved? ",
+      "full_length": 398,
+      "ts": "2026-03-05T06:01:35.322Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 3
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "5942ce2f-2d26-4d5a-946b-0d7524380541",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-5942ce2f-2d26-4d5a-946b-0d7524380541.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 99,
+      "user_prompt_count": 20,
+      "tool_use_count": 79,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-11T07:06:55.729000+00:00",
+      "last_event_ts": "2026-03-11T08:32:46.620000+00:00",
+      "duration_minutes": 85,
+      "active_minutes": 85,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 34,
+      "Write": 29,
+      "Read": 9,
+      "Edit": 5,
+      "Glob": 1,
+      "Agent": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Can you go and have a look in the locations area? Tell me, do you have a registered location for my brains folder? Also, do you have a registered location for my labs folder? Also, do I have a jump alias for my labs folder?",
+      "full_length": 223,
+      "ts": "2026-03-11T07:06:55.729Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "5ea99ae9-1a5f-4237-b552-cbdc740070fb",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-5ea99ae9-1a5f-4237-b552-cbdc740070fb.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 93,
+      "user_prompt_count": 14,
+      "tool_use_count": 79,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-03T11:10:04.428000+00:00",
+      "last_event_ts": "2026-03-04T03:40:41.881000+00:00",
+      "duration_minutes": 990,
+      "active_minutes": 38,
+      "idle_gaps_over_1h": 3,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-03T11:27:18.942000+00:00",
+          "end": "2026-03-03T12:44:24.389000+00:00",
+          "gap_minutes": 77
+        },
+        {
+          "start": "2026-03-03T12:50:08.985000+00:00",
+          "end": "2026-03-04T02:19:01.748000+00:00",
+          "gap_minutes": 808
+        },
+        {
+          "start": "2026-03-04T02:20:05.736000+00:00",
+          "end": "2026-03-04T03:26:32.873000+00:00",
+          "gap_minutes": 66
+        }
+      ]
+    },
+    "tools": {
+      "Read": 27,
+      "Bash": 23,
+      "Edit": 20,
+      "Write": 7,
+      "Skill": 1,
+      "Agent": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Hey Radar, what have we got on our agenda? ",
+      "full_length": 43,
+      "ts": "2026-03-03T11:10:04.428Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "c4961eaa-37af-4a71-bfd3-fc642acb88ce",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-c4961eaa-37af-4a71-bfd3-fc642acb88ce.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 87,
+      "user_prompt_count": 5,
+      "tool_use_count": 75,
+      "stop_count": 4,
+      "subagent_start_count": 2,
+      "subagent_stop_count": 1,
+      "first_event_ts": "2026-03-16T14:43:17.756000+00:00",
+      "last_event_ts": "2026-03-16T14:52:11.770000+00:00",
+      "duration_minutes": 8,
+      "active_minutes": 8,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 51,
+      "Read": 8,
+      "WebFetch": 8,
+      "ToolSearch": 2,
+      "mcp__brave-search__brave_web_search": 2,
+      "Edit": 2,
+      "Agent": 1,
+      "Glob": 1
+    },
+    "file_paths": {
+      "read": [
+        "/Users/davidcruwys/dev/ad/brains/anthropic-claude/INDEX.md",
+        "/Users/davidcruwys/.claude/sessions/109.json",
+        "/Users/davidcruwys/.claude/sessions/37521.json",
+        "/Users/davidcruwys/.claude/sessions/signal-studio-wave22-2026-03-12.md",
+        "/Users/davidcruwys/.claude/settings.json",
+        "/Users/davidcruwys/dev/ad/brains/anthropic-claude/claude-code/observability.md",
+        "/Users/davidcruwys/dev/ad/brains/anthropic-claude/claude-code/session-management.md"
+      ],
+      "write": [],
+      "edit": [
+        "/Users/davidcruwys/dev/ad/brains/anthropic-claude/claude-code/observability.md",
+        "/Users/davidcruwys/dev/ad/brains/anthropic-claude/claude-code/session-management.md"
+      ]
+    },
+    "bash_commands_sample": [
+      "find ~/dev/upstream/repos/claude-code -type f -name \"*.go\" -o -name \"*.ts\" -o -name \"*.rs\" | head -20",
+      "find ~/dev/upstream/repos/claude-code -type f \\( -name \"*.go\" -o -name \"*.mod\" \\) | head -30",
+      "ls -la ~/dev/upstream/repos/claude-code/ 2>/dev/null | head -30",
+      "find ~/.claude -type f -name \"*.json*\" -o -name \"*session*\" -o -name \"*index*\" 2>/dev/null | head -50",
+      "find ~/.claude -type f \\( -name \"*sessions*\" -o -name \"*session*\" -o -name \"*projects*\" \\) 2>/dev/null",
+      "ls -la ~/.claude/projects/ 2>/dev/null",
+      "find ~/.claude/projects/-Users-davidcruwys-dev-ad-brains -name \"*.jsonl\" | head -5",
+      "head -20 ~/.claude/projects/-Users-davidcruwys-dev-ad-brains/6a2cef50-e29a-4ff7-8dc8-804b0f1641f3.jsonl | jq '.' 2>/dev/null | head -40",
+      "grep -i '\"type\".*rename\\|\"type\".*title\\|\"type\".*session.*name' ~/.claude/projects/-Users-davidcruwys-dev-ad-brains/*.jsonl 2>/dev/null | head -20",
+      "jq 'select(.type == \"rename\")' ~/.claude/projects/-Users-davidcruwys-dev-ad-brains/*.jsonl 2>/dev/null | head -50"
+    ],
+    "first_real_prompt": {
+      "text": "/focus claude code",
+      "full_length": 18,
+      "ts": "2026-03-16T14:43:17.756Z"
+    },
+    "skill_invocations": null,
+    "subagents": [
+      {
+        "agent_id": "aad2d8a958c88cae8",
+        "agent_type": "Explore",
+        "started_at": "2026-03-16T14:43:55.085Z"
+      },
+      {
+        "agent_id": "a70de669b3dc68b08",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-16T14:43:59.258Z",
+        "stopped_at": "2026-03-16T14:46:40.733Z"
+      }
+    ],
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": "/Users/davidcruwys/dev/ad/brains/anthropic-claude/claude-code",
+      "cwd_reliable": true,
+      "edit_write_count": 2
+    }
+  }
+]

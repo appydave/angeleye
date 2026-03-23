@@ -1,0 +1,940 @@
+[
+  {
+    "session_id": "6ee31b28-d01e-445b-9799-be9998ba5e6d",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/archive/session-6ee31b28-d01e-445b-9799-be9998ba5e6d.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/angeleye",
+    "shape": {
+      "event_count": 283,
+      "user_prompt_count": 23,
+      "tool_use_count": 218,
+      "stop_count": 23,
+      "subagent_start_count": 9,
+      "subagent_stop_count": 9,
+      "first_event_ts": "2026-03-15T11:13:05.204000+00:00",
+      "last_event_ts": "2026-03-15T14:37:56.325000+00:00",
+      "duration_minutes": 204,
+      "active_minutes": 56,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-15T11:57:12.947000+00:00",
+          "end": "2026-03-15T13:31:41.708000+00:00",
+          "gap_minutes": 94
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 80,
+      "Read": 66,
+      "Edit": 45,
+      "Glob": 9,
+      "Agent": 9,
+      "Write": 8,
+      "Grep": 1
+    },
+    "file_paths": {
+      "read": [
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/SESSION_HANDOVER.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/BACKLOG.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-wave6-hardening/IMPLEMENTATION_PLAN.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-wave6-ui/IMPLEMENTATION_PLAN.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-wave6-hardening/AGENTS.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-wave6-ui/AGENTS.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/.mochaccino/designs/v2-linen/observer.html",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/client/src/styles/index.css",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/client/src/components/Header.tsx",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/client/src/components/Sidebar.tsx",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/client/src/components/SidebarGroup.tsx",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/client/src/views/ObserverView.tsx",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/services/angeleye-data.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/routes/sessions.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/routes/hooks.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/routes/backfill.ts",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/routes/workspaces.ts",
+        "/Users/davidcruwys/.claude/projects/-Users-davidcruwys-dev-ad-apps-angeleye/memory/project_angeleye.md",
+        "/Users/davidcruwys/.claude/projects/-Users-davidcruwys-dev-ad-apps-angeleye/memory/patterns_ambient_intelligence.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/server/src/services/angeleye-data.test.ts"
+      ],
+      "write": [
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-wave7a-linen/IMPLEMENTATION_PLAN.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-wave7a-linen/AGENTS.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-wave7b-datasplit/IMPLEMENTATION_PLAN.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-wave7b-datasplit/AGENTS.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/client/src/styles/index.css",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/client/src/components/Sidebar.tsx",
+        "/Users/davidcruwys/dev/ad/apps/appystack/template/.claude/skills/recipe/references/ui-theme.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/intelligence/PATTERNS.md"
+      ],
+      "edit": [
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/BACKLOG.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-wave7a-linen/IMPLEMENTATION_PLAN.md",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/client/src/components/Header.tsx",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/client/src/components/SidebarGroup.tsx",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/client/src/views/ObserverView.tsx",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/client/src/views/OrganiserView.tsx",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/client/src/App.test.tsx",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/client/src/main.test.tsx",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/client/src/views/SettingsView.tsx",
+        "/Users/davidcruwys/dev/ad/apps/angeleye/client/src/contexts/NavContext.tsx",
+        "/Users/davidcruwys/dev/ad/apps/appystack/template/.claude/skills/recipe/SKILL.md",
+        "/Users/davidcruwys/dev/ad/apps/appystack/create-appystack/template/.claude/skills/recipe/SKILL.md",
+        "/Users/davidcruwys/dev/ad/apps/appystack/docs/recipes.md",
+        "/Users/davidcruwys/dev/ad/apps/appystack/template/.claude/skills/recipe/references/nav-shell.md",
+        "/Users/davidcruwys/dev/ad/apps/appystack/create-appystack/template/.claude/skills/recipe/references/nav-shell.md"
+      ]
+    },
+    "bash_commands_sample": [
+      "mkdir -p /Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-wave7a-linen/{learnings,patterns,decisions} && mkdir -p /Users/davidcruwys/dev/ad/apps/angeleye/docs/planning/angeleye-wave7b-datasplit/{learnings,patterns,decisions} && echo \"done\"",
+      "npm run typecheck 2>&1",
+      "npm run lint 2>&1",
+      "npm test 2>&1",
+      "tail -30 /Users/davidcruwys/.claude/projects/-Users-davidcruwys-dev-ad-apps-angeleye/6ee31b28-d01e-445b-9799-be9998ba5e6d/tool-results/bh872jjf7.txt",
+      "npm run typecheck 2>&1",
+      "npm run lint 2>&1",
+      "npm run typecheck 2>&1",
+      "npm run lint 2>&1",
+      "npm test 2>&1 | tail -40"
+    ],
+    "first_real_prompt": {
+      "text": "Where do you think we should start? \n  What's left to build AngelEye to \"finished\":\n  1. Wave 7a \u2014 Implement v2-linen (biggest visual change \u2014 full light theme, cards, real amber, new header/sidebar)\n  2. Wave 7b \u2014 Split angeleye-data.ts (prerequisite for the flagship feature)\n  3. Wave 7c \u2014 B012 \u2014 Ambient intelligence / skill suggester (the thing that makes AngelEye actually intelligent, not just a monitor)\n  4. B011 \u2014 Publish skill (optional, lower priority)\n\n  B013 and B014 are probably never",
+      "full_length": 644,
+      "ts": "2026-03-15T11:13:05.204Z"
+    },
+    "skill_invocations": null,
+    "subagents": [
+      {
+        "agent_id": "a5335598b335032b3",
+        "agent_type": "Explore",
+        "started_at": "2026-03-15T11:18:45.121Z",
+        "stopped_at": "2026-03-15T11:19:24.849Z"
+      },
+      {
+        "agent_id": "a7e9bd262523abac0",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-15T11:29:44.841Z",
+        "stopped_at": "2026-03-15T11:30:29.161Z"
+      },
+      {
+        "agent_id": "ab25f535ccf0deb9f",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-15T11:30:53.874Z",
+        "stopped_at": "2026-03-15T11:32:19.284Z"
+      },
+      {
+        "agent_id": "acff1a9e2986ee76b",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-15T11:30:59.697Z",
+        "stopped_at": "2026-03-15T11:32:40.562Z"
+      },
+      {
+        "agent_id": "ad6ac4b779965307c",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-15T11:31:08.902Z",
+        "stopped_at": "2026-03-15T11:32:20.853Z"
+      },
+      {
+        "agent_id": "a442b858c6b58622e",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-15T11:31:13.625Z",
+        "stopped_at": "2026-03-15T11:32:35.625Z"
+      },
+      {
+        "agent_id": "a74266db256ffe939",
+        "agent_type": "Explore",
+        "started_at": "2026-03-15T11:54:53.001Z",
+        "stopped_at": "2026-03-15T11:56:51.223Z"
+      },
+      {
+        "agent_id": "a2ce56dee7559ca9d",
+        "agent_type": "Explore",
+        "started_at": "2026-03-15T13:32:27.080Z",
+        "stopped_at": "2026-03-15T13:36:23.695Z"
+      },
+      {
+        "agent_id": "a44cd70e33edbf27d",
+        "agent_type": "general-purpose",
+        "started_at": "2026-03-15T13:40:48.687Z",
+        "stopped_at": "2026-03-15T13:43:59.490Z"
+      }
+    ],
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false,
+        "stop_ratio": 0.08
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": true,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": "/Users/davidcruwys/dev/ad/apps",
+      "cwd_reliable": true,
+      "edit_write_count": 23
+    }
+  },
+  {
+    "session_id": "7e7a8e58-5814-4be7-9308-22d17655fbef",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-7e7a8e58-5814-4be7-9308-22d17655fbef.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 169,
+      "user_prompt_count": 12,
+      "tool_use_count": 157,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-10T12:49:19.811000+00:00",
+      "last_event_ts": "2026-03-10T15:31:43.071000+00:00",
+      "duration_minutes": 162,
+      "active_minutes": 122,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Edit": 55,
+      "Read": 43,
+      "Bash": 27,
+      "Agent": 12,
+      "Grep": 10,
+      "Glob": 7,
+      "Write": 3
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Would there be a requirement to look at the backlog reconciliation? Apparently, it's eight rounds behind. Do we need to check it?",
+      "full_length": 129,
+      "ts": "2026-03-10T12:50:42.238Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": true,
+        "count": 1
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": true,
+        "count": 6
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "cee4b2b0-b3b9-44c3-b63b-fdd695165739",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-cee4b2b0-b3b9-44c3-b63b-fdd695165739.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 143,
+      "user_prompt_count": 11,
+      "tool_use_count": 132,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-19T05:41:15.584000+00:00",
+      "last_event_ts": "2026-02-19T07:16:57.678000+00:00",
+      "duration_minutes": 95,
+      "active_minutes": 51,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 74,
+      "Read": 26,
+      "Edit": 24,
+      "Skill": 3,
+      "Glob": 2,
+      "Grep": 2,
+      "Write": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "yes-debug",
+      "full_length": 9,
+      "ts": "2026-02-19T05:43:35.824Z"
+    },
+    "skill_invocations": [{}, {}, {}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "c160da46-09bd-49e5-a8c1-2a00bbb2d3f4",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-c160da46-09bd-49e5-a8c1-2a00bbb2d3f4.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 122,
+      "user_prompt_count": 17,
+      "tool_use_count": 105,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-23T05:39:47.185000+00:00",
+      "last_event_ts": "2026-02-23T07:14:37.905000+00:00",
+      "duration_minutes": 94,
+      "active_minutes": 64,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 44,
+      "Read": 34,
+      "Edit": 18,
+      "Glob": 3,
+      "Write": 3,
+      "Skill": 2,
+      "Grep": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "At the moment, we're in the middle of building out some changes. We're okay with that. But we're very soon going to merge this work tree back into the main branch. And we're probably also going to need to know where to put the documentation. And we're probably also going to need to know how to make the documentation available for Angela so that she knows how to run it. What would you suggest? Keep in mind you can't merge the work tree while we're still developing it, so this is something we'll d",
+      "full_length": 529,
+      "ts": "2026-02-23T05:41:56.657Z"
+    },
+    "skill_invocations": [{}, {}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": true,
+        "count": 1
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "6f12067a-3095-4494-aa4f-6fd804ad7947",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-6f12067a-3095-4494-aa4f-6fd804ad7947.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/appystack",
+    "shape": {
+      "event_count": 109,
+      "user_prompt_count": 12,
+      "tool_use_count": 97,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-26T10:38:46.343000+00:00",
+      "last_event_ts": "2026-02-26T15:58:36.219000+00:00",
+      "duration_minutes": 319,
+      "active_minutes": 78,
+      "idle_gaps_over_1h": 2,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-26T10:40:31.551000+00:00",
+          "end": "2026-02-26T13:34:48.778000+00:00",
+          "gap_minutes": 174
+        },
+        {
+          "start": "2026-02-26T13:53:21.071000+00:00",
+          "end": "2026-02-26T15:00:28.387000+00:00",
+          "gap_minutes": 67
+        }
+      ]
+    },
+    "tools": {
+      "Edit": 26,
+      "Task": 20,
+      "Bash": 18,
+      "Read": 17,
+      "Write": 8,
+      "Glob": 4,
+      "Grep": 2,
+      "TaskStop": 1,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Do you understand the tech stack that we're using for AppyStack? ",
+      "full_length": 65,
+      "ts": "2026-02-26T10:38:46.343Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "bfa26edf-92da-4858-9054-672e8fc165f4",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-bfa26edf-92da-4858-9054-672e8fc165f4.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/apps/appystack",
+    "shape": {
+      "event_count": 103,
+      "user_prompt_count": 15,
+      "tool_use_count": 88,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-11T04:46:36.553000+00:00",
+      "last_event_ts": "2026-03-11T09:13:18.172000+00:00",
+      "duration_minutes": 266,
+      "active_minutes": 68,
+      "idle_gaps_over_1h": 2,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-11T05:02:03.650000+00:00",
+          "end": "2026-03-11T06:19:54.800000+00:00",
+          "gap_minutes": 77
+        },
+        {
+          "start": "2026-03-11T06:40:33.217000+00:00",
+          "end": "2026-03-11T08:40:32.814000+00:00",
+          "gap_minutes": 119
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 27,
+      "Edit": 25,
+      "Agent": 15,
+      "Read": 10,
+      "Write": 6,
+      "Glob": 4,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "What's the state of this repository right now?",
+      "full_length": 46,
+      "ts": "2026-03-11T04:46:36.553Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "de0f46f6-e8db-4a9d-bbf7-54c5cc750c7c",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-de0f46f6-e8db-4a9d-bbf7-54c5cc750c7c.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+    "shape": {
+      "event_count": 98,
+      "user_prompt_count": 5,
+      "tool_use_count": 93,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-17T09:36:35.849000+00:00",
+      "last_event_ts": "2026-02-18T03:53:38.566000+00:00",
+      "duration_minutes": 1097,
+      "active_minutes": 25,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-17T09:50:00.121000+00:00",
+          "end": "2026-02-18T03:41:57.119000+00:00",
+          "gap_minutes": 1071
+        }
+      ]
+    },
+    "tools": {
+      "Read": 38,
+      "Task": 28,
+      "TaskOutput": 20,
+      "Bash": 3,
+      "Glob": 2,
+      "Write": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "yes",
+      "full_length": 3,
+      "ts": "2026-02-17T09:38:39.437Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": true,
+        "count": 1
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "b4041152-c196-4d2d-9e33-22ae2a0d3eb1",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-b4041152-c196-4d2d-9e33-22ae2a0d3eb1.jsonl",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 91,
+      "user_prompt_count": 13,
+      "tool_use_count": 78,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-15T02:18:11.017000+00:00",
+      "last_event_ts": "2026-02-16T00:46:26.966000+00:00",
+      "duration_minutes": 1348,
+      "active_minutes": 70,
+      "idle_gaps_over_1h": 2,
+      "idle_gap_details": [
+        {
+          "start": "2026-02-15T03:04:12.109000+00:00",
+          "end": "2026-02-15T04:07:22.415000+00:00",
+          "gap_minutes": 63
+        },
+        {
+          "start": "2026-02-15T05:16:57.495000+00:00",
+          "end": "2026-02-16T00:46:26.966000+00:00",
+          "gap_minutes": 1169
+        }
+      ]
+    },
+    "tools": {
+      "Edit": 53,
+      "Read": 19,
+      "Grep": 4,
+      "Glob": 1,
+      "Bash": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Two different ways of doing the Ralph Wiggum loop that we've taught research A third technique that we have documented for actual use ",
+      "full_length": 134,
+      "ts": "2026-02-15T02:18:11.017Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 2
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "cc357cb4-e34d-4791-92f6-62eac990ebd6",
+    "source_file": "/Users/davidcruwys/.claude/angeleye/sessions/session-cc357cb4-e34d-4791-92f6-62eac990ebd6.jsonl",
+    "cwd": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
+    "shape": {
+      "event_count": 86,
+      "user_prompt_count": 2,
+      "tool_use_count": 81,
+      "stop_count": 2,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-23T01:30:56.526000+00:00",
+      "last_event_ts": "2026-03-23T01:40:23.190000+00:00",
+      "duration_minutes": 9,
+      "active_minutes": 9,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 28,
+      "Read": 22,
+      "Write": 13,
+      "Edit": 12,
+      "Grep": 3,
+      "Glob": 2,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/_bmad/bmm/agents/dev.md",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/_bmad/bmm/config.yaml",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/.claude/skills/bmad-dev-story/workflow.md",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/_bmad-output/implementation-artifacts/sprint-status.yaml",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/_bmad-output/implementation-artifacts/1-1-project-scaffolding-and-deployment-pipeline.md",
+        "/tmp/supportsignal-scaffold/tsconfig.json",
+        "/tmp/supportsignal-scaffold/package.json",
+        "/tmp/supportsignal-scaffold/app/globals.css",
+        "/tmp/supportsignal-scaffold/components.json",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/postcss.config.mjs",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/app/globals.css",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/lib/utils.ts",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/app/layout.tsx",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/package.json",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/.env.example",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/.gitignore",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/lib/supabase/client.ts",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/lib/supabase/server.ts",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/lib/supabase/proxy.ts",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/proxy.ts"
+      ],
+      "write": [
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/postcss.config.mjs",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/app/globals.css",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/app/layout.tsx",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/drizzle.config.ts",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/lib/db/schema/index.ts",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/lib/db/client.ts",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/vitest.config.web.ts",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/tests/web/setup.ts",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/tests/web/features/placeholder.test.ts",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/.github/workflows/ci.yml",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/vercel.json",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/.env.example",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/middleware.ts"
+      ],
+      "edit": [
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/_bmad-output/implementation-artifacts/sprint-status.yaml",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/package.json",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/lib/supabase/client.ts",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/lib/supabase/server.ts",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/lib/supabase/proxy.ts",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/lib/utils.ts",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/eslint.config.mjs",
+        "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/_bmad-output/implementation-artifacts/1-1-project-scaffolding-and-deployment-pipeline.md"
+      ]
+    },
+    "bash_commands_sample": [
+      "ls -la /Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/ | head -30",
+      "cd /tmp && rm -rf supportsignal-scaffold && bunx create-next-app -e with-supabase supportsignal-scaffold 2>&1",
+      "ls -la /tmp/supportsignal-scaffold/",
+      "ls -la /tmp/supportsignal-scaffold/utils/supabase/ 2>/dev/null; ls -la /tmp/supportsignal-scaffold/lib/supabase/ 2>/dev/null; find /tmp/supportsignal-scaffold -name \"server.ts\" -o -name \"client.ts\" | head -10",
+      "cd /tmp/supportsignal-scaffold && rm -rf .git .next node_modules && rsync -av --exclude='_bmad' --exclude='_bmad-output' --exclude='.claude' --exclude='.git' --exclude='.screenshots' --exclude='docs' --exclude='.playwright-mcp' --exclude='.mcp.json' . /Users/davidcruwys/dev/clients/supportsignal/app",
+      "bun install 2>&1",
+      "bun add tailwindcss@latest @tailwindcss/postcss@latest 2>&1",
+      "bun remove autoprefixer tailwindcss-animate 2>&1",
+      "rm /Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au/tailwind.config.ts",
+      "timeout 15 bun dev 2>&1 || true"
+    ],
+    "first_real_prompt": {
+      "text": "/bmad-dev",
+      "full_length": 9,
+      "ts": "2026-03-23T01:31:05.535Z"
+    },
+    "skill_invocations": [
+      {
+        "keys": ["skill"]
+      }
+    ],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
+      "cwd_reliable": true,
+      "edit_write_count": 21
+    }
+  }
+]

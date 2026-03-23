@@ -13,9 +13,120 @@
 
 ## Summary
 
-- Total: 426 | Complete: 426 | In Progress: 0 | Pending: 0 | Failed: 0
+- Total: 506 | Complete: 506 | In Progress: 0 | Pending: 0 | Failed: 0
 
 ## In Progress
+
+### Wave 10 — 80 sessions across 9 agents (campaign-status.py selected, 76 moderate + 4 heavy)
+
+**First wave using campaign-status.py** for batch selection — no more ad-hoc ID files. Heavy/moderate sessions dominating (all lighter sessions processed in waves 8-9).
+
+**Agent W10-01** — 9 sessions | angeleye, app.supportsignal.com.au, appystack, brains, prompt.supportsignal.com.au
+
+- [x] W10-33bbe033 — `33bbe033-aee1-43bd-afb0-db15e16cd137` angeleye / heavy
+- [x] W10-b95a97be — `b95a97be-79f3-4020-990e-21d01b396bed` brains / moderate
+- [x] W10-77d71fc4 — `77d71fc4-eddb-4a15-a4f8-4646767b4e79` appystack / moderate
+- [x] W10-656018b4 — `656018b4-0c07-48a7-b33c-d346f75956b7` app.supportsignal.com.au / moderate
+- [x] W10-59c75fd2 — `59c75fd2-a0c6-48eb-8763-47d7cc8bd387` brains / moderate
+- [x] W10-67dfdd2e — `67dfdd2e-6f4f-4261-8e07-14a39218de1b` brains / moderate
+- [x] W10-77764bc1 — `77764bc1-fd56-4be6-8c57-d1abbf1878a3` brains / moderate
+- [x] W10-1432e6e9 — `1432e6e9-4a76-405b-b49e-9245466986d3` brains / moderate
+- [x] W10-866cd7ea — `866cd7ea-de05-48ac-9348-95869963356b` prompt.supportsignal.com.au / moderate
+
+**Agent W10-02** — 9 sessions | app.supportsignal.com.au, brains, prompt.supportsignal.com.au
+
+- [x] W10-da040e73 — `da040e73-4313-41f3-acd5-5ecc28980858` prompt.supportsignal.com.au / heavy
+- [x] W10-580c428a — `580c428a-89f8-401f-a0ad-5e7949e9761a` brains / moderate
+- [x] W10-f7951cc3 — `f7951cc3-69f0-4f7a-a08c-be0cb924c857` brains / moderate
+- [x] W10-77148c1f — `77148c1f-c5f2-4b4e-a569-41335c68109c` prompt.supportsignal.com.au / moderate
+- [x] W10-b82395cd — `b82395cd-7330-444a-8716-f16d0a47d08f` app.supportsignal.com.au / moderate
+- [x] W10-8eb0eb2c — `8eb0eb2c-0fea-4332-bfaf-19e827fd17e7` brains / moderate
+- [x] W10-5942ce2f — `5942ce2f-2d26-4d5a-946b-0d7524380541` brains / moderate
+- [x] W10-5ea99ae9 — `5ea99ae9-1a5f-4237-b552-cbdc740070fb` brains / moderate
+- [x] W10-c4961eaa — `c4961eaa-37af-4a71-bfd3-fc642acb88ce` brains / moderate
+
+**Agent W10-03** — 9 sessions | angeleye, appydave-plugins, brains, prompt.supportsignal.com.au
+
+- [x] W10-18665260 — `18665260-13b3-4eb6-84ba-65bb0403ca58` angeleye / heavy
+- [x] W10-192c4cbc — `192c4cbc-3130-4d4c-bf1a-92e7e3c4e0ea` angeleye / moderate
+- [x] W10-d5e19d58 — `d5e19d58-d841-43fc-992c-7b6ef71b6046` appydave-plugins / moderate
+- [x] W10-3d481502 — `3d481502-eda4-47dc-b4d8-9c50778b7b98` brains / moderate
+- [x] W10-a88bb8a6 — `a88bb8a6-4a2a-47c9-9e8b-558dac25bdec` prompt.supportsignal.com.au / moderate
+- [x] W10-a6fee7b2 — `a6fee7b2-54f8-4cc5-a720-45272e1cf600` prompt.supportsignal.com.au / moderate
+- [x] W10-f8a2bdb2 — `f8a2bdb2-59e6-408c-b3cc-702189d908df` brains / moderate
+- [x] W10-febf22a3 — `febf22a3-edf0-455d-bfe7-b5d78cdf576a` brains / moderate
+- [x] W10-9d7c9ad6 — `9d7c9ad6-74ea-4874-84ce-d446d0310a89` brains / moderate
+
+**Agent W10-04** — 9 sessions | angeleye, app.supportsignal.com.au, appystack, brains, prompt.supportsignal.com.au
+
+- [x] W10-6ee31b28 — `6ee31b28-d01e-445b-9799-be9998ba5e6d` angeleye / heavy
+- [x] W10-7e7a8e58 — `7e7a8e58-5814-4be7-9308-22d17655fbef` prompt.supportsignal.com.au / moderate
+- [x] W10-cee4b2b0 — `cee4b2b0-b3b9-44c3-b63b-fdd695165739` prompt.supportsignal.com.au / moderate
+- [x] W10-c160da46 — `c160da46-09bd-49e5-a8c1-2a00bbb2d3f4` prompt.supportsignal.com.au / moderate
+- [x] W10-6f12067a — `6f12067a-3095-4494-aa4f-6fd804ad7947` appystack / moderate
+- [x] W10-bfa26edf — `bfa26edf-92da-4858-9054-672e8fc165f4` appystack / moderate
+- [x] W10-de0f46f6 — `de0f46f6-e8db-4a9d-bbf7-54c5cc750c7c` prompt.supportsignal.com.au / moderate
+- [x] W10-b4041152 — `b4041152-c196-4d2d-9e33-22ae2a0d3eb1` brains / moderate
+- [x] W10-cc357cb4 — `cc357cb4-e34d-4791-92f6-62eac990ebd6` app.supportsignal.com.au / moderate
+
+**Agent W10-05** — 9 sessions | brains, prompt.supportsignal.com.au
+
+- [x] W10-c9a2f3a2 — `c9a2f3a2-bc24-4be0-809e-3032760c4a7c` brains / moderate
+- [x] W10-983d70b0 — `983d70b0-95a2-400b-95b2-68e7ad053de3` brains / moderate
+- [x] W10-f75655f0 — `f75655f0-466d-4f81-b209-b80201e74c1e` prompt.supportsignal.com.au / moderate
+- [x] W10-802ae066 — `802ae066-1dec-4a7b-8106-80ee3d6053eb` brains / moderate
+- [x] W10-d3a8db00 — `d3a8db00-1965-49e6-8cf5-c3d87394703e` brains / moderate
+- [x] W10-880e197b — `880e197b-7869-410c-b471-28779ae0c319` brains / moderate
+- [x] W10-733f8cd4 — `733f8cd4-feca-421a-88b0-1e5958618e8f` brains / moderate
+- [x] W10-49d66aad — `49d66aad-9971-4686-886a-179e9c023d8a` brains / moderate
+- [x] W10-335e73af — `335e73af-e519-4775-866b-80633d8da511` prompt.supportsignal.com.au / moderate
+
+**Agent W10-06** — 9 sessions | brains, prompt.supportsignal.com.au
+
+- [x] W10-be47bbd8 — `be47bbd8-fc50-49fd-b457-3e48789e7278` brains / moderate
+- [x] W10-8e5e717d — `8e5e717d-6517-409b-ac09-41dcc4aa55b2` prompt.supportsignal.com.au / moderate
+- [x] W10-84e401ee — `84e401ee-2730-4711-ac6e-97bd42c9674d` brains / moderate
+- [x] W10-521221f0 — `521221f0-2c25-4fd5-9a4a-263d818054a2` brains / moderate
+- [x] W10-49ef67ad — `49ef67ad-de89-43ab-b9ff-a7334757cf6f` prompt.supportsignal.com.au / moderate
+- [x] W10-460a1312 — `460a1312-037a-4bd1-827f-b42f4f23881a` prompt.supportsignal.com.au / moderate
+- [x] W10-612e20d9 — `612e20d9-9bcc-4d05-9b99-9c972f46192a` prompt.supportsignal.com.au / moderate
+- [x] W10-7263fd75 — `7263fd75-d00d-40b6-b11e-5f84a97252bf` brains / moderate
+- [x] W10-86a9a3bc — `86a9a3bc-88c1-4929-8b1f-86920ac2bd83` prompt.supportsignal.com.au / moderate
+
+**Agent W10-07** — 9 sessions | brains, prompt.supportsignal.com.au
+
+- [x] W10-649c95af — `649c95af-8201-4ad1-889c-e9f99b6575e9` prompt.supportsignal.com.au / moderate
+- [x] W10-c0ee8c35 — `c0ee8c35-d361-42e1-8cc6-004817b886d7` brains / moderate
+- [x] W10-b97f2b6d — `b97f2b6d-cefa-4f66-8ea8-5423b9886caa` prompt.supportsignal.com.au / moderate
+- [x] W10-a796e02a — `a796e02a-3e3f-40fe-a1d3-57f061d812c2` prompt.supportsignal.com.au / moderate
+- [x] W10-f95e4fb0 — `f95e4fb0-b633-43e2-bb11-846009a5c10b` prompt.supportsignal.com.au / moderate
+- [x] W10-7370d999 — `7370d999-f989-4260-976e-c58c8610ba82` prompt.supportsignal.com.au / moderate
+- [x] W10-0661821b — `0661821b-5c37-4b80-b4a9-e84e49f46cc1` brains / moderate
+- [x] W10-d0af1944 — `d0af1944-a3c4-4ecf-83de-9f255f459228` prompt.supportsignal.com.au / moderate
+- [x] W10-31054316 — `31054316-e8ec-4af5-bf01-d85e19cfdc24` brains / moderate
+
+**Agent W10-08** — 9 sessions | angeleye, appystack, brains, prompt.supportsignal.com.au
+
+- [x] W10-ea0cafc6 — `ea0cafc6-3d8e-409a-b6e7-28bbbdc77cd9` prompt.supportsignal.com.au / moderate
+- [x] W10-d129cfba — `d129cfba-1368-4ac7-a291-6edda50aaca7` prompt.supportsignal.com.au / moderate
+- [x] W10-b56e1aef — `b56e1aef-1fed-4809-9e72-a26c42be3af2` brains / moderate
+- [x] W10-39d9224e — `39d9224e-53e3-4949-b696-b4c44ec0a291` appystack / moderate
+- [x] W10-4479d525 — `4479d525-0ba3-4998-b5c6-0ec121a39e6e` prompt.supportsignal.com.au / moderate
+- [x] W10-ea6a9a87 — `ea6a9a87-235c-44a9-8762-79b3cf6ad85a` appystack / moderate
+- [x] W10-7d20393a — `7d20393a-381f-47c2-ad53-fc8f12c5ac4b` angeleye / moderate
+- [x] W10-9d63797d — `9d63797d-4185-477c-aac0-39c8c3d47ead` brains / moderate
+- [x] W10-eb5b1d43 — `eb5b1d43-3002-4a2b-9a9d-dd34bac21fee` prompt.supportsignal.com.au / moderate
+
+**Agent W10-09** — 8 sessions | app.supportsignal.com.au, appystack, brains, prompt.supportsignal.com.au
+
+- [x] W10-e9fb0466 — `e9fb0466-cfb8-419c-8b00-f83e3a1ad0cf` prompt.supportsignal.com.au / moderate
+- [x] W10-8f220d36 — `8f220d36-e911-4602-891e-22550b4650d0` appystack / moderate
+- [x] W10-73dad405 — `73dad405-a10e-4cd8-a373-e3e646063d4c` brains / moderate
+- [x] W10-4ff362fe — `4ff362fe-60d3-4dae-90a0-eb2c5f7e4eb7` appystack / moderate
+- [x] W10-c9349da5 — `c9349da5-18d3-41b1-b4c3-7cb2a7e8a170` brains / moderate
+- [x] W10-4f7716c8 — `4f7716c8-6573-4fd2-b10b-1d159f5db378` brains / moderate
+- [x] W10-134e47bc — `134e47bc-4a83-49d4-a9fe-ba98f5fb8912` app.supportsignal.com.au / moderate
+- [x] W10-26171bb1 — `26171bb1-1a1a-4ce7-bb08-b53afa1b7186` brains / moderate
 
 ### Wave 8 — 79 sessions across 9 agents (20 distinct projects, /insights-informed predicates)
 

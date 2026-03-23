@@ -454,3 +454,22 @@ Not all waves are the same. The coordinator should identify which type each wave
 - **Discovery rate 0.51/session**: ~40 new subtypes. Declining from 0.70 (wave 8) but still productive.
 - **9 parallel agents, zero conflicts**: 426 entries, 0 duplicates. Still bulletproof.
 - **~250+ subtypes across 18+ parent types from 426 sessions**.
+
+### Wave 10 (2026-03-23)
+
+- **BUILD accuracy ~43% aggregate**: Sharp increase from waves 8-9 (11-25%) — this batch was 95% moderate + 5% heavy. Per-agent range 12.5%-86%. Accuracy-by-scale curve now well-established.
+- **P13 (misunderstood_request) dominant at moderate scale**: Fired in ~30% of sessions. Common variant: "depth mismatch" — Claude goes shallower than intended. P13+P14 co-occurrence = highest frustration.
+- **100% multi-phase rate**: Every moderate/heavy session had clear phase transitions. Single-phase is a micro/light phenomenon.
+- **"Naming-constrains-cognition" anti-pattern**: Claude named a file "two-approaches.md" then couldn't see a third approach. Filename as cognitive anchor — novel failure mode.
+- **Proxy interaction pattern**: Claude mediating in live meeting between user and remote operator. Explanatory output caused friction; paste-ready commands needed.
+- **brains/ CWD reliability flips at moderate scale**: Micro = incidental (home terminal), moderate+ = primary (actual brain work).
+- **Playwright semantic role #7 proposed**: feature_discovery_audit — UI observation during product owner feature gathering.
+- **AngelEye naming genesis found**: Session b95a97be traces NanoBanano → AngelicEye → AngelEye.
+- **Cross-session handover failure anti-pattern**: Claude omits documentation for new concepts in handovers.
+- **Extreme autonomy ratio**: 2 prompts → 81 tool calls (1:40) via /bmad-dev skill. Highest observed.
+- **Brain management subtype family**: brain_maintenance, brain_architecture, brain_creation, brain_audit_and_design form a coherent cluster.
+- **campaign-status.py worked first time**: Automated batch selection replaced ad-hoc ID files. No manual curation needed.
+- **Discovery rate 0.75/session**: ~60 new subtypes. Rebounded from 0.51 (wave 9) — moderate sessions are richer. Not taxonomy saturation.
+- **PII incidents**: Passport/DOB via voice dictation, credential exposure in infra sessions. PII detection still needed.
+- **20+ new voice artifacts**: "Verso"=Vercel, "Bart"=Claude, "angel hands"=AngelEye, "Cold Med"=Cole Medin, and more.
+- **~310+ subtypes across 20+ parent types from 506 sessions**.
