@@ -13,9 +13,24 @@
 
 ## Summary
 
-- Total: 800 | Complete: 800 | In Progress: 0 | Pending: 0 | Failed: 0
+- Total: 910 | Complete: 800 | In Progress: 110 | Pending: 0 | Failed: 0
+- M4 Mini: 800/800 complete | M4 Pro: 0/110 in progress
 
 ## In Progress
+
+### Wave 14 — 110 sessions across 9 agents (M4 Pro, all pending sessions)
+
+**First wave on M4 Pro machine**. Sessions accessed via `ssh macbook-pro-m4`. Mix of scales: 1 marathon, 5 heavy, 35 moderate, 40 light, 14 micro, 15 trivial. New projects not seen on M4 Mini: joy-juice (15), appydave.com (9), beauty-and-joy (6), flideck (6), davidcruwys (6).
+
+**Agent W14-01** — 13 sessions (952-1 events, includes marathon)
+**Agent W14-02** — 13 sessions (343-1 events)
+**Agent W14-03** — 12 sessions (282-2 events)
+**Agent W14-04** — 12 sessions (223-2 events)
+**Agent W14-05** — 12 sessions (209-2 events)
+**Agent W14-06** — 12 sessions (207-2 events)
+**Agent W14-07** — 12 sessions (185-2 events)
+**Agent W14-08** — 12 sessions (174-1 events)
+**Agent W14-09** — 12 sessions (169-1 events)
 
 ### Wave 10 — 80 sessions across 9 agents (campaign-status.py selected, 76 moderate + 4 heavy)
 

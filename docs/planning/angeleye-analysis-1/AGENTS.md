@@ -522,5 +522,17 @@ Not all waves are the same. The coordinator should identify which type each wave
 - **Junk rate 28%**: 37/133 sessions were non-human (ghost, accidental, warmup). Filter before aggregates.
 - **Cross-platform bridge confirmed (second instance)**: 9.1KB ChatGPT-to-Claude paste.
 - **Discovery rate 0.32/session**: Lowest ever — trivial tail as expected. Taxonomy approaching saturation.
-- **799/800 sessions processed. 0 duplicates across 13 waves. Campaign essentially complete.**
-- **~440+ subtypes across 22+ parent types from 799 sessions**.
+- **800/800 M4 Mini sessions processed. 0 duplicates across 13 waves.**
+- **~440+ subtypes across 22+ parent types from 800 sessions**.
+
+### M4 Pro Phase (Wave 14+)
+
+**Machine**: M4 Pro, accessed via `ssh macbook-pro-m4` (Tailscale).
+**Session files**: `ssh macbook-pro-m4 "cat ~/.claude/angeleye/sessions/session-{id}.jsonl"`
+**Registry**: `ssh macbook-pro-m4 "cat ~/.claude/angeleye/registry.json"`
+
+**Key difference from M4 Mini**: M4 Pro has projects not seen on M4 Mini — joy-juice (15), appydave.com (9), beauty-and-joy (6), flideck (6), davidcruwys (6). These may produce new subtypes and patterns.
+
+**Agents must**: use pre-computed shapes from `scripts/precomputed/w14-NN.json` (already contains full session shape data fetched via SSH). Agents do NOT need SSH access — all data is in the shape files. For sessions needing deeper analysis, the shape file includes `first_real_prompt`, `bash_commands_sample`, `file_paths`, and `detections`.
+
+**Important**: set `"machine": "m4-pro"` in all session-index.jsonl entries for M4 Pro sessions.

@@ -1,0 +1,1076 @@
+[
+  {
+    "session_id": "232bb5f3-5529-49e9-affb-168df747dd02",
+    "source_file": "ssh://macbook-pro-m4/session-232bb5f3-5529-49e9-affb-168df747dd02.jsonl",
+    "machine": "m4-pro",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 343,
+      "user_prompt_count": 51,
+      "tool_use_count": 292,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-14T12:34:32.647000+00:00",
+      "last_event_ts": "2026-03-14T14:46:42.508000+00:00",
+      "duration_minutes": 132,
+      "active_minutes": 132,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 133,
+      "Edit": 43,
+      "Read": 18,
+      "TaskUpdate": 15,
+      "Write": 14,
+      "mcp__playwright__browser_wait_for": 12,
+      "ToolSearch": 9,
+      "TaskCreate": 8,
+      "mcp__playwright__browser_navigate": 8,
+      "mcp__playwright__browser_take_screenshot": 8,
+      "Agent": 7,
+      "mcp__playwright__browser_type": 5,
+      "Skill": 3,
+      "mcp__playwright__browser_press_key": 3,
+      "Grep": 1,
+      "TaskList": 1,
+      "mcp__playwright__browser_install": 1,
+      "mcp__playwright__browser_snapshot": 1,
+      "mcp__playwright__browser_evaluate": 1,
+      "mcp__playwright__browser_click": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "What's tonight's to-do order? I suggest the OMI RAID, which should be number one, but tell me what we got.",
+      "full_length": 106,
+      "ts": "2026-03-14T12:34:32.647Z"
+    },
+    "skill_invocations": [{}, {}, {}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": true,
+        "count": 2
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "93b1c355-2e0b-4440-a6c8-4ad316171e59",
+    "source_file": "ssh://macbook-pro-m4/session-93b1c355-2e0b-4440-a6c8-4ad316171e59.jsonl",
+    "machine": "m4-pro",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 159,
+      "user_prompt_count": 27,
+      "tool_use_count": 132,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-19T04:06:43.601000+00:00",
+      "last_event_ts": "2026-03-19T14:32:55.387000+00:00",
+      "duration_minutes": 626,
+      "active_minutes": 160,
+      "idle_gaps_over_1h": 3,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-19T05:15:43.600000+00:00",
+          "end": "2026-03-19T06:51:35.769000+00:00",
+          "gap_minutes": 95
+        },
+        {
+          "start": "2026-03-19T07:31:05.096000+00:00",
+          "end": "2026-03-19T10:12:01.887000+00:00",
+          "gap_minutes": 160
+        },
+        {
+          "start": "2026-03-19T11:02:22.171000+00:00",
+          "end": "2026-03-19T14:30:51.634000+00:00",
+          "gap_minutes": 208
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 85,
+      "Edit": 15,
+      "Read": 8,
+      "Write": 8,
+      "Agent": 6,
+      "Grep": 5,
+      "Glob": 3,
+      "Skill": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "i've asked the question before on how to turn of the dam build with agent in vscode, it is not a siple plugin, did we document the pain",
+      "full_length": 135,
+      "ts": "2026-03-19T04:06:43.601Z"
+    },
+    "skill_invocations": [{}, {}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": true,
+        "count": 5
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "a16112ed-ee3a-4aa3-a0fe-5cabcdab79f8",
+    "source_file": "ssh://macbook-pro-m4/session-a16112ed-ee3a-4aa3-a0fe-5cabcdab79f8.jsonl",
+    "machine": "m4-pro",
+    "cwd": "/Users/davidcruwys/dev/ad/flivideo/flideck",
+    "shape": {
+      "event_count": 116,
+      "user_prompt_count": 9,
+      "tool_use_count": 107,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-19T00:58:07.964000+00:00",
+      "last_event_ts": "2026-03-19T02:22:44.444000+00:00",
+      "duration_minutes": 84,
+      "active_minutes": 84,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Bash": 46,
+      "Glob": 21,
+      "Read": 17,
+      "Agent": 11,
+      "Write": 6,
+      "Edit": 6
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": " I want to prepare this system for future Ralphy Wiggum loops.\n\n  That means:\n  1. Audit the existing docs/planning/AGENTS.md against completed campaign\n  assessments \u2014\n     update stale Known Issues, directory structure, build commands, and\n  anti-patterns\n  2. Populate the Learnings section with key facts from every completed campaign\n  assessment\n  3. Add or update the Mock Patterns section based on what campaigns actually\n  discovered\n  4. Fix BACKLOG.md \u2014 make sure completed items are in Do",
+      "full_length": 3781,
+      "ts": "2026-03-19T00:59:40.394Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": true,
+        "count": 14
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": true,
+        "first_prompt_length": 3781,
+        "short_prompt_ratio": 0.88
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "fec6ab8b-d7a6-4de1-8fb4-8efbf8ad03bb",
+    "source_file": "ssh://macbook-pro-m4/session-fec6ab8b-d7a6-4de1-8fb4-8efbf8ad03bb.jsonl",
+    "machine": "m4-pro",
+    "cwd": "/Users/davidcruwys/dev/ad/flivideo/flihub",
+    "shape": {
+      "event_count": 85,
+      "user_prompt_count": 21,
+      "tool_use_count": 64,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-19T07:10:02.599000+00:00",
+      "last_event_ts": "2026-03-19T14:28:52.147000+00:00",
+      "duration_minutes": 438,
+      "active_minutes": 71,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-19T10:05:09.178000+00:00",
+          "end": "2026-03-19T14:27:29.005000+00:00",
+          "gap_minutes": 262
+        }
+      ]
+    },
+    "tools": {
+      "Bash": 24,
+      "Edit": 12,
+      "Read": 9,
+      "Agent": 7,
+      "Write": 4,
+      "mcp__playwright__browser_navigate": 3,
+      "Glob": 2,
+      "Skill": 1,
+      "ToolSearch": 1,
+      "mcp__playwright__browser_click": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "you told be relay convo is recommended but the last convo said this was recommended, which is correct\n\n To resume: start a new session in this folder and run /ralphy. It will find\n  test-coverage-gaps-2 complete, read the next-round-brief, and drop straight\n  into planning B038 relay collaboration. Choose 4. Extend.\n",
+      "full_length": 318,
+      "ts": "2026-03-19T07:12:50.034Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "1dd9c72c-5ece-47a3-8170-a4dd96fd514f",
+    "source_file": "ssh://macbook-pro-m4/session-1dd9c72c-5ece-47a3-8170-a4dd96fd514f.jsonl",
+    "machine": "m4-pro",
+    "cwd": "/Users/davidcruwys/dev/ad/beauty-and-joy",
+    "shape": {
+      "event_count": 70,
+      "user_prompt_count": 19,
+      "tool_use_count": 51,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-19T00:56:09.389000+00:00",
+      "last_event_ts": "2026-03-19T06:53:04.588000+00:00",
+      "duration_minutes": 356,
+      "active_minutes": 123,
+      "idle_gaps_over_1h": 1,
+      "idle_gap_details": [
+        {
+          "start": "2026-03-19T05:15:39.387000+00:00",
+          "end": "2026-03-19T06:53:04.588000+00:00",
+          "gap_minutes": 97
+        }
+      ]
+    },
+    "tools": {
+      "Edit": 17,
+      "Write": 8,
+      "Read": 8,
+      "Agent": 7,
+      "Bash": 3,
+      "Grep": 3,
+      "ToolSearch": 2,
+      "CronCreate": 1,
+      "CronDelete": 1,
+      "Skill": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "what is this conversation about\n\n \u2590\u259b\u2588\u2588\u2588\u259c\u258c   Claude Code v2.1.74\n\u259d\u259c\u2588\u2588\u2588\u2588\u2588\u259b\u2598  Sonnet 4.6 with medium effort \u00b7 Claude API\n  \u2598\u2598 \u259d\u259d    ~/dev/ad/beauty-and-joy/business-ventures/joy-juice/design\n  \u23bf \u00a0Added 3 lines\n      403    <button class=\"tab-btn\" onclick=\"showTab('stories')\">\n      404      <span class=\"t-en\">Our Story</span><span class=\"t-th\">\u0e40\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e23\u0e32\u0e27\u0e02\u0e2d\u0e07\u0e40\u0e23\u0e32</span>\n      405    </button>\n      406 +  <button class=\"tab-btn\" onclick=\"showTab('research')\">\n      407 +    <span class=\"t-en\">Research<",
+      "full_length": 95877,
+      "ts": "2026-03-19T00:56:09.389Z"
+    },
+    "skill_invocations": [{}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 2
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false,
+        "first_prompt_length": 95877,
+        "short_prompt_ratio": 0.39
+      },
+      "cron_polling": {
+        "detected": true,
+        "creates": 1,
+        "deletes": 1
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "0428ffb6-35b9-4cc5-bf65-4fd76214898f",
+    "source_file": "ssh://macbook-pro-m4/session-0428ffb6-35b9-4cc5-bf65-4fd76214898f.jsonl",
+    "machine": "m4-pro",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 51,
+      "user_prompt_count": 6,
+      "tool_use_count": 45,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-18T11:55:45.342000+00:00",
+      "last_event_ts": "2026-03-18T12:39:23.204000+00:00",
+      "duration_minutes": 43,
+      "active_minutes": 43,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Edit": 16,
+      "Read": 14,
+      "Bash": 9,
+      "Write": 4,
+      "Skill": 2
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Since the last time that we updated our brain on Anthropic, what new things have been added? Can you add it to the brain please?",
+      "full_length": 128,
+      "ts": "2026-03-18T11:55:45.342Z"
+    },
+    "skill_invocations": [{}, {}],
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": true,
+        "count": 1
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "122a5bd1-c1b0-4865-a112-e058395d0228",
+    "source_file": "ssh://macbook-pro-m4/session-122a5bd1-c1b0-4865-a112-e058395d0228.jsonl",
+    "machine": "m4-pro",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 34,
+      "user_prompt_count": 9,
+      "tool_use_count": 25,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-14T03:40:35.760000+00:00",
+      "last_event_ts": "2026-03-14T04:12:40.183000+00:00",
+      "duration_minutes": 32,
+      "active_minutes": 32,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "mcp__playwright__browser_click": 8,
+      "mcp__playwright__browser_snapshot": 4,
+      "mcp__playwright__browser_navigate": 3,
+      "ToolSearch": 2,
+      "mcp__playwright__browser_tabs": 2,
+      "mcp__playwright__browser_type": 2,
+      "mcp__playwright__browser_press_key": 2,
+      "mcp__playwright__browser_triple_click": 1,
+      "mcp__playwright__browser_fill_form": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "we have dame support issue, read this and tell me what it is about and what I need to do next:\n\n ---\n  I need help submitting a support request to Anthropic about claude\n  remote-control not being available on my account.\n\n  Situation:\n  - Feature claude remote-control is documented as available on all paid plans\n  from Claude Code v2.1.51+\n  - I cannot access it despite meeting all requirements\n\n  My setup (confirmed):\n  - Claude Code v2.1.76\n  - Auth: OAuth token, first party (claude auth stat",
+      "full_length": 1568,
+      "ts": "2026-03-14T03:40:35.760Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "fa19414b-660d-4a20-b0be-cceb099609aa",
+    "source_file": "ssh://macbook-pro-m4/session-fa19414b-660d-4a20-b0be-cceb099609aa.jsonl",
+    "machine": "m4-pro",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 23,
+      "user_prompt_count": 3,
+      "tool_use_count": 20,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-20T11:02:13.141000+00:00",
+      "last_event_ts": "2026-03-20T11:09:58.438000+00:00",
+      "duration_minutes": 7,
+      "active_minutes": 7,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Read": 10,
+      "Bash": 5,
+      "Grep": 2,
+      "Write": 2,
+      "Glob": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Can you list the brains that we've got? Categorise some, please.",
+      "full_length": 64,
+      "ts": "2026-03-20T11:02:13.141Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "ac7d89db-e223-4551-8a89-6d001bc2c7b7",
+    "source_file": "ssh://macbook-pro-m4/session-ac7d89db-e223-4551-8a89-6d001bc2c7b7.jsonl",
+    "machine": "m4-pro",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 19,
+      "user_prompt_count": 5,
+      "tool_use_count": 14,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-02-28T11:08:18.331000+00:00",
+      "last_event_ts": "2026-02-28T11:19:12.603000+00:00",
+      "duration_minutes": 10,
+      "active_minutes": 10,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "WebFetch": 6,
+      "Read": 5,
+      "mcp__brave-search__brave_web_search": 2,
+      "Glob": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Do you think this statement from Stan Moore is accurate? \n\nDTV holder with exit deadline coming up in late March. Considering the Chiang Khong -> Laos land run instead of flying.\nHave DTV members in this group used land crossings recently for the 6-month reset? Any issues at Chiang Khong immigration since the 2025 rule changes?\nWould love current intel from anyone who's done it recently.\nStan Moore\nDon't count on an easy re-entry by land. DTV holders are sometimes denied entry at land borders.\n3",
+      "full_length": 909,
+      "ts": "2026-02-28T11:08:31.446Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "39e07167-9e11-42ea-989b-1c372bc30493",
+    "source_file": "ssh://macbook-pro-m4/session-39e07167-9e11-42ea-989b-1c372bc30493.jsonl",
+    "machine": "m4-pro",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 8,
+      "user_prompt_count": 4,
+      "tool_use_count": 4,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-13T11:48:04.307000+00:00",
+      "last_event_ts": "2026-03-13T12:17:52.374000+00:00",
+      "duration_minutes": 29,
+      "active_minutes": 29,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Glob": 1,
+      "Agent": 1,
+      "ToolSearch": 1,
+      "WebFetch": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "tell me about btw",
+      "full_length": 17,
+      "ts": "2026-03-13T11:48:04.307Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 1
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "bb352091-520c-41ed-8187-3e5bdc9a8b23",
+    "source_file": "ssh://macbook-pro-m4/session-bb352091-520c-41ed-8187-3e5bdc9a8b23.jsonl",
+    "machine": "m4-pro",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 5,
+      "user_prompt_count": 5,
+      "tool_use_count": 0,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-01T00:08:27.809000+00:00",
+      "last_event_ts": "2026-03-01T00:23:14.519000+00:00",
+      "duration_minutes": 14,
+      "active_minutes": 14,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {},
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "I am in Chiang Mai. My Mac is not working. At the moment, there is a screen issue. I've been given details from Apple support at the moment, but it does not appear to be for Chiang Mai. \n\nThere are the nearby repair centers authorized by apple available for you David and their contact information to set up an appointment with them!\n\niCare \u0e40\u0e0b\u0e47\u0e19\u0e17\u0e23\u0e31\u0e25\u0e40\u0e0a\u0e35\u0e22\u0e07\u0e43\u0e2b\u0e21\u0e48\u0e41\u0e2d\u0e23\u0e4c\u0e1e\u0e2d\u0e23\u0e4c\u0e15\n\u0e28\u0e39\u0e19\u0e22\u0e4c\u0e01\u0e32\u0e23\u0e04\u0e49\u0e32 \u0e40\u0e0b\u0e47\u0e19\u0e17\u0e23\u0e31\u0e25\u0e1e\u0e25\u0e32\u0e0b\u0e48\u0e32 \u0e40\u0e0a\u0e35\u0e22\u0e07\u0e43\u0e2b\u0e21\u0e48\u0e41\u0e2d\u0e23\u0e4c\u0e1e\u0e2d\u0e23\u0e4c\u0e15 \u0e0a\u0e31\u0e49\u0e19 3 \u0e2b\u0e49\u0e2d\u0e07\u0e40\u0e25\u0e02\u0e17\u0e35\u0e48 370/1-370/2 \u0e16\u0e19\u0e19\u0e21\u0e2b\u0e34\u0e14\u0e25 \u0e15\u0e33\u0e1a\u0e25\u0e2b\u0e32\u0e22\u0e22\u0e32\n\u0e40\u0e0a\u0e35\u0e22\u0e07\u0e43\u0e2b\u0e21\u0e48, 50100\n090-9084217\nhttp://w",
+      "full_length": 1190,
+      "ts": "2026-03-01T00:08:27.809Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "88d1d301-697d-4c93-8381-ef326c8e8df9",
+    "source_file": "ssh://macbook-pro-m4/session-88d1d301-697d-4c93-8381-ef326c8e8df9.jsonl",
+    "machine": "m4-pro",
+    "cwd": "/Users/davidcruwys/dev/ad/brains",
+    "shape": {
+      "event_count": 3,
+      "user_prompt_count": 2,
+      "tool_use_count": 1,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-21T15:12:38.079000+00:00",
+      "last_event_ts": "2026-03-21T15:16:38.984000+00:00",
+      "duration_minutes": 4,
+      "active_minutes": 4,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {
+      "Agent": 1
+    },
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "Skip to content\nrtk-ai\nrtk\nRepository navigation\nCode\nIssues\n143\n (143)\nPull requests\n143\n (143)\nDiscussions\nActions\nProjects\nSecurity\nInsights\nOwner avatar\nrtk\nPublic\nrtk-ai/rtk\nName        \ngithub-actions[bot]\ngithub-actions[bot]\nchore(master): release 0.31.0 (#719)\nc85e348\n \u00b7 \n2 days ago\n.claude\nfeat: 9-tool AI agent support + emoji removal (#704)\n2 days ago\n.github\nfeat: 9-tool AI agent support + emoji removal (#704)\n2 days ago\nFormula\nfix: add website URL (rtk-ai.app) across project metadat",
+      "full_length": 15897,
+      "ts": "2026-03-21T15:12:38.079Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": true
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  },
+  {
+    "session_id": "80d84f1b-ced3-4921-a1fd-a9bc67749c4d",
+    "source_file": "ssh://macbook-pro-m4/session-80d84f1b-ced3-4921-a1fd-a9bc67749c4d.jsonl",
+    "machine": "m4-pro",
+    "cwd": "/Users/davidcruwys/dev/ad/beauty-and-joy/business-ventures/joy-juice",
+    "shape": {
+      "event_count": 1,
+      "user_prompt_count": 1,
+      "tool_use_count": 0,
+      "stop_count": 0,
+      "subagent_start_count": 0,
+      "subagent_stop_count": 0,
+      "first_event_ts": "2026-03-21T05:22:01.304000+00:00",
+      "last_event_ts": "2026-03-21T05:22:01.304000+00:00",
+      "duration_minutes": 0,
+      "active_minutes": 0,
+      "idle_gaps_over_1h": 0,
+      "idle_gap_details": null
+    },
+    "tools": {},
+    "file_paths": {
+      "read": [],
+      "write": [],
+      "edit": []
+    },
+    "bash_commands_sample": [],
+    "first_real_prompt": {
+      "text": "-\nRespond with hello.",
+      "full_length": 21,
+      "ts": "2026-03-21T05:22:01.304Z"
+    },
+    "skill_invocations": null,
+    "subagents": null,
+    "detections": {
+      "compaction_resume": {
+        "detected": false,
+        "count": 0
+      },
+      "loop_runaway": {
+        "detected": false
+      },
+      "write_then_open": {
+        "detected": false,
+        "count": 0
+      },
+      "unauthorized_edit_before_prompt": {
+        "detected": false,
+        "count": 0
+      },
+      "search_without_read": {
+        "detected": false,
+        "count": 0
+      },
+      "ralphy_mode": {
+        "detected": false,
+        "has_ralphy_skill": false,
+        "has_impl_plan": false,
+        "has_agent_calls": false
+      },
+      "form_filling": {
+        "detected": false
+      },
+      "cron_polling": {
+        "detected": false,
+        "creates": 0,
+        "deletes": 0
+      }
+    },
+    "project_inference": {
+      "inferred_project": null,
+      "cwd_reliable": null
+    }
+  }
+]
