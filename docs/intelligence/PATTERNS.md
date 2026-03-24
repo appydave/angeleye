@@ -106,9 +106,11 @@ interface RegistryEntry {
 }
 ```
 
-### Session Index Schema v2 (as written to session-index.jsonl) `[IMPLEMENTED]`
+### Session Index Schema v3 (as written to session-index.jsonl) `[IMPLEMENTED]`
 
-The 924-session campaign produced a comprehensive schema for session analysis entries. Each entry in `session-index.jsonl` contains:
+The 924-session campaign produced a comprehensive schema for session analysis entries, migrated through v1→v2→v3. v3 unifies the forward pass, backward pass, and final pass into a single flat structure with canonical P/C/O-prefixed keys.
+
+**Migration history**: v1 (waves 1-4, 68 entries) → v2 (waves 5-14, added structure) → v3 (normalized all entries, merged enrichment layers). Scripts at `brains/angeleye/analysis/migrations/`.
 
 ```typescript
 interface SessionIndexEntry {
@@ -116,20 +118,24 @@ interface SessionIndexEntry {
   session_id: string;
   machine: string; // "m4-mini" | "m4-pro"
   project: string;
-  project_dir: string;
-  schema_version: number; // 2
+  project_dir?: string;
+  schema_version: 3;
 
-  // Human overrides
-  disposition: string; // "keep" | "discard" | "review"
-  interest_level: string; // "high" | "medium" | "low" | "none"
-  notes: string;
+  // Pass metadata
+  forward_pass: { analysis: object } | null; // null = never wave-analysed (418/924)
+  backward_pass: { batch: string; analysed_at: string } | null;
 
-  // Tool & skill summary
-  tools: Record<string, number>; // tool name → invocation count
-  skills_invoked: string[];
+  // Human overrides (forward-pass entries only)
+  disposition?: string; // "keep" | "discard" | "review"
+  interest_level?: string; // "high" | "medium" | "low" | "none"
+  notes?: string;
 
-  // Shape metrics
-  shape: {
+  // Tool & skill summary (forward-pass entries only)
+  tools?: Record<string, number>;
+  skills_invoked?: string[];
+
+  // Shape metrics (forward-pass entries only)
+  shape?: {
     event_count: number;
     tool_use_count: number;
     user_prompt_count: number;
@@ -138,74 +144,86 @@ interface SessionIndexEntry {
     context_compactions: number;
   };
 
-  // Predicates (boolean signals)
+  // Predicates — all normalized to { result: bool|null, justification: string }
   predicates: {
-    // Original (P01–P16)
-    P01_has_tool_use: boolean;
-    P02_has_file_edits: boolean;
-    P03_has_bash_commands: boolean;
-    P04_has_playwright: boolean;
-    P05_has_subagent: boolean;
-    P06_has_skill_invocation: boolean;
-    P07_has_context_handover: boolean;
-    P08_has_voice_transcription: boolean;
-    P09_has_frustration_language: boolean;
-    P10_has_closing_ceremony: boolean;
-    P11_has_commit_push: boolean;
-    P12_has_large_paste_opener: boolean;
-    P13_has_error_recovery: boolean;
-    P14_has_repeated_tool_failure: boolean;
-    P15_has_ask_user_question: boolean;
-    P16_has_claude_md_autoload: boolean;
-    // Backward pass additions (P17–P22)
-    P17_has_handover_context: boolean;
-    P18_has_cross_project_reads: boolean;
-    P19_has_web_research: boolean;
-    P20_has_parallel_subagent_bursts: boolean;
-    P21_has_task_orchestration: boolean;
-    P22_has_git_outcome: boolean;
+    // Forward pass (P01–P16) — 506/924 coverage
+    P01_is_feature_construction: Predicate;
+    P02_has_frustration_signals: Predicate;
+    P03_is_multi_phase: Predicate;
+    P04_has_brain_file_writes: Predicate;
+    P05_has_playwright_calls: Predicate;
+    P06_has_cross_session_refs: Predicate;
+    P07_has_skill_gap_signal: Predicate;
+    P08_has_unauthorized_edits: Predicate;
+    P09_is_compaction_resume: Predicate;
+    P10_is_cwd_incidental: Predicate;
+    P11_has_voice_dictation_artifacts: Predicate; // 286/924
+    P12_is_machine_initiated: Predicate; // 286/924
+    P13_misunderstood_request: Predicate; // 226/924
+    P14_wrong_approach: Predicate; // 226/924
+    P15_buggy_output: Predicate; // 226/924
+    P16_excessive_changes: Predicate; // 226/924
+    // Backward pass (P17–P22) — 711/924 coverage
+    P17_has_handover_context: Predicate;
+    P18_has_cross_project_reads: Predicate;
+    P19_has_web_research: Predicate;
+    P20_has_parallel_subagent_bursts: Predicate;
+    P21_has_task_orchestration: Predicate;
+    P22_has_git_outcome: Predicate;
+    // Final pass (P23–P25) — 924/924 coverage
+    P23_is_paperclip_agent: Predicate;
+    P24_has_pii_content: Predicate;
+    P25_has_closing_ceremony: Predicate;
   };
 
-  // Classifiers (categorical labels)
+  // Classifiers — all normalized to { value: string, confidence: string }
   classifiers: {
-    session_type: string; // BUILD, KNOWLEDGE, RESEARCH, etc.
-    session_scale: string; // micro, light, moderate, heavy, marathon
-    session_subtype: string; // 500+ subtypes discovered
-    tool_profile: string;
-    opening_style: string;
-    closing_style: string;
-    project_attribution: string;
-    session_chain_role: string;
-    // Backward pass additions (C08–C11)
-    C08_delegation_style: string; // conversational | directive | orchestrated | autonomous
-    C09_session_continuity: string; // fresh | handover_paste | compaction | skill_launcher | recall
-    C10_output_type: string; // conversation_only | code_changes | knowledge_synthesis | mixed | new_artifacts
-    C11_initiation_source: string; // user_typed | voice_dictated | handover_paste | skill_invoked | agent_dispatched
+    // Forward pass (C01–C07) — 506/924 coverage
+    C01_session_type: Classifier; // BUILD, KNOWLEDGE, RESEARCH, etc.
+    C02_session_scale: Classifier; // micro, light, moderate, heavy, marathon
+    C03_opening_style: Classifier;
+    C04_closing_style: Classifier;
+    C05_tool_profile: Classifier;
+    C06_project_attribution: Classifier;
+    C07_session_subtype: Classifier; // 500+ subtypes discovered
+    // Backward pass (C08–C11) — 711/924 coverage
+    C08_delegation_style: Classifier; // conversational | directive | orchestrated | autonomous
+    C09_session_continuity: Classifier; // fresh | handover_paste | compaction | skill_launcher | recall
+    C10_output_type: Classifier; // conversation_only | code_changes | knowledge_synthesis | mixed | new_artifacts
+    C11_initiation_source: Classifier; // user_typed | voice_dictated | handover_paste | skill_invoked | agent_dispatched
+    // Final pass (C12–C13) — 924/924 coverage
+    C12_prompt_verbosity: Classifier; // terse | normal | verbose | paste
+    C13_session_lifecycle: Classifier; // complete | abandoned | ghost | interrupted | stub
   };
 
-  // Observations (structured analysis)
+  // Observations — string values
   observations: {
-    frustration_analysis: object;
-    phase_breakdown: object;
-    session_chain: object;
-    skill_gap: object;
-    cwd_mismatch: object;
-    O06_autonomy_profile: object;
-    O07_machine_character: object;
+    // Forward pass (O02–O05) — 501/924 coverage
+    O02_frustration_analysis: string;
+    O03_phase_breakdown: string;
+    O04_skill_gap: string;
+    O05_session_chain: string;
+    // Backward pass (O06–O07) — 711/924 coverage
+    O06_autonomy_profile: string;
+    O07_machine_character: string;
+    // Final pass (O08) — 924/924 coverage
+    O08_tool_diversity_index: string;
   };
 
-  // Derived metrics
-  derived: {
-    autonomy_ratio: number; // tool_use_count / user_prompt_count
-    session_liveness: number; // active_minutes / duration_minutes
+  // Derived metrics (forward-pass entries only)
+  derived?: {
+    autonomy_ratio: { value: number; bucket: string };
+    session_liveness: { value: number; bucket: string };
   };
 
-  // Metadata
-  analysis_metadata: object;
-  backward_pass_metadata: object;
-  proposed_subtypes: string[];
+  proposed_subtypes?: string[];
 }
+
+type Predicate = { result: boolean | null; justification: string };
+type Classifier = { value: string; confidence: string };
 ```
+
+**Coverage tiers**: Not all entries have all fields. 506 entries went through full forward wave analysis. 418 entries have `forward_pass: null` — they were discovered during enrichment passes and only have backward/final pass data (P17-P25, C08-C13, O06-O08). All 924 entries have final pass fields (P23-P25, C12-C13, O08).
 
 **Autonomy ratio buckets** `[VALIDATED-924-NEW]`:
 
@@ -739,7 +757,7 @@ These require a lookup table or external knowledge:
 
 ### Things We Now Capture `[VALIDATED-924-NEW]`
 
-These were previously gaps, now addressed in the v2 schema:
+These were previously gaps, now addressed in the v3 schema:
 
 - **Session scale** — `session_scale` classifier (micro/light/moderate/heavy/marathon)
 - **Delegation style** — C08 (conversational/directive/orchestrated/autonomous)
