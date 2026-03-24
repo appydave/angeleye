@@ -5,7 +5,7 @@
 **Stack**: AppyStack (React 19 + Vite 7 + Express 5 + TypeScript + Socket.io)
 **Data store**: JSONL flat files (no database — see Data Architecture)
 **Config location**: `~/.claude/angeleye/`
-**Status**: Requirements / pre-build
+**Status**: Operational — v2 schema, 924 sessions indexed
 
 ---
 
@@ -19,17 +19,24 @@ It is **not** an ops dashboard. It is not a log viewer. It is a live performance
 
 ## The Three Jobs
 
-### 1. Observer (live view)
+### 1. Observer (live view) — BUILT
 
 Watch what agents are doing across sessions in near real-time. Glanceable from a second monitor while recording video. Answers: "what is happening right now, and where?"
 
-### 2. Context Publisher
+**What's built**: Session list with focus panel, All/Starred/Named filters, workspace badges on session rows, session type legend with tooltips, prompt expansion on click, v2-linen UI design. Scales to 690+ sessions (pagination backlog item B023 for 2000+).
+
+### 2. Context Publisher — PARTIALLY BUILT
 
 As agent workflows run — BMAD sessions, Mary → Bob handoffs, Ralph loops — accumulated context gets packaged and sent to image generation (Nano Banana / FliDeck) on demand or triggered automatically at natural boundaries (Stop events, agent handoffs).
 
-### 3. Session Archive + Query
+**What's built**: `/angeleye:context` skill assembles session context blocks for Claude analysis windows.
+**Backlog**: `/angeleye:publish` (Nano Banana / FliDeck integration) is B011.
+
+### 3. Session Archive + Query — BUILT
 
 Interrogatable history. Filter by tool type, event type, workspace, tag. Chain events into a Claude window for analysis. Long-running memory emerges when sessions share tags — same project over time.
+
+**What's built**: Backfill pipeline scans `~/.claude/projects/`, extracts session shapes from JSONL transcripts, classifies sessions. 924-session analysis index with v2/v3 schema. Delta tracking via `last-sync.json`. Unified Sync button runs backfill + classify in one action. `/rename` names extracted from `custom-title` JSONL entries during backfill.
 
 ---
 
@@ -37,13 +44,13 @@ Interrogatable history. Filter by tool type, event type, workspace, tag. Chain e
 
 ### Source 1: Claude Code Hook Events (real-time, interactive sessions)
 
-Claude Code fires 21 hook events total. AngelEye subscribes to a subset. All delivered as JSON via stdin to hook scripts (or via HTTP POST — see Hook Ingestion below).
+Claude Code fires 21 hook events total. AngelEye subscribes to a subset. All delivered as JSON via stdin to hook scripts.
 
 **Common fields on every event**: `session_id`, `transcript_path`, `cwd`, `hook_event_name`, `agent_id`, `agent_type` (v2.1.69+)
 
 **`$CLAUDE_SESSION_ID`** is also available as an environment variable in all command hooks (v2.1.9+) — no stdin parsing needed for session identification.
 
-#### v1 Hooks (subscribe now)
+#### v1 Hooks (subscribed)
 
 | Hook               | Key payload                                                           | Why we want it                             |
 | ------------------ | --------------------------------------------------------------------- | ------------------------------------------ |
@@ -87,7 +94,7 @@ Written incrementally during session. Five entry types: `user`, `assistant`, `su
 
 Tool calls in `assistant` entries as `tool_use` blocks. Results in subsequent `user` entries as `tool_result` blocks, matched by `tool_use_id`.
 
-### Source 3: Stream-JSON subprocess output (future — multi-format ingestion)
+### Source 3: Stream-JSON subprocess output (deferred — multi-format ingestion)
 
 For agents run programmatically (Paperclip, OpenClaw, KyberBot, future automated agents):
 `claude --print - --output-format stream-json`
@@ -102,7 +109,7 @@ Paperclip agent      →  stream-json adapter ─┼→  normalised event  →  
 KyberBot/OpenClaw    →  their adapter      ─┘
 ```
 
-AngelEye's server, UI, and query layer never know which adapter produced an event. Adapters are the extension point for future agent runtimes.
+AngelEye's server, UI, and query layer never know which adapter produced an event. Adapters are the extension point for future agent runtimes. (Deferred — B013.)
 
 ---
 
@@ -121,7 +128,20 @@ AngelEye's server, UI, and query layer never know which adapter produced an even
   archive/
     session-abc123.jsonl     ← rotated here at SessionEnd
   workspaces.json            ← named workspace configs
+  last-sync.json             ← delta tracking (last backfill timestamp per project dir)
 ```
+
+### Analysis layer
+
+```
+~/dev/ad/brains/angeleye/analysis/
+  session-index.jsonl        ← 924-entry analysis index (v2/v3 schema)
+
+<app-root>/docs/planning/
+  angeleye-analysis-1/       ← analysis campaign: wave index files, findings, scripts
+```
+
+Session shapes are precomputed by `compute-session-shape.py` during backfill — event counts, tool distributions, prompt fingerprints — and stored in the analysis index for classification.
 
 ### Registry format
 
@@ -176,62 +196,31 @@ AngelEye's server, UI, and query layer never know which adapter produced an even
 
 ---
 
-## Hook Ingestion — Two Approaches
+## Hook Ingestion — Decision: Command Hooks
 
-**Canonical reference**: `~/dev/ad/brains/anthropic-claude/claude-code/hooks-reference.md` → HTTP Hooks section (v2.1.63)
+**Canonical reference**: `~/dev/ad/brains/anthropic-claude/claude-code/hooks-reference.md`
 
-### Option A: HTTP Hooks (preferred for AngelEye)
+### Chosen: Command hooks with curl (B024 — completed)
 
-Claude Code can POST hook data directly to a URL instead of running a bash script:
+AngelEye uses `curl ... || true` command hooks configured in `~/.claude/settings.json`. Each hook event fires a curl POST to the AngelEye Express server. The `|| true` ensures hooks never block Claude Code if the server is down.
 
-```json
-{
-  "PostToolUse": [
-    {
-      "matcher": "*",
-      "hooks": [
-        { "type": "http", "url": "http://localhost:4200/hooks/post-tool-use", "timeout": 5 }
-      ]
-    }
-  ]
-}
+```
+Hook event → curl POST to localhost:5501/hooks/:event || true → Express → JSONL write + Socket.io push
 ```
 
-**Advantages for AngelEye**:
+The `/angeleye:install` skill writes this configuration automatically.
 
-- AngelEye Express server receives hook data directly — no Python scripts needed
-- Socket.io broadcast happens in the same process as ingestion (zero latency)
-- No file watching needed — events arrive via HTTP, get written to JSONL and broadcast simultaneously
-- Simpler architecture: `Hook → Express → JSONL write + Socket.io push`
-- Requires AngelEye server to be running (acceptable for a personal tool)
+### Considered and rejected: HTTP hooks
 
-**Risk**: If AngelEye server is not running, hooks silently fail (exit non-zero). Acceptable trade-off for personal use.
+Claude Code's native HTTP hook type (v2.1.63) posts directly to a URL without a shell script. Rejected because command hooks with `curl || true` give the same result with more control over failure modes and logging.
 
-### Option B: Python Scripts (fallback)
+### Considered and rejected: Python scripts
 
-Three Python files writing to JSONL, Express watches files with chokidar. More resilient (works even if server is down) but more moving parts.
-
-**Decision**: Start with HTTP hooks. Fall back to Python scripts only if HTTP approach causes problems.
-
----
-
-## Hook Scripts (Option B — Python fallback only)
-
-If using HTTP hooks (Option A), skip this section — the Express server is the hook handler.
-
-| Script             | Event                              | Responsibility                                                          |
-| ------------------ | ---------------------------------- | ----------------------------------------------------------------------- |
-| `session_start.py` | `SessionStart`                     | Register session in registry.json, create hot file                      |
-| `post_tool_use.py` | `PostToolUse` + `UserPromptSubmit` | Summarise tool input, append event, update last_active, stop hook guard |
-| `session_end.py`   | `SessionEnd`                       | Rotate hot file to archive, mark session ended                          |
-
-**Rules**: `uv run`, always exit 0 (never block Claude), run in under 200ms.
-
-**Installation**: one-time setup via `/angeleye:install` skill or `npm run setup-hooks`. Writes hooks config into `~/.claude/settings.json`. For HTTP hooks, writes URLs; for Python scripts, writes absolute paths.
+Three Python files (`session_start.py`, `post_tool_use.py`, `session_end.py`) writing to JSONL, Express watches files with chokidar. More resilient (works even if server is down) but more moving parts. Rejected in favour of the simpler curl approach.
 
 **Hooks load at session start** — changes require restarting Claude Code. `/hooks` shows what's currently loaded.
 
-**Patterns stolen from disler** (`claude-code-hooks-observability`):
+**Patterns from disler** (`claude-code-hooks-observability`):
 
 - Stop hook guard (`stop_hook_active` check)
 - Tool summarisation by type
@@ -243,84 +232,75 @@ If using HTTP hooks (Option A), skip this section — the Express server is the 
 
 All personal skills (`~/.claude/skills/angeleye/`).
 
-**`/angeleye:install`**
+**`/angeleye:install`** — BUILT (B006)
 One-time setup. Reads `~/.claude/settings.json`, appends hooks config pointing at AngelEye hook scripts, writes back. Run once after cloning the project.
 
-**`/angeleye:name-session`**
+**`/angeleye:name-session`** — BUILT (B006)
 Tags current session in registry.json with human name and optional tags. Updates `name` and `tags` fields. Optionally assigns to a workspace.
 Usage: `/angeleye:name-session "BMAD Story 1.2" --tags bmad,supportsignal --workspace "SupportSignal sprint"`
 
-**`/angeleye:context`**
+**`/angeleye:context`** — BUILT (B010)
 Reads current session's hot file (or named session from registry) and assembles a context block. Used to drop session context into a Claude window for analysis.
 Usage: `/angeleye:context --last 20` or `/angeleye:context --session abc123`
 
-**`/angeleye:publish`**
+**`/angeleye:publish`** — BACKLOG (B011)
 Reads session context and sends to Nano Banana or FliDeck for image generation. Triggered manually or automatically on Stop events.
 Usage: `/angeleye:publish --session --concept "auth middleware" --direction "circuit board"`
 
 ---
 
-## UI — Two Pages
+## UI
 
-### Page 1: Organizer
+### Observer (primary view)
 
-Managing where sessions live. Not a live view — visited occasionally.
+The live session monitoring view. Selecting what to watch and watching it.
 
-- Inbox of unassigned sessions
-- Named workspaces (create, rename, delete)
-- Drag sessions into workspaces, or move between them
-- Folder inference: session starting in a known directory shows suggestion badge ("looks like SupportSignal?") — confirm or dismiss
-- Brains folder: no inference (too ambiguous) — lands in inbox, post-hoc suggestion from first prompt content
-- `/angeleye:name-session` skill mirrors this from inside Claude
+**Built features**:
 
-### Page 2: Observer (live view)
+- Session list sorted by recency (most active at top)
+- Focus panel: click any session row to expand its event timeline
+- Prompt expansion: click prompt rows in focus panel to see full text
+- Filters: All / Starred / Named toggle
+- Workspace badges on session rows
+- Session type legend with tooltips and info panel
+- Star/bookmark toggle with note field
+- Inline rename with full JSONL write-back (appends `custom-title` + `agent-name` entries)
+- Copy-resume button (copies session UUID for `claude --resume`)
+- v2-linen UI design (B020)
 
-Selecting what to watch and watching it. Select one or more workspaces.
-
-**Three-layer layout:**
-
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│ 👁 AngelEye                    idle: 4s ↑        ● LIVE  29 sessions│
-├─────────────────────────────────────────────────────────────────────┤
-│ OVERVIEW — all workspaces as compact dot groups                     │
-│ [SupportSignal ●●○] [FliVideo ●○] [BMAD ●○○○] [brains ○○]         │
-│  ● = active <30s   ○ = idle                                         │
-├─────────────────────────────────────────────────────────────────────┤
-│ ACTIVITY FEED — sorted by most recently active                      │
-│                                                                     │
-│ ● ss-app        Bash: npm test -- auth.spec.ts        2s ago  ▶   │
-│ ● brains        Read: CLAUDE.md                       8s ago  ▶   │
-│ ● bmad-mary     UserPrompt: "Story 1.2 acceptance"   14s ago  ▶   │
-│ ○ flivideo      Stop                                  5m ago  ▶   │
-│                                                         more ▼    │
-├─────────────────────────────────────────────────────────────────────┤
-│ FOCUS PANEL — click any row to expand                              │
-│                                                                     │
-│ ss-app  idle: 2s ↑   sonnet-4-6   [🎨 publish]    [✕ dismiss]    │
-│ ─────────────────────────────────────────────────────────────────── │
-│ 11:21:13  Bash                                                      │
-│ npm test → 12 passed                                                │
-│ 11:21:07  Write                                                     │
-│ src/auth/middleware.ts                                              │
-│ 11:20:58  UserPrompt                                                │
-│ "Add auth middleware to the login route"                            │
-│ ■ Stop  11:21:20  [🎨]                                             │
-├─────────────────────────────────────────────────────────────────────┤
-│ filter: [all workspaces ▼]  [all tools ▼]  [search regex...     ] │
-└─────────────────────────────────────────────────────────────────────┘
-```
-
-**Key UI principles** (from designer analysis):
+**Key UI principles**:
 
 - Idle counter is the most prominent live number — counts up, turns amber at 8s, red at 15s, resets on any event
 - Activity feed sorted by recency, not session ID — most active always at top
 - Named sessions, never hashes visible to user
 - Timestamp left-aligned and large (readable from distance on second monitor)
-- `[🎨 publish]` button on Stop markers = Nano Banana / FliDeck trigger
 - Start maximally filtered — open up from there, never start with everything
 
-**Scaling**: Designed for 20-30 concurrent sessions. Fixed columns don't scale — three-layer model (overview dots + recency feed + single focus panel) scales to any number.
+**Scaling**: Designed for 20-30 concurrent sessions. Three-layer model (overview dots + recency feed + single focus panel) scales to any number. Pagination (B023) needed at 2000+ sessions.
+
+### Organizer
+
+Managing where sessions live. Not a live view — visited occasionally.
+
+**Built features** (B008):
+
+- Inbox of unassigned sessions
+- Named workspaces (create, rename, delete)
+- Drag sessions into workspaces, or move between them
+- Workspace CRUD API (B019)
+- Folder inference: session starting in a known directory shows suggestion badge
+- `/angeleye:name-session` skill mirrors this from inside Claude
+
+### Settings
+
+Configuration and intelligence dashboard.
+
+**Built features** (B032-B034):
+
+- Unified Sync button: runs backfill + classify in one action
+- Delta tracking status line (shows last sync time, sessions found/new)
+- Classification breakdown panel: session type distribution across all indexed sessions
+- Auto-run backfill on server start (B031)
 
 ---
 
@@ -341,21 +321,62 @@ First prompt text  →  re-suggest after SessionStart  medium confidence
 Learned pattern    →  v2 feature, auto-assign        future
 ```
 
-**Future self-intelligence**: AngelEye reads all conversations — it has the raw material to eventually learn "this folder + this prompt pattern = this workspace" and auto-assign. The data foundation is being built now. No implementation needed yet.
+---
+
+## Intelligence Layer
+
+Ambient intelligence system for automatic session understanding.
+
+### Rule-based session classification (B012 — completed)
+
+Sessions are classified by type using rule-based heuristics applied to session shape data (event counts, tool distributions, prompt fingerprints, CWD patterns). Classification runs as part of the unified Sync action.
+
+### Session type taxonomy
+
+12+ primary types with 500+ candidate subtypes identified from the 924-session analysis campaign. Primary types include: BUILD, EXPLORE, DOCS, ANALYSIS, CONFIG, REFACTOR, DEBUG, REVIEW, OPERATIONS, CONVERSATION, PLANNING, RESEARCH.
+
+Subtype examples: `build.feature_implementation`, `docs.brain_curation`, `operations.poem_execution`, `explore.codebase_orientation`.
+
+### Backfill pipeline
+
+1. Scans `~/.claude/projects/` for all JSONL transcript files
+2. Extracts session shapes via `compute-session-shape.py` (event counts, tool distributions, prompt content)
+3. Extracts `/rename` names from `custom-title` JSONL entries (B036)
+4. Classifies sessions using rule-based heuristics
+5. Writes results to analysis index (`session-index.jsonl`)
+6. Delta tracking via `last-sync.json` — only processes new/changed sessions on subsequent syncs (B033)
+
+### Analysis campaigns
+
+The 924-session analysis was conducted across 14 waves (plus discovery rounds), processing sessions from both M4 Mini and M4 Pro machines. Campaign artifacts live in `docs/planning/angeleye-analysis-1/`. Findings are recorded per-wave in `~/dev/ad/brains/angeleye/analysis/`.
+
+### Classifier improvement backlog
+
+- B038 — Scale-aware BUILD guard (reject BUILD for micro/light sessions)
+- B039 — Iron-clad classifier rules (operations.poem_execution, brains/ CWD guards)
+- B040 — PII detection pass during backfill
+- B041 — Paperclip/autonomous agent detection
+- B042 — Voice dictation entity dictionary (220+ misheard terms)
+- B043 — Promote confirmed subtypes to canonical taxonomy
 
 ---
 
-## Future Capabilities (not v1)
+## Future Capabilities
 
-- **Pattern miner / skill suggester**: detect repeated prompt phrases across sessions, surface as skill candidates ("You've typed 'did you commit?' 14 times this week — want a skill?")
-- **BMAD agent handoffs as named transitions**: `SubagentStart`/`SubagentStop` hooks capture the raw boundaries. v1 captures them as events. v2 maps agent_type values to BMAD role names (Mary, Bob, Quinn) so the UI shows "Mary → Bob handoff" as a named transition, not just a subagent event.
-- **Silence detection**: if a session has been quiet for 20+ seconds mid-task, flag it visually (stuck, waiting for permission, crashed). Different from idle-after-Stop — this is unexpected silence during active work.
-- **Session cost / token tracking**: token cost per session and per workspace — especially important for BMAD multi-agent loops which accumulate significant spend. Per-session cost visible in focus panel. Paperclip's `cost_events` pattern is the reference.
-- **Terminal / iTerm2 integration**: read-only access to iTerm2 tab names, current directory per pane. Future: click session in AngelEye → focus corresponding iTerm2 tab. Possible via iTerm2 Python API / AppleScript.
+- **`/angeleye:publish` skill** (B011): Context packaging to Nano Banana / FliDeck for image generation
+- **Session list pagination** (B023): Cursor-based API + virtual scrolling for 2000+ sessions
+- **Named session row design** (B037): Elevated row treatment for named sessions
+- **launchd plist** (B025): Always-on persistent service, auto-restart on crash/reboot
+- **Multi-machine registry sync** (B044): Classification rules applied across machines
+- **Pattern miner / skill suggester**: detect repeated prompt phrases across sessions, surface as skill candidates
+- **BMAD agent handoffs as named transitions**: Map agent_type values to BMAD role names (Mary, Bob, Quinn) so the UI shows named transitions
+- **Silence detection**: Flag sessions quiet for 20+ seconds mid-task (stuck, waiting for permission, crashed)
+- **Session cost / token tracking**: Per-session and per-workspace cost — especially important for BMAD multi-agent loops
+- **Terminal / iTerm2 integration**: Click session in AngelEye → focus corresponding iTerm2 tab (via iTerm2 Python API / AppleScript)
 - **tmux integration**: `tmux list-sessions` / `tmux list-windows` as inference signal for workspace assignment
-- **Stream-JSON adapter**: ingest Paperclip / OpenClaw / KyberBot agent output via normalised adapter (multi-format ingestion)
-- **Session continuity tracking**: `sessionIdBefore`/`sessionIdAfter` for conversation thread tracing across sessions (Paperclip pattern)
-- **Self-intelligence / auto-assign**: AngelEye reads all conversations — it has the raw material to eventually learn "this folder + this prompt pattern = this workspace" and auto-assign without user intervention
+- **Stream-JSON adapter** (B013, deferred): Ingest Paperclip / OpenClaw / KyberBot agent output via normalised adapter
+- **Session continuity tracking**: `sessionIdBefore`/`sessionIdAfter` for conversation thread tracing across sessions
+- **Self-intelligence / auto-assign**: Learn "this folder + this prompt pattern = this workspace" and auto-assign without user intervention
 
 ---
 
@@ -372,9 +393,11 @@ Learned pattern    →  v2 feature, auto-assign        future
 
 ## Related Brain Files
 
-- `brains/agentic-os/claude-code-observability.md` — hook pipeline design, hot file architecture (START HERE for build)
+- `brains/angeleye/` — full domain knowledge (concepts, data model, ingestion architecture, ambient intelligence)
+- `brains/angeleye/analysis/` — per-wave findings from 924-session analysis campaign
 - `brains/anthropic-claude/claude-code/hooks-reference.md` — **all 21 hook events + schemas** (canonical hook reference)
 - `brains/anthropic-claude/claude-code/observability.md` — hook input formats, 4 data streams, JSONL format
+- `brains/anthropic-claude/claude-code/session-management.md` — session resume, /rename, /fork behaviour
 - `brains/agentic-os/communication-architecture.md` — Supabase schema (future cold path if needed)
 - `apps/appystack/docs/app-naming.md` — naming convention reference
 
@@ -392,4 +415,5 @@ For JSONL parsing implementation, reference these before writing parsers:
 ---
 
 **Created**: 2026-03-12
-**Context**: Designed in conversation — Q&A-driven discovery session
+**Updated**: 2026-03-23
+**Context**: Originally designed in conversation (Q&A-driven discovery session). Updated to reflect operational state after 10 build waves and 924-session analysis campaign.

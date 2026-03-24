@@ -28,7 +28,27 @@ _(empty — add items as you work)_
 
 _Current direction, analysis, priorities. Updated by Claude at the start of each session after reading the David section._
 
-_(no items yet — will populate on first use)_
+### Campaign Complete — What's Next (2026-03-23)
+
+**angeleye-analysis-1 is done.** 924 sessions fully processed across M4 Mini (807) and M4 Pro (116). Backward pass complete with v3 schema (P17-P22, C08-C11, O06-O07, derived metrics).
+
+**High-priority backlog items from the campaign:**
+
+- B038 — Scale-aware BUILD guard (micro=0%, light<15% accuracy — proven across 924 sessions)
+- B039 — Iron-clad classifier rules (3 rules, definitive evidence)
+- B040 — PII detection (flagged 14 waves, still no mechanism)
+
+**Doc updates in progress:**
+
+- PATTERNS.md — upgrading from 100-session to 924-session validated findings
+- requirements.md — updating from pre-build to operational status
+- Campaign dashboard mockup — HTML visualization of all 924-session data
+
+**Optional future work:**
+
+- Final pass with ~30 candidate new dimensions (P23-P25, C12-C13, O08-O09) discovered during backward pass
+- Promote confirmed subtypes (N >= 3) from 500+ candidates to canonical taxonomy (B043)
+- Multi-machine registry sync (B044)
 
 ---
 

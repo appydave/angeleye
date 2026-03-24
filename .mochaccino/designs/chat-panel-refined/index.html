@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngelEye — Chat Panel Refined</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    background: #e8e0d4;
+    color: #2a2018;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Mochaccino Banner */
+  .mochaccino-banner {
+    background: #2a2018;
+    color: #7a6e5e;
+    font-size: 11px;
+    text-align: center;
+    padding: 4px 0;
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+  }
+
+  /* App Layout */
+  .app-layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  /* === LEFT SIDEBAR === */
+  .sidebar {
+    width: 150px;
+    background: #1a1512;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+  }
+
+  .sidebar-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.12em;
+    color: #c8841a;
+    padding: 20px 16px 24px;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 0 8px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #8a7d6e;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+  }
+
+  .nav-item:hover {
+    background: rgba(200, 132, 26, 0.1);
+    color: #b89a6a;
+  }
+
+  .nav-item.active {
+    background: rgba(200, 132, 26, 0.15);
+    color: #c8841a;
+    font-weight: 600;
+  }
+
+  .nav-icon {
+    font-size: 15px;
+    width: 18px;
+    text-align: center;
+    opacity: 0.8;
+  }
+
+  /* === CONTENT WRAPPER (holds main-area + bottom-panel) === */
+  .content-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* === MAIN AREA === */
+  .main-area {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+  }
+
+  /* === BOTTOM PANEL (Events — full width) === */
+  .bottom-panel {
+    display: none;
+    flex-direction: column;
+    height: 280px;
+    border-top: 1px solid #d4cdc4;
+    background: #ede7dc;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .bottom-panel.active {
+    display: flex;
+  }
+
+  .bottom-panel-drag {
+    height: 5px;
+    background: #d4cdc4;
+    cursor: ns-resize;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .bottom-panel-drag::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 32px;
+    height: 3px;
+    background: #b0a494;
+    border-radius: 2px;
+  }
+
+  .bottom-panel-header {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    background: #f5f1eb;
+    border-bottom: 1px solid #d4cdc4;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .bottom-panel-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #2a2018;
+    letter-spacing: 0.04em;
+  }
+
+  .bottom-panel-session {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: #c8841a;
+    letter-spacing: 0.06em;
+  }
+
+  .bottom-panel-close {
+    margin-left: auto;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #7a6e5e;
+    font-size: 16px;
+    transition: background 0.12s, color 0.12s;
+  }
+
+  .bottom-panel-close:hover {
+    background: #ddd6cc;
+    color: #2a2018;
+  }
+
+  .bottom-panel-events {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .bottom-panel-events::-webkit-scrollbar { width: 6px; }
+  .bottom-panel-events::-webkit-scrollbar-track { background: transparent; }
+  .bottom-panel-events::-webkit-scrollbar-thumb { background: #ccc5bb; border-radius: 3px; }
+
+  /* === SESSION LIST (left half) === */
+  .session-list-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-right: 1px solid #d4cdc4;
+    background: #e8e0d4;
+  }
+
+  .session-list-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background: #ede7dc;
+    border-bottom: 1px solid #d4cdc4;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .session-list-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #2a2018;
+    letter-spacing: 0.04em;
+  }
+
+  .session-count-badge {
+    font-size: 11px;
+    font-weight: 600;
+    background: #d4cdc4;
+    color: #7a6e5e;
+    padding: 1px 8px;
+    border-radius: 8px;
+  }
+
+  .session-list-search {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    background: #f5f1eb;
+    border: 1px solid #d4cdc4;
+    border-radius: 5px;
+    padding: 4px 8px;
+    gap: 5px;
+  }
+
+  .session-list-search svg { opacity: 0.35; }
+
+  .search-placeholder {
+    font-size: 12px;
+    color: #b0a494;
+  }
+
+  /* Column header */
+  .col-header {
+    background: #2a2018;
+    display: grid;
+    grid-template-columns: 24px 1fr 80px 70px 60px;
+    padding: 0 16px;
+    height: 28px;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .col-header-cell {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8a7d6e;
+  }
+
+  .col-header-cell.right { text-align: right; }
+
+  /* Sessions list */
+  .sessions-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .sessions-scroll::-webkit-scrollbar { width: 6px; }
+  .sessions-scroll::-webkit-scrollbar-track { background: transparent; }
+  .sessions-scroll::-webkit-scrollbar-thumb { background: #ccc5bb; border-radius: 3px; }
+
+  /* Session row */
+  .session-row {
+    display: grid;
+    grid-template-columns: 24px 1fr 80px 70px 60px;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 8px;
+    background: #f5f1eb;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.1s;
+    font-size: 12px;
+  }
+
+  .session-row:hover {
+    background: #ede7dc;
+    border-color: #d4cdc4;
+  }
+
+  .session-row.selected {
+    background: #ede7dc;
+    border-color: #c8841a;
+    box-shadow: 0 1px 4px rgba(200, 132, 26, 0.15);
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    justify-self: center;
+  }
+
+  .status-dot.active { background: #27ae60; }
+  .status-dot.recent { background: #c8841a; }
+  .status-dot.idle { background: #b0a494; }
+
+  .session-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+  }
+
+  .session-project {
+    font-size: 12px;
+    font-weight: 600;
+    color: #2a2018;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .session-name {
+    font-size: 11px;
+    color: #7a6e5e;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .session-name .rename-label {
+    color: #c8841a;
+    font-weight: 600;
+  }
+
+  .type-badge {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 3px;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .type-badge.build { background: #2980b920; color: #2471a3; }
+  .type-badge.knowledge { background: #8e44ad20; color: #7d3c98; }
+  .type-badge.orientation { background: #c8841a20; color: #b07518; }
+
+  .session-uuid {
+    font-size: 10px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    color: #b0a494;
+    text-align: right;
+  }
+
+  .session-time {
+    font-size: 11px;
+    color: #7a6e5e;
+    text-align: right;
+  }
+
+  /* === CHAT PANEL (right half) === */
+  .chat-panel {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    background: #ede7dc;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  /* Chat header */
+  .chat-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    background: #f5f1eb;
+    border-bottom: 1px solid #d4cdc4;
+    gap: 12px;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+  }
+
+  .chat-header-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .chat-session-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: #c8841a;
+    letter-spacing: 0.06em;
+    line-height: 1;
+  }
+
+  .chat-project {
+    font-size: 12px;
+    color: #7a6e5e;
+  }
+
+  .chat-type-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 3px;
+    background: #2980b920;
+    color: #2471a3;
+  }
+
+  .chat-uuid {
+    font-size: 10px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    color: #b0a494;
+  }
+
+  .chat-header-controls {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* Tab switcher */
+  .panel-tabs {
+    display: flex;
+    gap: 0;
+    margin-left: auto;
+  }
+
+  .panel-tab {
+    font-size: 12px;
+    font-weight: 600;
+    color: #7a6e5e;
+    padding: 4px 12px 6px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.12s, border-color 0.12s;
+    user-select: none;
+  }
+
+  .panel-tab:hover {
+    color: #4a3e30;
+  }
+
+  .panel-tab.active {
+    color: #2a2018;
+    border-bottom-color: #c8841a;
+  }
+
+  /* Tool toggle */
+  .tool-toggle {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: #7a6e5e;
+    cursor: pointer;
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid #d4cdc4;
+    background: #ede7dc;
+    transition: all 0.12s;
+    user-select: none;
+  }
+
+  .tool-toggle:hover {
+    background: #ddd6cc;
+    color: #4a3e30;
+  }
+
+  .tool-toggle.active {
+    background: #e8e0d4;
+    border-color: #c8841a;
+    color: #c8841a;
+  }
+
+  .chat-close {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #7a6e5e;
+    font-size: 18px;
+    transition: background 0.12s, color 0.12s;
+  }
+
+  .chat-close:hover {
+    background: #ddd6cc;
+    color: #2a2018;
+  }
+
+  /* Chat messages area */
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .chat-messages::-webkit-scrollbar { width: 6px; }
+  .chat-messages::-webkit-scrollbar-track { background: transparent; }
+  .chat-messages::-webkit-scrollbar-thumb { background: #ccc5bb; border-radius: 3px; }
+
+  /* Message layout */
+  .message-row {
+    display: flex;
+    gap: 10px;
+    max-width: 92%;
+  }
+
+  .message-row.user {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+  }
+
+  .message-row.claude {
+    align-self: flex-start;
+  }
+
+  .message-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .message-avatar.user-avatar {
+    background: #c8841a;
+    color: #fff;
+  }
+
+  .message-avatar.claude-avatar {
+    background: #2a2018;
+    color: #d4c9b8;
+  }
+
+  .message-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .message-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .message-row.user .message-meta {
+    flex-direction: row-reverse;
+  }
+
+  .message-sender {
+    font-size: 11px;
+    font-weight: 700;
+    color: #2a2018;
+  }
+
+  .message-time {
+    font-size: 10px;
+    color: #b0a494;
+  }
+
+  /* Tool badge on claude messages */
+  .tool-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 10px;
+    color: #7a6e5e;
+    background: #e8e0d4;
+    border: 1px solid #d4cdc4;
+    padding: 1px 6px;
+    border-radius: 3px;
+    cursor: default;
+  }
+
+  .tool-badge-icon {
+    font-size: 9px;
+  }
+
+  /* User bubble */
+  .bubble {
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.5;
+    box-shadow: 0 1px 3px rgba(42, 32, 24, 0.06);
+  }
+
+  .bubble.user-bubble {
+    background: #f5f1eb;
+    border: 1px solid #d4cdc4;
+    border-left: 3px solid #c8841a;
+    border-radius: 10px 10px 4px 10px;
+    color: #2a2018;
+  }
+
+  .bubble.claude-bubble {
+    background: #e8e0d4;
+    border: 1px solid #d4cdc4;
+    border-radius: 10px 10px 10px 4px;
+    color: #2a2018;
+  }
+
+  .bubble code {
+    background: #ddd6cc;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+
+  .bubble p { margin-bottom: 8px; }
+  .bubble p:last-child { margin-bottom: 0; }
+
+  .bubble ul {
+    margin: 6px 0;
+    padding-left: 18px;
+  }
+
+  .bubble li {
+    margin-bottom: 4px;
+    line-height: 1.5;
+  }
+
+  .bubble strong {
+    font-weight: 700;
+  }
+
+  /* Tool calls row */
+  .tool-calls-row {
+    padding: 0 0 0 38px;
+  }
+
+  .tool-calls-summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: #7a6e5e;
+    background: #e8e0d4;
+    border: 1px solid #d4cdc4;
+    border-radius: 4px;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: background 0.12s;
+  }
+
+  .tool-calls-summary:hover {
+    background: #ddd6cc;
+    color: #4a3e30;
+  }
+
+  .tool-calls-arrow {
+    font-size: 9px;
+    transition: transform 0.15s;
+  }
+
+  .tool-calls-summary.expanded .tool-calls-arrow {
+    transform: rotate(90deg);
+  }
+
+  .tool-calls-detail {
+    margin-top: 6px;
+    padding: 8px 12px;
+    background: #f5f1eb;
+    border: 1px solid #d4cdc4;
+    border-radius: 4px;
+    font-size: 11px;
+    color: #7a6e5e;
+    line-height: 1.7;
+    display: none;
+  }
+
+  .tool-calls-detail.visible {
+    display: block;
+  }
+
+  .tool-call-entry {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .tool-call-name {
+    font-weight: 600;
+    color: #4a3e30;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 11px;
+  }
+
+  .tool-call-path {
+    color: #b0a494;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 10px;
+  }
+
+  /* === EVENTS VIEW === */
+  .events-view {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 20px;
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .events-view.active {
+    display: flex;
+  }
+
+  .chat-messages.active {
+    display: flex;
+  }
+
+  .chat-messages.hidden {
+    display: none;
+  }
+
+  .event-row {
+    display: grid;
+    grid-template-columns: 52px auto 1fr;
+    gap: 8px;
+    padding: 5px 8px;
+    border-radius: 4px;
+    align-items: center;
+    font-size: 12px;
+    transition: background 0.1s;
+  }
+
+  .event-row:hover {
+    background: #e8e0d4;
+  }
+
+  .event-time {
+    font-size: 10px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    color: #b0a494;
+  }
+
+  .event-type {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 3px;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .event-type.prompt { background: #c8841a18; color: #b07518; }
+  .event-type.response { background: #2980b918; color: #2471a3; }
+  .event-type.tool { background: #7a6e5e18; color: #5a4e3e; }
+  .event-type.system { background: #8e44ad18; color: #7d3c98; }
+  .event-type.error { background: #c0392b18; color: #a93226; }
+
+  .event-summary {
+    font-size: 12px;
+    color: #4a3e30;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .event-summary code {
+    background: #ddd6cc;
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+
+  /* Tool group in events */
+  .event-tool-group {
+    margin: 2px 0;
+  }
+
+  .event-tool-group-header {
+    display: grid;
+    grid-template-columns: 52px auto 1fr auto;
+    gap: 8px;
+    padding: 5px 8px;
+    border-radius: 4px;
+    align-items: center;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.1s;
+    user-select: none;
+  }
+
+  .event-tool-group-header:hover {
+    background: #e8e0d4;
+  }
+
+  .tool-group-arrow {
+    font-size: 9px;
+    color: #7a6e5e;
+    transition: transform 0.15s;
+  }
+
+  .tool-group-arrow.expanded {
+    transform: rotate(90deg);
+  }
+
+  .event-tool-children {
+    display: none;
+    padding-left: 60px;
+  }
+
+  .event-tool-children.visible {
+    display: block;
+  }
+
+  .event-tool-child {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 8px;
+    font-size: 11px;
+    color: #7a6e5e;
+  }
+
+  .event-tool-child-name {
+    font-weight: 600;
+    color: #4a3e30;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 11px;
+  }
+
+  .event-tool-child-path {
+    color: #b0a494;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .event-tool-child-dur {
+    font-size: 10px;
+    color: #b0a494;
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  /* Chat footer */
+  .chat-footer {
+    border-top: 1px solid #d4cdc4;
+    background: #f5f1eb;
+    flex-shrink: 0;
+  }
+
+  .chat-note {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-bottom: 1px solid #d4cdc4;
+  }
+
+  .note-input {
+    flex: 1;
+    font-size: 12px;
+    color: #b0a494;
+    font-style: italic;
+  }
+
+  .note-save-btn {
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+    background: #c8841a;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 12px;
+    cursor: pointer;
+    opacity: 0.5;
+  }
+
+  .chat-metadata {
+    padding: 8px 20px;
+    font-size: 11px;
+    color: #7a6e5e;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .meta-sep {
+    color: #d4cdc4;
+  }
+</style>
+</head>
+<body>
+
+<!-- Mochaccino Banner -->
+<div class="mochaccino-banner">Mochaccino &mdash; chat-panel-refined &mdash; 2026-03-24</div>
+
+<div class="app-layout">
+
+  <!-- LEFT SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-logo">ANGELEYE</div>
+    <div class="sidebar-nav">
+      <div class="nav-item active">
+        <span class="nav-icon">&#9673;</span>
+        Observer
+      </div>
+      <div class="nav-item">
+        <span class="nav-icon">&#9776;</span>
+        Organiser
+      </div>
+      <div class="nav-item">
+        <span class="nav-icon">&#9881;</span>
+        Settings
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT WRAPPER -->
+  <div class="content-wrapper">
+
+  <!-- MAIN AREA -->
+  <div class="main-area">
+
+    <!-- SESSION LIST (left half) -->
+    <div class="session-list-panel">
+      <div class="session-list-header">
+        <span class="session-list-title">Sessions</span>
+        <span class="session-count-badge">42</span>
+        <div class="session-list-search">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <span class="search-placeholder">Search...</span>
+        </div>
+      </div>
+
+      <div class="col-header">
+        <span class="col-header-cell"></span>
+        <span class="col-header-cell">Session</span>
+        <span class="col-header-cell">Type</span>
+        <span class="col-header-cell right">UUID</span>
+        <span class="col-header-cell right">Time</span>
+      </div>
+
+      <div class="sessions-scroll">
+        <!-- Row 1 - active, selected -->
+        <div class="session-row selected">
+          <span class="status-dot active"></span>
+          <div class="session-info">
+            <span class="session-project">app.supportsignal...</span>
+            <span class="session-name"><span class="rename-label">bmad-advisor</span></span>
+          </div>
+          <span class="type-badge build">BUILD</span>
+          <span class="session-uuid">3fa5e03b</span>
+          <span class="session-time">8m</span>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="session-row">
+          <span class="status-dot active"></span>
+          <div class="session-info">
+            <span class="session-project">app.supportsignal...</span>
+            <span class="session-name"><span class="rename-label">bmad-oversight-focus</span></span>
+          </div>
+          <span class="type-badge build">BUILD</span>
+          <span class="session-uuid">a1c7f942</span>
+          <span class="session-time">12m</span>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="session-row">
+          <span class="status-dot recent"></span>
+          <div class="session-info">
+            <span class="session-project">brains</span>
+            <span class="session-name"><span class="rename-label">bmad-dev</span></span>
+          </div>
+          <span class="type-badge knowledge">KNOWLEDGE</span>
+          <span class="session-uuid">e4b8d21a</span>
+          <span class="session-time">18m</span>
+        </div>
+
+        <!-- Row 4 -->
+        <div class="session-row">
+          <span class="status-dot active"></span>
+          <div class="session-info">
+            <span class="session-project">angeleye</span>
+            <span class="session-name">witty-painting-plum</span>
+          </div>
+          <span class="type-badge build">BUILD</span>
+          <span class="session-uuid">7f3c01dd</span>
+          <span class="session-time">22m</span>
+        </div>
+
+        <!-- Row 5 -->
+        <div class="session-row">
+          <span class="status-dot recent"></span>
+          <div class="session-info">
+            <span class="session-project">flihub</span>
+            <span class="session-name">calm-river-oak</span>
+          </div>
+          <span class="type-badge build">BUILD</span>
+          <span class="session-uuid">c920ba4f</span>
+          <span class="session-time">35m</span>
+        </div>
+
+        <!-- Row 6 -->
+        <div class="session-row">
+          <span class="status-dot idle"></span>
+          <div class="session-info">
+            <span class="session-project">app.supportsignal...</span>
+            <span class="session-name">bright-cloud-fern</span>
+          </div>
+          <span class="type-badge orientation">ORIENT</span>
+          <span class="session-uuid">1e5af893</span>
+          <span class="session-time">42m</span>
+        </div>
+
+        <!-- Row 7 -->
+        <div class="session-row">
+          <span class="status-dot idle"></span>
+          <div class="session-info">
+            <span class="session-project">brains</span>
+            <span class="session-name">quiet-stone-maple</span>
+          </div>
+          <span class="type-badge knowledge">KNOWLEDGE</span>
+          <span class="session-uuid">5dc2e710</span>
+          <span class="session-time">1h</span>
+        </div>
+
+        <!-- Row 8 -->
+        <div class="session-row">
+          <span class="status-dot idle"></span>
+          <div class="session-info">
+            <span class="session-project">angeleye</span>
+            <span class="session-name"><span class="rename-label">hook-testing</span></span>
+          </div>
+          <span class="type-badge build">BUILD</span>
+          <span class="session-uuid">b48a3cf6</span>
+          <span class="session-time">1.5h</span>
+        </div>
+
+        <!-- Row 9 -->
+        <div class="session-row">
+          <span class="status-dot idle"></span>
+          <div class="session-info">
+            <span class="session-project">flihub</span>
+            <span class="session-name">warm-amber-ridge</span>
+          </div>
+          <span class="type-badge build">BUILD</span>
+          <span class="session-uuid">92f0d15c</span>
+          <span class="session-time">2h</span>
+        </div>
+
+        <!-- Row 10 -->
+        <div class="session-row">
+          <span class="status-dot idle"></span>
+          <div class="session-info">
+            <span class="session-project">app.supportsignal...</span>
+            <span class="session-name">swift-dawn-leaf</span>
+          </div>
+          <span class="type-badge build">BUILD</span>
+          <span class="session-uuid">d7e14a38</span>
+          <span class="session-time">3h</span>
+        </div>
+
+        <!-- Row 11 -->
+        <div class="session-row">
+          <span class="status-dot idle"></span>
+          <div class="session-info">
+            <span class="session-project">brains</span>
+            <span class="session-name">deep-frost-pine</span>
+          </div>
+          <span class="type-badge knowledge">KNOWLEDGE</span>
+          <span class="session-uuid">43c6f8b2</span>
+          <span class="session-time">4h</span>
+        </div>
+
+        <!-- Row 12 -->
+        <div class="session-row">
+          <span class="status-dot idle"></span>
+          <div class="session-info">
+            <span class="session-project">angeleye</span>
+            <span class="session-name">bold-creek-sage</span>
+          </div>
+          <span class="type-badge orientation">ORIENT</span>
+          <span class="session-uuid">f1a9c5e0</span>
+          <span class="session-time">5h</span>
+        </div>
+
+        <!-- Row 13 -->
+        <div class="session-row">
+          <span class="status-dot idle"></span>
+          <div class="session-info">
+            <span class="session-project">flideck</span>
+            <span class="session-name"><span class="rename-label">deck-export-fix</span></span>
+          </div>
+          <span class="type-badge build">BUILD</span>
+          <span class="session-uuid">8b2e5d01</span>
+          <span class="session-time">6h</span>
+        </div>
+
+        <!-- Row 14 -->
+        <div class="session-row">
+          <span class="status-dot idle"></span>
+          <div class="session-info">
+            <span class="session-project">appydave-tools</span>
+            <span class="session-name">still-meadow-birch</span>
+          </div>
+          <span class="type-badge build">BUILD</span>
+          <span class="session-uuid">a4c0f37e</span>
+          <span class="session-time">8h</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHAT PANEL (right half) -->
+    <div class="chat-panel">
+
+      <!-- Chat Header -->
+      <div class="chat-header">
+        <div class="chat-header-top">
+          <span class="chat-session-name">BMAD-ADVISOR</span>
+          <span class="chat-project">app.supportsignal.com.au</span>
+          <span class="chat-type-badge">BUILD</span>
+          <span class="chat-uuid">3fa5e03b</span>
+          <div class="chat-header-controls">
+            <div class="panel-tabs">
+              <span class="panel-tab active" onclick="switchTab('chat')">Chat</span>
+              <span class="panel-tab" onclick="switchTab('events')">Events</span>
+            </div>
+            <div class="tool-toggle" onclick="toggleToolVisibility(this)" title="Show/hide tool call rows between messages">&#9881; Tools</div>
+            <span class="chat-close">&times;</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Messages (default view) -->
+      <div class="chat-messages active" id="chatView">
+
+        <!-- Message 1: User -->
+        <div class="message-row user">
+          <div class="message-avatar user-avatar">You</div>
+          <div class="message-content">
+            <div class="message-meta">
+              <span class="message-sender">You</span>
+              <span class="message-time">8m ago</span>
+            </div>
+            <div class="bubble user-bubble">/focus bmad-v6</div>
+          </div>
+        </div>
+
+        <!-- Message 2: Claude -->
+        <div class="message-row claude">
+          <div class="message-avatar claude-avatar">C</div>
+          <div class="message-content">
+            <div class="message-meta">
+              <span class="message-sender">Claude</span>
+              <span class="message-time">8m ago</span>
+              <span class="tool-badge tool-badge-collapsed"><span class="tool-badge-icon">&#9881;</span> 6</span>
+            </div>
+            <div class="bubble claude-bubble">
+              <p>I'll focus on the BMAD v6 advisor configuration. Let me read the current state and check what's loaded for this context.</p>
+              <p>I've reviewed the following files:</p>
+              <ul>
+                <li><code>docs/bmad/advisor-v6.md</code> &mdash; the v6 advisor spec with the updated agent topology</li>
+                <li><code>CLAUDE.md</code> and <code>STEERING.md</code> &mdash; project context and current direction</li>
+                <li><code>.claude/settings.json</code> &mdash; MCP server configuration</li>
+              </ul>
+              <p>The BMAD v6 advisor is configured with 3 relay endpoints and 12 skill definitions. The skill manifest looks current, but I noticed the <code>codex</code> MCP server has a stale endpoint reference pointing to <code>localhost:3099</code> which was the v5 port. Everything else looks aligned with v6.</p>
+            </div>
+          </div>
+        </div>
+        <div class="tool-calls-row tool-row-collapsible" style="display:none;">
+          <div class="tool-calls-summary" onclick="toggleTools(this)">
+            <span class="tool-calls-arrow">&#9654;</span>
+            &#8627; 6 tool calls &mdash; Read(4), Grep(1), Glob(1)
+          </div>
+          <div class="tool-calls-detail">
+            <div class="tool-call-entry"><span class="tool-call-name">Read</span> <span class="tool-call-path">docs/bmad/advisor-v6.md</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Read</span> <span class="tool-call-path">CLAUDE.md</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Read</span> <span class="tool-call-path">STEERING.md</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Read</span> <span class="tool-call-path">.claude/settings.json</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Grep</span> <span class="tool-call-path">pattern: "bmad" in src/</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Glob</span> <span class="tool-call-path">**/*bmad*</span></div>
+          </div>
+        </div>
+
+        <!-- Message 3: User -->
+        <div class="message-row user">
+          <div class="message-avatar user-avatar">You</div>
+          <div class="message-content">
+            <div class="message-meta">
+              <span class="message-sender">You</span>
+              <span class="message-time">7m ago</span>
+            </div>
+            <div class="bubble user-bubble">How do we check that all the MCPs are actually working? I've got a feeling that some of them might not be connected properly because when I was testing yesterday the Brave search one wasn't responding. I think it might be a configuration issue but I'm not sure. Can you check all of them and tell me which ones are live and which ones aren't?</div>
+          </div>
+        </div>
+
+        <!-- Message 4: Claude -->
+        <div class="message-row claude">
+          <div class="message-avatar claude-avatar">C</div>
+          <div class="message-content">
+            <div class="message-meta">
+              <span class="message-sender">Claude</span>
+              <span class="message-time">6m ago</span>
+              <span class="tool-badge tool-badge-collapsed"><span class="tool-badge-icon">&#9881;</span> 8</span>
+            </div>
+            <div class="bubble claude-bubble">
+              <p>I've probed all 5 registered MCP servers. Here's the status:</p>
+              <ul>
+                <li><strong>Brave Search</strong> (port 3200) &mdash; <strong>DOWN</strong>. Connection refused. The process isn't running. This matches what you saw yesterday.</li>
+                <li><strong>Codex</strong> (port 3099) &mdash; <strong>DOWN</strong>. This is the stale v5 endpoint I mentioned. It should be 3100 for v6.</li>
+                <li><strong>Playwright</strong> (port 3201) &mdash; <strong>LIVE</strong>. Responding normally.</li>
+                <li><strong>BMAD Relay</strong> (port 3100) &mdash; <strong>LIVE</strong>. Health check passed, 12 skills registered.</li>
+                <li><strong>Prompt Orchestrator</strong> (port 3101) &mdash; <strong>LIVE</strong>. Responding with v6 schema.</li>
+              </ul>
+              <p>The Brave Search issue is likely that the MCP server process wasn't started &mdash; it needs <code>npx @anthropic-ai/mcp-brave-search</code> to be running. I can fix the Codex port in <code>.claude/settings.json</code> right now if you'd like. That's a one-line change from <code>3099</code> to <code>3100</code>.</p>
+            </div>
+          </div>
+        </div>
+        <div class="tool-calls-row tool-row-collapsible" style="display:none;">
+          <div class="tool-calls-summary" onclick="toggleTools(this)">
+            <span class="tool-calls-arrow">&#9654;</span>
+            &#8627; 8 tool calls &mdash; Bash(3), Read(3), Grep(2)
+          </div>
+          <div class="tool-calls-detail">
+            <div class="tool-call-entry"><span class="tool-call-name">Read</span> <span class="tool-call-path">.claude/settings.json</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Bash</span> <span class="tool-call-path">curl -s localhost:3100/health</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Bash</span> <span class="tool-call-path">curl -s localhost:3200/health</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Bash</span> <span class="tool-call-path">curl -s localhost:3201/health</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Read</span> <span class="tool-call-path">docs/bmad/mcp-registry.md</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Read</span> <span class="tool-call-path">docs/bmad/relay.md</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Grep</span> <span class="tool-call-path">pattern: "mcpServers" in .claude/</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Grep</span> <span class="tool-call-path">pattern: "transport" in .claude/</span></div>
+          </div>
+        </div>
+
+        <!-- Message 5: User -->
+        <div class="message-row user">
+          <div class="message-avatar user-avatar">You</div>
+          <div class="message-content">
+            <div class="message-meta">
+              <span class="message-sender">You</span>
+              <span class="message-time">5m ago</span>
+            </div>
+            <div class="bubble user-bubble">OK yeah that makes sense about the codex one. Can you see the BMAD relay document? I think there's some configuration in there that we need to update. I remember we set up some relay rules for how the different BMAD agents talk to each other and I want to make sure those are still correct after the v6 changes we made last week. Also check if the advisor agent has the right permissions to call the other agents.</div>
+          </div>
+        </div>
+
+        <!-- Message 6: Claude -->
+        <div class="message-row claude">
+          <div class="message-avatar claude-avatar">C</div>
+          <div class="message-content">
+            <div class="message-meta">
+              <span class="message-sender">Claude</span>
+              <span class="message-time">4m ago</span>
+              <span class="tool-badge tool-badge-collapsed"><span class="tool-badge-icon">&#9881;</span> 5</span>
+            </div>
+            <div class="bubble claude-bubble">
+              <p>Yes, I can see it at <code>docs/bmad/relay.md</code>. I've reviewed the relay rules and found two issues:</p>
+              <p><strong>1. Stale timeout value.</strong> The advisor-to-orchestrator relay has a 30s timeout which was the v5 default. The v6 spec recommends 60s because the orchestrator now does a two-phase skill resolution that takes longer. Line 47 in <code>relay.md</code>:</p>
+              <p><code>timeout: 30000</code> &rarr; should be <code>timeout: 60000</code></p>
+              <p><strong>2. Missing permission grant.</strong> The advisor agent can call the orchestrator and the test harness, but there's no explicit grant for calling the <code>bmad-analyst</code> agent which was added in v6. The permission matrix at line 82 needs an additional entry. Without it, the advisor will get a 403 when trying to delegate analysis tasks.</p>
+              <p>The rest of the relay rules look correct &mdash; the agent-to-agent routing table matches the v6 topology, and the skill manifest references are all valid paths.</p>
+            </div>
+          </div>
+        </div>
+        <div class="tool-calls-row tool-row-collapsible" style="display:none;">
+          <div class="tool-calls-summary" onclick="toggleTools(this)">
+            <span class="tool-calls-arrow">&#9654;</span>
+            &#8627; 5 tool calls &mdash; Read(3), Grep(1), Glob(1)
+          </div>
+          <div class="tool-calls-detail">
+            <div class="tool-call-entry"><span class="tool-call-name">Read</span> <span class="tool-call-path">docs/bmad/relay.md</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Read</span> <span class="tool-call-path">.claude/skills/manifest.json</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Read</span> <span class="tool-call-path">docs/bmad/agent-permissions.md</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Grep</span> <span class="tool-call-path">pattern: "bmad-analyst" in docs/</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Glob</span> <span class="tool-call-path">docs/bmad/**/*.md</span></div>
+          </div>
+        </div>
+
+        <!-- Message 7: User -->
+        <div class="message-row user">
+          <div class="message-avatar user-avatar">You</div>
+          <div class="message-content">
+            <div class="message-meta">
+              <span class="message-sender">You</span>
+              <span class="message-time">3m ago</span>
+            </div>
+            <div class="bubble user-bubble">yes update the timeout and also while you're in there can you check if there's anything else that looks like it needs updating. I don't want to have to come back to this file again if we can help it.</div>
+          </div>
+        </div>
+
+        <!-- Message 8: Claude -->
+        <div class="message-row claude">
+          <div class="message-avatar claude-avatar">C</div>
+          <div class="message-content">
+            <div class="message-meta">
+              <span class="message-sender">Claude</span>
+              <span class="message-time">2m ago</span>
+              <span class="tool-badge tool-badge-collapsed"><span class="tool-badge-icon">&#9881;</span> 12</span>
+            </div>
+            <div class="bubble claude-bubble">
+              <p>Done. I made 4 changes to <code>docs/bmad/relay.md</code>:</p>
+              <ul>
+                <li><strong>Timeout</strong>: Updated advisor-to-orchestrator from 30s to 60s (line 47)</li>
+                <li><strong>Permission grant</strong>: Added <code>bmad-analyst</code> to the advisor's allowed callees (line 82)</li>
+                <li><strong>Retry policy</strong>: Changed retry count from 2 to 3 to match the v6 default. The old value was left over from v5 when retries were more aggressive.</li>
+                <li><strong>Health check interval</strong>: Updated from 15s to 30s. The v6 relay does connection pooling so frequent pings are unnecessary and were generating noise in the logs.</li>
+              </ul>
+              <p>I also updated <code>.claude/settings.json</code> to fix the Codex port (3099 &rarr; 3100) and ran <code>npm run typecheck</code> to confirm everything compiles. All checks pass.</p>
+            </div>
+          </div>
+        </div>
+        <div class="tool-calls-row tool-row-collapsible" style="display:none;">
+          <div class="tool-calls-summary expanded" onclick="toggleTools(this)">
+            <span class="tool-calls-arrow" style="transform:rotate(90deg)">&#9654;</span>
+            &#8627; 12 tool calls &mdash; Read(2), Edit(5), Write(1), Bash(4)
+          </div>
+          <div class="tool-calls-detail visible">
+            <div class="tool-call-entry"><span class="tool-call-name">Read</span> <span class="tool-call-path">docs/bmad/relay.md</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Read</span> <span class="tool-call-path">.claude/settings.json</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Edit</span> <span class="tool-call-path">docs/bmad/relay.md (timeout)</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Edit</span> <span class="tool-call-path">docs/bmad/relay.md (permissions)</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Edit</span> <span class="tool-call-path">docs/bmad/relay.md (retry policy)</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Edit</span> <span class="tool-call-path">docs/bmad/relay.md (health interval)</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Edit</span> <span class="tool-call-path">.claude/settings.json (codex port)</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Write</span> <span class="tool-call-path">.claude/skills/bmad-v6.md</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Bash</span> <span class="tool-call-path">npm run typecheck</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Bash</span> <span class="tool-call-path">npm test -- --run</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Bash</span> <span class="tool-call-path">curl -s localhost:3100/health</span></div>
+            <div class="tool-call-entry"><span class="tool-call-name">Bash</span> <span class="tool-call-path">git diff --stat</span></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Chat Footer -->
+      <div class="chat-footer">
+        <div class="chat-note">
+          <span class="note-input">Note: Add a note...</span>
+          <button class="note-save-btn">Save</button>
+        </div>
+        <div class="chat-metadata">
+          Started 8m ago
+          <span class="meta-sep">&bull;</span>
+          31 tool calls
+          <span class="meta-sep">&bull;</span>
+          BUILD
+          <span class="meta-sep">&bull;</span>
+          4 prompts
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- BOTTOM PANEL (Events — full width, pops up from bottom) -->
+  <div class="bottom-panel" id="bottomPanel">
+    <div class="bottom-panel-drag"></div>
+    <div class="bottom-panel-header">
+      <div class="panel-tabs">
+        <span class="panel-tab" onclick="switchTab('chat')">Chat</span>
+        <span class="panel-tab active" onclick="switchTab('events')">Events</span>
+      </div>
+      <span class="bottom-panel-session">BMAD-ADVISOR</span>
+      <span style="font-size:12px;color:#7a6e5e;">app.supportsignal.com.au</span>
+      <span class="bottom-panel-close" onclick="switchTab('chat')">&times;</span>
+    </div>
+    <div class="bottom-panel-events">
+
+      <!-- System init -->
+      <div class="event-row">
+        <span class="event-time">14:32:01</span>
+        <span class="event-type system">SYSTEM</span>
+        <span class="event-summary">Session started &mdash; project: app.supportsignal.com.au</span>
+      </div>
+
+      <div class="event-row">
+        <span class="event-time">14:32:01</span>
+        <span class="event-type system">SYSTEM</span>
+        <span class="event-summary">CLAUDE.md loaded (3 files: root, project, brain)</span>
+      </div>
+
+      <!-- Prompt 1 -->
+      <div class="event-row">
+        <span class="event-time">14:32:05</span>
+        <span class="event-type prompt">PROMPT</span>
+        <span class="event-summary"><code>/focus bmad-v6</code></span>
+      </div>
+
+      <!-- Tool group 1 -->
+      <div class="event-tool-group">
+        <div class="event-tool-group-header" onclick="toggleToolGroup(this)">
+          <span class="event-time">14:32:06</span>
+          <span class="event-type tool">TOOLS</span>
+          <span class="event-summary">6 tool calls &mdash; Read(4), Grep(1), Glob(1)</span>
+          <span class="tool-group-arrow">&#9654;</span>
+        </div>
+        <div class="event-tool-children">
+          <div class="event-tool-child"><span class="event-tool-child-name">Read</span> <span class="event-tool-child-path">docs/bmad/advisor-v6.md</span> <span class="event-tool-child-dur">120ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Read</span> <span class="event-tool-child-path">CLAUDE.md</span> <span class="event-tool-child-dur">45ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Read</span> <span class="event-tool-child-path">STEERING.md</span> <span class="event-tool-child-dur">38ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Read</span> <span class="event-tool-child-path">.claude/settings.json</span> <span class="event-tool-child-dur">22ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Grep</span> <span class="event-tool-child-path">pattern: "bmad" in src/</span> <span class="event-tool-child-dur">340ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Glob</span> <span class="event-tool-child-path">**/*bmad*</span> <span class="event-tool-child-dur">180ms</span></div>
+        </div>
+      </div>
+
+      <!-- Response 1 -->
+      <div class="event-row">
+        <span class="event-time">14:32:12</span>
+        <span class="event-type response">RESPONSE</span>
+        <span class="event-summary">Focused on BMAD v6 advisor. Found stale codex endpoint.</span>
+      </div>
+
+      <!-- Prompt 2 -->
+      <div class="event-row">
+        <span class="event-time">14:33:18</span>
+        <span class="event-type prompt">PROMPT</span>
+        <span class="event-summary">How do we check that all the MCPs are actually working?...</span>
+      </div>
+
+      <!-- Tool group 2 -->
+      <div class="event-tool-group">
+        <div class="event-tool-group-header" onclick="toggleToolGroup(this)">
+          <span class="event-time">14:33:20</span>
+          <span class="event-type tool">TOOLS</span>
+          <span class="event-summary">8 tool calls &mdash; Bash(3), Read(3), Grep(2)</span>
+          <span class="tool-group-arrow">&#9654;</span>
+        </div>
+        <div class="event-tool-children">
+          <div class="event-tool-child"><span class="event-tool-child-name">Read</span> <span class="event-tool-child-path">.claude/settings.json</span> <span class="event-tool-child-dur">18ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Bash</span> <span class="event-tool-child-path">curl -s localhost:3100/health</span> <span class="event-tool-child-dur">210ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Bash</span> <span class="event-tool-child-path">curl -s localhost:3200/health</span> <span class="event-tool-child-dur">5012ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Bash</span> <span class="event-tool-child-path">curl -s localhost:3201/health</span> <span class="event-tool-child-dur">185ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Read</span> <span class="event-tool-child-path">docs/bmad/mcp-registry.md</span> <span class="event-tool-child-dur">32ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Read</span> <span class="event-tool-child-path">docs/bmad/relay.md</span> <span class="event-tool-child-dur">28ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Grep</span> <span class="event-tool-child-path">pattern: "mcpServers" in .claude/</span> <span class="event-tool-child-dur">95ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Grep</span> <span class="event-tool-child-path">pattern: "transport" in .claude/</span> <span class="event-tool-child-dur">88ms</span></div>
+        </div>
+      </div>
+
+      <!-- Response 2 -->
+      <div class="event-row">
+        <span class="event-time">14:33:42</span>
+        <span class="event-type response">RESPONSE</span>
+        <span class="event-summary">MCP status: 3 live, 2 down (Brave Search, Codex)</span>
+      </div>
+
+      <!-- Prompt 3 -->
+      <div class="event-row">
+        <span class="event-time">14:34:55</span>
+        <span class="event-type prompt">PROMPT</span>
+        <span class="event-summary">Check BMAD relay document, verify relay rules after v6 changes...</span>
+      </div>
+
+      <!-- Tool group 3 -->
+      <div class="event-tool-group">
+        <div class="event-tool-group-header" onclick="toggleToolGroup(this)">
+          <span class="event-time">14:34:57</span>
+          <span class="event-type tool">TOOLS</span>
+          <span class="event-summary">5 tool calls &mdash; Read(3), Grep(1), Glob(1)</span>
+          <span class="tool-group-arrow">&#9654;</span>
+        </div>
+        <div class="event-tool-children">
+          <div class="event-tool-child"><span class="event-tool-child-name">Read</span> <span class="event-tool-child-path">docs/bmad/relay.md</span> <span class="event-tool-child-dur">30ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Read</span> <span class="event-tool-child-path">.claude/skills/manifest.json</span> <span class="event-tool-child-dur">25ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Read</span> <span class="event-tool-child-path">docs/bmad/agent-permissions.md</span> <span class="event-tool-child-dur">28ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Grep</span> <span class="event-tool-child-path">pattern: "bmad-analyst" in docs/</span> <span class="event-tool-child-dur">110ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Glob</span> <span class="event-tool-child-path">docs/bmad/**/*.md</span> <span class="event-tool-child-dur">65ms</span></div>
+        </div>
+      </div>
+
+      <!-- Response 3 -->
+      <div class="event-row">
+        <span class="event-time">14:35:18</span>
+        <span class="event-type response">RESPONSE</span>
+        <span class="event-summary">Found 2 issues: stale timeout (30s), missing bmad-analyst permission</span>
+      </div>
+
+      <!-- Prompt 4 -->
+      <div class="event-row">
+        <span class="event-time">14:36:30</span>
+        <span class="event-type prompt">PROMPT</span>
+        <span class="event-summary">Update timeout, check for anything else that needs updating...</span>
+      </div>
+
+      <!-- Tool group 4 -->
+      <div class="event-tool-group">
+        <div class="event-tool-group-header" onclick="toggleToolGroup(this)">
+          <span class="event-time">14:36:32</span>
+          <span class="event-type tool">TOOLS</span>
+          <span class="event-summary">12 tool calls &mdash; Read(2), Edit(5), Write(1), Bash(4)</span>
+          <span class="tool-group-arrow expanded">&#9654;</span>
+        </div>
+        <div class="event-tool-children visible">
+          <div class="event-tool-child"><span class="event-tool-child-name">Read</span> <span class="event-tool-child-path">docs/bmad/relay.md</span> <span class="event-tool-child-dur">28ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Read</span> <span class="event-tool-child-path">.claude/settings.json</span> <span class="event-tool-child-dur">20ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Edit</span> <span class="event-tool-child-path">docs/bmad/relay.md (timeout)</span> <span class="event-tool-child-dur">15ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Edit</span> <span class="event-tool-child-path">docs/bmad/relay.md (permissions)</span> <span class="event-tool-child-dur">12ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Edit</span> <span class="event-tool-child-path">docs/bmad/relay.md (retry policy)</span> <span class="event-tool-child-dur">14ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Edit</span> <span class="event-tool-child-path">docs/bmad/relay.md (health interval)</span> <span class="event-tool-child-dur">13ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Edit</span> <span class="event-tool-child-path">.claude/settings.json (codex port)</span> <span class="event-tool-child-dur">11ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Write</span> <span class="event-tool-child-path">.claude/skills/bmad-v6.md</span> <span class="event-tool-child-dur">18ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Bash</span> <span class="event-tool-child-path">npm run typecheck</span> <span class="event-tool-child-dur">4200ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Bash</span> <span class="event-tool-child-path">npm test -- --run</span> <span class="event-tool-child-dur">6800ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Bash</span> <span class="event-tool-child-path">curl -s localhost:3100/health</span> <span class="event-tool-child-dur">195ms</span></div>
+          <div class="event-tool-child"><span class="event-tool-child-name">Bash</span> <span class="event-tool-child-path">git diff --stat</span> <span class="event-tool-child-dur">85ms</span></div>
+        </div>
+      </div>
+
+      <!-- Response 4 -->
+      <div class="event-row">
+        <span class="event-time">14:37:05</span>
+        <span class="event-type response">RESPONSE</span>
+        <span class="event-summary">Applied 4 fixes to relay.md + codex port fix. All checks pass.</span>
+      </div>
+
+      <!-- Error event -->
+      <div class="event-row">
+        <span class="event-time">14:37:06</span>
+        <span class="event-type error">ERROR</span>
+        <span class="event-summary">Brave Search MCP still unreachable &mdash; process not started</span>
+      </div>
+
+    </div>
+  </div>
+
+  </div><!-- /content-wrapper -->
+
+</div>
+
+<script>
+// Tab switching — Chat = right panel, Events = bottom full-width panel
+function switchTab(tab) {
+  // Update ALL tab elements across both panels
+  var allTabs = document.querySelectorAll('.panel-tab');
+  allTabs.forEach(function(t) {
+    var isChat = t.textContent.trim() === 'Chat';
+    var isEvents = t.textContent.trim() === 'Events';
+    if (tab === 'chat' && isChat) t.classList.add('active');
+    else if (tab === 'events' && isEvents) t.classList.add('active');
+    else t.classList.remove('active');
+  });
+
+  var chatPanel = document.querySelector('.chat-panel');
+  var bottomPanel = document.getElementById('bottomPanel');
+  var chatView = document.getElementById('chatView');
+
+  if (tab === 'chat') {
+    // Show right chat panel, hide bottom panel
+    chatPanel.style.display = 'flex';
+    chatView.classList.add('active');
+    chatView.classList.remove('hidden');
+    bottomPanel.classList.remove('active');
+  } else {
+    // Hide right chat panel, show bottom events panel (full width)
+    chatPanel.style.display = 'none';
+    chatView.classList.remove('active');
+    chatView.classList.add('hidden');
+    bottomPanel.classList.add('active');
+  }
+}
+
+// Tool toggle
+var toolsVisible = false;
+
+function toggleToolVisibility(el) {
+  toolsVisible = !toolsVisible;
+  el.classList.toggle('active', toolsVisible);
+
+  // Show/hide tool call rows
+  var toolRows = document.querySelectorAll('.tool-row-collapsible');
+  toolRows.forEach(function(row) {
+    row.style.display = toolsVisible ? 'block' : 'none';
+  });
+
+  // Show/hide tool badges on Claude messages
+  var badges = document.querySelectorAll('.tool-badge-collapsed');
+  badges.forEach(function(badge) {
+    badge.style.display = toolsVisible ? 'none' : 'inline-flex';
+  });
+}
+
+// Tool detail expand/collapse (same as original)
+function toggleTools(el) {
+  el.classList.toggle('expanded');
+  var detail = el.nextElementSibling;
+  if (detail) detail.classList.toggle('visible');
+  var arrow = el.querySelector('.tool-calls-arrow');
+  if (el.classList.contains('expanded')) {
+    arrow.style.transform = 'rotate(90deg)';
+  } else {
+    arrow.style.transform = '';
+  }
+}
+
+// Event tool group expand/collapse
+function toggleToolGroup(el) {
+  var arrow = el.querySelector('.tool-group-arrow');
+  var children = el.nextElementSibling;
+  arrow.classList.toggle('expanded');
+  if (children) children.classList.toggle('visible');
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngelEye Analysis Campaign — 924 Sessions</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  :root {
+    /* AngelEye v2-linen color system */
+    --bg-page: #e8e0d4;
+    --bg-surface: #ede7dc;
+    --bg-card: #f5f1eb;
+    --bg-hover: #ddd6cc;
+    --border: #d4cdc4;
+    --border-raised: #ccc5bb;
+    --text-primary: #2a2018;
+    --text-secondary: #7a6e5e;
+    --text-muted: #9ca3af;
+    /* Accent */
+    --accent-amber: #c8841a;
+    --accent-amber-fg: #fff;
+    /* Semantic */
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --destructive: #c0392b;
+    --info: #3b82f6;
+    --purple: #8b5cf6;
+    /* Brand */
+    --brand-brown: #342d2d;
+    --brand-gold: #ccba9d;
+    --brand-yellow: #ffde59;
+    --brand-blue: #2E91FC;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-page);
+    color: var(--text-primary);
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.5;
+    padding: 24px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  header h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+  }
+
+  header p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 20px;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(42, 32, 24, 0.06);
+    transition: background 0.15s, box-shadow 0.15s;
+  }
+
+  .card:hover {
+    background: var(--bg-surface);
+    box-shadow: 0 2px 6px rgba(42, 32, 24, 0.1);
+  }
+
+  .card h2 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+  }
+
+  .card.wide {
+    grid-column: span 2;
+  }
+
+  .card.full {
+    grid-column: 1 / -1;
+  }
+
+  /* Overview card */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+  }
+
+  .stat-box {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .stat-box .value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-amber);
+  }
+
+  .stat-box .label {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-top: 2px;
+  }
+
+  .stat-box.teal .value { color: var(--success); }
+  .stat-box.amber .value { color: var(--warning); }
+  .stat-box.rose .value { color: var(--destructive); }
+  .stat-box.purple .value { color: var(--purple); }
+  .stat-box.green .value { color: var(--success); }
+
+  .chart-wrap {
+    position: relative;
+    width: 100%;
+  }
+
+  .chart-wrap.doughnut {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .note {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    margin-top: 10px;
+    font-style: italic;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+  }
+
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr; }
+    .card.wide, .card.full { grid-column: span 1; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>AngelEye Analysis Campaign — 924 Sessions</h1>
+  <p>angeleye-analysis-1 &bull; M4 Mini + M4 Pro &bull; 2026-03-22 &rarr; 2026-03-23</p>
+</header>
+
+<div class="grid">
+
+  <!-- 1. Campaign Overview -->
+  <div class="card full">
+    <h2>Campaign Overview</h2>
+    <div class="overview-grid">
+      <div class="stat-box"><div class="value">924</div><div class="label">Total Sessions</div></div>
+      <div class="stat-box teal"><div class="value">2</div><div class="label">Machines</div></div>
+      <div class="stat-box amber"><div class="value">14</div><div class="label">Waves + Backward Pass</div></div>
+      <div class="stat-box purple"><div class="value">807</div><div class="label">M4 Mini</div></div>
+      <div class="stat-box rose"><div class="value">116</div><div class="label">M4 Pro</div></div>
+      <div class="stat-box"><div class="value">1</div><div class="label">Unknown Machine</div></div>
+      <div class="stat-box green"><div class="value">615</div><div class="label">Schema v2</div></div>
+      <div class="stat-box"><div class="value">309</div><div class="label">No Schema Version</div></div>
+    </div>
+  </div>
+
+  <!-- 2. Session Type Distribution -->
+  <div class="card">
+    <h2>Session Type Distribution</h2>
+    <div class="chart-wrap doughnut"><canvas id="sessionTypeChart"></canvas></div>
+    <p class="note">418 "unknown" are mostly micro/trivial sessions without classification</p>
+  </div>
+
+  <!-- 3. Session Scale -->
+  <div class="card">
+    <h2>Session Scale</h2>
+    <div class="chart-wrap"><canvas id="sessionScaleChart"></canvas></div>
+  </div>
+
+  <!-- 4. Delegation Style (C08) -->
+  <div class="card">
+    <h2>Delegation Style (C08)</h2>
+    <div class="chart-wrap doughnut"><canvas id="delegationChart"></canvas></div>
+  </div>
+
+  <!-- 5. Initiation Source (C11) -->
+  <div class="card">
+    <h2>Initiation Source (C11)</h2>
+    <div class="chart-wrap"><canvas id="initiationChart"></canvas></div>
+  </div>
+
+  <!-- 6. Session Continuity (C09) -->
+  <div class="card">
+    <h2>Session Continuity (C09)</h2>
+    <div class="chart-wrap"><canvas id="continuityChart"></canvas></div>
+  </div>
+
+  <!-- 7. Output Type (C10) -->
+  <div class="card">
+    <h2>Output Type (C10)</h2>
+    <div class="chart-wrap doughnut"><canvas id="outputTypeChart"></canvas></div>
+  </div>
+
+  <!-- 8. Autonomy Ratio -->
+  <div class="card">
+    <h2>Autonomy Ratio</h2>
+    <div class="chart-wrap"><canvas id="autonomyChart"></canvas></div>
+  </div>
+
+  <!-- 9. Session Liveness -->
+  <div class="card">
+    <h2>Session Liveness</h2>
+    <div class="chart-wrap"><canvas id="livenessChart"></canvas></div>
+  </div>
+
+  <!-- 10. Top 15 Projects -->
+  <div class="card wide">
+    <h2>Top 15 Projects</h2>
+    <div class="chart-wrap"><canvas id="projectsChart"></canvas></div>
+  </div>
+
+  <!-- 11. Key Predicates -->
+  <div class="card wide">
+    <h2>Key Predicates</h2>
+    <div class="chart-wrap"><canvas id="predicatesChart"></canvas></div>
+  </div>
+
+  <!-- 12. BUILD Accuracy by Scale -->
+  <div class="card">
+    <h2>BUILD Accuracy by Scale</h2>
+    <div class="chart-wrap"><canvas id="accuracyChart"></canvas></div>
+  </div>
+
+  <!-- 13. Machine Comparison -->
+  <div class="card">
+    <h2>Machine Comparison</h2>
+    <div class="chart-wrap"><canvas id="machineChart"></canvas></div>
+  </div>
+
+</div>
+
+<footer>
+  AngelEye &mdash; Ambient Intelligence for Claude Code &mdash; Static snapshot dashboard &mdash; 2026-03-23
+</footer>
+
+<script>
+// --- Shared config (v2-linen theme) ---
+Chart.defaults.color = '#7a6e5e';
+Chart.defaults.borderColor = 'rgba(212, 205, 196, 0.5)';
+Chart.defaults.font.family = "'Segoe UI', -apple-system, sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.plugins.legend.labels.boxWidth = 12;
+Chart.defaults.plugins.legend.labels.padding = 10;
+
+// Brand-integrated chart palette — warm tones on linen
+const PALETTE = [
+  '#c8841a', '#342d2d', '#2E91FC', '#c0392b', '#8b5cf6',
+  '#22c55e', '#ccba9d', '#f59e0b', '#3b82f6', '#7a6e5e',
+  '#d4cdc4', '#ffde59'
+];
+
+const PALETTE_MUTED = [
+  'rgba(200,132,26,0.75)',  // amber accent
+  'rgba(52,45,45,0.75)',    // brand brown
+  'rgba(46,145,252,0.75)',  // brand blue
+  'rgba(192,57,43,0.75)',   // destructive red
+  'rgba(139,92,246,0.75)',  // purple
+  'rgba(34,197,94,0.75)',   // success green
+  'rgba(204,186,157,0.75)', // brand gold
+  'rgba(245,158,11,0.75)',  // warning amber
+  'rgba(59,130,246,0.75)',  // info blue
+  'rgba(122,110,94,0.75)',  // muted text
+  'rgba(212,205,196,0.75)', // border tone
+  'rgba(255,222,89,0.75)'   // brand yellow
+];
+
+const gridColor = 'rgba(212, 205, 196, 0.4)';
+
+function barOpts(horizontal = false) {
+  return {
+    indexAxis: horizontal ? 'y' : 'x',
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { color: gridColor } },
+      y: { grid: { color: gridColor } }
+    }
+  };
+}
+
+function doughnutOpts() {
+  return {
+    responsive: true,
+    maintainAspectRatio: true,
+    cutout: '55%',
+    plugins: {
+      legend: { position: 'bottom', labels: { font: { size: 10 } } }
+    }
+  };
+}
+
+// --- 2. Session Type Distribution ---
+new Chart(document.getElementById('sessionTypeChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['BUILD', 'KNOWLEDGE', 'RESEARCH', 'ORIENTATION', 'OPERATIONS', 'META', 'SYSOPS', 'PLANNING', 'MIXED', 'SKILL', 'SETUP', 'Unknown'],
+    datasets: [{
+      data: [77, 80, 79, 56, 53, 37, 24, 23, 19, 10, 9, 418],
+      backgroundColor: [...PALETTE_MUTED.slice(0, 11), 'rgba(212,205,196,0.5)'],
+      borderColor: 'rgba(245,241,235,0.8)',
+      borderWidth: 1
+    }]
+  },
+  options: doughnutOpts()
+});
+
+// --- 3. Session Scale ---
+new Chart(document.getElementById('sessionScaleChart'), {
+  type: 'bar',
+  data: {
+    labels: ['light', 'micro', 'moderate', 'heavy', 'marathon', 'trivial', 'unknown'],
+    datasets: [{
+      data: [161, 150, 140, 46, 7, 2, 418],
+      backgroundColor: ['#c8841a', '#2E91FC', '#f59e0b', '#c0392b', '#8b5cf6', '#ccba9d', 'rgba(212,205,196,0.5)'],
+      borderRadius: 4
+    }]
+  },
+  options: barOpts(true)
+});
+
+// --- 4. Delegation Style ---
+new Chart(document.getElementById('delegationChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Conversational', 'Directive', 'Orchestrated', 'Autonomous'],
+    datasets: [{
+      data: [417, 335, 91, 58],
+      backgroundColor: ['#c8841a', '#2E91FC', '#f59e0b', '#8b5cf6'],
+      borderColor: 'rgba(245,241,235,0.8)',
+      borderWidth: 1
+    }]
+  },
+  options: doughnutOpts()
+});
+
+// --- 5. Initiation Source ---
+new Chart(document.getElementById('initiationChart'), {
+  type: 'bar',
+  data: {
+    labels: ['user_typed', 'voice_dictated', 'handover_paste', 'skill_invoked', 'agent_dispatched'],
+    datasets: [{
+      data: [538, 168, 131, 69, 12],
+      backgroundColor: ['#c8841a', '#22c55e', '#f59e0b', '#8b5cf6', '#c0392b'],
+      borderRadius: 4
+    }]
+  },
+  options: barOpts(true)
+});
+
+// --- 6. Session Continuity ---
+new Chart(document.getElementById('continuityChart'), {
+  type: 'bar',
+  data: {
+    labels: ['fresh', 'handover_paste', 'compaction', 'skill_launcher', 'recall'],
+    datasets: [{
+      data: [587, 152, 83, 63, 25],
+      backgroundColor: ['#c8841a', '#22c55e', '#f59e0b', '#8b5cf6', '#c0392b'],
+      borderRadius: 4
+    }]
+  },
+  options: barOpts(false)
+});
+
+// --- 7. Output Type ---
+new Chart(document.getElementById('outputTypeChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Conversation Only', 'Code Changes', 'Knowledge Synthesis', 'Mixed', 'New Artifacts'],
+    datasets: [{
+      data: [278, 233, 171, 126, 114],
+      backgroundColor: ['#c8841a', '#2E91FC', '#22c55e', '#8b5cf6', '#f59e0b'],
+      borderColor: 'rgba(245,241,235,0.8)',
+      borderWidth: 1
+    }]
+  },
+  options: doughnutOpts()
+});
+
+// --- 8. Autonomy Ratio ---
+new Chart(document.getElementById('autonomyChart'), {
+  type: 'bar',
+  data: {
+    labels: ['conversational\n(<=3)', 'guided\n(3-8)', 'delegated\n(8-15)', 'autonomous\n(>15)', 'unknown'],
+    datasets: [{
+      data: [223, 127, 86, 47, 441],
+      backgroundColor: ['#22c55e', '#c8841a', '#f59e0b', '#c0392b', 'rgba(212,205,196,0.5)'],
+      borderRadius: 4
+    }]
+  },
+  options: barOpts(false)
+});
+
+// --- 9. Session Liveness ---
+new Chart(document.getElementById('livenessChart'), {
+  type: 'bar',
+  data: {
+    labels: ['focused', 'parked', 'zombie', 'intermittent', 'unknown'],
+    datasets: [{
+      data: [204, 84, 65, 38, 533],
+      backgroundColor: ['#22c55e', '#2E91FC', '#c0392b', '#f59e0b', 'rgba(212,205,196,0.5)'],
+      borderRadius: 4
+    }]
+  },
+  options: barOpts(false)
+});
+
+// --- 10. Top 15 Projects ---
+new Chart(document.getElementById('projectsChart'), {
+  type: 'bar',
+  data: {
+    labels: [
+      'brains', 'prompt.supportsignal.com.au', 'signal-studio',
+      'app.supportsignal.com.au', 'appystack', 'angeleye', 'flihub',
+      'appydave-plugins', 'prompt.supportsignal', 'v-appydave',
+      'app.supportsignal', 'joy-juice', 'flideck', 'appydave.com', 'deckhand'
+    ],
+    datasets: [{
+      data: [327, 112, 48, 40, 38, 33, 31, 28, 22, 19, 19, 15, 13, 11, 10],
+      backgroundColor: PALETTE_MUTED.slice(0, 15).concat(PALETTE_MUTED.slice(0, 3)),
+      borderRadius: 4
+    }]
+  },
+  options: {
+    ...barOpts(true),
+    maintainAspectRatio: false,
+  }
+});
+// Make the projects chart taller
+document.getElementById('projectsChart').parentElement.style.height = '420px';
+
+// --- 11. Key Predicates ---
+new Chart(document.getElementById('predicatesChart'), {
+  type: 'bar',
+  data: {
+    labels: [
+      'P17 handover\ncontext', 'P18 cross-project\nreads', 'P19 web\nresearch',
+      'P20 parallel\nsubagents', 'P21 task\norchestration', 'P22 git\noutcome',
+      'frustration\nsignals', 'voice dictation\nartifacts', 'multi-phase',
+      'cwd\nincidental', 'feature\nconstruction'
+    ],
+    datasets: [
+      {
+        label: 'True',
+        data: [175, 74, 73, 35, 158, 77, 124, 193, 240, 191, 87],
+        backgroundColor: 'rgba(200,132,26,0.8)',
+        borderRadius: 4
+      },
+      {
+        label: 'Total Evaluated',
+        data: [918, 573, 910, 716, 910, 822, 502, 278, 502, 475, 495],
+        backgroundColor: 'rgba(212,205,196,0.5)',
+        borderRadius: 4
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top' },
+      tooltip: {
+        callbacks: {
+          afterBody: function(context) {
+            if (context[0].datasetIndex === 0) {
+              const total = [918, 573, 910, 716, 910, 822, 502, 278, 502, 475, 495];
+              const idx = context[0].dataIndex;
+              const pct = ((context[0].raw / total[idx]) * 100).toFixed(1);
+              return `${pct}% of evaluated`;
+            }
+            return '';
+          }
+        }
+      }
+    },
+    scales: {
+      x: { grid: { color: gridColor } },
+      y: { grid: { color: gridColor } }
+    }
+  }
+});
+document.getElementById('predicatesChart').parentElement.style.height = '350px';
+
+// --- 12. BUILD Accuracy by Scale ---
+new Chart(document.getElementById('accuracyChart'), {
+  type: 'line',
+  data: {
+    labels: ['micro', 'light', 'moderate', 'heavy', 'marathon'],
+    datasets: [{
+      label: 'Accuracy %',
+      data: [0, 12, 38, 60, 65],
+      borderColor: '#c8841a',
+      backgroundColor: 'rgba(200,132,26,0.12)',
+      fill: true,
+      tension: 0.35,
+      pointBackgroundColor: '#c8841a',
+      pointBorderColor: '#f5f1eb',
+      pointBorderWidth: 2,
+      pointRadius: 5
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => `Accuracy: ${ctx.raw}%`
+        }
+      }
+    },
+    scales: {
+      y: {
+        min: 0, max: 100,
+        ticks: { callback: v => v + '%' },
+        grid: { color: gridColor }
+      },
+      x: { grid: { color: gridColor } }
+    }
+  }
+});
+
+// --- 13. Machine Comparison ---
+new Chart(document.getElementById('machineChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Sessions', 'BUILD', 'KNOWLEDGE', 'RESEARCH', 'OPERATIONS', 'Schema v2'],
+    datasets: [
+      {
+        label: 'M4 Mini',
+        data: [807, 62, 68, 65, 45, 520],
+        backgroundColor: 'rgba(200,132,26,0.7)',
+        borderRadius: 4
+      },
+      {
+        label: 'M4 Pro',
+        data: [116, 15, 12, 14, 8, 95],
+        backgroundColor: 'rgba(46,145,252,0.7)',
+        borderRadius: 4
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { position: 'top' } },
+    scales: {
+      x: { grid: { color: gridColor } },
+      y: { grid: { color: gridColor } }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

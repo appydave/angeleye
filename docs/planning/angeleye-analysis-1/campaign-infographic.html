@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngelEye — 924 Session Data Reference</title>
+<style>
+  /* ─── RESET & BASE ─── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 15px; scroll-behavior: smooth; }
+  body {
+    background: #e8e0d4;
+    color: #2a2018;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+    line-height: 1.6;
+    padding: 2rem 1rem 4rem;
+  }
+  a { color: #2E91FC; }
+
+  /* ─── LAYOUT ─── */
+  .container { max-width: 1200px; margin: 0 auto; }
+  .header { text-align: center; margin-bottom: 3rem; padding: 2rem 0; border-bottom: 1px solid #d4cdc4; }
+  .header h1 { font-size: 2.2rem; font-weight: 700; letter-spacing: 0.02em; color: #342d2d; }
+  .header .subtitle { font-size: 0.95rem; color: #7a6e5e; margin-top: 0.4rem; font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace; }
+
+  section { margin-bottom: 3rem; }
+  section > h2 {
+    font-size: 1.15rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #342d2d;
+    border-bottom: 1px solid #d4cdc4;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.2rem;
+  }
+
+  /* ─── CARDS ─── */
+  .card {
+    background: #f5f1eb;
+    border-radius: 10px;
+    padding: 1.4rem;
+    border: 1px solid #d4cdc4;
+  }
+  .card-alt {
+    background: #ede7dc;
+  }
+  .card h3 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #7a6e5e;
+    margin-bottom: 0.8rem;
+  }
+
+  /* ─── 1. HERO STATS ─── */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+  .hero-stat {
+    background: #f5f1eb;
+    border: 1px solid #d4cdc4;
+    border-radius: 10px;
+    padding: 1.4rem 1rem;
+    text-align: center;
+  }
+  .hero-stat .number {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: #c8841a;
+    line-height: 1.1;
+  }
+  .hero-stat .label {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #7a6e5e;
+    margin-top: 0.3rem;
+  }
+
+  /* ─── 2. SCHEMA ─── */
+  .schema-block {
+    background: #ede7dc;
+    border: 1px solid #d4cdc4;
+    border-radius: 10px;
+    padding: 1.6rem;
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    overflow-x: auto;
+    white-space: pre;
+    color: #2a2018;
+  }
+  .schema-block .sk  { color: #2E91FC; }  /* keys */
+  .schema-block .st  { color: #c8841a; }  /* types */
+  .schema-block .sc  { color: #7a6e5e; }  /* comments */
+  .schema-block .sh  { color: #8b5cf6; }  /* section headers */
+  .schema-block .sv  { color: #22c55e; }  /* values/examples */
+  .schema-block .sn  { color: #c0392b; }  /* numbers/stats */
+
+  /* ─── 3 & 4. TABLES ─── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+  .data-table thead { position: sticky; top: 0; z-index: 2; }
+  .data-table th {
+    background: #ede7dc;
+    color: #7a6e5e;
+    text-align: left;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid #d4cdc4;
+  }
+  .data-table td {
+    padding: 0.45rem 0.8rem;
+    border-bottom: 1px solid #ddd6cc;
+  }
+  .data-table tr:nth-child(even) td { background: #ede7dc; }
+  .data-table tr:nth-child(odd) td { background: #f5f1eb; }
+  .data-table tr:hover td { background: #ddd6cc; }
+
+  .scrollable { max-height: 500px; overflow-y: auto; border-radius: 10px; border: 1px solid #d4cdc4; }
+  .scrollable-sm { max-height: 360px; }
+
+  /* ─── BADGES ─── */
+  .badge {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .badge-build       { background: #dbeafe; color: #1e40af; }
+  .badge-knowledge    { background: #ede9fe; color: #6b21a8; }
+  .badge-research     { background: #dcfce7; color: #166534; }
+  .badge-orientation  { background: #fef3c7; color: #92400e; }
+  .badge-operations   { background: #ffedd5; color: #9a3412; }
+  .badge-meta         { background: #e5e7eb; color: #4b5563; }
+  .badge-sysops       { background: #ccfbf1; color: #115e59; }
+  .badge-planning     { background: #fce7f3; color: #9d174d; }
+  .badge-mixed        { background: #fef9c3; color: #854d0e; }
+  .badge-skill        { background: #d1fae5; color: #065f46; }
+  .badge-setup        { background: #fef3c7; color: #78350f; }
+  .badge-test         { background: #e0e7ff; color: #3730a3; }
+  .badge-review       { background: #ffe4e6; color: #9f1239; }
+  .badge-debug        { background: #fee2e2; color: #991b1b; }
+  .badge-brand        { background: #f5f1eb; color: #342d2d; border: 1px solid #ccba9d; }
+  .badge-unclassified { background: #e5e7eb; color: #6b7280; }
+
+  .count {
+    font-weight: 700;
+    color: #2a2018;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ─── PROGRESS BARS ─── */
+  .progress-row { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.45rem; flex-wrap: wrap; }
+  .progress-label { flex: 0 0 280px; font-size: 0.82rem; color: #2a2018; }
+  .progress-bar-bg {
+    flex: 1;
+    min-width: 100px;
+    height: 18px;
+    background: #ddd6cc;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: #c8841a;
+    transition: width 0.3s;
+  }
+  .progress-stats { flex: 0 0 140px; font-size: 0.78rem; color: #7a6e5e; text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* ─── MULTI-COL LISTS ─── */
+  .two-col-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 2rem;
+    font-size: 0.85rem;
+  }
+  .three-col-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0 2rem;
+    font-size: 0.85rem;
+  }
+  .list-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid #ddd6cc;
+  }
+  .list-item .name { color: #2a2018; }
+  .list-item .val { color: #c8841a; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  /* ─── SIDE BY SIDE ─── */
+  .side-by-side {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+
+  /* ─── CLASSIFIER SECTIONS ─── */
+  .classifier-section { margin-bottom: 1.6rem; }
+  .classifier-section h4 {
+    font-size: 0.82rem;
+    color: #342d2d;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+  .classifier-bar-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.3rem;
+    font-size: 0.82rem;
+  }
+  .classifier-bar-label { flex: 0 0 180px; color: #2a2018; }
+  .classifier-bar-bg {
+    flex: 1;
+    min-width: 80px;
+    height: 14px;
+    background: #ddd6cc;
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 0 0.5rem;
+  }
+  .classifier-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+  }
+  .classifier-bar-stats { flex: 0 0 100px; color: #7a6e5e; font-size: 0.78rem; text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* ─── MACHINE CARDS ─── */
+  .machine-card h4 { color: #342d2d; font-size: 1rem; margin-bottom: 0.6rem; }
+  .machine-card ul { list-style: none; padding: 0; }
+  .machine-card li {
+    padding: 0.25rem 0;
+    font-size: 0.88rem;
+    color: #2a2018;
+    padding-left: 1rem;
+    position: relative;
+  }
+  .machine-card li::before { content: '\2022'; position: absolute; left: 0; color: #c8841a; }
+  .machine-overlap {
+    margin-top: 1rem;
+    padding: 0.8rem 1rem;
+    background: #ede7dc;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: #7a6e5e;
+    border-left: 3px solid #c8841a;
+  }
+
+  /* ─── IRON-CLAD RULES ─── */
+  .rules-box {
+    margin-top: 1rem;
+    padding: 1rem 1.2rem;
+    background: #ede7dc;
+    border: 1px solid #ccc5bb;
+    border-radius: 8px;
+  }
+  .rules-box h4 { color: #c0392b; font-size: 0.85rem; margin-bottom: 0.5rem; }
+  .rules-box ol { padding-left: 1.2rem; font-size: 0.85rem; color: #2a2018; }
+  .rules-box li { margin-bottom: 0.3rem; }
+  .rules-box code { background: #ddd6cc; padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.8rem; color: #c8841a; }
+
+  /* ─── SKILL LIST ─── */
+  .skill-list { font-size: 0.85rem; }
+  .skill-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin: 0.2rem 0.4rem 0.2rem 0;
+    padding: 0.2rem 0.6rem;
+    background: #ede7dc;
+    border-radius: 4px;
+    border: 1px solid #d4cdc4;
+  }
+  .skill-item .sname { color: #2E91FC; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.8rem; }
+  .skill-item .scount { color: #7a6e5e; font-size: 0.75rem; }
+
+  /* ─── NOTE BOXES ─── */
+  .note {
+    font-size: 0.8rem;
+    color: #7a6e5e;
+    font-style: italic;
+    margin-top: 0.6rem;
+    padding-left: 0.5rem;
+    border-left: 2px solid #d4cdc4;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    .hero-grid { grid-template-columns: repeat(3, 1fr); }
+    .side-by-side { grid-template-columns: 1fr; }
+    .two-col-list { grid-template-columns: 1fr; }
+    .three-col-list { grid-template-columns: 1fr 1fr; }
+    .progress-label { flex: 0 0 200px; }
+    .progress-stats { flex: 0 0 100px; }
+    .classifier-bar-label { flex: 0 0 140px; }
+    .schema-block { font-size: 0.72rem; }
+  }
+  @media (max-width: 480px) {
+    .hero-grid { grid-template-columns: repeat(2, 1fr); }
+    .three-col-list { grid-template-columns: 1fr; }
+    .hero-stat .number { font-size: 1.8rem; }
+  }
+
+  /* ─── PRINT ─── */
+  @media print {
+    body { background: #fff; color: #222; }
+    .card, .hero-stat, .schema-block { background: #f5f5f5; border-color: #ddd; }
+    .scrollable { max-height: none; overflow: visible; }
+    section { break-inside: avoid; }
+    .data-table th { background: #eee; color: #444; }
+    .data-table tr:nth-child(even) td { background: #f9f9f9; }
+    .progress-bar-bg { background: #e0e0e0; }
+    .badge { border: 1px solid #ccc; }
+    .header h1 { color: #111; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ═══ HEADER ═══ -->
+  <header class="header">
+    <h1>AngelEye &mdash; 924 Session Data Reference</h1>
+    <div class="subtitle">angeleye-analysis-1 &bull; Complete dataset &bull; 2026-03-23</div>
+  </header>
+
+  <!-- ═══ 1. CAMPAIGN AT A GLANCE ═══ -->
+  <section>
+    <h2>1. Campaign at a Glance</h2>
+    <div class="hero-grid">
+      <div class="hero-stat">
+        <div class="number">924</div>
+        <div class="label">Sessions</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number">2</div>
+        <div class="label">Machines</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number">15+1</div>
+        <div class="label">Waves + backward</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number">478</div>
+        <div class="label">Unique Subtypes</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number">45</div>
+        <div class="label">Tools Observed</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number">76+</div>
+        <div class="label">Projects</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 2. THE SCHEMA ═══ -->
+  <section>
+    <h2>2. The Schema &mdash; v3 Session Index Entry</h2>
+    <div class="schema-block"><span class="sh">── Top-Level Fields ──────────────────────────────────────────────</span>
+<span class="sk">session_id</span>          <span class="st">UUID</span>
+<span class="sk">machine</span>             <span class="st">m4-mini | m4-pro</span>
+<span class="sk">project</span>             <span class="st">string</span>         <span class="sc">last CWD segment (e.g. "brains", "angeleye")</span>
+<span class="sk">project_dir</span>         <span class="st">path</span>           <span class="sc">full path</span>
+<span class="sk">schema_version</span>      <span class="st">2</span>
+<span class="sk">disposition</span>         <span class="st">enum</span>           <span class="sv">active | junk | ended | complete | ...</span>
+<span class="sk">interest_level</span>      <span class="st">enum</span>           <span class="sv">high | medium | low</span>
+<span class="sk">registry_type</span>       <span class="st">enum</span>           <span class="sv">BUILD | KNOWLEDGE | ORIENTATION | ...</span>
+<span class="sk">notes</span>               <span class="st">text</span>           <span class="sc">free text summary</span>
+
+<span class="sh">── shape ─────────────────────────────────────────────────────────</span>
+  <span class="sk">event_count</span>           <span class="st">int</span>        <span class="sc">total events in session</span>
+  <span class="sk">tool_use_count</span>        <span class="st">int</span>        <span class="sc">tool invocations</span>
+  <span class="sk">user_prompt_count</span>     <span class="st">int</span>        <span class="sc">real user prompts</span>
+  <span class="sk">duration_minutes</span>      <span class="st">float</span>      <span class="sc">wall clock</span>
+  <span class="sk">active_minutes</span>        <span class="st">float</span>      <span class="sc">time with activity</span>
+  <span class="sk">context_compactions</span>   <span class="st">int</span>        <span class="sc">number of compactions</span>
+
+<span class="sh">── predicates (P01-P22) ──────────────────────────────────────────</span>
+  <span class="sk">P01 is_feature_construction</span>      <span class="st">bool</span>   <span class="sc">"Was code being built?"</span>
+  <span class="sk">P02 has_frustration_signals</span>      <span class="st">bool</span>   <span class="sc">"Did the user show frustration?"</span>
+  <span class="sk">P03 is_multi_phase</span>               <span class="st">bool</span>   <span class="sc">"Multiple work phases?"</span>
+  <span class="sk">   ...</span><span class="sc">through P16...</span>
+  <span class="sk">P17 has_handover_context</span>         <span class="st">bool</span>   <span class="sc">"Started from a handover?"</span>          <span class="sn">175/918 true</span>
+  <span class="sk">P18 has_cross_project_reads</span>      <span class="st">bool</span>   <span class="sc">"Read files from other projects?"</span>   <span class="sn">74/573 true</span>
+  <span class="sk">P19 has_web_research</span>             <span class="st">bool</span>   <span class="sc">"Used web search/fetch?"</span>            <span class="sn">73/910 true</span>
+  <span class="sk">P20 has_parallel_subagent_bursts</span> <span class="st">bool</span>   <span class="sc">"Launched parallel agents?"</span>         <span class="sn">35/716 true</span>
+  <span class="sk">P21 has_task_orchestration</span>       <span class="st">bool</span>   <span class="sc">"Used task management tools?"</span>       <span class="sn">158/910 true</span>
+  <span class="sk">P22 has_git_outcome</span>              <span class="st">bool</span>   <span class="sc">"Committed or pushed code?"</span>         <span class="sn">77/822 true</span>
+
+<span class="sh">── classifiers ───────────────────────────────────────────────────</span>
+  <span class="sk">session_type</span>            <span class="st">enum</span>       <span class="sv">BUILD | KNOWLEDGE | RESEARCH | ORIENTATION | ...</span>
+  <span class="sk">session_scale</span>           <span class="st">enum</span>       <span class="sv">micro | light | moderate | heavy | marathon</span>
+  <span class="sk">session_subtype</span>         <span class="st">string</span>     <span class="sc">e.g. "build.campaign", "knowledge.brain_update"</span>
+  <span class="sk">tool_profile</span>            <span class="st">string</span>     <span class="sv">build_focused | conversational | synthesis | ...</span>
+  <span class="sk">opening_style</span>           <span class="st">string</span>     <span class="sv">voice_dictation | conceptual_question | paste_handover | ...</span>
+  <span class="sk">closing_style</span>           <span class="st">string</span>     <span class="sv">abrupt_abandon | commit_and_push | bookend_close | ...</span>
+  <span class="sk">project_attribution</span>     <span class="st">enum</span>       <span class="sv">reliable | incidental | unreliable</span>
+  <span class="sk">session_chain_role</span>      <span class="st">enum</span>       <span class="sv">standalone | continuation | initiator | ...</span>
+  <span class="sk">C08 delegation_style</span>    <span class="st">enum</span>       <span class="sv">conversational | directive | orchestrated | autonomous</span>
+  <span class="sk">C09 session_continuity</span>  <span class="st">enum</span>       <span class="sv">fresh | handover_paste | compaction | skill_launcher | recall</span>
+  <span class="sk">C10 output_type</span>         <span class="st">enum</span>       <span class="sv">conversation_only | code_changes | knowledge_synthesis | mixed | new_artifacts</span>
+  <span class="sk">C11 initiation_source</span>   <span class="st">enum</span>       <span class="sv">user_typed | voice_dictated | handover_paste | skill_invoked | agent_dispatched</span>
+
+<span class="sh">── observations ──────────────────────────────────────────────────</span>
+  <span class="sk">frustration_analysis</span>    <span class="st">text</span>
+  <span class="sk">phase_breakdown</span>         <span class="st">text</span>
+  <span class="sk">session_chain</span>           <span class="st">text</span>
+  <span class="sk">skill_gap</span>               <span class="st">text</span>
+  <span class="sk">cwd_mismatch</span>            <span class="st">text</span>
+  <span class="sk">O06 autonomy_profile</span>    <span class="st">text</span>       <span class="sc">e.g. "autonomous (ratio 42.0)"</span>
+  <span class="sk">O07 machine_character</span>   <span class="st">text</span>       <span class="sc">e.g. "M4 Mini - desktop server"</span>
+
+<span class="sh">── derived ───────────────────────────────────────────────────────</span>
+  <span class="sk">autonomy_ratio</span>
+    <span class="sk">value</span>                  <span class="st">float</span>      <span class="sc">tool_use_count / user_prompt_count</span>
+    <span class="sk">bucket</span>                 <span class="st">enum</span>       <span class="sv">conversational | guided | delegated | autonomous</span>
+  <span class="sk">session_liveness</span>
+    <span class="sk">value</span>                  <span class="st">float</span>      <span class="sc">active_minutes / duration_minutes</span>
+    <span class="sk">bucket</span>                 <span class="st">enum</span>       <span class="sv">focused | intermittent | parked | zombie</span></div>
+  </section>
+
+  <!-- ═══ 3. ALL SESSION TYPES ═══ -->
+  <section>
+    <h2>3. All Session Types</h2>
+    <div class="card">
+      <table class="data-table">
+        <thead>
+          <tr><th>Type</th><th style="text-align:right">Count</th><th style="width:40%">Share</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="badge badge-build">BUILD</span></td><td style="text-align:right" class="count">77</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:18.4%;background:#3b82f6"></div></div></td></tr>
+          <tr><td><span class="badge badge-knowledge">KNOWLEDGE</span></td><td style="text-align:right" class="count">80</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:19.1%;background:#8b5cf6"></div></div></td></tr>
+          <tr><td><span class="badge badge-research">RESEARCH</span></td><td style="text-align:right" class="count">79</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:18.9%;background:#22c55e"></div></div></td></tr>
+          <tr><td><span class="badge badge-orientation">ORIENTATION</span></td><td style="text-align:right" class="count">56</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:13.4%;background:#f59e0b"></div></div></td></tr>
+          <tr><td><span class="badge badge-operations">OPERATIONS</span></td><td style="text-align:right" class="count">53</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:12.7%;background:#c8841a"></div></div></td></tr>
+          <tr><td><span class="badge badge-meta">META</span></td><td style="text-align:right" class="count">37</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:8.9%;background:#9ca3af"></div></div></td></tr>
+          <tr><td><span class="badge badge-sysops">SYSOPS</span></td><td style="text-align:right" class="count">24</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:5.7%;background:#14b8a6"></div></div></td></tr>
+          <tr><td><span class="badge badge-planning">PLANNING</span></td><td style="text-align:right" class="count">23</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:5.5%;background:#ec4899"></div></div></td></tr>
+          <tr><td><span class="badge badge-mixed">MIXED</span></td><td style="text-align:right" class="count">19</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:4.5%;background:#eab308"></div></div></td></tr>
+          <tr><td><span class="badge badge-skill">SKILL</span></td><td style="text-align:right" class="count">10</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:2.4%;background:#22c55e"></div></div></td></tr>
+          <tr><td><span class="badge badge-setup">SETUP</span></td><td style="text-align:right" class="count">9</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:2.2%;background:#f59e0b"></div></div></td></tr>
+          <tr><td><span class="badge badge-test">TEST</span></td><td style="text-align:right" class="count">8</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:1.9%;background:#6366f1"></div></div></td></tr>
+          <tr><td><span class="badge badge-review">REVIEW</span></td><td style="text-align:right" class="count">8</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:1.9%;background:#c0392b"></div></div></td></tr>
+          <tr><td><span class="badge badge-debug">DEBUG</span></td><td style="text-align:right" class="count">8</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:1.9%;background:#c0392b"></div></div></td></tr>
+          <tr><td><span class="badge badge-brand">BRAND</span></td><td style="text-align:right" class="count">3</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:0.7%;background:#ccba9d"></div></div></td></tr>
+          <tr><td><span class="badge badge-unclassified">UNCLASSIFIED</span></td><td style="text-align:right" class="count">418</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:100%;background:#9ca3af"></div></div></td></tr>
+        </tbody>
+      </table>
+      <p class="note">Unclassified = sessions from early waves before classifiers were added, or sessions too short to classify.</p>
+    </div>
+  </section>
+
+  <!-- ═══ 4. TOP 40 SUBTYPES ═══ -->
+  <section>
+    <h2>4. Top 40 Subtypes</h2>
+    <div class="card">
+      <div class="scrollable scrollable-sm">
+        <div class="two-col-list" style="padding:0.5rem">
+          <div class="list-item"><span class="name">meta.accidental</span><span class="val">32</span></div>
+          <div class="list-item"><span class="name">build.campaign</span><span class="val">28</span></div>
+          <div class="list-item"><span class="name">orientation.artifact_retrieval</span><span class="val">28</span></div>
+          <div class="list-item"><span class="name">research.quick_answer</span><span class="val">25</span></div>
+          <div class="list-item"><span class="name">knowledge.brain_update</span><span class="val">21</span></div>
+          <div class="list-item"><span class="name">operations.poem_execution</span><span class="val">14</span></div>
+          <div class="list-item"><span class="name">knowledge.brain_creation</span><span class="val">13</span></div>
+          <div class="list-item"><span class="name">knowledge.methodology_design</span><span class="val">12</span></div>
+          <div class="list-item"><span class="name">build.iterative_design</span><span class="val">11</span></div>
+          <div class="list-item"><span class="name">meta.ghost_session</span><span class="val">10</span></div>
+          <div class="list-item"><span class="name">research.exploration</span><span class="val">9</span></div>
+          <div class="list-item"><span class="name">build.feature</span><span class="val">8</span></div>
+          <div class="list-item"><span class="name">orientation.exploration</span><span class="val">8</span></div>
+          <div class="list-item"><span class="name">meta.smoke_test</span><span class="val">8</span></div>
+          <div class="list-item"><span class="name">knowledge.general</span><span class="val">8</span></div>
+          <div class="list-item"><span class="name">operations.maintenance</span><span class="val">8</span></div>
+          <div class="list-item"><span class="name">research.codebase_exploration</span><span class="val">8</span></div>
+          <div class="list-item"><span class="name">knowledge.research</span><span class="val">7</span></div>
+          <div class="list-item"><span class="name">operations.system_task</span><span class="val">6</span></div>
+          <div class="list-item"><span class="name">planning.general</span><span class="val">6</span></div>
+          <div class="list-item"><span class="name">orientation.codebase_exploration</span><span class="val">5</span></div>
+          <div class="list-item"><span class="name">orientation.requirements</span><span class="val">5</span></div>
+          <div class="list-item"><span class="name">skill.creation</span><span class="val">5</span></div>
+          <div class="list-item"><span class="name">build.campaign_continuation</span><span class="val">5</span></div>
+          <div class="list-item"><span class="name">orientation.cold_start</span><span class="val">5</span></div>
+          <div class="list-item"><span class="name">research.tool_evaluation</span><span class="val">5</span></div>
+          <div class="list-item"><span class="name">knowledge.advisory</span><span class="val">4</span></div>
+          <div class="list-item"><span class="name">build.multi_phase</span><span class="val">4</span></div>
+          <div class="list-item"><span class="name">orientation.bookend</span><span class="val">4</span></div>
+          <div class="list-item"><span class="name">meta.compaction_flush</span><span class="val">4</span></div>
+          <div class="list-item"><span class="name">artifact_retrieval</span><span class="val">4</span></div>
+          <div class="list-item"><span class="name">build.general</span><span class="val">4</span></div>
+          <div class="list-item"><span class="name">orientation.quick_check</span><span class="val">4</span></div>
+          <div class="list-item"><span class="name">orientation.abandoned</span><span class="val">4</span></div>
+          <div class="list-item"><span class="name">orientation.quick_lookup</span><span class="val">4</span></div>
+          <div class="list-item"><span class="name">build.greenfield_app</span><span class="val">4</span></div>
+          <div class="list-item"><span class="name">research.personal_advisory</span><span class="val">4</span></div>
+          <div class="list-item"><span class="name">meta.empty_session</span><span class="val">4</span></div>
+          <div class="list-item"><span class="name">meta.abandoned</span><span class="val">4</span></div>
+          <div class="list-item"><span class="name">build.orchestrated_campaign</span><span class="val">3</span></div>
+        </div>
+      </div>
+      <p class="note">478 unique subtypes total &mdash; showing N&ge;3 only</p>
+    </div>
+  </section>
+
+  <!-- ═══ 5. ALL 76 PROJECTS ═══ -->
+  <section>
+    <h2>5. All 76+ Projects</h2>
+    <div class="card">
+      <div class="scrollable">
+        <div class="three-col-list" style="padding:0.5rem">
+          <div class="list-item"><span class="name">brains</span><span class="val">327</span></div>
+          <div class="list-item"><span class="name">prompt.supportsignal.com.au</span><span class="val">112</span></div>
+          <div class="list-item"><span class="name">signal-studio</span><span class="val">48</span></div>
+          <div class="list-item"><span class="name">app.supportsignal.com.au</span><span class="val">40</span></div>
+          <div class="list-item"><span class="name">appystack</span><span class="val">38</span></div>
+          <div class="list-item"><span class="name">angeleye</span><span class="val">33</span></div>
+          <div class="list-item"><span class="name">flihub</span><span class="val">31</span></div>
+          <div class="list-item"><span class="name">appydave-plugins</span><span class="val">28</span></div>
+          <div class="list-item"><span class="name">prompt.supportsignal</span><span class="val">22</span></div>
+          <div class="list-item"><span class="name">v-appydave</span><span class="val">19</span></div>
+          <div class="list-item"><span class="name">app.supportsignal</span><span class="val">19</span></div>
+          <div class="list-item"><span class="name">joy-juice</span><span class="val">15</span></div>
+          <div class="list-item"><span class="name">flideck</span><span class="val">13</span></div>
+          <div class="list-item"><span class="name">appydave.com</span><span class="val">11</span></div>
+          <div class="list-item"><span class="name">deckhand</span><span class="val">10</span></div>
+          <div class="list-item"><span class="name">davidcruwys</span><span class="val">9</span></div>
+          <div class="list-item"><span class="name">brain-dynamous</span><span class="val">9</span></div>
+          <div class="list-item"><span class="name">ad</span><span class="val">8</span></div>
+          <div class="list-item"><span class="name">agent-os</span><span class="val">8</span></div>
+          <div class="list-item"><span class="name">supportsignal</span><span class="val">7</span></div>
+          <div class="list-item"><span class="name">beauty-and-joy</span><span class="val">7</span></div>
+          <div class="list-item"><span class="name">lars</span><span class="val">6</span></div>
+          <div class="list-item"><span class="name">ansible</span><span class="val">5</span></div>
+          <div class="list-item"><span class="name">apps</span><span class="val">5</span></div>
+          <div class="list-item"><span class="name">voz</span><span class="val">5</span></div>
+          <div class="list-item"><span class="name">digital-stage-summit-2026</span><span class="val">4</span></div>
+          <div class="list-item"><span class="name">dev</span><span class="val">4</span></div>
+          <div class="list-item"><span class="name">appydave-tools</span><span class="val">4</span></div>
+          <div class="list-item"><span class="name">thumbrack</span><span class="val">3</span></div>
+          <div class="list-item"><span class="name">v-voz</span><span class="val">3</span></div>
+          <div class="list-item"><span class="name">supportsignal-v2-planning</span><span class="val">3</span></div>
+          <div class="list-item"><span class="name">poem</span><span class="val">3</span></div>
+          <div class="list-item"><span class="name">fligen</span><span class="val">3</span></div>
+          <div class="list-item"><span class="name">repo-audit</span><span class="val">3</span></div>
+          <div class="list-item"><span class="name">kgems</span><span class="val">2</span></div>
+          <div class="list-item"><span class="name">custom</span><span class="val">2</span></div>
+          <div class="list-item"><span class="name">multi-repo</span><span class="val">2</span></div>
+          <div class="list-item"><span class="name">dtv</span><span class="val">2</span></div>
+          <div class="list-item"><span class="name">agentic-os</span><span class="val">2</span></div>
+          <div class="list-item" style="grid-column: span 3; text-align: center; justify-content: center; color: #6a6a80; font-style: italic; border-bottom: none; padding-top: 0.6rem;">+ 35 projects with 1 session each</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 6. ALL 45 TOOLS ═══ -->
+  <section>
+    <h2>6. All 45 Tools &mdash; Sessions Using Each</h2>
+    <div class="card">
+      <div class="scrollable">
+        <table class="data-table">
+          <thead>
+            <tr><th>#</th><th>Tool</th><th style="text-align:right">Sessions</th><th style="width:35%">Prevalence</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>Read</td><td style="text-align:right" class="count">376</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:100%"></div></div></td></tr>
+            <tr><td>2</td><td>Bash</td><td style="text-align:right" class="count">353</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:93.9%"></div></div></td></tr>
+            <tr><td>3</td><td>Edit</td><td style="text-align:right" class="count">275</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:73.1%"></div></div></td></tr>
+            <tr><td>4</td><td>Write</td><td style="text-align:right" class="count">232</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:61.7%"></div></div></td></tr>
+            <tr><td>5</td><td>Glob</td><td style="text-align:right" class="count">225</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:59.8%"></div></div></td></tr>
+            <tr><td>6</td><td>Grep</td><td style="text-align:right" class="count">146</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:38.8%"></div></div></td></tr>
+            <tr><td>7</td><td>Skill</td><td style="text-align:right" class="count">146</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:38.8%"></div></div></td></tr>
+            <tr><td>8</td><td>Agent</td><td style="text-align:right" class="count">111</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:29.5%"></div></div></td></tr>
+            <tr><td>9</td><td>ToolSearch</td><td style="text-align:right" class="count">92</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:24.5%"></div></div></td></tr>
+            <tr><td>10</td><td>Task</td><td style="text-align:right" class="count">77</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:20.5%"></div></div></td></tr>
+            <tr><td>11</td><td>browser_navigate</td><td style="text-align:right" class="count">46</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:12.2%"></div></div></td></tr>
+            <tr><td>12</td><td>TaskCreate</td><td style="text-align:right" class="count">45</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:12.0%"></div></div></td></tr>
+            <tr><td>13</td><td>TaskUpdate</td><td style="text-align:right" class="count">44</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:11.7%"></div></div></td></tr>
+            <tr><td>14</td><td>TaskOutput</td><td style="text-align:right" class="count">29</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:7.7%"></div></div></td></tr>
+            <tr><td>15</td><td>browser_click</td><td style="text-align:right" class="count">28</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:7.4%"></div></div></td></tr>
+            <tr><td>16</td><td>browser_take_screenshot</td><td style="text-align:right" class="count">27</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:7.2%"></div></div></td></tr>
+            <tr><td>17</td><td>brave_web_search</td><td style="text-align:right" class="count">26</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:6.9%"></div></div></td></tr>
+            <tr><td>18</td><td>WebFetch</td><td style="text-align:right" class="count">21</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:5.6%"></div></div></td></tr>
+            <tr><td>19</td><td>browser_snapshot</td><td style="text-align:right" class="count">19</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:5.1%"></div></div></td></tr>
+            <tr><td>20</td><td>AskUserQuestion</td><td style="text-align:right" class="count">11</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:2.9%"></div></div></td></tr>
+            <tr><td>21</td><td>TaskList</td><td style="text-align:right" class="count">9</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:2.4%"></div></div></td></tr>
+            <tr><td>22</td><td>browser_fill_form</td><td style="text-align:right" class="count">7</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:1.9%"></div></div></td></tr>
+            <tr><td>23</td><td>browser_evaluate</td><td style="text-align:right" class="count">7</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:1.9%"></div></div></td></tr>
+            <tr><td>24</td><td>WebSearch</td><td style="text-align:right" class="count">7</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:1.9%"></div></div></td></tr>
+            <tr><td>25</td><td>browser_type</td><td style="text-align:right" class="count">7</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:1.9%"></div></div></td></tr>
+            <tr><td>26</td><td>browser_wait_for</td><td style="text-align:right" class="count">7</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:1.9%"></div></div></td></tr>
+            <tr><td>27</td><td>EnterPlanMode</td><td style="text-align:right" class="count">6</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:1.6%"></div></div></td></tr>
+            <tr><td>28</td><td>ExitPlanMode</td><td style="text-align:right" class="count">6</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:1.6%"></div></div></td></tr>
+            <tr><td>29</td><td>browser_install</td><td style="text-align:right" class="count">6</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:1.6%"></div></div></td></tr>
+            <tr><td>30</td><td>TaskStop</td><td style="text-align:right" class="count">6</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:1.6%"></div></div></td></tr>
+            <tr><td>31</td><td>CronCreate</td><td style="text-align:right" class="count">5</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:1.3%"></div></div></td></tr>
+            <tr><td>32</td><td>browser_press_key</td><td style="text-align:right" class="count">5</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:1.3%"></div></div></td></tr>
+            <tr><td>33</td><td>browser_resize</td><td style="text-align:right" class="count">4</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:1.1%"></div></div></td></tr>
+            <tr><td>34</td><td>browser_run_code</td><td style="text-align:right" class="count">4</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:1.1%"></div></div></td></tr>
+            <tr><td>35</td><td>CronDelete</td><td style="text-align:right" class="count">4</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:1.1%"></div></div></td></tr>
+            <tr><td>36</td><td>EnterWorktree</td><td style="text-align:right" class="count">3</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:0.8%"></div></div></td></tr>
+            <tr><td>37</td><td>browser_tabs</td><td style="text-align:right" class="count">3</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:0.8%"></div></div></td></tr>
+            <tr><td>38</td><td>browser_console_messages</td><td style="text-align:right" class="count">2</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:0.5%"></div></div></td></tr>
+            <tr><td>39</td><td>browser_close</td><td style="text-align:right" class="count">2</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:0.5%"></div></div></td></tr>
+            <tr><td>40</td><td>browser_file_upload</td><td style="text-align:right" class="count">1</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:0.3%"></div></div></td></tr>
+            <tr><td>41</td><td>CronList</td><td style="text-align:right" class="count">1</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:0.3%"></div></div></td></tr>
+            <tr><td>42</td><td>browser_network_requests</td><td style="text-align:right" class="count">1</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:0.3%"></div></div></td></tr>
+            <tr><td>43</td><td>TaskGet</td><td style="text-align:right" class="count">1</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:0.3%"></div></div></td></tr>
+            <tr><td>44</td><td>TodoWrite</td><td style="text-align:right" class="count">1</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:0.3%"></div></div></td></tr>
+            <tr><td>45</td><td>browser_triple_click</td><td style="text-align:right" class="count">1</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:0.3%"></div></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 7. CLASSIFIER VALUES ═══ -->
+  <section>
+    <h2>7. Classifier Values &mdash; All Dimensions</h2>
+
+    <!-- C08 -->
+    <div class="card classifier-section" style="margin-bottom:1rem">
+      <h4>C08 Delegation Style</h4>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">conversational</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:45%;background:#3b82f6"></div></div><span class="classifier-bar-stats">417 (45%)</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">directive</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:36%;background:#60a5fa"></div></div><span class="classifier-bar-stats">335 (36%)</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">orchestrated</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:10%;background:#93c5fd"></div></div><span class="classifier-bar-stats">91 (10%)</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">autonomous</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:6%;background:#2E91FC"></div></div><span class="classifier-bar-stats">58 (6%)</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label" style="color:#7a6e5e">unknown / delegated</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:2.5%;background:#9ca3af"></div></div><span class="classifier-bar-stats">14 + 9</span></div>
+    </div>
+
+    <!-- C09 -->
+    <div class="card card-alt classifier-section" style="margin-bottom:1rem">
+      <h4>C09 Session Continuity</h4>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">fresh</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:64%;background:#22c55e"></div></div><span class="classifier-bar-stats">587 (64%)</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">handover_paste</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:16%;background:#4ade80"></div></div><span class="classifier-bar-stats">152 (16%)</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">compaction</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:9%;background:#86efac"></div></div><span class="classifier-bar-stats">83 (9%)</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">skill_launcher</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:7%;background:#34d399"></div></div><span class="classifier-bar-stats">63 (7%)</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">recall</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:3%;background:#6ee7b7"></div></div><span class="classifier-bar-stats">25 (3%)</span></div>
+    </div>
+
+    <!-- C10 -->
+    <div class="card classifier-section" style="margin-bottom:1rem">
+      <h4>C10 Output Type</h4>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">conversation_only</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:30%;background:#c8841a"></div></div><span class="classifier-bar-stats">278 (30%)</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">code_changes</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:25%;background:#d4971f"></div></div><span class="classifier-bar-stats">233 (25%)</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">knowledge_synthesis</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:19%;background:#f59e0b"></div></div><span class="classifier-bar-stats">171 (19%)</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">mixed</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:14%;background:#ccba9d"></div></div><span class="classifier-bar-stats">126 (14%)</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">new_artifacts</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:12%;background:#ffde59"></div></div><span class="classifier-bar-stats">114 (12%)</span></div>
+    </div>
+
+    <!-- C11 -->
+    <div class="card card-alt classifier-section" style="margin-bottom:1rem">
+      <h4>C11 Initiation Source</h4>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">user_typed</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:58%;background:#8b5cf6"></div></div><span class="classifier-bar-stats">538 (58%)</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">voice_dictated</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:18%;background:#a78bfa"></div></div><span class="classifier-bar-stats">168 (18%)</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">handover_paste</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:14%;background:#c4b5fd"></div></div><span class="classifier-bar-stats">131 (14%)</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">skill_invoked</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:7%;background:#7c3aed"></div></div><span class="classifier-bar-stats">69 (7%)</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">agent_dispatched</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:1.3%;background:#ddd6fe"></div></div><span class="classifier-bar-stats">12 (1%)</span></div>
+    </div>
+
+    <!-- Opening Style -->
+    <div class="card classifier-section" style="margin-bottom:1rem">
+      <h4>Opening Style (top 10 of 62)</h4>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">voice_dictation</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:100%;background:#22c55e"></div></div><span class="classifier-bar-stats">134</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">conceptual_question</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:56%;background:#22c55e"></div></div><span class="classifier-bar-stats">75</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">paste_handover</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:31%;background:#22c55e"></div></div><span class="classifier-bar-stats">42</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">skill_invocation</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:31%;background:#22c55e"></div></div><span class="classifier-bar-stats">42</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">context_loading_paste</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:16%;background:#22c55e"></div></div><span class="classifier-bar-stats">22</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">bare_task_ref</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:13%;background:#22c55e"></div></div><span class="classifier-bar-stats">17</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">keyword_orientation</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:13%;background:#22c55e"></div></div><span class="classifier-bar-stats">17</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">question</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:11%;background:#22c55e"></div></div><span class="classifier-bar-stats">15</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">none</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:10%;background:#22c55e"></div></div><span class="classifier-bar-stats">13</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">context_paste</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:8%;background:#22c55e"></div></div><span class="classifier-bar-stats">11</span></div>
+      <p class="note" style="margin-top:0.4rem">62 unique values total</p>
+    </div>
+
+    <!-- Closing Style -->
+    <div class="card card-alt classifier-section" style="margin-bottom:1rem">
+      <h4>Closing Style (top 10 of 77)</h4>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">abrupt_abandon</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:100%;background:#c0392b"></div></div><span class="classifier-bar-stats">219</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">commit_and_push</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:25.6%;background:#c0392b"></div></div><span class="classifier-bar-stats">56</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">bookend_close</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:9.6%;background:#c0392b"></div></div><span class="classifier-bar-stats">21</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">memory_write</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:5.5%;background:#c0392b"></div></div><span class="classifier-bar-stats">12</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">commit_then_gap</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:4.1%;background:#c0392b"></div></div><span class="classifier-bar-stats">9</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">unresolved_cleanup</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:4.1%;background:#c0392b"></div></div><span class="classifier-bar-stats">9</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">context_capture</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:3.7%;background:#c0392b"></div></div><span class="classifier-bar-stats">8</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">answer_delivered</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:3.2%;background:#c0392b"></div></div><span class="classifier-bar-stats">7</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">abandoned</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:2.7%;background:#c0392b"></div></div><span class="classifier-bar-stats">6</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">commit_and_close</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:2.3%;background:#c0392b"></div></div><span class="classifier-bar-stats">5</span></div>
+      <p class="note" style="margin-top:0.4rem">77 unique values total</p>
+    </div>
+
+    <!-- Tool Profile -->
+    <div class="card classifier-section">
+      <h4>Tool Profile (top 10 of 60)</h4>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">build_focused</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:100%;background:#c8841a"></div></div><span class="classifier-bar-stats">64</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">conversational</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:95%;background:#c8841a"></div></div><span class="classifier-bar-stats">61</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">synthesis</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:94%;background:#c8841a"></div></div><span class="classifier-bar-stats">60</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">read_only</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:80%;background:#c8841a"></div></div><span class="classifier-bar-stats">51</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">operational_scripting</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:78%;background:#c8841a"></div></div><span class="classifier-bar-stats">50</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">search_heavy</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:69%;background:#c8841a"></div></div><span class="classifier-bar-stats">44</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">mixed</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:33%;background:#c8841a"></div></div><span class="classifier-bar-stats">21</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">bash_heavy</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:33%;background:#c8841a"></div></div><span class="classifier-bar-stats">21</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">agent_orchestration</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:27%;background:#c8841a"></div></div><span class="classifier-bar-stats">17</span></div>
+      <div class="classifier-bar-row"><span class="classifier-bar-label">edit_heavy</span><div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:22%;background:#c8841a"></div></div><span class="classifier-bar-stats">14</span></div>
+      <p class="note" style="margin-top:0.4rem">60 unique values total</p>
+    </div>
+  </section>
+
+  <!-- ═══ 8. KEY PREDICATES ═══ -->
+  <section>
+    <h2>8. Key Predicates &mdash; True Rates</h2>
+    <div class="card">
+      <div class="progress-row"><span class="progress-label">has_voice_dictation_artifacts</span><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:69%;background:#22c55e"></div></div><span class="progress-stats">193/278 &mdash; 69%</span></div>
+      <div class="progress-row"><span class="progress-label">is_multi_phase</span><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:48%;background:#22c55e"></div></div><span class="progress-stats">240/502 &mdash; 48%</span></div>
+      <div class="progress-row"><span class="progress-label">is_cwd_incidental</span><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:40%;background:#3b82f6"></div></div><span class="progress-stats">191/475 &mdash; 40%</span></div>
+      <div class="progress-row"><span class="progress-label">has_cross_session_refs</span><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:34%;background:#3b82f6"></div></div><span class="progress-stats">148/437 &mdash; 34%</span></div>
+      <div class="progress-row"><span class="progress-label">has_frustration_signals</span><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:25%;background:#c8841a"></div></div><span class="progress-stats">124/502 &mdash; 25%</span></div>
+      <div class="progress-row"><span class="progress-label">has_brain_file_writes</span><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:23%;background:#c8841a"></div></div><span class="progress-stats">100/428 &mdash; 23%</span></div>
+      <div class="progress-row"><span class="progress-label">P17 has_handover_context</span><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:19%;background:#c8841a"></div></div><span class="progress-stats">175/918 &mdash; 19%</span></div>
+      <div class="progress-row"><span class="progress-label">is_feature_construction</span><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:18%;background:#c8841a"></div></div><span class="progress-stats">87/495 &mdash; 18%</span></div>
+      <div class="progress-row"><span class="progress-label">P21 has_task_orchestration</span><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:17%;background:#8b5cf6"></div></div><span class="progress-stats">158/910 &mdash; 17%</span></div>
+      <div class="progress-row"><span class="progress-label">has_misunderstood_request</span><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:15%;background:#8b5cf6"></div></div><span class="progress-stats">32/214 &mdash; 15%</span></div>
+      <div class="progress-row"><span class="progress-label">P18 has_cross_project_reads</span><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:13%;background:#8b5cf6"></div></div><span class="progress-stats">74/573 &mdash; 13%</span></div>
+      <div class="progress-row"><span class="progress-label">has_playwright_calls</span><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:10%;background:#c0392b"></div></div><span class="progress-stats">48/502 &mdash; 10%</span></div>
+      <div class="progress-row"><span class="progress-label">is_compaction_resume</span><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:10%;background:#c0392b"></div></div><span class="progress-stats">45/453 &mdash; 10%</span></div>
+      <div class="progress-row"><span class="progress-label">has_wrong_approach</span><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:10%;background:#c0392b"></div></div><span class="progress-stats">22/214 &mdash; 10%</span></div>
+      <div class="progress-row"><span class="progress-label">has_buggy_output</span><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:10%;background:#c0392b"></div></div><span class="progress-stats">21/214 &mdash; 10%</span></div>
+      <div class="progress-row"><span class="progress-label">P22 has_git_outcome</span><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:9%;background:#c0392b"></div></div><span class="progress-stats">77/822 &mdash; 9%</span></div>
+      <div class="progress-row"><span class="progress-label">P19 has_web_research</span><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:8%;background:#c0392b"></div></div><span class="progress-stats">73/910 &mdash; 8%</span></div>
+      <div class="progress-row"><span class="progress-label">has_skill_gap_signal</span><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:7%;background:#9ca3af"></div></div><span class="progress-stats">32/430 &mdash; 7%</span></div>
+      <div class="progress-row"><span class="progress-label">P20 has_parallel_subagent_bursts</span><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:5%;background:#9ca3af"></div></div><span class="progress-stats">35/716 &mdash; 5%</span></div>
+      <div class="progress-row"><span class="progress-label">has_unauthorized_edits</span><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:3%;background:#9ca3af"></div></div><span class="progress-stats">13/434 &mdash; 3%</span></div>
+      <div class="progress-row"><span class="progress-label">has_excessive_changes</span><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:1.4%;background:#9ca3af"></div></div><span class="progress-stats">3/217 &mdash; 1%</span></div>
+      <div class="progress-row"><span class="progress-label">is_machine_initiated</span><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:1.4%;background:#9ca3af"></div></div><span class="progress-stats">4/286 &mdash; 1%</span></div>
+    </div>
+  </section>
+
+  <!-- ═══ 9. BUILD ACCURACY BY SCALE ═══ -->
+  <section>
+    <h2>9. BUILD Accuracy by Scale</h2>
+    <div class="card">
+      <table class="data-table">
+        <thead>
+          <tr><th>Scale</th><th>BUILD Accuracy</th><th style="text-align:right">Evidence</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>micro</strong></td><td>0%</td><td style="text-align:right">150 sessions</td></tr>
+          <tr><td><strong>trivial</strong></td><td>~0%</td><td style="text-align:right">2 sessions</td></tr>
+          <tr><td><strong>light</strong></td><td>0&ndash;15%</td><td style="text-align:right">161 sessions</td></tr>
+          <tr><td><strong>moderate</strong></td><td>30&ndash;45%</td><td style="text-align:right">140 sessions</td></tr>
+          <tr><td><strong>heavy</strong></td><td>50&ndash;70%</td><td style="text-align:right">46 sessions</td></tr>
+          <tr><td><strong>marathon</strong></td><td>60&ndash;70%</td><td style="text-align:right">7 sessions</td></tr>
+        </tbody>
+      </table>
+
+      <div class="rules-box">
+        <h4>Iron-Clad Classification Rules</h4>
+        <ol>
+          <li><code>*run NNN</code> as first prompt &rarr; always <span class="badge badge-operations" style="font-size:0.7rem">operations.poem_execution</span></li>
+          <li><code>brains/</code> CWD + light scale &rarr; never <span class="badge badge-build" style="font-size:0.7rem">BUILD</span></li>
+          <li>Zero tool calls &rarr; never <span class="badge badge-build" style="font-size:0.7rem">BUILD</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 10. MACHINE COMPARISON ═══ -->
+  <section>
+    <h2>10. Machine Comparison</h2>
+    <div class="side-by-side">
+      <div class="card machine-card">
+        <h4>M4 Mini &mdash; Desktop Server</h4>
+        <ul>
+          <li><strong>807 sessions</strong>, waves 1&ndash;13</li>
+          <li>Primary work machine</li>
+          <li>Focused, sustained sessions</li>
+          <li>Lower voice rate (4&ndash;6 per 12-batch)</li>
+        </ul>
+      </div>
+      <div class="card card-alt machine-card">
+        <h4>M4 Pro &mdash; Laptop / Field</h4>
+        <ul>
+          <li><strong>116 sessions</strong>, wave 14</li>
+          <li>Evening mega-sprints</li>
+          <li>Voice-heavy (7&ndash;9 per 12-batch)</li>
+          <li>Fleet management hub</li>
+          <li>More personal/business topics</li>
+        </ul>
+      </div>
+    </div>
+    <div class="machine-overlap">
+      <strong>Overlap:</strong> 299 sessions exist on both machines (same session IDs, different event UUIDs &mdash; independently generated by each machine's hooks).
+    </div>
+  </section>
+
+  <!-- ═══ 11. DERIVED METRIC BUCKETS ═══ -->
+  <section>
+    <h2>11. Derived Metric Buckets</h2>
+    <div class="side-by-side">
+      <div class="card">
+        <h3>Autonomy Ratio <span style="font-weight:400;font-size:0.75rem;text-transform:none;color:#7a6e5e">(tool_use_count / user_prompt_count)</span></h3>
+        <table class="data-table" style="font-size:0.85rem">
+          <thead><tr><th>Bucket</th><th style="text-align:right">Sessions</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><strong>conversational</strong> <span style="color:#7a6e5e">(&le;3)</span></td><td style="text-align:right" class="count">223</td><td style="color:#7a6e5e">User drives, AI responds</td></tr>
+            <tr><td><strong>guided</strong> <span style="color:#7a6e5e">(3&ndash;8)</span></td><td style="text-align:right" class="count">127</td><td style="color:#7a6e5e">User steers, AI executes</td></tr>
+            <tr><td><strong>delegated</strong> <span style="color:#7a6e5e">(8&ndash;15)</span></td><td style="text-align:right" class="count">86</td><td style="color:#7a6e5e">User sets direction, AI works</td></tr>
+            <tr><td><strong>autonomous</strong> <span style="color:#7a6e5e">(&gt;15)</span></td><td style="text-align:right" class="count">47</td><td style="color:#7a6e5e">AI runs independently</td></tr>
+            <tr><td style="color:#7a6e5e">unknown</td><td style="text-align:right" style="color:#7a6e5e">441</td><td style="color:#7a6e5e">No shape data</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card card-alt">
+        <h3>Session Liveness <span style="font-weight:400;font-size:0.75rem;text-transform:none;color:#7a6e5e">(active_minutes / duration_minutes)</span></h3>
+        <table class="data-table" style="font-size:0.85rem">
+          <thead><tr><th>Bucket</th><th style="text-align:right">Sessions</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><strong>focused</strong> <span style="color:#7a6e5e">(&gt;0.7)</span></td><td style="text-align:right" class="count">204</td><td style="color:#7a6e5e">Continuous work</td></tr>
+            <tr><td><strong>intermittent</strong> <span style="color:#7a6e5e">(0.3&ndash;0.7)</span></td><td style="text-align:right" class="count">38</td><td style="color:#7a6e5e">Stop-start pattern</td></tr>
+            <tr><td><strong>parked</strong> <span style="color:#7a6e5e">(0.1&ndash;0.3)</span></td><td style="text-align:right" class="count">84</td><td style="color:#7a6e5e">Mostly idle</td></tr>
+            <tr><td><strong>zombie</strong> <span style="color:#7a6e5e">(&lt;0.1)</span></td><td style="text-align:right" class="count">65</td><td style="color:#7a6e5e">Opened and abandoned</td></tr>
+            <tr><td style="color:#7a6e5e">unknown</td><td style="text-align:right" style="color:#7a6e5e">533</td><td style="color:#7a6e5e">No shape data</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 12. KEY SKILLS INVOKED ═══ -->
+  <section>
+    <h2>12. Key Skills Invoked (top 25)</h2>
+    <div class="card">
+      <div class="skill-list">
+        <span class="skill-item"><span class="sname">/focus</span><span class="scount">17</span></span>
+        <span class="skill-item"><span class="sname">/ralphy</span><span class="scount">13</span></span>
+        <span class="skill-item"><span class="sname">/commit</span><span class="scount">12</span></span>
+        <span class="skill-item"><span class="sname">ralphy</span><span class="scount">8</span></span>
+        <span class="skill-item"><span class="sname">commit</span><span class="scount">6</span></span>
+        <span class="skill-item"><span class="sname">rename</span><span class="scount">5</span></span>
+        <span class="skill-item"><span class="sname">capture-context</span><span class="scount">3</span></span>
+        <span class="skill-item"><span class="sname">create-appystack</span><span class="scount">3</span></span>
+        <span class="skill-item"><span class="sname">/bmad-oversight</span><span class="scount">3</span></span>
+        <span class="skill-item"><span class="sname">/skill-creator</span><span class="scount">3</span></span>
+        <span class="skill-item"><span class="sname">/capture-context</span><span class="scount">3</span></span>
+        <span class="skill-item"><span class="sname">/radar</span><span class="scount">3</span></span>
+        <span class="skill-item"><span class="sname">/who-am-i</span><span class="scount">3</span></span>
+        <span class="skill-item"><span class="sname">/omi-fetch</span><span class="scount">3</span></span>
+        <span class="skill-item"><span class="sname">recipe</span><span class="scount">2</span></span>
+        <span class="skill-item"><span class="sname">mochaccino</span><span class="scount">2</span></span>
+        <span class="skill-item"><span class="sname">/bmad-help</span><span class="scount">2</span></span>
+        <span class="skill-item"><span class="sname">/bmad-sprint-planning</span><span class="scount">2</span></span>
+        <span class="skill-item"><span class="sname">/bmad-dev</span><span class="scount">2</span></span>
+        <span class="skill-item"><span class="sname">skill-creator</span><span class="scount">2</span></span>
+        <span class="skill-item"><span class="sname">loop</span><span class="scount">2</span></span>
+        <span class="skill-item"><span class="sname">push</span><span class="scount">2</span></span>
+        <span class="skill-item"><span class="sname">handover</span><span class="scount">2</span></span>
+        <span class="skill-item"><span class="sname">poem-executor</span><span class="scount">2</span></span>
+        <span class="skill-item"><span class="sname">code-quality</span><span class="scount">2</span></span>
+      </div>
+      <p class="note" style="margin-top:0.8rem">Some entries are misclassified path segments or tool names &mdash; skill extraction is imperfect.</p>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer style="text-align:center;padding:2rem 0 1rem;color:#7a6e5e;font-size:0.78rem;border-top:1px solid #d4cdc4;margin-top:2rem">
+    AngelEye &mdash; angeleye-analysis-1 &bull; Generated 2026-03-23 &bull; 924 sessions &bull; Pure HTML/CSS &mdash; No JavaScript
+  </footer>
+
+</div>
+</body>
+</html>

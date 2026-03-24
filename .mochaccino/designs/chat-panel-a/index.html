@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mochaccino — chat-panel-a (Dual Position)</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --page-bg: #e8e0d4;
+    --surface: #ede7dc;
+    --card: #f5f1eb;
+    --surface-mid: #ddd6cc;
+    --border: #d4cdc4;
+    --border-raised: #ccc5bb;
+    --primary: #c8841a;
+    --primary-fg: #fff;
+    --fg: #2a2018;
+    --muted: #7a6e5e;
+    --destructive: #c0392b;
+    --font: system-ui, -apple-system, sans-serif;
+    --font-header: 'Bebas Neue', sans-serif;
+  }
+
+  body {
+    font-family: var(--font);
+    background: var(--page-bg);
+    color: var(--fg);
+    font-size: 13px;
+    line-height: 1.45;
+    overflow: hidden;
+    height: 100vh;
+  }
+
+  /* === MOCHACCINO BANNER === */
+  .mochaccino-banner {
+    height: 28px;
+    background: var(--fg);
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+  }
+
+  /* === MAIN LAYOUT === */
+  .app-layout {
+    display: flex;
+    height: calc(100vh - 28px);
+  }
+
+  /* === SIDEBAR === */
+  .sidebar {
+    width: 150px;
+    min-width: 150px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 16px 0;
+  }
+  .sidebar-logo {
+    font-family: var(--font-header);
+    font-size: 22px;
+    color: var(--primary);
+    padding: 0 16px 20px;
+    letter-spacing: 1px;
+  }
+  .sidebar-nav { display: flex; flex-direction: column; gap: 2px; }
+  .sidebar-nav a {
+    display: block;
+    padding: 8px 16px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+  }
+  .sidebar-nav a:hover { background: var(--surface-mid); color: var(--fg); }
+  .sidebar-nav a.active {
+    color: var(--fg);
+    font-weight: 600;
+    border-left-color: var(--primary);
+    background: var(--card);
+  }
+
+  /* === MAIN CONTENT AREA === */
+  .main-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* === CONTENT (sessions + right/bottom panel) === */
+  .content-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Horizontal split (chat mode) */
+  .content-wrapper.mode-chat .horizontal-split {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+  .content-wrapper.mode-chat .session-list-container { flex: 1; overflow-y: auto; }
+  .content-wrapper.mode-chat .right-panel { width: 50%; min-width: 480px; display: flex; flex-direction: column; border-left: 1px solid var(--border); }
+  .content-wrapper.mode-chat .bottom-panel { display: none; }
+
+  /* Vertical split (events mode) */
+  .content-wrapper.mode-events .horizontal-split {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+  }
+  .content-wrapper.mode-events .session-list-container { flex: 1; overflow-y: auto; }
+  .content-wrapper.mode-events .right-panel { display: none; }
+  .content-wrapper.mode-events .bottom-panel { display: flex; flex-direction: column; height: 240px; border-top: 1px solid var(--border); background: var(--card); }
+
+  /* === SESSION LIST === */
+  .session-list-container { background: var(--surface); }
+  .session-list { list-style: none; }
+  .session-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 16px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.1s;
+    font-size: 12px;
+  }
+  .session-row:hover { background: var(--card); }
+  .session-row.selected { background: var(--card); border-left: 3px solid var(--primary); padding-left: 13px; }
+
+  .dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
+  .dot.green { background: #27ae60; }
+  .dot.amber { background: var(--primary); }
+  .dot.grey { background: #aaa49a; }
+
+  .session-project {
+    color: var(--fg);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 160px;
+  }
+  .session-project.named { font-weight: 700; }
+
+  .session-badge {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 3px;
+    background: var(--surface-mid);
+    color: var(--muted);
+    flex-shrink: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .session-uuid {
+    color: var(--muted);
+    font-family: 'SF Mono', 'Cascadia Code', monospace;
+    font-size: 10px;
+    flex-shrink: 0;
+  }
+  .session-sep { color: var(--border); flex-shrink: 0; }
+  .session-summary {
+    color: var(--muted);
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-style: italic;
+  }
+  .session-time {
+    color: var(--muted);
+    font-size: 11px;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
+  /* === RIGHT PANEL (CHAT) === */
+  .panel-header {
+    padding: 10px 16px;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .panel-header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .panel-tabs {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  .panel-tab {
+    background: none;
+    border: none;
+    font-size: 13px;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 4px 0;
+    border-bottom: 2px solid transparent;
+    font-family: var(--font);
+  }
+  .panel-tab.active { color: var(--fg); border-bottom-color: var(--primary); font-weight: 600; }
+  .panel-tab:hover { color: var(--fg); }
+
+  .tool-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--muted);
+    cursor: pointer;
+    user-select: none;
+  }
+  .tool-toggle-switch {
+    width: 32px; height: 16px; border-radius: 8px;
+    background: var(--border);
+    position: relative;
+    transition: background 0.2s;
+  }
+  .tool-toggle-switch::after {
+    content: '';
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: white;
+    transition: transform 0.2s;
+  }
+  .tool-toggle.on .tool-toggle-switch { background: var(--primary); }
+  .tool-toggle.on .tool-toggle-switch::after { transform: translateX(16px); }
+
+  .close-btn {
+    background: none; border: none; font-size: 16px; color: var(--muted); cursor: pointer;
+    padding: 2px 6px; border-radius: 4px;
+  }
+  .close-btn:hover { background: var(--surface-mid); color: var(--fg); }
+
+  .header-controls { display: flex; align-items: center; gap: 12px; }
+
+  .panel-header-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .panel-session-name {
+    font-family: var(--font-header);
+    font-size: 18px;
+    color: var(--primary);
+    letter-spacing: 0.5px;
+  }
+  .panel-project { color: var(--muted); font-size: 11px; }
+  .panel-uuid {
+    font-family: 'SF Mono', 'Cascadia Code', monospace;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  /* === CHAT MESSAGES === */
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .msg {
+    max-width: 92%;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.5;
+    position: relative;
+  }
+  .msg-user {
+    align-self: flex-end;
+    background: var(--primary);
+    color: var(--primary-fg);
+    border-bottom-right-radius: 3px;
+  }
+  .msg-claude {
+    align-self: flex-start;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-bottom-left-radius: 3px;
+  }
+
+  .msg-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .msg-user .msg-label { color: rgba(255,255,255,0.7); }
+  .msg-claude .msg-label { color: var(--muted); }
+
+  .msg-time {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .msg-body p { margin-bottom: 8px; }
+  .msg-body p:last-child { margin-bottom: 0; }
+  .msg-body strong { font-weight: 600; }
+  .msg-body code {
+    font-family: 'SF Mono', 'Cascadia Code', monospace;
+    font-size: 12px;
+    background: rgba(0,0,0,0.06);
+    padding: 1px 4px;
+    border-radius: 3px;
+  }
+  .msg-user .msg-body code { background: rgba(255,255,255,0.15); }
+  .msg-body ul { margin: 6px 0 6px 18px; }
+  .msg-body li { margin-bottom: 3px; }
+
+  .tool-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 10px;
+    color: var(--muted);
+    background: var(--surface-mid);
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-top: 6px;
+    float: right;
+  }
+  .msg-user .tool-badge { display: none; }
+
+  /* Tool call rows (between messages when toggled on) */
+  .tool-row {
+    display: none;
+    align-self: flex-start;
+    font-size: 11px;
+    color: var(--muted);
+    padding: 4px 14px;
+    border-left: 2px solid var(--border);
+    margin-left: 8px;
+    cursor: pointer;
+  }
+  .tool-row:hover { color: var(--fg); }
+  .tools-visible .tool-row { display: block; }
+  .tools-visible .tool-badge { display: none !important; }
+
+  /* === CHAT FOOTER === */
+  .chat-footer {
+    padding: 10px 16px;
+    border-top: 1px solid var(--border);
+    background: var(--card);
+  }
+  .note-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .note-input {
+    flex: 1;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-family: var(--font);
+    color: var(--fg);
+    outline: none;
+  }
+  .note-input:focus { border-color: var(--primary); }
+  .note-input::placeholder { color: var(--muted); }
+  .note-save {
+    background: var(--primary);
+    color: var(--primary-fg);
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .note-save:hover { filter: brightness(1.1); }
+  .meta-line {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* === BOTTOM PANEL (EVENTS) === */
+  .bottom-panel-drag {
+    height: 6px;
+    background: var(--border);
+    cursor: ns-resize;
+    border-radius: 3px 3px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .bottom-panel-drag::after {
+    content: '';
+    width: 32px;
+    height: 3px;
+    background: var(--border-raised);
+    border-radius: 2px;
+  }
+
+  .bottom-panel-header {
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .bottom-panel-name {
+    font-family: var(--font-header);
+    font-size: 16px;
+    color: var(--primary);
+    letter-spacing: 0.5px;
+  }
+
+  .events-list {
+    flex: 1;
+    overflow-y: auto;
+    font-size: 12px;
+  }
+  .event-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .event-time { color: var(--muted); font-size: 11px; flex-shrink: 0; width: 52px; }
+  .event-type {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    min-width: 72px;
+    text-align: center;
+  }
+  .event-type.prompt { background: var(--primary); color: var(--primary-fg); }
+  .event-type.tool { background: var(--surface-mid); color: var(--muted); }
+  .event-type.stop { background: var(--destructive); color: white; }
+  .event-summary { color: var(--fg); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .bottom-panel-footer {
+    padding: 8px 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* scrollbar styling */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border-raised); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+</style>
+</head>
+<body>
+
+<!-- BANNER -->
+<div class="mochaccino-banner">Mochaccino — chat-panel-a (Dual Position) — 2026-03-24</div>
+
+<div class="app-layout">
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">ANGELEYE</div>
+    <div class="sidebar-nav">
+      <a href="#" class="active">Observer</a>
+      <a href="#">Organiser</a>
+      <a href="#">Settings</a>
+    </div>
+  </nav>
+
+  <!-- MAIN AREA -->
+  <div class="main-area">
+    <div class="content-wrapper mode-chat" id="contentWrapper">
+      <div class="horizontal-split">
+
+        <!-- SESSION LIST -->
+        <div class="session-list-container">
+          <ul class="session-list">
+            <li class="session-row">
+              <span class="dot green"></span>
+              <span class="session-project">app.supportsignal....</span>
+              <span class="session-badge">BUILD</span>
+              <span class="session-uuid">a7cde8c9</span>
+              <span class="session-sep">—</span>
+              <span class="session-summary">"Read — /Users/..."</span>
+              <span class="session-time">3s ago</span>
+            </li>
+            <li class="session-row">
+              <span class="dot amber"></span>
+              <span class="session-project">app.supportsignal....</span>
+              <span class="session-uuid">210117c1</span>
+              <span class="session-sep">—</span>
+              <span class="session-summary">"session started"</span>
+              <span class="session-time">1m ago</span>
+            </li>
+            <li class="session-row">
+              <span class="dot grey"></span>
+              <span class="session-project named">bmad-oversight-focus</span>
+              <span class="session-badge">BUILD</span>
+              <span class="session-uuid">a4fd902a</span>
+              <span class="session-sep">—</span>
+              <span class="session-summary">"How do we check that all the MCPs..."</span>
+              <span class="session-time">5m ago</span>
+            </li>
+            <li class="session-row selected">
+              <span class="dot grey"></span>
+              <span class="session-project named">bmad-advisor</span>
+              <span class="session-badge">BUILD</span>
+              <span class="session-uuid">3fa5e03b</span>
+              <span class="session-sep">—</span>
+              <span class="session-summary">"/focus bmad-v6"</span>
+              <span class="session-time">8m ago</span>
+            </li>
+            <li class="session-row">
+              <span class="dot grey"></span>
+              <span class="session-project">app.supportsignal....</span>
+              <span class="session-badge">BUILD</span>
+              <span class="session-uuid">719bbffe</span>
+              <span class="session-sep">—</span>
+              <span class="session-summary">"/bmad-dev"</span>
+              <span class="session-time">12m ago</span>
+            </li>
+            <li class="session-row">
+              <span class="dot grey"></span>
+              <span class="session-project">app.supportsignal....</span>
+              <span class="session-badge">BUILD</span>
+              <span class="session-uuid">00befc58</span>
+              <span class="session-sep">—</span>
+              <span class="session-summary">"Can you see the BMAD relay document?"</span>
+              <span class="session-time">16m ago</span>
+            </li>
+            <li class="session-row">
+              <span class="dot grey"></span>
+              <span class="session-project">app.supportsignal....</span>
+              <span class="session-badge">ORIENTATION</span>
+              <span class="session-uuid">23589d3a</span>
+              <span class="session-sep">—</span>
+              <span class="session-summary">"yes"</span>
+              <span class="session-time">18m ago</span>
+            </li>
+            <li class="session-row">
+              <span class="dot grey"></span>
+              <span class="session-project">flihub</span>
+              <span class="session-badge">BUILD</span>
+              <span class="session-uuid">98eb0dc2</span>
+              <span class="session-sep">—</span>
+              <span class="session-summary">"/ralphy"</span>
+              <span class="session-time">22m ago</span>
+            </li>
+            <li class="session-row">
+              <span class="dot grey"></span>
+              <span class="session-project">angeleye</span>
+              <span class="session-badge">BUILD</span>
+              <span class="session-uuid">08fbfe17</span>
+              <span class="session-sep">—</span>
+              <span class="session-summary">"/ralphy"</span>
+              <span class="session-time">9h ago</span>
+            </li>
+            <li class="session-row">
+              <span class="dot grey"></span>
+              <span class="session-project">flihub</span>
+              <span class="session-badge">BUILD</span>
+              <span class="session-uuid">0e9b4684</span>
+              <span class="session-sep">—</span>
+              <span class="session-summary">"/ralphy"</span>
+              <span class="session-time">11h ago</span>
+            </li>
+            <li class="session-row">
+              <span class="dot grey"></span>
+              <span class="session-project">angeleye</span>
+              <span class="session-uuid">d1d067b0</span>
+              <span class="session-sep">—</span>
+              <span class="session-summary"></span>
+              <span class="session-time">13h ago</span>
+            </li>
+            <li class="session-row">
+              <span class="dot grey"></span>
+              <span class="session-project">brains</span>
+              <span class="session-uuid">43d73439</span>
+              <span class="session-sep">—</span>
+              <span class="session-summary"></span>
+              <span class="session-time">13h ago</span>
+            </li>
+            <li class="session-row">
+              <span class="dot grey"></span>
+              <span class="session-project">brains</span>
+              <span class="session-badge">KNOWLEDGE</span>
+              <span class="session-uuid">2454cbe5</span>
+              <span class="session-sep">—</span>
+              <span class="session-summary">"/focus audio"</span>
+              <span class="session-time">14h ago</span>
+            </li>
+            <li class="session-row">
+              <span class="dot grey"></span>
+              <span class="session-project">app.supportsignal....</span>
+              <span class="session-badge">BUILD</span>
+              <span class="session-uuid">98492233</span>
+              <span class="session-sep">—</span>
+              <span class="session-summary">"/bmad-sm"</span>
+              <span class="session-time">14h ago</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- RIGHT PANEL (CHAT) -->
+        <div class="right-panel">
+          <div class="panel-header">
+            <div class="panel-header-top">
+              <div class="panel-tabs">
+                <button class="panel-tab active" data-tab="chat" onclick="switchTab('chat')">&#x1F4AC; Chat</button>
+                <button class="panel-tab" data-tab="events" onclick="switchTab('events')">&#x1F4CB; Events</button>
+              </div>
+              <div class="header-controls">
+                <div class="tool-toggle" id="toolToggle" onclick="toggleTools()">
+                  <span>&#x2699; Tools</span>
+                  <div class="tool-toggle-switch"></div>
+                </div>
+                <button class="close-btn" title="Close panel">&times;</button>
+              </div>
+            </div>
+            <div class="panel-header-meta">
+              <span class="panel-session-name">bmad-advisor</span>
+              <span class="panel-project">app.supportsignal.com.au</span>
+              <span class="session-badge">BUILD</span>
+              <span class="panel-uuid">3fa5e03b</span>
+            </div>
+          </div>
+
+          <div class="chat-messages" id="chatMessages">
+            <!-- Message 1 -->
+            <div class="msg msg-user">
+              <div class="msg-label"><span>You</span> <span class="msg-time">8m ago</span></div>
+              <div class="msg-body"><p>/focus bmad-v6</p></div>
+            </div>
+
+            <!-- Message 2 -->
+            <div class="msg msg-claude">
+              <div class="msg-label"><span>Claude</span> <span class="msg-time">8m ago</span></div>
+              <div class="msg-body"><p>I'll focus on the BMAD v6 advisor role. Let me read the current state of the project and understand what's been set up so far.</p></div>
+              <span class="tool-badge">&#x2699; 6</span>
+            </div>
+            <div class="tool-row">&#x21B3; 6 tool calls — Read(4), Grep(1), Glob(1)</div>
+
+            <!-- Message 3 -->
+            <div class="msg msg-user">
+              <div class="msg-label"><span>You</span> <span class="msg-time">7m ago</span></div>
+              <div class="msg-body"><p>How do we check that all the MCPs are actually working? I've got a feeling that some of them might not be connected properly because when I was testing yesterday the Brave search one wasn't responding. I think it might be a configuration issue but I'm not sure. Can you check all of them and tell me which ones are live and which ones aren't?</p></div>
+            </div>
+
+            <!-- Message 4 -->
+            <div class="msg msg-claude">
+              <div class="msg-label"><span>Claude</span> <span class="msg-time">7m ago</span></div>
+              <div class="msg-body">
+                <p>I'll check each MCP server connection. Let me verify the configuration and test connectivity for each one.</p>
+                <p>After checking all configured MCP servers:</p>
+                <ul>
+                  <li><strong>brave-search</strong>: Connected and responding</li>
+                  <li><strong>playwright</strong>: Connected and responding</li>
+                  <li><strong>codex</strong>: Connection timeout — this one appears to be misconfigured</li>
+                </ul>
+                <p>The Brave search issue you saw yesterday may have been transient. Codex is the one that needs attention — the API key in your settings looks expired.</p>
+              </div>
+              <span class="tool-badge">&#x2699; 8</span>
+            </div>
+            <div class="tool-row">&#x21B3; 8 tool calls — Bash(3), Read(3), Grep(2)</div>
+
+            <!-- Message 5 -->
+            <div class="msg msg-user">
+              <div class="msg-label"><span>You</span> <span class="msg-time">5m ago</span></div>
+              <div class="msg-body"><p>OK yeah that makes sense about the codex one. Can you see the BMAD relay document? I think there's some configuration in there that we need to update. I remember we set up some relay rules for how the different BMAD agents talk to each other and I want to make sure those are still correct after the v6 changes we made last week. Also check if the advisor agent has the right permissions to call the other agents.</p></div>
+            </div>
+
+            <!-- Message 6 -->
+            <div class="msg msg-claude">
+              <div class="msg-label"><span>Claude</span> <span class="msg-time">5m ago</span></div>
+              <div class="msg-body">
+                <p>Yes, I can see the relay document at <code>docs/bmad/relay.md</code>. The relay rules define how agents communicate:</p>
+                <p>The advisor agent currently has permissions to call: architect, dev, sm, and qa agents. After the v6 changes, the permissions look correct. However, I noticed the relay timeout is still set to 30s which might be too short for the architect agent's deeper analysis passes.</p>
+              </div>
+              <span class="tool-badge">&#x2699; 3</span>
+            </div>
+            <div class="tool-row">&#x21B3; 3 tool calls — Read(2), Grep(1)</div>
+
+            <!-- Message 7 -->
+            <div class="msg msg-user">
+              <div class="msg-label"><span>You</span> <span class="msg-time">3m ago</span></div>
+              <div class="msg-body"><p>yes update the timeout and also while you're in there can you check if there's anything else that looks like it needs updating. I don't want to have to come back to this file again if we can help it.</p></div>
+            </div>
+
+            <!-- Message 8 -->
+            <div class="msg msg-claude">
+              <div class="msg-label"><span>Claude</span> <span class="msg-time">3m ago</span></div>
+              <div class="msg-body">
+                <p>I've updated the relay timeout from 30s to 120s for the architect agent, and 60s for all others.</p>
+                <p>While reviewing, I also found two other issues:</p>
+                <ul>
+                  <li>The <code>qa</code> agent endpoint was still pointing to the v5 path — updated to v6</li>
+                  <li>Missing error handler for when an agent doesn't respond — added a fallback that logs the timeout and returns a structured error instead of hanging</li>
+                </ul>
+                <p>The relay document is now consistent with v6.</p>
+              </div>
+              <span class="tool-badge">&#x2699; 10</span>
+            </div>
+            <div class="tool-row">&#x21B3; 10 tool calls — Read(3), Edit(4), Grep(2), Bash(1)</div>
+          </div>
+
+          <div class="chat-footer">
+            <div class="note-row">
+              <input class="note-input" type="text" placeholder="Note: Add a note...">
+              <button class="note-save">Save</button>
+            </div>
+            <div class="meta-line">Started 8m ago &bull; 27 tool calls &bull; BUILD &bull; 4 prompts</div>
+          </div>
+        </div>
+
+        <!-- BOTTOM PANEL (EVENTS) -->
+        <div class="bottom-panel">
+          <div class="bottom-panel-drag"></div>
+          <div class="bottom-panel-header">
+            <div class="panel-tabs">
+              <button class="panel-tab" data-tab="chat" onclick="switchTab('chat')">&#x1F4AC; Chat</button>
+              <button class="panel-tab active" data-tab="events" onclick="switchTab('events')">&#x1F4CB; Events</button>
+            </div>
+            <span class="bottom-panel-name">bmad-advisor</span>
+            <span class="session-badge">BUILD</span>
+            <span class="panel-uuid">3fa5e03b</span>
+          </div>
+          <div class="events-list">
+            <div class="event-row">
+              <span class="event-time">8m ago</span>
+              <span class="event-type prompt">Prompt</span>
+              <span class="event-summary">/focus bmad-v6</span>
+            </div>
+            <div class="event-row">
+              <span class="event-time">8m ago</span>
+              <span class="event-type tool">Tool x6</span>
+              <span class="event-summary">Read(4), Grep(1), Glob(1) — reading project state and BMAD config</span>
+            </div>
+            <div class="event-row">
+              <span class="event-time">8m ago</span>
+              <span class="event-type stop">Stop</span>
+              <span class="event-summary">end_turn — focused on BMAD v6 advisor role</span>
+            </div>
+            <div class="event-row">
+              <span class="event-time">7m ago</span>
+              <span class="event-type prompt">Prompt</span>
+              <span class="event-summary">How do we check that all the MCPs are actually working?...</span>
+            </div>
+            <div class="event-row">
+              <span class="event-time">7m ago</span>
+              <span class="event-type tool">Tool x8</span>
+              <span class="event-summary">Bash(3), Read(3), Grep(2) — testing MCP server connections</span>
+            </div>
+            <div class="event-row">
+              <span class="event-time">7m ago</span>
+              <span class="event-type stop">Stop</span>
+              <span class="event-summary">end_turn — brave-search OK, playwright OK, codex timeout</span>
+            </div>
+            <div class="event-row">
+              <span class="event-time">5m ago</span>
+              <span class="event-type prompt">Prompt</span>
+              <span class="event-summary">Can you see the BMAD relay document?...</span>
+            </div>
+            <div class="event-row">
+              <span class="event-time">5m ago</span>
+              <span class="event-type tool">Tool x3</span>
+              <span class="event-summary">Read(2), Grep(1) — reading relay.md and checking permissions</span>
+            </div>
+            <div class="event-row">
+              <span class="event-time">5m ago</span>
+              <span class="event-type stop">Stop</span>
+              <span class="event-summary">end_turn — permissions correct, timeout too short at 30s</span>
+            </div>
+            <div class="event-row">
+              <span class="event-time">3m ago</span>
+              <span class="event-type prompt">Prompt</span>
+              <span class="event-summary">yes update the timeout and also while you're in there...</span>
+            </div>
+            <div class="event-row">
+              <span class="event-time">3m ago</span>
+              <span class="event-type tool">Tool x10</span>
+              <span class="event-summary">Read(3), Edit(4), Grep(2), Bash(1) — updating relay config</span>
+            </div>
+            <div class="event-row">
+              <span class="event-time">3m ago</span>
+              <span class="event-type stop">Stop</span>
+              <span class="event-summary">end_turn — relay updated: timeouts, v6 paths, error handler</span>
+            </div>
+          </div>
+          <div class="bottom-panel-footer">
+            <div class="note-row">
+              <input class="note-input" type="text" placeholder="Note: Add a note...">
+              <button class="note-save">Save</button>
+            </div>
+            <div class="meta-line">Started 8m ago &bull; 27 tool calls &bull; BUILD &bull; 4 prompts</div>
+          </div>
+        </div>
+
+      </div><!-- /horizontal-split -->
+    </div><!-- /content-wrapper -->
+  </div><!-- /main-area -->
+</div><!-- /app-layout -->
+
+<script>
+  function switchTab(tab) {
+    const wrapper = document.getElementById('contentWrapper');
+    if (tab === 'chat') {
+      wrapper.className = 'content-wrapper mode-chat';
+    } else {
+      wrapper.className = 'content-wrapper mode-events';
+    }
+    // Update all tab buttons across both panels
+    document.querySelectorAll('.panel-tab').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tab === tab);
+    });
+  }
+
+  function toggleTools() {
+    const toggle = document.getElementById('toolToggle');
+    const messages = document.getElementById('chatMessages');
+    toggle.classList.toggle('on');
+    messages.classList.toggle('tools-visible');
+  }
+</script>
+
+</body>
+</html>

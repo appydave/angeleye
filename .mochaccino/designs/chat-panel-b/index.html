@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngelEye — Observer + Fixed Position Panel (B)</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    background: #e8e0d4;
+    color: #2a2018;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Mochaccino Banner */
+  .mochaccino-banner {
+    background: #2a2018;
+    color: #7a6e5e;
+    font-size: 11px;
+    text-align: center;
+    padding: 4px 0;
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+  }
+
+  /* App Layout */
+  .app-layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  /* === LEFT SIDEBAR === */
+  .sidebar {
+    width: 150px;
+    background: #1a1512;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+  }
+
+  .sidebar-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.12em;
+    color: #c8841a;
+    padding: 20px 16px 24px;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 0 8px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #8a7d6e;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+  }
+
+  .nav-item:hover {
+    background: rgba(200, 132, 26, 0.1);
+    color: #b89a6a;
+  }
+
+  .nav-item.active {
+    background: rgba(200, 132, 26, 0.15);
+    color: #c8841a;
+    font-weight: 600;
+  }
+
+  .nav-icon {
+    font-size: 15px;
+    width: 18px;
+    text-align: center;
+    opacity: 0.8;
+  }
+
+  /* === MAIN AREA === */
+  .main-area {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+  }
+
+  /* === SESSION LIST (left ~50%) === */
+  .session-list-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-right: 1px solid #d4cdc4;
+    background: #e8e0d4;
+  }
+
+  .session-list-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background: #ede7dc;
+    border-bottom: 1px solid #d4cdc4;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .session-list-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #2a2018;
+    letter-spacing: 0.04em;
+  }
+
+  .session-count-badge {
+    font-size: 11px;
+    font-weight: 600;
+    background: #d4cdc4;
+    color: #7a6e5e;
+    padding: 1px 8px;
+    border-radius: 8px;
+  }
+
+  .session-list-search {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    background: #f5f1eb;
+    border: 1px solid #d4cdc4;
+    border-radius: 5px;
+    padding: 4px 8px;
+    gap: 5px;
+  }
+
+  .session-list-search svg { opacity: 0.35; }
+
+  .search-placeholder {
+    font-size: 12px;
+    color: #b0a494;
+  }
+
+  /* Column header */
+  .col-header {
+    background: #2a2018;
+    display: grid;
+    grid-template-columns: 24px 1fr 80px 70px 60px;
+    padding: 0 16px;
+    height: 28px;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .col-header-cell {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8a7d6e;
+  }
+
+  .col-header-cell.right { text-align: right; }
+
+  /* Sessions list */
+  .sessions-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .sessions-scroll::-webkit-scrollbar { width: 6px; }
+  .sessions-scroll::-webkit-scrollbar-track { background: transparent; }
+  .sessions-scroll::-webkit-scrollbar-thumb { background: #ccc5bb; border-radius: 3px; }
+
+  /* Session row */
+  .session-row {
+    display: grid;
+    grid-template-columns: 24px 1fr 80px 70px 60px;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 8px;
+    background: #f5f1eb;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.1s;
+    font-size: 12px;
+  }
+
+  .session-row:hover {
+    background: #ede7dc;
+    border-color: #d4cdc4;
+  }
+
+  .session-row.selected {
+    background: #ede7dc;
+    border-color: #c8841a;
+    box-shadow: 0 1px 4px rgba(200, 132, 26, 0.15);
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    justify-self: center;
+  }
+
+  .status-dot.active { background: #27ae60; }
+  .status-dot.recent { background: #c8841a; }
+  .status-dot.idle { background: #b0a494; }
+
+  .session-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+  }
+
+  .session-project {
+    font-size: 12px;
+    font-weight: 600;
+    color: #2a2018;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .session-name {
+    font-size: 11px;
+    color: #7a6e5e;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .session-name .rename-label {
+    color: #c8841a;
+    font-weight: 600;
+  }
+
+  .type-badge {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 3px;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .type-badge.build { background: #2980b920; color: #2471a3; }
+  .type-badge.knowledge { background: #8e44ad20; color: #7d3c98; }
+  .type-badge.orientation { background: #c8841a20; color: #b07518; }
+
+  .session-uuid {
+    font-size: 10px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    color: #b0a494;
+    text-align: right;
+  }
+
+  .session-time {
+    font-size: 11px;
+    color: #7a6e5e;
+    text-align: right;
+  }
+
+  /* === DETAIL PANEL (right ~50%) === */
+  .detail-panel {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    background: #ede7dc;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  /* Panel header */
+  .panel-header {
+    display: flex;
+    flex-direction: column;
+    background: #f5f1eb;
+    border-bottom: 1px solid #d4cdc4;
+    flex-shrink: 0;
+  }
+
+  .panel-header-top {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px 0;
+    gap: 12px;
+  }
+
+  .panel-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 0;
+  }
+
+  .panel-tab {
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #7a6e5e;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+    user-select: none;
+  }
+
+  .panel-tab:hover {
+    color: #2a2018;
+  }
+
+  .panel-tab.active {
+    color: #c8841a;
+    border-bottom-color: #c8841a;
+  }
+
+  .panel-session-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: #c8841a;
+    letter-spacing: 0.06em;
+    line-height: 1;
+  }
+
+  .panel-project {
+    font-size: 12px;
+    color: #7a6e5e;
+  }
+
+  .panel-type-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 3px;
+    background: #2980b920;
+    color: #2471a3;
+  }
+
+  .panel-uuid {
+    font-size: 10px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    color: #b0a494;
+  }
+
+  .panel-close {
+    margin-left: auto;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #7a6e5e;
+    font-size: 18px;
+    transition: all 0.12s;
+  }
+
+  .panel-close:hover {
+    background: #c0392b20;
+    color: #c0392b;
+  }
+
+  .panel-header-meta {
+    display: flex;
+    align-items: center;
+    padding: 0 20px 8px;
+    gap: 12px;
+  }
+
+  .tool-toggle {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: #7a6e5e;
+    cursor: pointer;
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid #d4cdc4;
+    background: #f5f1eb;
+    user-select: none;
+    transition: all 0.12s;
+  }
+
+  .tool-toggle:hover {
+    background: #ede7dc;
+    border-color: #ccc5bb;
+  }
+
+  .tool-toggle.active {
+    background: #c8841a;
+    color: #fff;
+    border-color: #c8841a;
+  }
+
+  /* === CHAT VIEW === */
+  .chat-view {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .chat-view.hidden { display: none; }
+
+  .chat-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .chat-scroll::-webkit-scrollbar { width: 6px; }
+  .chat-scroll::-webkit-scrollbar-track { background: transparent; }
+  .chat-scroll::-webkit-scrollbar-thumb { background: #ccc5bb; border-radius: 3px; }
+
+  /* Chat messages */
+  .chat-msg {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .chat-msg-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .chat-role {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .chat-role.user { color: #c8841a; }
+  .chat-role.assistant { color: #2471a3; }
+
+  .chat-time {
+    font-size: 10px;
+    color: #b0a494;
+  }
+
+  .chat-body {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #2a2018;
+    padding-left: 2px;
+  }
+
+  .chat-body p { margin-bottom: 6px; }
+  .chat-body p:last-child { margin-bottom: 0; }
+
+  .chat-body ul {
+    list-style: none;
+    padding: 0;
+    margin: 4px 0;
+  }
+
+  .chat-body ul li {
+    padding: 3px 0 3px 12px;
+    position: relative;
+    font-size: 13px;
+  }
+
+  .chat-body ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #d4cdc4;
+  }
+
+  .tool-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    color: #7a6e5e;
+    background: #ddd6cc;
+    padding: 2px 8px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.12s;
+    user-select: none;
+  }
+
+  .tool-badge:hover {
+    background: #d4cdc4;
+  }
+
+  /* Tool rows (hidden by default) */
+  .tool-rows {
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 4px;
+    padding-left: 2px;
+  }
+
+  .tool-rows.visible {
+    display: flex;
+  }
+
+  .tool-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    padding: 3px 8px;
+    background: #f5f1eb;
+    border-radius: 3px;
+    border-left: 2px solid #d4cdc4;
+  }
+
+  .tool-row .tool-name {
+    font-weight: 600;
+    color: #2471a3;
+  }
+
+  .tool-row .tool-file {
+    color: #7a6e5e;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .tool-row .tool-dur {
+    margin-left: auto;
+    color: #b0a494;
+    font-size: 10px;
+    white-space: nowrap;
+  }
+
+  /* === EVENTS VIEW === */
+  .events-view {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .events-view.hidden { display: none; }
+
+  .events-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .events-scroll::-webkit-scrollbar { width: 6px; }
+  .events-scroll::-webkit-scrollbar-track { background: transparent; }
+  .events-scroll::-webkit-scrollbar-thumb { background: #ccc5bb; border-radius: 3px; }
+
+  .event-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 6px 10px;
+    font-size: 12px;
+    border-radius: 4px;
+    transition: background 0.1s;
+  }
+
+  .event-row:hover {
+    background: #f5f1eb;
+  }
+
+  .event-time {
+    flex-shrink: 0;
+    width: 48px;
+    font-size: 11px;
+    color: #b0a494;
+    text-align: right;
+    padding-top: 1px;
+  }
+
+  .event-type-badge {
+    flex-shrink: 0;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 2px 7px;
+    border-radius: 3px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+
+  .event-type-badge.prompt {
+    background: #c8841a20;
+    color: #b07518;
+  }
+
+  .event-type-badge.tools {
+    background: #2980b915;
+    color: #2471a3;
+  }
+
+  .event-content {
+    flex: 1;
+    min-width: 0;
+    font-size: 12px;
+    color: #2a2018;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .event-content.muted {
+    color: #7a6e5e;
+  }
+
+  .event-tools-row {
+    padding-left: 72px;
+  }
+
+  .event-tools-summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: #7a6e5e;
+    cursor: pointer;
+    user-select: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    transition: background 0.1s;
+  }
+
+  .event-tools-summary:hover {
+    background: #f5f1eb;
+  }
+
+  .event-tools-arrow {
+    font-size: 10px;
+    color: #b0a494;
+    transition: transform 0.15s;
+    display: inline-block;
+  }
+
+  .event-tools-arrow.expanded {
+    transform: rotate(90deg);
+  }
+
+  .event-tools-detail {
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+    margin: 2px 0 6px 82px;
+    padding-left: 8px;
+    border-left: 2px solid #d4cdc4;
+  }
+
+  .event-tools-detail.visible {
+    display: flex;
+  }
+
+  .event-tool-entry {
+    font-size: 11px;
+    color: #7a6e5e;
+    padding: 2px 0;
+  }
+
+  .event-tool-entry .tool-label {
+    color: #2471a3;
+    font-weight: 600;
+  }
+
+  .event-tool-entry .tool-path {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 10px;
+    color: #b0a494;
+  }
+
+  /* === PANEL FOOTER === */
+  .panel-footer {
+    border-top: 1px solid #d4cdc4;
+    background: #f5f1eb;
+    padding: 10px 20px;
+    flex-shrink: 0;
+  }
+
+  .note-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .note-input {
+    flex: 1;
+    font-size: 12px;
+    padding: 6px 10px;
+    border: 1px solid #d4cdc4;
+    border-radius: 4px;
+    background: #ede7dc;
+    color: #2a2018;
+    outline: none;
+  }
+
+  .note-input::placeholder { color: #b0a494; }
+
+  .note-input:focus {
+    border-color: #c8841a;
+    box-shadow: 0 0 0 2px rgba(200, 132, 26, 0.15);
+  }
+
+  .note-save-btn {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 4px;
+    border: none;
+    background: #c8841a;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.12s;
+  }
+
+  .note-save-btn:hover { background: #b07518; }
+
+  .panel-metadata {
+    font-size: 11px;
+    color: #7a6e5e;
+  }
+</style>
+</head>
+<body>
+
+<!-- Mochaccino Banner -->
+<div class="mochaccino-banner">Mochaccino &mdash; chat-panel-b (Fixed Position) &mdash; 2026-03-24</div>
+
+<div class="app-layout">
+  <!-- LEFT SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-logo">ANGELEYE</div>
+    <nav class="sidebar-nav">
+      <div class="nav-item active">
+        <span class="nav-icon">&#9678;</span> Observer
+      </div>
+      <div class="nav-item">
+        <span class="nav-icon">&#9776;</span> Organiser
+      </div>
+      <div class="nav-item">
+        <span class="nav-icon">&#9881;</span> Settings
+      </div>
+    </nav>
+  </div>
+
+  <!-- MAIN AREA -->
+  <div class="main-area">
+
+    <!-- SESSION LIST (left ~50%) -->
+    <div class="session-list-panel">
+      <div class="session-list-header">
+        <span class="session-list-title">Sessions</span>
+        <span class="session-count-badge">14</span>
+        <div class="session-list-search">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+          <span class="search-placeholder">Search sessions...</span>
+        </div>
+      </div>
+      <div class="col-header">
+        <span class="col-header-cell"></span>
+        <span class="col-header-cell">Session</span>
+        <span class="col-header-cell">Type</span>
+        <span class="col-header-cell right">UUID</span>
+        <span class="col-header-cell right">Time</span>
+      </div>
+      <div class="sessions-scroll">
+
+        <!-- Row 1: Active (green) -->
+        <div class="session-row">
+          <div class="status-dot active"></div>
+          <div class="session-info">
+            <span class="session-project">app.supportsignal....</span>
+            <span class="session-name">"Read &mdash; /Users/..."</span>
+          </div>
+          <span class="type-badge build">BUILD</span>
+          <span class="session-uuid">a7cde8c9</span>
+          <span class="session-time">3s ago</span>
+        </div>
+
+        <!-- Row 2: Recent (amber) -->
+        <div class="session-row">
+          <div class="status-dot recent"></div>
+          <div class="session-info">
+            <span class="session-project">app.supportsignal....</span>
+            <span class="session-name">"session started"</span>
+          </div>
+          <span class="type-badge build"></span>
+          <span class="session-uuid">210117c1</span>
+          <span class="session-time">1m ago</span>
+        </div>
+
+        <!-- Row 3: Idle -->
+        <div class="session-row">
+          <div class="status-dot idle"></div>
+          <div class="session-info">
+            <span class="session-project"><span class="rename-label">bmad-oversight-focus</span></span>
+            <span class="session-name">"How do we check..."</span>
+          </div>
+          <span class="type-badge build">BUILD</span>
+          <span class="session-uuid">a4fd902a</span>
+          <span class="session-time">5m ago</span>
+        </div>
+
+        <!-- Row 4: SELECTED -->
+        <div class="session-row selected">
+          <div class="status-dot idle"></div>
+          <div class="session-info">
+            <span class="session-project"><span class="rename-label">bmad-advisor</span></span>
+            <span class="session-name">"/focus bmad-v6"</span>
+          </div>
+          <span class="type-badge build">BUILD</span>
+          <span class="session-uuid">3fa5e03b</span>
+          <span class="session-time">8m ago</span>
+        </div>
+
+        <!-- Row 5 -->
+        <div class="session-row">
+          <div class="status-dot idle"></div>
+          <div class="session-info">
+            <span class="session-project">app.supportsignal....</span>
+            <span class="session-name">"/bmad-dev"</span>
+          </div>
+          <span class="type-badge build">BUILD</span>
+          <span class="session-uuid">719bbffe</span>
+          <span class="session-time">12m ago</span>
+        </div>
+
+        <!-- Row 6 -->
+        <div class="session-row">
+          <div class="status-dot idle"></div>
+          <div class="session-info">
+            <span class="session-project">app.supportsignal....</span>
+            <span class="session-name">"Can you see the BMAD relay..."</span>
+          </div>
+          <span class="type-badge build">BUILD</span>
+          <span class="session-uuid">00befc58</span>
+          <span class="session-time">16m ago</span>
+        </div>
+
+        <!-- Row 7 -->
+        <div class="session-row">
+          <div class="status-dot idle"></div>
+          <div class="session-info">
+            <span class="session-project">app.supportsignal....</span>
+            <span class="session-name">"yes"</span>
+          </div>
+          <span class="type-badge orientation">ORIENTATION</span>
+          <span class="session-uuid">23589d3a</span>
+          <span class="session-time">18m ago</span>
+        </div>
+
+        <!-- Row 8 -->
+        <div class="session-row">
+          <div class="status-dot idle"></div>
+          <div class="session-info">
+            <span class="session-project">flihub</span>
+            <span class="session-name">"/ralphy"</span>
+          </div>
+          <span class="type-badge build">BUILD</span>
+          <span class="session-uuid">98eb0dc2</span>
+          <span class="session-time">22m ago</span>
+        </div>
+
+        <!-- Row 9 -->
+        <div class="session-row">
+          <div class="status-dot idle"></div>
+          <div class="session-info">
+            <span class="session-project">angeleye</span>
+            <span class="session-name">"/ralphy"</span>
+          </div>
+          <span class="type-badge build">BUILD</span>
+          <span class="session-uuid">08fbfe17</span>
+          <span class="session-time">9h ago</span>
+        </div>
+
+        <!-- Row 10 -->
+        <div class="session-row">
+          <div class="status-dot idle"></div>
+          <div class="session-info">
+            <span class="session-project">flihub</span>
+            <span class="session-name">"/ralphy"</span>
+          </div>
+          <span class="type-badge build">BUILD</span>
+          <span class="session-uuid">0e9b4684</span>
+          <span class="session-time">11h ago</span>
+        </div>
+
+        <!-- Row 11 -->
+        <div class="session-row">
+          <div class="status-dot idle"></div>
+          <div class="session-info">
+            <span class="session-project">angeleye</span>
+            <span class="session-name"></span>
+          </div>
+          <span class="type-badge build"></span>
+          <span class="session-uuid">d1d067b0</span>
+          <span class="session-time">13h ago</span>
+        </div>
+
+        <!-- Row 12 -->
+        <div class="session-row">
+          <div class="status-dot idle"></div>
+          <div class="session-info">
+            <span class="session-project">brains</span>
+            <span class="session-name"></span>
+          </div>
+          <span class="type-badge build"></span>
+          <span class="session-uuid">43d73439</span>
+          <span class="session-time">13h ago</span>
+        </div>
+
+        <!-- Row 13 -->
+        <div class="session-row">
+          <div class="status-dot idle"></div>
+          <div class="session-info">
+            <span class="session-project">brains</span>
+            <span class="session-name">"/focus audio"</span>
+          </div>
+          <span class="type-badge knowledge">KNOWLEDGE</span>
+          <span class="session-uuid">2454cbe5</span>
+          <span class="session-time">14h ago</span>
+        </div>
+
+        <!-- Row 14 -->
+        <div class="session-row">
+          <div class="status-dot idle"></div>
+          <div class="session-info">
+            <span class="session-project">app.supportsignal....</span>
+            <span class="session-name">"/bmad-sm"</span>
+          </div>
+          <span class="type-badge build">BUILD</span>
+          <span class="session-uuid">98492233</span>
+          <span class="session-time">14h ago</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- DETAIL PANEL (right ~50%, fixed position) -->
+    <div class="detail-panel">
+
+      <!-- Panel Header -->
+      <div class="panel-header">
+        <div class="panel-header-top">
+          <div class="panel-tabs">
+            <div class="panel-tab active" data-tab="chat">&#128172; Chat</div>
+            <div class="panel-tab" data-tab="events">&#128203; Events</div>
+          </div>
+          <span class="panel-session-name">bmad-advisor</span>
+          <span class="panel-project">app.supportsignal.com.au</span>
+          <span class="panel-type-badge">BUILD</span>
+          <span class="panel-uuid">3fa5e03b</span>
+          <span class="panel-close">&times;</span>
+        </div>
+        <div class="panel-header-meta">
+          <div style="flex:1"></div>
+          <div class="tool-toggle" id="toolToggle" style="display:flex;">&#9881; Tools</div>
+        </div>
+      </div>
+
+      <!-- CHAT VIEW -->
+      <div class="chat-view" id="chatView">
+        <div class="chat-scroll">
+
+          <!-- Message 1 -->
+          <div class="chat-msg">
+            <div class="chat-msg-header">
+              <span class="chat-role user">You</span>
+              <span class="chat-time">8m ago</span>
+            </div>
+            <div class="chat-body"><p>/focus bmad-v6</p></div>
+          </div>
+
+          <!-- Message 2 -->
+          <div class="chat-msg">
+            <div class="chat-msg-header">
+              <span class="chat-role assistant">Claude</span>
+              <span class="chat-time">8m ago</span>
+              <span class="tool-badge tool-badge-toggle">&#9881; 6</span>
+            </div>
+            <div class="chat-body">
+              <p>I'll focus on the BMAD v6 advisor role. Let me read the current state of the project and understand what's been set up so far.</p>
+            </div>
+            <div class="tool-rows">
+              <div class="tool-row"><span class="tool-name">Read</span><span class="tool-file">STEERING.md</span><span class="tool-dur">45ms</span></div>
+              <div class="tool-row"><span class="tool-name">Read</span><span class="tool-file">brains/bmad/v6/advisor-role.md</span><span class="tool-dur">38ms</span></div>
+              <div class="tool-row"><span class="tool-name">Read</span><span class="tool-file">brains/bmad/v6/relay-config.json</span><span class="tool-dur">22ms</span></div>
+              <div class="tool-row"><span class="tool-name">Read</span><span class="tool-file">.claude/settings.json</span><span class="tool-dur">18ms</span></div>
+              <div class="tool-row"><span class="tool-name">Grep</span><span class="tool-file">bmad-advisor pattern in CLAUDE.md</span><span class="tool-dur">31ms</span></div>
+              <div class="tool-row"><span class="tool-name">Glob</span><span class="tool-file">brains/bmad/**/*.md</span><span class="tool-dur">12ms</span></div>
+            </div>
+          </div>
+
+          <!-- Message 3 -->
+          <div class="chat-msg">
+            <div class="chat-msg-header">
+              <span class="chat-role user">You</span>
+              <span class="chat-time">7m ago</span>
+            </div>
+            <div class="chat-body"><p>How do we check that all the MCPs are actually working? I've got a feeling that some of them might not be connected properly because when I was testing yesterday the Brave search one wasn't responding. I think it might be a configuration issue but I'm not sure. Can you check all of them and tell me which ones are live and which ones aren't?</p></div>
+          </div>
+
+          <!-- Message 4 -->
+          <div class="chat-msg">
+            <div class="chat-msg-header">
+              <span class="chat-role assistant">Claude</span>
+              <span class="chat-time">7m ago</span>
+              <span class="tool-badge tool-badge-toggle">&#9881; 8</span>
+            </div>
+            <div class="chat-body">
+              <p>I'll check each MCP connection. Here's what I found:</p>
+              <ul>
+                <li><strong>Brave Search</strong> &mdash; not responding. The API key in <code>.claude/settings.json</code> has expired. You'll need to regenerate it from the Brave dashboard.</li>
+                <li><strong>Playwright</strong> &mdash; connected and healthy. Browser install is up to date.</li>
+                <li><strong>Codex</strong> &mdash; partially working. The index is stale (last updated 3 days ago). I'd recommend re-indexing after the v6 changes.</li>
+                <li><strong>GitHub (gh)</strong> &mdash; connected. Auth token is valid.</li>
+              </ul>
+              <p>The Brave issue is definitely the expired API key. The Codex one isn't broken per se, but the stale index means it won't know about your recent v6 files.</p>
+            </div>
+            <div class="tool-rows">
+              <div class="tool-row"><span class="tool-name">Bash</span><span class="tool-file">mcp status --json</span><span class="tool-dur">1.2s</span></div>
+              <div class="tool-row"><span class="tool-name">Bash</span><span class="tool-file">brave-search healthcheck</span><span class="tool-dur">3.1s</span></div>
+              <div class="tool-row"><span class="tool-name">Bash</span><span class="tool-file">codex status</span><span class="tool-dur">820ms</span></div>
+              <div class="tool-row"><span class="tool-name">Read</span><span class="tool-file">.claude/settings.json</span><span class="tool-dur">15ms</span></div>
+              <div class="tool-row"><span class="tool-name">Read</span><span class="tool-file">.claude/mcp-config.json</span><span class="tool-dur">12ms</span></div>
+              <div class="tool-row"><span class="tool-name">Read</span><span class="tool-file">brains/bmad/v6/mcp-requirements.md</span><span class="tool-dur">18ms</span></div>
+              <div class="tool-row"><span class="tool-name">Grep</span><span class="tool-file">brave_api_key in settings</span><span class="tool-dur">8ms</span></div>
+              <div class="tool-row"><span class="tool-name">Grep</span><span class="tool-file">codex index timestamp</span><span class="tool-dur">11ms</span></div>
+            </div>
+          </div>
+
+          <!-- Message 5 -->
+          <div class="chat-msg">
+            <div class="chat-msg-header">
+              <span class="chat-role user">You</span>
+              <span class="chat-time">5m ago</span>
+            </div>
+            <div class="chat-body"><p>OK yeah that makes sense about the codex one. Can you see the BMAD relay document? I think there's some configuration in there that we need to update. I remember we set up some relay rules for how the different BMAD agents talk to each other and I want to make sure those are still correct after the v6 changes we made last week. Also check if the advisor agent has the right permissions to call the other agents.</p></div>
+          </div>
+
+          <!-- Message 6 -->
+          <div class="chat-msg">
+            <div class="chat-msg-header">
+              <span class="chat-role assistant">Claude</span>
+              <span class="chat-time">5m ago</span>
+              <span class="tool-badge tool-badge-toggle">&#9881; 3</span>
+            </div>
+            <div class="chat-body">
+              <p>I found the relay document. There are a couple of issues:</p>
+              <ul>
+                <li>The <strong>timeout</strong> for inter-agent calls is still set to 30s from the v5 config. With v6's longer context windows, this should be bumped to 60s minimum.</li>
+                <li>The advisor agent <strong>permissions</strong> look correct &mdash; it can call the SM, Dev, and Analyst agents. However, it's missing the new <code>orchestrator</code> role that was added in v6.</li>
+                <li>The relay <strong>routing table</strong> still references <code>bmad-v5-analyst</code> instead of <code>bmad-v6-analyst</code>.</li>
+              </ul>
+              <p>Want me to fix the timeout and routing table references?</p>
+            </div>
+            <div class="tool-rows">
+              <div class="tool-row"><span class="tool-name">Read</span><span class="tool-file">brains/bmad/v6/relay-config.json</span><span class="tool-dur">22ms</span></div>
+              <div class="tool-row"><span class="tool-name">Read</span><span class="tool-file">brains/bmad/v6/agent-permissions.md</span><span class="tool-dur">18ms</span></div>
+              <div class="tool-row"><span class="tool-name">Glob</span><span class="tool-file">brains/bmad/v6/relay-*.{json,md}</span><span class="tool-dur">9ms</span></div>
+            </div>
+          </div>
+
+          <!-- Message 7 -->
+          <div class="chat-msg">
+            <div class="chat-msg-header">
+              <span class="chat-role user">You</span>
+              <span class="chat-time">3m ago</span>
+            </div>
+            <div class="chat-body"><p>yes update the timeout and also while you're in there can you check if there's anything else that looks like it needs updating. I don't want to have to come back to this file again if we can help it.</p></div>
+          </div>
+
+          <!-- Message 8 -->
+          <div class="chat-msg">
+            <div class="chat-msg-header">
+              <span class="chat-role assistant">Claude</span>
+              <span class="chat-time">3m ago</span>
+              <span class="tool-badge tool-badge-toggle">&#9881; 10</span>
+            </div>
+            <div class="chat-body">
+              <p>Done. I made three changes to the relay config:</p>
+              <ul>
+                <li><strong>Timeout</strong>: 30s &rarr; 60s for all inter-agent calls</li>
+                <li><strong>Routing</strong>: Updated <code>bmad-v5-analyst</code> &rarr; <code>bmad-v6-analyst</code> in the routing table (2 references)</li>
+                <li><strong>Orchestrator role</strong>: Added <code>orchestrator</code> to the advisor's allowed-callers list</li>
+              </ul>
+              <p>I also noticed the <code>max_retries</code> was set to 1, which seems low for production. Bumped it to 3 to match the other agents. And the <code>log_level</code> was still on <code>debug</code> from your testing &mdash; switched it back to <code>info</code>.</p>
+            </div>
+            <div class="tool-rows">
+              <div class="tool-row"><span class="tool-name">Read</span><span class="tool-file">brains/bmad/v6/relay-config.json</span><span class="tool-dur">15ms</span></div>
+              <div class="tool-row"><span class="tool-name">Read</span><span class="tool-file">brains/bmad/v6/agent-manifest.json</span><span class="tool-dur">18ms</span></div>
+              <div class="tool-row"><span class="tool-name">Edit</span><span class="tool-file">relay-config.json &mdash; timeout 30&rarr;60</span><span class="tool-dur">22ms</span></div>
+              <div class="tool-row"><span class="tool-name">Edit</span><span class="tool-file">relay-config.json &mdash; v5&rarr;v6 analyst ref #1</span><span class="tool-dur">18ms</span></div>
+              <div class="tool-row"><span class="tool-name">Edit</span><span class="tool-file">relay-config.json &mdash; v5&rarr;v6 analyst ref #2</span><span class="tool-dur">15ms</span></div>
+              <div class="tool-row"><span class="tool-name">Edit</span><span class="tool-file">relay-config.json &mdash; add orchestrator role</span><span class="tool-dur">20ms</span></div>
+              <div class="tool-row"><span class="tool-name">Write</span><span class="tool-file">relay-config.json (final)</span><span class="tool-dur">25ms</span></div>
+              <div class="tool-row"><span class="tool-name">Bash</span><span class="tool-file">git diff relay-config.json</span><span class="tool-dur">180ms</span></div>
+              <div class="tool-row"><span class="tool-name">Bash</span><span class="tool-file">jsonlint relay-config.json</span><span class="tool-dur">95ms</span></div>
+              <div class="tool-row"><span class="tool-name">Bash</span><span class="tool-file">cat relay-config.json | jq .timeout</span><span class="tool-dur">45ms</span></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- EVENTS VIEW -->
+      <div class="events-view hidden" id="eventsView">
+        <div class="events-scroll">
+
+          <!-- Event 1: user prompt -->
+          <div class="event-row">
+            <span class="event-time">8m ago</span>
+            <span class="event-type-badge prompt">user_prompt</span>
+            <span class="event-content">/focus bmad-v6</span>
+          </div>
+          <!-- Event 1: tools -->
+          <div class="event-tools-row">
+            <div class="event-tools-summary" onclick="toggleEventTools(this)">
+              <span class="event-tools-arrow">&#9654;</span>
+              <span>&#8627; 6 tool calls &mdash; Read(4), Grep(1), Glob(1)</span>
+            </div>
+            <div class="event-tools-detail">
+              <div class="event-tool-entry"><span class="tool-label">Read</span> <span class="tool-path">STEERING.md</span></div>
+              <div class="event-tool-entry"><span class="tool-label">Read</span> <span class="tool-path">brains/bmad/v6/advisor-role.md</span></div>
+              <div class="event-tool-entry"><span class="tool-label">Read</span> <span class="tool-path">brains/bmad/v6/relay-config.json</span></div>
+              <div class="event-tool-entry"><span class="tool-label">Read</span> <span class="tool-path">.claude/settings.json</span></div>
+              <div class="event-tool-entry"><span class="tool-label">Grep</span> <span class="tool-path">bmad-advisor pattern in CLAUDE.md</span></div>
+              <div class="event-tool-entry"><span class="tool-label">Glob</span> <span class="tool-path">brains/bmad/**/*.md</span></div>
+            </div>
+          </div>
+
+          <!-- Event 2: user prompt -->
+          <div class="event-row">
+            <span class="event-time">7m ago</span>
+            <span class="event-type-badge prompt">user_prompt</span>
+            <span class="event-content">How do we check that all the MCPs are actually...</span>
+          </div>
+          <!-- Event 2: tools -->
+          <div class="event-tools-row">
+            <div class="event-tools-summary" onclick="toggleEventTools(this)">
+              <span class="event-tools-arrow">&#9654;</span>
+              <span>&#8627; 8 tool calls &mdash; Bash(3), Read(3), Grep(2)</span>
+            </div>
+            <div class="event-tools-detail">
+              <div class="event-tool-entry"><span class="tool-label">Bash</span> <span class="tool-path">mcp status --json</span></div>
+              <div class="event-tool-entry"><span class="tool-label">Bash</span> <span class="tool-path">brave-search healthcheck</span></div>
+              <div class="event-tool-entry"><span class="tool-label">Bash</span> <span class="tool-path">codex status</span></div>
+              <div class="event-tool-entry"><span class="tool-label">Read</span> <span class="tool-path">.claude/settings.json</span></div>
+              <div class="event-tool-entry"><span class="tool-label">Read</span> <span class="tool-path">.claude/mcp-config.json</span></div>
+              <div class="event-tool-entry"><span class="tool-label">Read</span> <span class="tool-path">brains/bmad/v6/mcp-requirements.md</span></div>
+              <div class="event-tool-entry"><span class="tool-label">Grep</span> <span class="tool-path">brave_api_key in settings</span></div>
+              <div class="event-tool-entry"><span class="tool-label">Grep</span> <span class="tool-path">codex index timestamp</span></div>
+            </div>
+          </div>
+
+          <!-- Event 3: user prompt -->
+          <div class="event-row">
+            <span class="event-time">5m ago</span>
+            <span class="event-type-badge prompt">user_prompt</span>
+            <span class="event-content">OK yeah that makes sense about the codex one...</span>
+          </div>
+          <!-- Event 3: tools -->
+          <div class="event-tools-row">
+            <div class="event-tools-summary" onclick="toggleEventTools(this)">
+              <span class="event-tools-arrow">&#9654;</span>
+              <span>&#8627; 3 tool calls &mdash; Read(2), Glob(1)</span>
+            </div>
+            <div class="event-tools-detail">
+              <div class="event-tool-entry"><span class="tool-label">Read</span> <span class="tool-path">brains/bmad/v6/relay-config.json</span></div>
+              <div class="event-tool-entry"><span class="tool-label">Read</span> <span class="tool-path">brains/bmad/v6/agent-permissions.md</span></div>
+              <div class="event-tool-entry"><span class="tool-label">Glob</span> <span class="tool-path">brains/bmad/v6/relay-*.{json,md}</span></div>
+            </div>
+          </div>
+
+          <!-- Event 4: user prompt -->
+          <div class="event-row">
+            <span class="event-time">3m ago</span>
+            <span class="event-type-badge prompt">user_prompt</span>
+            <span class="event-content">yes update the timeout and also while you're...</span>
+          </div>
+          <!-- Event 4: tools (expanded by default — last one) -->
+          <div class="event-tools-row">
+            <div class="event-tools-summary" onclick="toggleEventTools(this)">
+              <span class="event-tools-arrow expanded">&#9654;</span>
+              <span>&#8627; 10 tool calls &mdash; Read(2), Edit(4), Write(1), Bash(3)</span>
+            </div>
+            <div class="event-tools-detail visible">
+              <div class="event-tool-entry"><span class="tool-label">Read</span> <span class="tool-path">brains/bmad/v6/relay-config.json</span></div>
+              <div class="event-tool-entry"><span class="tool-label">Read</span> <span class="tool-path">brains/bmad/v6/agent-manifest.json</span></div>
+              <div class="event-tool-entry"><span class="tool-label">Edit</span> <span class="tool-path">relay-config.json — timeout 30→60</span></div>
+              <div class="event-tool-entry"><span class="tool-label">Edit</span> <span class="tool-path">relay-config.json — v5→v6 analyst ref #1</span></div>
+              <div class="event-tool-entry"><span class="tool-label">Edit</span> <span class="tool-path">relay-config.json — v5→v6 analyst ref #2</span></div>
+              <div class="event-tool-entry"><span class="tool-label">Edit</span> <span class="tool-path">relay-config.json — add orchestrator role</span></div>
+              <div class="event-tool-entry"><span class="tool-label">Write</span> <span class="tool-path">relay-config.json (final)</span></div>
+              <div class="event-tool-entry"><span class="tool-label">Bash</span> <span class="tool-path">git diff relay-config.json</span></div>
+              <div class="event-tool-entry"><span class="tool-label">Bash</span> <span class="tool-path">jsonlint relay-config.json</span></div>
+              <div class="event-tool-entry"><span class="tool-label">Bash</span> <span class="tool-path">cat relay-config.json | jq .timeout</span></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Panel Footer -->
+      <div class="panel-footer">
+        <div class="note-field">
+          <input type="text" class="note-input" placeholder="Note: Add a note...">
+          <button class="note-save-btn">Save</button>
+        </div>
+        <div class="panel-metadata">Started 8m ago &bull; 27 tool calls &bull; BUILD &bull; 4 prompts</div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Tab switching
+  const tabs = document.querySelectorAll('.panel-tab');
+  const chatView = document.getElementById('chatView');
+  const eventsView = document.getElementById('eventsView');
+  const toolToggle = document.getElementById('toolToggle');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      const target = tab.getAttribute('data-tab');
+      if (target === 'chat') {
+        chatView.classList.remove('hidden');
+        eventsView.classList.add('hidden');
+        toolToggle.style.display = 'flex';
+      } else {
+        chatView.classList.add('hidden');
+        eventsView.classList.remove('hidden');
+        toolToggle.style.display = 'none';
+      }
+    });
+  });
+
+  // Tool toggle (Chat view)
+  let toolsVisible = false;
+  toolToggle.addEventListener('click', () => {
+    toolsVisible = !toolsVisible;
+    toolToggle.classList.toggle('active', toolsVisible);
+
+    // Show/hide all tool rows
+    document.querySelectorAll('.tool-rows').forEach(tr => {
+      tr.classList.toggle('visible', toolsVisible);
+    });
+
+    // Show/hide tool badges (inverse of tool rows)
+    document.querySelectorAll('.tool-badge-toggle').forEach(badge => {
+      badge.style.display = toolsVisible ? 'none' : 'inline-flex';
+    });
+  });
+
+  // Events view: toggle tool detail
+  function toggleEventTools(el) {
+    const arrow = el.querySelector('.event-tools-arrow');
+    const detail = el.parentElement.querySelector('.event-tools-detail');
+    arrow.classList.toggle('expanded');
+    detail.classList.toggle('visible');
+  }
+</script>
+
+</body>
+</html>

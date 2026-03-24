@@ -1,15 +1,42 @@
 # AngelEye Documentation
 
-> AngelEye is built on AppyStack (RVETS). AppyStack-specific docs are below.
-> AngelEye-specific docs: `planning/BACKLOG.md`, `intelligence/PATTERNS.md`, `requirements.md`
+> A session intelligence layer for agentic AI workflows. Watches Claude Code sessions, classifies activity, surfaces patterns.
 
-## 🔗 Claude Code Internals — Canonical Reference
+## Status
 
-AngelEye reads and writes Claude Code's storage. Canonical knowledge lives in the brain — not here:
+**Operational** — v2 schema, 924 sessions indexed across 2 machines (M4 Mini + M4 Pro).
 
-- **JSONL format, entry types, streaming, naming**: `~/dev/ad/brains/anthropic-claude/claude-code/observability.md`
-- **Hook events and payloads**: `~/dev/ad/brains/anthropic-claude/claude-code/hooks-reference.md`
-- **Session lifecycle (/rename, /fork, /rewind)**: `~/dev/ad/brains/anthropic-claude/claude-code/session-management.md`
+Built on AppyStack (RVETS: React 19 + Vite 7 + Express 5 + TypeScript + Socket.io).
+
+## AngelEye-Specific Docs
+
+| Document                                                                   | What's in it                                                                |
+| -------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| [Requirements](requirements.md)                                            | Architecture, data sources, skills, UI design                               |
+| [Intelligence Patterns](intelligence/PATTERNS.md)                          | Classification rules, taxonomy, predicates — validated against 924 sessions |
+| [Backlog](planning/BACKLOG.md)                                             | 44 items (31 done, 11 pending, 2 deferred)                                  |
+| [Campaign Assessment](planning/angeleye-analysis-1/assessment.md)          | Full 924-session analysis results                                           |
+| [Campaign Dashboard](planning/angeleye-analysis-1/campaign-dashboard.html) | Interactive data visualization (Chart.js)                                   |
+
+## What's Built
+
+- **Observer** — live session list with focus panel, filters (All/Starred/Named), workspace badges, session type legend
+- **Organizer** — inbox + named workspaces + drag-to-assign
+- **Settings** — unified Sync button, delta tracking, classification breakdown
+- **Backfill** — scans `~/.claude/projects/`, extracts session shapes, classifies
+- **Intelligence** — rule-based session classification (12+ types, 500+ subtypes)
+- **Skills** — `/angeleye:install`, `/angeleye:name-session`, `/angeleye:context`
+- **Analysis** — 924-session campaign with v3 schema, backward pass, derived metrics
+
+## Brain (Canonical Knowledge)
+
+| Topic                                        | Location                                                             |
+| -------------------------------------------- | -------------------------------------------------------------------- |
+| JSONL format, entry types, streaming, naming | `~/dev/ad/brains/anthropic-claude/claude-code/observability.md`      |
+| Hook events and payloads                     | `~/dev/ad/brains/anthropic-claude/claude-code/hooks-reference.md`    |
+| Session lifecycle (/rename, /fork, /rewind)  | `~/dev/ad/brains/anthropic-claude/claude-code/session-management.md` |
+| AngelEye domain knowledge                    | `~/dev/ad/brains/angeleye/`                                          |
+| Analysis index (924 entries)                 | `~/dev/ad/brains/angeleye/analysis/session-index.jsonl`              |
 
 ---
 
