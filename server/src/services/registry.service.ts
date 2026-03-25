@@ -14,6 +14,9 @@ export function _sessionsDir(): string {
 export function _archiveDir(): string {
   return join(_baseDir, 'archive');
 }
+export function _auditDir(): string {
+  return join(_baseDir, 'audit');
+}
 export function _registryPath(): string {
   return join(_baseDir, 'registry.json');
 }
@@ -38,11 +41,13 @@ export function getDataDir(): string {
 export async function initAngelEyeDirs(): Promise<void> {
   const sessionsDir = _sessionsDir();
   const archiveDir = _archiveDir();
+  const auditDir = _auditDir();
   const registryPath = _registryPath();
   const workspacesPath = _workspacesPath();
 
   await mkdir(sessionsDir, { recursive: true });
   await mkdir(archiveDir, { recursive: true });
+  await mkdir(auditDir, { recursive: true });
 
   if (!existsSync(registryPath)) {
     await writeFile(registryPath, JSON.stringify({}), 'utf-8');

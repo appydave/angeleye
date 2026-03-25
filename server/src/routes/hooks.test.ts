@@ -391,3 +391,136 @@ describe('io.emit on valid hook', () => {
     expect(typeof emittedEvent.ts).toBe('string');
   });
 });
+
+// ── Wave 11: New event types ──────────────────────────────────────────────────
+
+describe('Wave 11 — new event accepted', () => {
+  it('PostToolUseFailure returns 200 and writes tool_failure event', async () => {
+    const res = await request(app).post('/hooks/PostToolUseFailure').send({
+      session_id: 'ses-w11-fail',
+      cwd: '/projects/app',
+      tool_name: 'Read',
+      error: 'File not found',
+    });
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({ continue: true });
+
+    const events = await readSessionEvents('ses-w11-fail');
+    expect(events).toHaveLength(1);
+    expect(events[0]?.event).toBe('tool_failure');
+  });
+});
+
+describe('Wave 11 — payload stored for new events', () => {
+  it('WorktreeCreate stores worktree fields in payload', async () => {
+    const res = await request(app).post('/hooks/WorktreeCreate').send({
+      session_id: 'ses-w11-wt',
+      cwd: '/projects/app',
+      worktree_path: '/tmp/wt-abc',
+      worktree_branch: 'feature-x',
+    });
+
+    expect(res.status).toBe(200);
+    const events = await readSessionEvents('ses-w11-wt');
+    expect(events[0]?.payload).toMatchObject({
+      worktree_path: '/tmp/wt-abc',
+      worktree_branch: 'feature-x',
+    });
+  });
+});
+
+describe('Wave 11 — error field promoted for failure events', () => {
+  it('StopFailure has error on top-level event', async () => {
+    const res = await request(app).post('/hooks/StopFailure').send({
+      session_id: 'ses-w11-sf',
+      error: 'rate_limit_exceeded',
+      status_code: 429,
+    });
+
+    expect(res.status).toBe(200);
+    const events = await readSessionEvents('ses-w11-sf');
+    expect(events[0]?.error).toBe('rate_limit_exceeded');
+    expect(events[0]?.payload?.status_code).toBe(429);
+  });
+});
+
+describe('Wave 11 — large payload fields truncated', () => {
+  it('truncates string fields over 500 chars in payload', async () => {
+    const longMessage = 'x'.repeat(1000);
+    const res = await request(app).post('/hooks/Notification').send({
+      session_id: 'ses-w11-trunc',
+      message: longMessage,
+    });
+
+    expect(res.status).toBe(200);
+    const events = await readSessionEvents('ses-w11-trunc');
+    const msg = events[0]?.payload?.message as string;
+    expect(msg.length).toBe(500);
+  });
+});
+
+describe('Wave 11 — common fields stripped from payload', () => {
+  it('payload does not contain session_id, cwd, hook_event_name', async () => {
+    const res = await request(app).post('/hooks/CwdChanged').send({
+      session_id: 'ses-w11-cwd',
+      cwd: '/new/dir',
+      hook_event_name: 'CwdChanged',
+      transcript_path: '/path/to/transcript',
+      old_cwd: '/old/dir',
+      new_cwd: '/new/dir',
+    });
+
+    expect(res.status).toBe(200);
+    const events = await readSessionEvents('ses-w11-cwd');
+    const payload = events[0]?.payload;
+    expect(payload).toBeDefined();
+    expect(payload).not.toHaveProperty('session_id');
+    expect(payload).not.toHaveProperty('cwd');
+    expect(payload).not.toHaveProperty('hook_event_name');
+    expect(payload).not.toHaveProperty('transcript_path');
+    expect(payload?.old_cwd).toBe('/old/dir');
+    expect(payload?.new_cwd).toBe('/new/dir');
+  });
+});
+
+describe('Wave 11 — all 24 EVENT_MAP entries resolve', () => {
+  const ALL_HOOKS = [
+    'SessionStart',
+    'UserPromptSubmit',
+    'PostToolUse',
+    'Stop',
+    'SessionEnd',
+    'SubagentStart',
+    'SubagentStop',
+    'PostToolUseFailure',
+    'StopFailure',
+    'WorktreeCreate',
+    'WorktreeRemove',
+    'CwdChanged',
+    'PreToolUse',
+    'InstructionsLoaded',
+    'PreCompact',
+    'PostCompact',
+    'PermissionRequest',
+    'Notification',
+    'TeammateIdle',
+    'TaskCompleted',
+    'ConfigChange',
+    'Elicitation',
+    'ElicitationResult',
+    'FileChanged',
+  ];
+
+  it.each(ALL_HOOKS)('%s is accepted (not unknown)', async (hookName) => {
+    const res = await request(app)
+      .post(`/hooks/${hookName}`)
+      .send({ session_id: `ses-all-${hookName}`, cwd: '/tmp' });
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({ continue: true });
+    // If it were unknown, mockIo.emit would NOT be called
+    expect(mockIo.emit).toHaveBeenCalled();
+    mockIo.emit.mockClear();
+  });
+});

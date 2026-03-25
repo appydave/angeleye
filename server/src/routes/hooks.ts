@@ -6,8 +6,10 @@ import { logger } from '../config/logger.js';
 import { writeEvent, getSessionEvents, archiveSession } from '../services/sessions.service.js';
 import { readRegistry, updateRegistry } from '../services/registry.service.js';
 import { classifySession, findFirstRealPrompt } from '../services/classifier.service.js';
+import { auditPayload } from '../services/schema-auditor.service.js';
 
 const EVENT_MAP: Record<string, AngelEyeEventType> = {
+  // Original 7
   SessionStart: 'session_start',
   UserPromptSubmit: 'user_prompt',
   PostToolUse: 'tool_use',
@@ -15,6 +17,24 @@ const EVENT_MAP: Record<string, AngelEyeEventType> = {
   SessionEnd: 'session_end',
   SubagentStart: 'subagent_start',
   SubagentStop: 'subagent_stop',
+  // Wave 11 — full hook coverage (17 new)
+  PostToolUseFailure: 'tool_failure',
+  StopFailure: 'stop_failure',
+  WorktreeCreate: 'worktree_create',
+  WorktreeRemove: 'worktree_remove',
+  CwdChanged: 'cwd_changed',
+  PreToolUse: 'pre_tool_use',
+  InstructionsLoaded: 'instructions_loaded',
+  PreCompact: 'pre_compact',
+  PostCompact: 'post_compact',
+  PermissionRequest: 'permission_request',
+  Notification: 'notification',
+  TeammateIdle: 'teammate_idle',
+  TaskCompleted: 'task_completed',
+  ConfigChange: 'config_change',
+  Elicitation: 'elicitation',
+  ElicitationResult: 'elicitation_result',
+  FileChanged: 'file_changed',
 };
 
 function summariseTool(
@@ -120,6 +140,40 @@ export function createHooksRouter(io: Server): Router {
           event.agent_type = body.agent_type;
         }
       }
+
+      // Wave 11 — new events: store raw payload with large-field truncation
+      const ORIGINAL_EVENTS = new Set([
+        'session_start',
+        'user_prompt',
+        'tool_use',
+        'stop',
+        'session_end',
+        'subagent_start',
+        'subagent_stop',
+      ]);
+      const STRIP_FROM_PAYLOAD = new Set([
+        'session_id',
+        'cwd',
+        'hook_event_name',
+        'transcript_path',
+        'permission_mode',
+        'agent_id',
+        'agent_type',
+        'stop_hook_active',
+      ]);
+      if (!ORIGINAL_EVENTS.has(eventType)) {
+        event.payload = Object.fromEntries(
+          Object.entries(body)
+            .filter(([k]) => !STRIP_FROM_PAYLOAD.has(k))
+            .map(([k, v]) => [k, typeof v === 'string' && v.length > 500 ? v.slice(0, 500) : v])
+        );
+        if (eventType === 'tool_failure' || eventType === 'stop_failure') {
+          if (typeof body.error === 'string') event.error = body.error;
+        }
+      }
+
+      // Non-blocking schema audit (runs for all 24 events)
+      auditPayload(hookEventName, eventType, body).catch(() => {});
 
       await writeEvent(event);
 

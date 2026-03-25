@@ -7,7 +7,25 @@ export type AngelEyeEventType =
   | 'stop'
   | 'session_end'
   | 'subagent_start'
-  | 'subagent_stop';
+  | 'subagent_stop'
+  // Wave 11 — full hook coverage
+  | 'tool_failure'
+  | 'stop_failure'
+  | 'worktree_create'
+  | 'worktree_remove'
+  | 'cwd_changed'
+  | 'pre_tool_use'
+  | 'instructions_loaded'
+  | 'pre_compact'
+  | 'post_compact'
+  | 'permission_request'
+  | 'notification'
+  | 'teammate_idle'
+  | 'task_completed'
+  | 'config_change'
+  | 'elicitation'
+  | 'elicitation_result'
+  | 'file_changed';
 
 export interface AngelEyeEvent {
   id: string;
@@ -25,6 +43,9 @@ export interface AngelEyeEvent {
   reason?: string;
   last_message?: string;
   agent_type?: string;
+  // Wave 11 — generic bucket for new event data
+  payload?: Record<string, unknown>;
+  error?: string;
 }
 
 export type SessionType =

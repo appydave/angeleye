@@ -44,7 +44,7 @@ Interrogatable history. Filter by tool type, event type, workspace, tag. Chain e
 
 ### Source 1: Claude Code Hook Events (real-time, interactive sessions)
 
-Claude Code fires 21 hook events total. AngelEye subscribes to a subset. All delivered as JSON via stdin to hook scripts.
+Claude Code fires 24 hook events total (as of v2.1.83). AngelEye subscribes to 7 in v1 — Wave 11 expands to all 24. All delivered as JSON via stdin to hook scripts.
 
 **Common fields on every event**: `session_id`, `transcript_path`, `cwd`, `hook_event_name`, `agent_id`, `agent_type` (v2.1.69+)
 
@@ -395,7 +395,7 @@ The 924-session analysis was conducted across 14 waves (plus discovery rounds), 
 
 - `brains/angeleye/` — full domain knowledge (concepts, data model, ingestion architecture, ambient intelligence)
 - `brains/angeleye/analysis/` — per-wave findings from 924-session analysis campaign
-- `brains/anthropic-claude/claude-code/hooks-reference.md` — **all 21 hook events + schemas** (canonical hook reference)
+- `brains/anthropic-claude/claude-code/hooks-reference.md` — **all 24 hook events + schemas** (canonical hook reference)
 - `brains/anthropic-claude/claude-code/observability.md` — hook input formats, 4 data streams, JSONL format
 - `brains/anthropic-claude/claude-code/session-management.md` — session resume, /rename, /fork behaviour
 - `brains/agentic-os/communication-architecture.md` — Supabase schema (future cold path if needed)
