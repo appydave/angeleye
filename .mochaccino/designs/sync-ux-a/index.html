@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sync UX A: Changelog Feed — Mochaccino</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #e8e0d4; --surface: #ede7dc; --surface-mid: #ddd6cc;
+    --card: #f5f1eb; --border: #d4cdc4; --border-raised: #ccc5bb;
+    --primary: #c8841a; --fg: #2a2018; --muted: #7a6e5e; --muted-dim: #9e9484;
+    --green: #5a9a3c; --green-bg: #eef5ea; --blue: #3b82b6; --blue-bg: #ebf1f8;
+  }
+  body { background: var(--bg); color: var(--fg); font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.5; }
+  .banner { background: var(--border); color: var(--muted); font-size: 11px; padding: 6px 16px; letter-spacing: 0.5px; }
+
+  .shell { display: flex; height: calc(100vh - 28px); }
+
+  .sidebar {
+    width: 224px; flex-shrink: 0;
+    border-right: 1px solid var(--border); background: var(--surface);
+    padding: 16px 8px;
+  }
+  .sidebar .brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; letter-spacing: 2px; color: var(--primary);
+    padding: 0 12px 16px;
+  }
+  .sidebar .nav-group-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--muted-dim);
+    padding: 12px 12px 4px;
+  }
+  .sidebar .nav-item {
+    display: block; width: 100%; text-align: left;
+    padding: 8px 12px; border-radius: 4px; font-size: 13px;
+    color: var(--fg); background: none; border: none; cursor: pointer;
+    border-left: 2px solid transparent;
+  }
+  .sidebar .nav-item.active {
+    border-left-color: var(--primary); font-weight: 600; background: var(--surface-mid);
+  }
+  .sidebar .nav-item:hover:not(.active) { background: var(--surface-mid); }
+
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); padding: 24px; }
+
+  /* ── Settings card ─────────────── */
+  .settings-header { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--fg); margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+
+  .sync-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; max-width: 560px; }
+  .sync-card h2 { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 1.5px; color: var(--primary); margin-bottom: 4px; }
+  .sync-card .subtitle { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+
+  .sync-btn {
+    padding: 6px 16px; font-size: 13px; font-weight: 500;
+    border: 1px solid var(--border); border-radius: 4px;
+    background: none; color: var(--fg); cursor: pointer;
+    transition: all 0.15s;
+  }
+  .sync-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+  .last-sync { font-size: 12px; color: var(--muted); margin-top: 8px; }
+
+  /* ── Concept A: Changelog feed ── */
+  .changelog { margin-top: 20px; border-top: 1px solid var(--border); padding-top: 16px; }
+  .changelog-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted-dim); margin-bottom: 12px; }
+
+  .change-group { margin-bottom: 14px; }
+  .change-group-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .change-group-badge {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
+    padding: 2px 8px; border-radius: 3px;
+    text-transform: uppercase;
+  }
+  .badge-new { background: var(--green-bg); color: var(--green); }
+  .badge-classified { background: var(--blue-bg); color: var(--blue); }
+  .change-group-count { font-size: 13px; font-weight: 600; color: var(--fg); }
+  .change-group-label { font-size: 12px; color: var(--muted); }
+
+  .change-item {
+    display: flex; align-items: baseline; gap: 8px;
+    padding: 4px 0 4px 20px; font-size: 12px;
+  }
+  .change-item .project { color: var(--fg); font-weight: 500; }
+  .change-item .count { color: var(--primary); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .change-item .type-tag {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.3px;
+    color: var(--muted); background: var(--surface-mid);
+    padding: 1px 5px; border-radius: 2px;
+  }
+
+  .no-change { font-size: 12px; color: var(--muted-dim); font-style: italic; padding: 8px 0; }
+
+  .totals { display: flex; gap: 16px; margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border); }
+  .totals .stat { font-size: 12px; color: var(--muted); }
+  .totals .stat strong { color: var(--fg); }
+</style>
+</head>
+<body>
+<div class="banner">MOCHACCINO MOCKUP — Sync UX Option A: Changelog Feed</div>
+<div class="shell">
+  <div class="sidebar">
+    <div class="brand">ANGELEYE</div>
+    <div class="nav-group-label">Views</div>
+    <button class="nav-item">Observer</button>
+    <button class="nav-item">Organiser</button>
+    <button class="nav-item active">Settings</button>
+    <button class="nav-item">Mockups</button>
+  </div>
+  <div class="main">
+    <div class="settings-header">Settings</div>
+
+    <div class="sync-card">
+      <h2>Session Sync</h2>
+      <p class="subtitle">Scan and classify all Claude Code sessions in one pass.</p>
+
+      <button class="sync-btn">Sync Sessions</button>
+      <div class="last-sync">Last sync: 3 minutes ago</div>
+
+      <!-- ── The new part: changelog feed ── -->
+      <div class="changelog">
+        <div class="changelog-title">What Changed</div>
+
+        <div class="change-group">
+          <div class="change-group-header">
+            <span class="change-group-badge badge-new">new</span>
+            <span class="change-group-count">12</span>
+            <span class="change-group-label">sessions imported</span>
+          </div>
+          <div class="change-item">
+            <span class="count">5</span>
+            <span class="project">supportsignal</span>
+            <span class="type-tag">BUILD</span>
+          </div>
+          <div class="change-item">
+            <span class="count">3</span>
+            <span class="project">brains/angeleye</span>
+            <span class="type-tag">KNOWLEDGE</span>
+          </div>
+          <div class="change-item">
+            <span class="count">2</span>
+            <span class="project">flivideo</span>
+            <span class="type-tag">BUILD</span>
+          </div>
+          <div class="change-item">
+            <span class="count">1</span>
+            <span class="project">appydave-tools</span>
+            <span class="type-tag">OPS</span>
+          </div>
+          <div class="change-item">
+            <span class="count">1</span>
+            <span class="project">angeleye</span>
+            <span class="type-tag">ORIENTATION</span>
+          </div>
+        </div>
+
+        <div class="change-group">
+          <div class="change-group-header">
+            <span class="change-group-badge badge-classified">classified</span>
+            <span class="change-group-count">49</span>
+            <span class="change-group-label">sessions reclassified</span>
+          </div>
+          <div class="change-item">
+            <span class="count">32</span>
+            <span class="project">previously unclassified</span>
+            <span class="type-tag">various</span>
+          </div>
+          <div class="change-item">
+            <span class="count">17</span>
+            <span class="project">already up to date</span>
+          </div>
+        </div>
+
+        <div class="totals">
+          <div class="stat"><strong>889</strong> total sessions</div>
+          <div class="stat"><strong>0</strong> errors</div>
+          <div class="stat"><strong>59</strong> unclassified</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

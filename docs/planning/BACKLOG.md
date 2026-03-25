@@ -1,28 +1,11 @@
 # Project Backlog — AngelEye
 
-**Last updated**: 2026-03-23
-**Total**: 44 | Pending: 11 | In Progress: 0 | Done: 31 | Deferred: 2 | Rejected: 0
+**Last updated**: 2026-03-25
+**Total**: 44 | Pending: 4 | In Progress: 0 | Done: 38 | Deferred: 2 | Rejected: 0
 
 ## Pending
 
 - [ ] B011 — /angeleye:publish skill (Nano Banana / FliDeck integration) | Priority: medium
-
-### Observer — Session list pagination
-
-- [ ] B023 — Paginate session list: cursor-based API (`GET /api/sessions?after=<id>&limit=50`), virtual scrolling on client. Currently 690+ sessions loaded at once — will degrade at 2000+. | Priority: medium
-
-### Observer — Named session row design
-
-- [ ] B037 — Named session elevated row treatment: amber left rail, name as flex-1 hero (no 140px cap), project+cwd on secondary dim line, ⚑ named micro-tag. Observer currently truncates long names like "solo-deck-flideck-slide-system" to fit the fixed column. Mockup designed 2026-03-17. | Priority: medium
-
-### Intelligence — Classifier improvements (from angeleye-analysis-1)
-
-- [ ] B038 — Scale-aware BUILD guard: reject BUILD classification for micro (0% accuracy) and light (<15% accuracy) sessions. Use event_count thresholds from the 910-session analysis. | Priority: high
-- [ ] B039 — Iron-clad classifier rules: (a) `*run NNN` first prompt = operations.poem_execution, (b) brains/ CWD + light scale = never BUILD, (c) zero tool calls = never BUILD. | Priority: high
-- [ ] B040 — PII detection pass: regex scan during backfill for names, emails, IPs, birthdates. Flag sessions with PII in registry. 14 waves of evidence says this is needed. | Priority: medium
-- [ ] B041 — Paperclip/autonomous agent detection: identify machine-initiated sessions by prompt fingerprint ("You are agent {uuid}"). Classify as operations.paperclip_agent, not BUILD. | Priority: medium
-- [ ] B042 — Voice dictation entity dictionary: canonical lookup of 220+ misheard terms (e.g. "AngelLie"=AngelEye, "nvideo nemoclaw"=NVIDIA NemoClaw). Pre-process prompts before classification. | Priority: low
-- [ ] B043 — Promote confirmed subtypes (N >= 3) from 500+ candidates to canonical taxonomy. Analysis complete — needs curation pass. | Priority: medium
 
 ### Infrastructure
 
@@ -34,6 +17,14 @@
 
 ## Done
 
+- [x] B038 — Scale-aware BUILD guard: micro/light sessions demoted from BUILD | Completed: commit 3f593607
+- [x] B039 — Iron-clad classifier rules (\*run NNN, brains/ + light, zero tool calls) | Completed: commit 3f593607
+- [x] B040 — PII detection pass: regex scan for emails, IPs, API keys, birthdates | Completed: commit 9b692fae
+- [x] B041 — Paperclip/autonomous agent detection | Completed: commit 3f593607
+- [x] B042 — Voice dictation entity dictionary (220+ misheard terms) | Completed: commit 9b692fae
+- [x] B043 — Promote confirmed subtypes to canonical taxonomy (26 subtypes) | Completed: commit 9b692fae
+- [x] B023 — Paginate session list: cursor-based API + virtual scrolling | Completed: commit 9b692fae
+- [x] B037 — Named session elevated row treatment | Completed: commit 9b692fae
 - [x] B022 — Expand prompt row on click in focus panel + first_real_prompt tooltip on session row | Completed: angeleye-b022-prompt-expand
 - [x] B032 — Unified Sync button replacing backfill + classify | Completed: angeleye-wave10-settings-intelligence
 - [x] B033 — Delta tracking: last-sync.json + status line in Settings | Completed: angeleye-wave10-settings-intelligence

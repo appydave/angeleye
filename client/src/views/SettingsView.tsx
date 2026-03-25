@@ -1,10 +1,24 @@
 import { useState, useEffect } from 'react';
 
+type SessionType = 'BUILD' | 'TEST' | 'RESEARCH' | 'KNOWLEDGE' | 'OPS' | 'ORIENTATION';
+type TypeCounts = Record<SessionType | 'unclassified', number>;
+
+interface NewByProject {
+  project: string;
+  count: number;
+  type: SessionType | 'unclassified';
+}
+
 interface SyncResult {
   imported: number;
   classified: number;
   alreadyUpToDate: number;
   errors: number;
+  before: TypeCounts;
+  after: TypeCounts;
+  totalBefore: number;
+  totalAfter: number;
+  newByProject: NewByProject[];
 }
 
 interface LastSyncRecord {
@@ -13,12 +27,30 @@ interface LastSyncRecord {
   classified: number;
 }
 
-type SessionType = 'BUILD' | 'TEST' | 'RESEARCH' | 'KNOWLEDGE' | 'OPS' | 'ORIENTATION';
-
 interface StatsResult {
   byType: Record<SessionType | 'unclassified', number>;
   total: number;
 }
+
+const TYPE_ORDER: (SessionType | 'unclassified')[] = [
+  'BUILD',
+  'ORIENTATION',
+  'KNOWLEDGE',
+  'RESEARCH',
+  'OPS',
+  'TEST',
+  'unclassified',
+];
+
+const TYPE_COLORS: Record<string, string> = {
+  BUILD: '#c8841a',
+  ORIENTATION: '#7a6e5e',
+  KNOWLEDGE: '#0d9488',
+  RESEARCH: '#3b82b6',
+  OPS: '#ea580c',
+  TEST: '#7c3aed',
+  unclassified: '#d4cdc4',
+};
 
 function relativeTime(isoString: string): string {
   const diffMs = Date.now() - new Date(isoString).getTime();
@@ -29,6 +61,127 @@ function relativeTime(isoString: string): string {
   if (hours < 24) return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
   const days = Math.floor(hours / 24);
   return `${days} day${days !== 1 ? 's' : ''} ago`;
+}
+
+function DiffTable({ result }: { result: SyncResult }) {
+  const maxDelta = Math.max(
+    ...TYPE_ORDER.map((t) => Math.abs((result.after[t] ?? 0) - (result.before[t] ?? 0)))
+  );
+
+  return (
+    <div className="mt-5 border-t border-border pt-4">
+      <div className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground/60 mb-3">
+        Sync Results — {result.imported} new, {result.classified} classified
+      </div>
+
+      <table className="w-full text-xs border-collapse">
+        <thead>
+          <tr className="border-b border-border">
+            <th className="text-left text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60 py-1.5 px-2">
+              Type
+            </th>
+            <th className="text-right text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60 py-1.5 px-2">
+              Before
+            </th>
+            <th className="text-right text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60 py-1.5 px-2">
+              After
+            </th>
+            <th className="text-right text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60 py-1.5 px-2">
+              Delta
+            </th>
+            <th className="py-1.5 px-2 w-16"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {TYPE_ORDER.map((type) => {
+            const before = result.before[type] ?? 0;
+            const after = result.after[type] ?? 0;
+            const delta = after - before;
+            const barWidth = maxDelta > 0 ? (Math.abs(delta) / maxDelta) * 48 : 0;
+
+            return (
+              <tr key={type} className="border-b border-border last:border-b-0">
+                <td
+                  className={`py-1 px-2 font-semibold ${type === 'unclassified' ? 'text-muted-foreground/60' : 'text-foreground'}`}
+                >
+                  {type === 'unclassified' ? 'unclassified' : type}
+                </td>
+                <td className="py-1 px-2 text-right font-mono tabular-nums">{before}</td>
+                <td className="py-1 px-2 text-right font-mono tabular-nums">{after}</td>
+                <td
+                  className={`py-1 px-2 text-right font-mono tabular-nums font-semibold ${
+                    delta > 0
+                      ? 'text-[#5a9a3c]'
+                      : delta < 0
+                        ? 'text-destructive'
+                        : 'text-muted-foreground/60'
+                  }`}
+                >
+                  {delta > 0 ? `+${delta}` : delta === 0 ? '—' : `${delta}`}
+                </td>
+                <td className="py-1 px-2">
+                  {delta !== 0 && (
+                    <span
+                      className="inline-block h-2 rounded-sm align-middle"
+                      style={{
+                        width: `${barWidth}px`,
+                        background: delta < 0 ? '#c0392b33' : (TYPE_COLORS[type] ?? '#d4cdc4'),
+                        opacity: delta < 0 ? 0.5 : 0.7,
+                      }}
+                    />
+                  )}
+                </td>
+              </tr>
+            );
+          })}
+          <tr className="border-t-2 border-border font-bold">
+            <td className="py-1.5 px-2">Total</td>
+            <td className="py-1.5 px-2 text-right font-mono tabular-nums">{result.totalBefore}</td>
+            <td className="py-1.5 px-2 text-right font-mono tabular-nums">{result.totalAfter}</td>
+            <td className="py-1.5 px-2 text-right font-mono tabular-nums text-[#5a9a3c]">
+              {result.totalAfter - result.totalBefore > 0
+                ? `+${result.totalAfter - result.totalBefore}`
+                : result.totalAfter - result.totalBefore === 0
+                  ? '—'
+                  : result.totalAfter - result.totalBefore}
+            </td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      {result.newByProject.length > 0 && (
+        <div className="mt-4">
+          <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/60 mb-2">
+            {result.imported} New Sessions
+          </div>
+          <div className="space-y-0.5">
+            {result.newByProject.map((p) => (
+              <div key={p.project} className="flex items-center gap-2 text-xs py-0.5">
+                <span
+                  className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                  style={{ background: TYPE_COLORS[p.type] ?? '#d4cdc4' }}
+                />
+                <span className="font-semibold text-primary tabular-nums w-5 text-right">
+                  {p.count}
+                </span>
+                <span className="text-foreground font-medium flex-1">{p.project}</span>
+                <span className="text-[10px] font-semibold text-muted-foreground bg-surface-mid px-1.5 py-0.5 rounded-sm">
+                  {p.type === 'ORIENTATION' ? 'ORIENT.' : p.type}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {result.errors > 0 && (
+        <p className="mt-3 text-xs text-destructive">
+          {result.errors} error{result.errors !== 1 ? 's' : ''} during sync
+        </p>
+      )}
+    </div>
+  );
 }
 
 export default function SettingsView() {
@@ -89,7 +242,7 @@ export default function SettingsView() {
         <h1 className="font-bebas text-3xl tracking-wider text-foreground">Settings</h1>
       </div>
 
-      <div className="bg-card border border-border rounded-md shadow-sm p-5 max-w-lg">
+      <div className="bg-card border border-border rounded-md shadow-sm p-5 max-w-[600px]">
         <h2 className="font-bebas text-lg tracking-wider text-primary mb-1">Session Sync</h2>
         <p className="text-muted-foreground text-sm mb-4">
           Scan and classify all Claude Code sessions in one pass. Safe to run multiple times.
@@ -115,29 +268,11 @@ export default function SettingsView() {
           {syncing ? 'Syncing…' : 'Sync Sessions'}
         </button>
 
-        {syncResult && (
-          <div className="mt-4 text-sm space-y-1">
-            <p className="text-primary font-medium">Sync complete</p>
-            {syncResult.imported > 0 && (
-              <p className="text-primary">
-                {syncResult.imported} new session{syncResult.imported !== 1 ? 's' : ''} imported
-              </p>
-            )}
-            {syncResult.classified > 0 && (
-              <p className="text-primary">
-                {syncResult.classified} session{syncResult.classified !== 1 ? 's' : ''} classified
-              </p>
-            )}
-            <p className="text-muted-foreground">{syncResult.alreadyUpToDate} already up to date</p>
-            {syncResult.errors > 0 && (
-              <p className="text-destructive">Errors: {syncResult.errors}</p>
-            )}
-          </div>
-        )}
+        {syncResult && <DiffTable result={syncResult} />}
 
         {syncError && <p className="mt-4 text-sm text-destructive">{syncError}</p>}
 
-        {stats && (
+        {!syncResult && stats && (
           <div className="mt-4">
             <p className="text-xs font-bebas tracking-wider text-muted-foreground mb-2">
               Session Types — {stats.total} total

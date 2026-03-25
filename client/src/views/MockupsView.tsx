@@ -25,6 +25,16 @@ const mockups = [
     ],
   },
   {
+    category: 'Sync UX',
+    items: [
+      { label: 'A: Changelog Feed', path: '/mockups/.mochaccino/designs/sync-ux-a/index.html' },
+      { label: 'B: Stacked Bar Delta', path: '/mockups/.mochaccino/designs/sync-ux-b/index.html' },
+      { label: 'C: Compact Toast', path: '/mockups/.mochaccino/designs/sync-ux-c/index.html' },
+      { label: 'D: Inline Diff Table', path: '/mockups/.mochaccino/designs/sync-ux-d/index.html' },
+      { label: 'E: Narrative Summary', path: '/mockups/.mochaccino/designs/sync-ux-e/index.html' },
+    ],
+  },
+  {
     category: 'Named Session Rows',
     items: [
       {

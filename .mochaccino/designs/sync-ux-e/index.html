@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sync UX E: Narrative Summary — Mochaccino</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #e8e0d4; --surface: #ede7dc; --surface-mid: #ddd6cc;
+    --card: #f5f1eb; --border: #d4cdc4; --border-raised: #ccc5bb;
+    --primary: #c8841a; --fg: #2a2018; --muted: #7a6e5e; --muted-dim: #9e9484;
+    --green: #5a9a3c; --green-bg: #eef5ea;
+  }
+  body { background: var(--bg); color: var(--fg); font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.5; }
+  .banner { background: var(--border); color: var(--muted); font-size: 11px; padding: 6px 16px; letter-spacing: 0.5px; }
+
+  .shell { display: flex; height: calc(100vh - 28px); }
+  .sidebar {
+    width: 224px; flex-shrink: 0;
+    border-right: 1px solid var(--border); background: var(--surface);
+    padding: 16px 8px;
+  }
+  .sidebar .brand { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--primary); padding: 0 12px 16px; }
+  .sidebar .nav-group-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted-dim); padding: 12px 12px 4px; }
+  .sidebar .nav-item { display: block; width: 100%; text-align: left; padding: 8px 12px; border-radius: 4px; font-size: 13px; color: var(--fg); background: none; border: none; cursor: pointer; border-left: 2px solid transparent; }
+  .sidebar .nav-item.active { border-left-color: var(--primary); font-weight: 600; background: var(--surface-mid); }
+  .sidebar .nav-item:hover:not(.active) { background: var(--surface-mid); }
+
+  .main { flex: 1; overflow-y: auto; background: var(--bg); padding: 24px; }
+  .settings-header { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--fg); margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+
+  .sync-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; max-width: 560px; }
+  .sync-card h2 { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 1.5px; color: var(--primary); margin-bottom: 4px; }
+  .sync-card .subtitle { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+  .sync-btn { padding: 6px 16px; font-size: 13px; font-weight: 500; border: 1px solid var(--border); border-radius: 4px; background: none; color: var(--fg); cursor: pointer; }
+  .sync-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+  /* ── Concept E: Narrative prose summary ── */
+  .narrative-result {
+    margin-top: 16px; padding: 16px; border-radius: 6px;
+    background: var(--green-bg); border-left: 3px solid var(--green);
+  }
+  .narrative-headline { font-size: 14px; font-weight: 600; color: var(--fg); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .narrative-headline .icon { color: var(--green); font-size: 16px; }
+
+  .narrative-body { font-size: 13px; color: var(--fg); line-height: 1.7; }
+  .narrative-body strong { font-weight: 600; }
+  .narrative-body .accent { color: var(--primary); font-weight: 600; }
+  .narrative-body .dim { color: var(--muted); }
+
+  .narrative-projects { margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(90,154,60,0.2); }
+  .narrative-projects p { font-size: 12px; color: var(--fg); line-height: 1.8; }
+
+  .narrative-footer { margin-top: 10px; font-size: 11px; color: var(--muted); }
+
+  /* ── "Nothing changed" variant ── */
+  .narrative-empty {
+    margin-top: 16px; padding: 12px 16px; border-radius: 6px;
+    background: var(--surface); border-left: 3px solid var(--border);
+  }
+  .narrative-empty p { font-size: 13px; color: var(--muted); }
+
+  /* ── Separator ── */
+  .variant-label { margin-top: 32px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted-dim); margin-bottom: 8px; padding-top: 16px; border-top: 1px dashed var(--border); }
+</style>
+</head>
+<body>
+<div class="banner">MOCHACCINO MOCKUP — Sync UX Option E: Narrative Summary</div>
+<div class="shell">
+  <div class="sidebar">
+    <div class="brand">ANGELEYE</div>
+    <div class="nav-group-label">Views</div>
+    <button class="nav-item">Observer</button>
+    <button class="nav-item">Organiser</button>
+    <button class="nav-item active">Settings</button>
+    <button class="nav-item">Mockups</button>
+  </div>
+  <div class="main">
+    <div class="settings-header">Settings</div>
+
+    <div class="sync-card">
+      <h2>Session Sync</h2>
+      <p class="subtitle">Scan and classify all Claude Code sessions in one pass.</p>
+      <button class="sync-btn">Sync Sessions</button>
+
+      <!-- ── Result: things changed ── -->
+      <div class="narrative-result">
+        <div class="narrative-headline"><span class="icon">&#10003;</span> Sync complete</div>
+        <div class="narrative-body">
+          Found <span class="accent">12 new sessions</span> and classified <strong>49</strong> previously unclassified ones.
+          Registry grew from <span class="dim">828 → 889</span> sessions.
+          Unclassified dropped from <span class="dim">108 → 59</span>.
+
+          <div class="narrative-projects">
+            <p>
+              <strong>supportsignal</strong> — 5 new BUILD sessions<br>
+              <strong>brains/angeleye</strong> — 3 new KNOWLEDGE sessions<br>
+              <strong>flivideo</strong> — 2 new BUILD sessions<br>
+              <strong>appydave-tools</strong> — 1 new OPS session<br>
+              <strong>angeleye</strong> — 1 new ORIENTATION session
+            </p>
+          </div>
+        </div>
+        <div class="narrative-footer">889 total sessions across 47 projects</div>
+      </div>
+
+      <!-- ── Variant: nothing changed ── -->
+      <div class="variant-label">When nothing changed:</div>
+      <div class="narrative-empty">
+        <p>&#10003; Everything up to date — 889 sessions, no new activity since last sync.</p>
+      </div>
+
+      <!-- ── Variant: only classified (no new imports) ── -->
+      <div class="variant-label">When only classification happened (no new sessions):</div>
+      <div class="narrative-result" style="border-left-color: #3b82b6; background: #ebf1f8;">
+        <div class="narrative-headline"><span class="icon" style="color:#3b82b6;">&#10003;</span> Sync complete</div>
+        <div class="narrative-body">
+          No new sessions found. Classified <span class="accent">49</span> previously unclassified sessions.
+          Unclassified dropped from <span class="dim">108 → 59</span>.
+        </div>
+        <div class="narrative-footer">889 total sessions</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

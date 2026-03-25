@@ -6,6 +6,7 @@ import request from 'supertest';
 import express from 'express';
 import { _setDataDir, initAngelEyeDirs } from '../services/registry.service.js';
 import syncRouter from './sync.js';
+import type { SyncResult } from '../services/sync.service.js';
 
 // Mock sync service so route tests don't trigger real file system scanning
 vi.mock('../services/sync.service.js', async (importOriginal) => {
@@ -17,6 +18,32 @@ vi.mock('../services/sync.service.js', async (importOriginal) => {
 });
 
 import { runSync, readLastSync, writeLastSync } from '../services/sync.service.js';
+
+const EMPTY_COUNTS = {
+  BUILD: 0,
+  TEST: 0,
+  RESEARCH: 0,
+  KNOWLEDGE: 0,
+  OPS: 0,
+  ORIENTATION: 0,
+  unclassified: 0,
+};
+
+/** Build a full SyncResult from partial overrides — avoids repeating boilerplate. */
+function makeSyncResult(overrides: Partial<SyncResult> = {}): SyncResult {
+  return {
+    imported: 0,
+    classified: 0,
+    alreadyUpToDate: 0,
+    errors: 0,
+    before: { ...EMPTY_COUNTS },
+    after: { ...EMPTY_COUNTS },
+    totalBefore: 0,
+    totalAfter: 0,
+    newByProject: [],
+    ...overrides,
+  };
+}
 
 let testDir: string;
 let app: express.Express;
@@ -39,13 +66,10 @@ afterEach(async () => {
 // ── POST /api/sync route tests ────────────────────────────────────────────────
 
 describe('POST /api/sync', () => {
-  it('returns SyncResult shape with all four required fields', async () => {
-    vi.mocked(runSync).mockResolvedValueOnce({
-      imported: 3,
-      classified: 2,
-      alreadyUpToDate: 5,
-      errors: 0,
-    });
+  it('returns SyncResult shape with all required fields', async () => {
+    vi.mocked(runSync).mockResolvedValueOnce(
+      makeSyncResult({ imported: 3, classified: 2, alreadyUpToDate: 5 })
+    );
 
     const res = await request(app).post('/api/sync').send();
 
@@ -55,15 +79,17 @@ describe('POST /api/sync', () => {
     expect(typeof res.body.data.classified).toBe('number');
     expect(typeof res.body.data.alreadyUpToDate).toBe('number');
     expect(typeof res.body.data.errors).toBe('number');
+    expect(res.body.data.before).toBeDefined();
+    expect(res.body.data.after).toBeDefined();
+    expect(typeof res.body.data.totalBefore).toBe('number');
+    expect(typeof res.body.data.totalAfter).toBe('number');
+    expect(Array.isArray(res.body.data.newByProject)).toBe(true);
   });
 
   it('returns the correct values from the sync service', async () => {
-    vi.mocked(runSync).mockResolvedValueOnce({
-      imported: 5,
-      classified: 3,
-      alreadyUpToDate: 10,
-      errors: 1,
-    });
+    vi.mocked(runSync).mockResolvedValueOnce(
+      makeSyncResult({ imported: 5, classified: 3, alreadyUpToDate: 10, errors: 1 })
+    );
 
     const res = await request(app).post('/api/sync').send();
 
@@ -84,17 +110,39 @@ describe('POST /api/sync', () => {
   });
 
   it('returns zero errors when all sessions succeed', async () => {
-    vi.mocked(runSync).mockResolvedValueOnce({
-      imported: 2,
-      classified: 2,
-      alreadyUpToDate: 0,
-      errors: 0,
-    });
+    vi.mocked(runSync).mockResolvedValueOnce(makeSyncResult({ imported: 2, classified: 2 }));
 
     const res = await request(app).post('/api/sync').send();
 
     expect(res.status).toBe(200);
     expect(res.body.data.errors).toBe(0);
+  });
+
+  it('returns before/after type counts and newByProject', async () => {
+    vi.mocked(runSync).mockResolvedValueOnce(
+      makeSyncResult({
+        imported: 3,
+        classified: 3,
+        before: { ...EMPTY_COUNTS, BUILD: 10 },
+        after: { ...EMPTY_COUNTS, BUILD: 12, KNOWLEDGE: 1 },
+        totalBefore: 10,
+        totalAfter: 13,
+        newByProject: [
+          { project: 'supportsignal', count: 2, type: 'BUILD' },
+          { project: 'brains/angeleye', count: 1, type: 'KNOWLEDGE' },
+        ],
+      })
+    );
+
+    const res = await request(app).post('/api/sync').send();
+
+    expect(res.status).toBe(200);
+    expect(res.body.data.before.BUILD).toBe(10);
+    expect(res.body.data.after.BUILD).toBe(12);
+    expect(res.body.data.totalBefore).toBe(10);
+    expect(res.body.data.totalAfter).toBe(13);
+    expect(res.body.data.newByProject).toHaveLength(2);
+    expect(res.body.data.newByProject[0].project).toBe('supportsignal');
   });
 });
 
@@ -125,13 +173,7 @@ describe('runSync service — already-classified sessions counted in alreadyUpTo
       'utf-8'
     );
 
-    // Use mock to simulate what runSync would return for this registry
-    vi.mocked(runSync).mockResolvedValueOnce({
-      imported: 0,
-      classified: 0,
-      alreadyUpToDate: 1,
-      errors: 0,
-    });
+    vi.mocked(runSync).mockResolvedValueOnce(makeSyncResult({ alreadyUpToDate: 1 }));
 
     const result = await runSync();
     expect(result.alreadyUpToDate).toBe(1);
@@ -139,12 +181,7 @@ describe('runSync service — already-classified sessions counted in alreadyUpTo
   });
 
   it('newly imported sessions with no session_type are classified', async () => {
-    vi.mocked(runSync).mockResolvedValueOnce({
-      imported: 3,
-      classified: 3,
-      alreadyUpToDate: 0,
-      errors: 0,
-    });
+    vi.mocked(runSync).mockResolvedValueOnce(makeSyncResult({ imported: 3, classified: 3 }));
 
     const result = await runSync();
     expect(result.classified).toBe(3);
@@ -152,34 +189,29 @@ describe('runSync service — already-classified sessions counted in alreadyUpTo
   });
 
   it('errors in individual session classification increment errors without aborting the run', async () => {
-    vi.mocked(runSync).mockResolvedValueOnce({
-      imported: 2,
-      classified: 1,
-      alreadyUpToDate: 0,
-      errors: 1,
-    });
+    vi.mocked(runSync).mockResolvedValueOnce(
+      makeSyncResult({ imported: 2, classified: 1, errors: 1 })
+    );
 
     const result = await runSync();
-    // Run should complete, not throw
     expect(typeof result.errors).toBe('number');
     expect(result.errors).toBeGreaterThanOrEqual(1);
-    // classified count reflects only successful ones
     expect(typeof result.classified).toBe('number');
   });
 
-  it('result always contains all four SyncResult fields', async () => {
-    vi.mocked(runSync).mockResolvedValueOnce({
-      imported: 0,
-      classified: 0,
-      alreadyUpToDate: 0,
-      errors: 0,
-    });
+  it('result always contains all SyncResult fields', async () => {
+    vi.mocked(runSync).mockResolvedValueOnce(makeSyncResult());
 
     const result = await runSync();
     expect(result).toHaveProperty('imported');
     expect(result).toHaveProperty('classified');
     expect(result).toHaveProperty('alreadyUpToDate');
     expect(result).toHaveProperty('errors');
+    expect(result).toHaveProperty('before');
+    expect(result).toHaveProperty('after');
+    expect(result).toHaveProperty('totalBefore');
+    expect(result).toHaveProperty('totalAfter');
+    expect(result).toHaveProperty('newByProject');
   });
 });
 
@@ -187,12 +219,7 @@ describe('runSync service — already-classified sessions counted in alreadyUpTo
 
 describe('POST /api/sync — additional coverage', () => {
   it('alreadyUpToDate can be zero when registry is empty', async () => {
-    vi.mocked(runSync).mockResolvedValueOnce({
-      imported: 0,
-      classified: 0,
-      alreadyUpToDate: 0,
-      errors: 0,
-    });
+    vi.mocked(runSync).mockResolvedValueOnce(makeSyncResult());
 
     const res = await request(app).post('/api/sync').send();
     expect(res.status).toBe(200);
@@ -200,17 +227,12 @@ describe('POST /api/sync — additional coverage', () => {
   });
 
   it('imported and classified are independent counters', async () => {
-    // imported = sessions pulled in by backfill, classified = sessions that got session_type set
-    vi.mocked(runSync).mockResolvedValueOnce({
-      imported: 10,
-      classified: 8,
-      alreadyUpToDate: 2,
-      errors: 0,
-    });
+    vi.mocked(runSync).mockResolvedValueOnce(
+      makeSyncResult({ imported: 10, classified: 8, alreadyUpToDate: 2 })
+    );
 
     const res = await request(app).post('/api/sync').send();
     expect(res.status).toBe(200);
-    // imported and alreadyUpToDate should not equal each other in this case
     expect(res.body.data.imported).toBe(10);
     expect(res.body.data.classified).toBe(8);
     expect(res.body.data.alreadyUpToDate).toBe(2);
@@ -285,21 +307,17 @@ describe('GET /api/sync/status', () => {
 
 describe('POST /api/sync — creates/updates last-sync.json', () => {
   it('creates last-sync.json after a successful sync', async () => {
-    // Verify it doesn't exist yet
     const beforeSync = await readLastSync();
     expect(beforeSync).toBeNull();
 
-    // Run the real runSync (unmocked here to exercise writeLastSync)
-    // We use the real implementation by restoring runSync temporarily
     vi.mocked(runSync).mockImplementationOnce(async () => {
-      // Call writeLastSync directly to simulate what runSync does
       const { writeLastSync: writeFn } = await import('../services/sync.service.js');
       await writeFn({
         timestamp: new Date().toISOString(),
         imported: 4,
         classified: 2,
       });
-      return { imported: 4, classified: 2, alreadyUpToDate: 0, errors: 0 };
+      return makeSyncResult({ imported: 4, classified: 2 });
     });
 
     const res = await request(app).post('/api/sync').send();

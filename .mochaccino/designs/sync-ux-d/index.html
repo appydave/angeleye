@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sync UX D: Inline Diff Table — Mochaccino</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #e8e0d4; --surface: #ede7dc; --surface-mid: #ddd6cc;
+    --card: #f5f1eb; --border: #d4cdc4; --border-raised: #ccc5bb;
+    --primary: #c8841a; --fg: #2a2018; --muted: #7a6e5e; --muted-dim: #9e9484;
+    --green: #5a9a3c; --green-bg: #eef5ea; --red: #c0392b; --red-bg: #fbeaea;
+  }
+  body { background: var(--bg); color: var(--fg); font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.5; }
+  .banner { background: var(--border); color: var(--muted); font-size: 11px; padding: 6px 16px; letter-spacing: 0.5px; }
+
+  .shell { display: flex; height: calc(100vh - 28px); }
+  .sidebar {
+    width: 224px; flex-shrink: 0;
+    border-right: 1px solid var(--border); background: var(--surface);
+    padding: 16px 8px;
+  }
+  .sidebar .brand { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--primary); padding: 0 12px 16px; }
+  .sidebar .nav-group-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted-dim); padding: 12px 12px 4px; }
+  .sidebar .nav-item { display: block; width: 100%; text-align: left; padding: 8px 12px; border-radius: 4px; font-size: 13px; color: var(--fg); background: none; border: none; cursor: pointer; border-left: 2px solid transparent; }
+  .sidebar .nav-item.active { border-left-color: var(--primary); font-weight: 600; background: var(--surface-mid); }
+  .sidebar .nav-item:hover:not(.active) { background: var(--surface-mid); }
+
+  .main { flex: 1; overflow-y: auto; background: var(--bg); padding: 24px; }
+  .settings-header { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--fg); margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+
+  .sync-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; max-width: 600px; }
+  .sync-card h2 { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 1.5px; color: var(--primary); margin-bottom: 4px; }
+  .sync-card .subtitle { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+  .sync-btn { padding: 6px 16px; font-size: 13px; font-weight: 500; border: 1px solid var(--border); border-radius: 4px; background: none; color: var(--fg); cursor: pointer; }
+  .sync-btn:hover { border-color: var(--primary); color: var(--primary); }
+  .last-sync { font-size: 12px; color: var(--muted); margin-top: 8px; }
+
+  /* ── Concept D: Diff table ── */
+  .diff-section { margin-top: 20px; border-top: 1px solid var(--border); padding-top: 16px; }
+  .diff-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted-dim); margin-bottom: 12px; }
+
+  .diff-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .diff-table th {
+    text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.8px; color: var(--muted-dim); padding: 6px 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .diff-table th.num { text-align: right; }
+  .diff-table td { padding: 5px 8px; border-bottom: 1px solid var(--border); }
+  .diff-table td.num { text-align: right; font-variant-numeric: tabular-nums; font-family: monospace; }
+  .diff-table tr:last-child td { border-bottom: none; }
+
+  .diff-table .type-cell { font-weight: 600; }
+  .diff-table .delta-pos { color: var(--green); font-weight: 600; }
+  .diff-table .delta-neg { color: var(--red); font-weight: 600; }
+  .diff-table .delta-zero { color: var(--muted-dim); }
+
+  .diff-table .total-row td { border-top: 2px solid var(--border); font-weight: 700; }
+
+  .diff-table .mini-bar { display: inline-block; height: 8px; border-radius: 2px; vertical-align: middle; margin-left: 4px; }
+
+  /* ── New by project ── */
+  .new-by-project { margin-top: 16px; }
+  .new-by-project-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted-dim); margin-bottom: 8px; }
+  .proj-row { display: flex; align-items: center; padding: 3px 0; font-size: 12px; }
+  .proj-row .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); margin-right: 8px; }
+  .proj-row .name { flex: 1; color: var(--fg); }
+  .proj-row .cnt { font-weight: 600; color: var(--primary); font-variant-numeric: tabular-nums; width: 24px; text-align: right; margin-right: 8px; }
+  .proj-row .type { font-size: 10px; color: var(--muted); background: var(--surface-mid); padding: 1px 5px; border-radius: 2px; }
+</style>
+</head>
+<body>
+<div class="banner">MOCHACCINO MOCKUP — Sync UX Option D: Inline Diff Table</div>
+<div class="shell">
+  <div class="sidebar">
+    <div class="brand">ANGELEYE</div>
+    <div class="nav-group-label">Views</div>
+    <button class="nav-item">Observer</button>
+    <button class="nav-item">Organiser</button>
+    <button class="nav-item active">Settings</button>
+    <button class="nav-item">Mockups</button>
+  </div>
+  <div class="main">
+    <div class="settings-header">Settings</div>
+
+    <div class="sync-card">
+      <h2>Session Sync</h2>
+      <p class="subtitle">Scan and classify all Claude Code sessions in one pass.</p>
+      <button class="sync-btn">Sync Sessions</button>
+      <div class="last-sync">Last sync: 3 minutes ago</div>
+
+      <div class="diff-section">
+        <div class="diff-title">Sync Results — 12 new, 49 classified</div>
+
+        <table class="diff-table">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th class="num">Before</th>
+              <th class="num">After</th>
+              <th class="num">Delta</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="type-cell">BUILD</td>
+              <td class="num">352</td>
+              <td class="num">383</td>
+              <td class="num delta-pos">+31</td>
+              <td><span class="mini-bar" style="width:31px; background: var(--primary);"></span></td>
+            </tr>
+            <tr>
+              <td class="type-cell">ORIENTATION</td>
+              <td class="num">150</td>
+              <td class="num">169</td>
+              <td class="num delta-pos">+19</td>
+              <td><span class="mini-bar" style="width:19px; background: var(--muted);"></span></td>
+            </tr>
+            <tr>
+              <td class="type-cell">KNOWLEDGE</td>
+              <td class="num">100</td>
+              <td class="num">116</td>
+              <td class="num delta-pos">+16</td>
+              <td><span class="mini-bar" style="width:16px; background: #0d9488;"></span></td>
+            </tr>
+            <tr>
+              <td class="type-cell">RESEARCH</td>
+              <td class="num">50</td>
+              <td class="num">53</td>
+              <td class="num delta-pos">+3</td>
+              <td><span class="mini-bar" style="width:3px; background: #3b82b6;"></span></td>
+            </tr>
+            <tr>
+              <td class="type-cell">OPS</td>
+              <td class="num">42</td>
+              <td class="num">46</td>
+              <td class="num delta-pos">+4</td>
+              <td><span class="mini-bar" style="width:4px; background: #ea580c;"></span></td>
+            </tr>
+            <tr>
+              <td class="type-cell">TEST</td>
+              <td class="num">34</td>
+              <td class="num">35</td>
+              <td class="num delta-pos">+1</td>
+              <td><span class="mini-bar" style="width:1px; background: #7c3aed;"></span></td>
+            </tr>
+            <tr>
+              <td class="type-cell" style="color: var(--muted-dim);">unclassified</td>
+              <td class="num">108</td>
+              <td class="num">59</td>
+              <td class="num delta-neg">−49</td>
+              <td><span class="mini-bar" style="width:49px; background: var(--red); opacity:0.3;"></span></td>
+            </tr>
+            <tr class="total-row">
+              <td>Total</td>
+              <td class="num">828</td>
+              <td class="num">889</td>
+              <td class="num delta-pos">+61</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="new-by-project">
+          <div class="new-by-project-title">12 New Sessions</div>
+          <div class="proj-row"><span class="dot"></span><span class="cnt">5</span><span class="name">supportsignal</span><span class="type">BUILD</span></div>
+          <div class="proj-row"><span class="dot"></span><span class="cnt">3</span><span class="name">brains/angeleye</span><span class="type">KNOWLEDGE</span></div>
+          <div class="proj-row"><span class="dot"></span><span class="cnt">2</span><span class="name">flivideo</span><span class="type">BUILD</span></div>
+          <div class="proj-row"><span class="dot"></span><span class="cnt">1</span><span class="name">appydave-tools</span><span class="type">OPS</span></div>
+          <div class="proj-row"><span class="dot"></span><span class="cnt">1</span><span class="name">angeleye</span><span class="type">ORIENT.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
