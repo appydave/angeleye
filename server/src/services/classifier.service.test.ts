@@ -5,6 +5,8 @@ import {
   detectIsJunk,
   detectToolPattern,
   detectSessionType,
+  detectSessionScale,
+  detectIsPaperclipAgent,
   findFirstEditedDir,
   findFirstRealPrompt,
 } from './classifier.service.js';
@@ -274,57 +276,207 @@ describe('detectToolPattern — mixed', () => {
   });
 });
 
+// ── detectSessionScale (B038) ─────────────────────────────────────────────────
+
+describe('detectSessionScale', () => {
+  it('returns micro for <= 3 tool calls', () => {
+    const events = [makeToolEvent('Bash'), makeToolEvent('Read')];
+    expect(detectSessionScale(events)).toBe('micro');
+  });
+
+  it('returns light for 4-10 tool calls', () => {
+    const events = Array.from({ length: 7 }, () => makeToolEvent('Bash'));
+    expect(detectSessionScale(events)).toBe('light');
+  });
+
+  it('returns moderate for 11-50 tool calls', () => {
+    const events = Array.from({ length: 25 }, () => makeToolEvent('Bash'));
+    expect(detectSessionScale(events)).toBe('moderate');
+  });
+
+  it('returns heavy for 51-200 tool calls', () => {
+    const events = Array.from({ length: 100 }, () => makeToolEvent('Bash'));
+    expect(detectSessionScale(events)).toBe('heavy');
+  });
+
+  it('returns marathon for > 200 tool calls', () => {
+    const events = Array.from({ length: 250 }, () => makeToolEvent('Bash'));
+    expect(detectSessionScale(events)).toBe('marathon');
+  });
+});
+
+// ── detectIsPaperclipAgent (B041) ─────────────────────────────────────────────
+
+describe('detectIsPaperclipAgent', () => {
+  it('returns true when first prompt matches "You are agent {uuid}"', () => {
+    const events = [
+      makePromptEvent('You are agent 27231022-d305-4069-a16a-472c98259e33. Execute the task.'),
+    ];
+    expect(detectIsPaperclipAgent(events)).toBe(true);
+  });
+
+  it('returns false for normal user prompts', () => {
+    const events = [makePromptEvent('Fix the login bug')];
+    expect(detectIsPaperclipAgent(events)).toBe(false);
+  });
+
+  it('returns false when no prompt events', () => {
+    const events = [makeEvent({ event: 'session_start' })];
+    expect(detectIsPaperclipAgent(events)).toBe(false);
+  });
+});
+
 // ── detectSessionType ─────────────────────────────────────────────────────────
+
+// Helper: generate enough tool events to reach moderate scale (avoids BUILD guard)
+function moderateEvents(): AngelEyeEvent[] {
+  return [
+    makePromptEvent('Do some work'),
+    ...Array.from({ length: 20 }, () => makeToolEvent('Bash')),
+  ];
+}
 
 describe('detectSessionType — TEST', () => {
   it('returns TEST for playwright-heavy', () => {
-    expect(detectSessionType('playwright-heavy', '/projects/myapp')).toBe('TEST');
+    expect(detectSessionType('playwright-heavy', '/projects/myapp', moderateEvents())).toBe('TEST');
   });
 });
 
 describe('detectSessionType — OPS', () => {
   it('returns OPS for bash-heavy in agent-os dir', () => {
-    expect(detectSessionType('bash-heavy', '/projects/agent-os')).toBe('OPS');
+    expect(detectSessionType('bash-heavy', '/projects/agent-os', moderateEvents())).toBe('OPS');
   });
 
   it('returns OPS for bash-heavy in ansible dir', () => {
-    expect(detectSessionType('bash-heavy', '/projects/ansible-playbooks')).toBe('OPS');
+    expect(detectSessionType('bash-heavy', '/projects/ansible-playbooks', moderateEvents())).toBe(
+      'OPS'
+    );
   });
 });
 
 describe('detectSessionType — BUILD', () => {
-  it('returns BUILD for bash-heavy in non-ops dir', () => {
-    expect(detectSessionType('bash-heavy', '/projects/flivideo')).toBe('BUILD');
+  it('returns BUILD for bash-heavy in non-ops dir (moderate+ scale)', () => {
+    expect(detectSessionType('bash-heavy', '/projects/flivideo', moderateEvents())).toBe('BUILD');
   });
 
-  it('returns BUILD for edit-heavy', () => {
-    expect(detectSessionType('edit-heavy', '/projects/myapp')).toBe('BUILD');
+  it('returns BUILD for edit-heavy (moderate+ scale)', () => {
+    expect(detectSessionType('edit-heavy', '/projects/myapp', moderateEvents())).toBe('BUILD');
   });
 
-  it('returns BUILD for task-heavy', () => {
-    expect(detectSessionType('task-heavy', '/projects/myapp')).toBe('BUILD');
+  it('returns BUILD for task-heavy (moderate+ scale)', () => {
+    expect(detectSessionType('task-heavy', '/projects/myapp', moderateEvents())).toBe('BUILD');
   });
 
-  it('returns BUILD for agent-heavy', () => {
-    expect(detectSessionType('agent-heavy', '/projects/myapp')).toBe('BUILD');
+  it('returns BUILD for agent-heavy (moderate+ scale)', () => {
+    expect(detectSessionType('agent-heavy', '/projects/myapp', moderateEvents())).toBe('BUILD');
   });
 });
 
 describe('detectSessionType — RESEARCH', () => {
   it('returns RESEARCH for websearch-heavy', () => {
-    expect(detectSessionType('websearch-heavy', '/projects/myapp')).toBe('RESEARCH');
+    expect(detectSessionType('websearch-heavy', '/projects/myapp', moderateEvents())).toBe(
+      'RESEARCH'
+    );
   });
 });
 
 describe('detectSessionType — KNOWLEDGE', () => {
   it('returns KNOWLEDGE for read-heavy in brain dir', () => {
-    expect(detectSessionType('read-heavy', '/dev/brains/brand-dave')).toBe('KNOWLEDGE');
+    expect(detectSessionType('read-heavy', '/dev/brains/brand-dave', moderateEvents())).toBe(
+      'KNOWLEDGE'
+    );
   });
 });
 
 describe('detectSessionType — ORIENTATION', () => {
   it('returns ORIENTATION for read-heavy in non-brain dir', () => {
-    expect(detectSessionType('read-heavy', '/projects/myapp')).toBe('ORIENTATION');
+    expect(detectSessionType('read-heavy', '/projects/myapp', moderateEvents())).toBe(
+      'ORIENTATION'
+    );
+  });
+});
+
+// ── B038: Scale-aware BUILD guard ─────────────────────────────────────────────
+
+describe('detectSessionType — B038 scale-aware BUILD guard', () => {
+  it('demotes micro sessions from BUILD to ORIENTATION', () => {
+    const microEvents = [makePromptEvent('hi'), makeToolEvent('Bash'), makeToolEvent('Read')];
+    expect(detectSessionType('edit-heavy', '/projects/myapp', microEvents)).toBe('ORIENTATION');
+  });
+
+  it('demotes light sessions from BUILD to ORIENTATION', () => {
+    const lightEvents = [
+      makePromptEvent('do something'),
+      ...Array.from({ length: 7 }, () => makeToolEvent('Edit')),
+    ];
+    expect(detectSessionType('edit-heavy', '/projects/myapp', lightEvents)).toBe('ORIENTATION');
+  });
+
+  it('demotes light sessions in brains/ to KNOWLEDGE', () => {
+    const lightEvents = [
+      makePromptEvent('check the brain'),
+      ...Array.from({ length: 5 }, () => makeToolEvent('Read')),
+    ];
+    expect(detectSessionType('mixed', '/dev/ad/brains/angeleye', lightEvents)).toBe('KNOWLEDGE');
+  });
+
+  it('allows BUILD for moderate+ sessions', () => {
+    expect(detectSessionType('edit-heavy', '/projects/myapp', moderateEvents())).toBe('BUILD');
+  });
+});
+
+// ── B039: Iron-clad classifier rules ──────────────────────────────────────────
+
+describe('detectSessionType — B039 iron-clad rules', () => {
+  it('classifies "*run NNN" as OPS (poem execution)', () => {
+    const events = [
+      makePromptEvent('*run 123'),
+      ...Array.from({ length: 20 }, () => makeToolEvent('Bash')),
+    ];
+    expect(detectSessionType('bash-heavy', '/projects/myapp', events)).toBe('OPS');
+  });
+
+  it('classifies "run 42" as OPS (poem execution, no asterisk)', () => {
+    const events = [
+      makePromptEvent('run 42'),
+      ...Array.from({ length: 20 }, () => makeToolEvent('Bash')),
+    ];
+    expect(detectSessionType('bash-heavy', '/projects/myapp', events)).toBe('OPS');
+  });
+
+  it('classifies zero tool calls as ORIENTATION (never BUILD)', () => {
+    const events = [makePromptEvent('What is this project about?')];
+    expect(detectSessionType('mixed', '/projects/myapp', events)).toBe('ORIENTATION');
+  });
+
+  it('classifies brains/ + light scale as KNOWLEDGE (never BUILD)', () => {
+    const events = [
+      makePromptEvent('update the brain'),
+      ...Array.from({ length: 8 }, () => makeToolEvent('Edit')),
+    ];
+    expect(detectSessionType('edit-heavy', '/dev/ad/brains/angeleye', events)).toBe('KNOWLEDGE');
+  });
+});
+
+// ── B041: Paperclip agent detection ───────────────────────────────────────────
+
+describe('detectSessionType — B041 paperclip agent', () => {
+  it('classifies paperclip agent sessions as OPS', () => {
+    const events = [
+      makePromptEvent(
+        'You are agent 27231022-d305-4069-a16a-472c98259e33. Execute the deployment task.'
+      ),
+      ...Array.from({ length: 30 }, () => makeToolEvent('Bash')),
+    ];
+    expect(detectSessionType('bash-heavy', '/projects/myapp', events)).toBe('OPS');
+  });
+
+  it('does not trigger for normal prompts mentioning agents', () => {
+    const events = [
+      makePromptEvent('How do I configure agent settings?'),
+      ...Array.from({ length: 20 }, () => makeToolEvent('Read')),
+    ];
+    expect(detectSessionType('read-heavy', '/projects/myapp', events)).toBe('ORIENTATION');
   });
 });
 
@@ -446,7 +598,7 @@ describe('classifySession — junk sessions return early', () => {
 });
 
 describe('classifySession — full classification for non-junk session', () => {
-  it('computes all fields for a build session', () => {
+  it('computes all fields for a build session (moderate+ scale)', () => {
     const events = [
       makeEvent({ event: 'session_start', cwd: '/projects/angeleye' }),
       makePromptEvent('Implement the classifier service'),
@@ -456,6 +608,8 @@ describe('classifySession — full classification for non-junk session', () => {
       makeToolEvent('Edit', { file: '/projects/angeleye/server/src/services/registry.service.ts' }),
       makeToolEvent('Write', { file: '/projects/angeleye/server/src/services/new.service.ts' }),
       makeToolEvent('Bash'),
+      // Enough tool calls to reach moderate scale (avoid BUILD guard)
+      ...Array.from({ length: 10 }, () => makeToolEvent('Edit')),
     ];
     const result = classifySession(events, 'ses-build-1', '/projects/angeleye');
     expect(result.is_junk).toBe(false);

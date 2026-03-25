@@ -114,10 +114,79 @@ export function detectToolPattern(events: AngelEyeEvent[]): ToolPattern {
   return 'mixed';
 }
 
+// ── session scale detection ──────────────────────────────────────────────────
+// Scale thresholds validated across 924-session campaign (angeleye-analysis-1)
+
+export type SessionScale = 'micro' | 'light' | 'moderate' | 'heavy' | 'marathon';
+
+export function detectSessionScale(events: AngelEyeEvent[]): SessionScale {
+  const toolCount = events.filter((e) => e.event === 'tool_use').length;
+
+  if (toolCount <= 3) return 'micro';
+  if (toolCount <= 10) return 'light';
+  if (toolCount <= 50) return 'moderate';
+  if (toolCount <= 200) return 'heavy';
+  return 'marathon';
+}
+
+// ── paperclip / autonomous agent detection (B041) ───────────────────────────
+
+const PAPERCLIP_PATTERN = /^You are agent\s+[0-9a-f-]{36}/i;
+const POEM_RUN_PATTERN = /^\*?run\s+\d+/i;
+
+export function detectIsPaperclipAgent(events: AngelEyeEvent[]): boolean {
+  const firstPrompt = events.find((e) => e.event === 'user_prompt');
+  if (!firstPrompt?.prompt) return false;
+  return PAPERCLIP_PATTERN.test(firstPrompt.prompt.trim());
+}
+
 // ── session_type detection ────────────────────────────────────────────────────
 
-export function detectSessionType(toolPattern: ToolPattern, projectDir: string): SessionType {
+export function detectSessionType(
+  toolPattern: ToolPattern,
+  projectDir: string,
+  events: AngelEyeEvent[]
+): SessionType {
   const dirBase = projectDir.toLowerCase();
+  const scale = detectSessionScale(events);
+  const firstPrompt = events.find((e) => e.event === 'user_prompt');
+  const prompt = firstPrompt?.prompt?.trim() ?? '';
+
+  // ── Iron-clad rules (B039 + B041) — override everything ─────────────────
+
+  // B041: Paperclip agent → OPS
+  if (detectIsPaperclipAgent(events)) return 'OPS';
+
+  // B039-a: "*run NNN" first prompt → OPS (poem execution)
+  if (POEM_RUN_PATTERN.test(prompt)) return 'OPS';
+
+  // B039-c: Zero tool calls → ORIENTATION (never BUILD)
+  const toolCount = events.filter((e) => e.event === 'tool_use').length;
+  if (toolCount === 0) return 'ORIENTATION';
+
+  // B039-b: brains/ CWD + light/micro scale → KNOWLEDGE (never BUILD)
+  if (dirBase.includes('brain') && (scale === 'micro' || scale === 'light')) {
+    return 'KNOWLEDGE';
+  }
+
+  // ── B038: Scale-aware BUILD guard ───────────────────────────────────────
+  // micro sessions: 0% BUILD accuracy, light sessions: <15% accuracy
+  // Demote to ORIENTATION instead of BUILD for tiny sessions
+  const wouldBeBuild = (pattern: ToolPattern): boolean =>
+    pattern === 'bash-heavy' ||
+    pattern === 'task-heavy' ||
+    pattern === 'agent-heavy' ||
+    pattern === 'edit-heavy' ||
+    pattern === 'mixed';
+
+  if (scale === 'micro' && wouldBeBuild(toolPattern)) return 'ORIENTATION';
+  if (scale === 'light' && wouldBeBuild(toolPattern)) {
+    // Light sessions in brains → KNOWLEDGE, otherwise ORIENTATION
+    if (dirBase.includes('brain')) return 'KNOWLEDGE';
+    return 'ORIENTATION';
+  }
+
+  // ── Standard rules (unchanged) ─────────────────────────────────────────
 
   if (toolPattern === 'playwright-heavy') return 'TEST';
 
@@ -137,7 +206,7 @@ export function detectSessionType(toolPattern: ToolPattern, projectDir: string):
     return 'ORIENTATION';
   }
 
-  // mixed
+  // mixed (moderate+ scale only — micro/light already handled above)
   return 'BUILD';
 }
 
@@ -198,7 +267,7 @@ export function classifySession(
   }
 
   const tool_pattern = detectToolPattern(events);
-  const session_type = detectSessionType(tool_pattern, projectDir);
+  const session_type = detectSessionType(tool_pattern, projectDir, events);
   const first_edited_dir = findFirstEditedDir(events);
   const first_real_prompt = findFirstRealPrompt(events);
 
