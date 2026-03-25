@@ -34,6 +34,10 @@ export default defineConfig({
         changeOrigin: true,
         ws: true,
       },
+      '/mockups': {
+        target: 'http://localhost:5051',
+        changeOrigin: true,
+      },
     },
   },
 });

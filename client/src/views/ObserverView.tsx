@@ -249,29 +249,39 @@ export default function ObserverView() {
   const [renamingId, setRenamingId] = useState<string | null>(null);
   const [noteValue, setNoteValue] = useState('');
   const [noteSaved, setNoteSaved] = useState(false);
+  const [cursor, setCursor] = useState<string | null>(null);
+  const [hasMore, setHasMore] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
   const idleCounters = useRef<Record<string, number>>({});
   const dragState = useRef<{ startY: number; startHeight: number } | null>(null);
 
   // ── Initial fetch ──────────────────────────────────────────────────────────
   useEffect(() => {
-    void fetch('/api/sessions')
+    void fetch('/api/sessions?limit=50')
       .then((r) => r.json())
-      .then((body: { status: string; data?: { sessions?: RegistryEntry[] } }) => {
-        const entries: RegistryEntry[] = body.data?.sessions ?? [];
-        setSessions(
-          entries.map((entry) => ({
-            entry,
-            events: [],
-            idleSecs: Math.floor((Date.now() - new Date(entry.last_active).getTime()) / 1000),
-          }))
-        );
-        // Seed idle counters from server last_active
-        entries.forEach((e) => {
-          idleCounters.current[e.session_id] = Math.floor(
-            (Date.now() - new Date(e.last_active).getTime()) / 1000
+      .then(
+        (body: {
+          status: string;
+          data?: { sessions?: RegistryEntry[]; cursor?: string | null; hasMore?: boolean };
+        }) => {
+          const entries: RegistryEntry[] = body.data?.sessions ?? [];
+          setSessions(
+            entries.map((entry) => ({
+              entry,
+              events: [],
+              idleSecs: Math.floor((Date.now() - new Date(entry.last_active).getTime()) / 1000),
+            }))
           );
-        });
-      })
+          setCursor(body.data?.cursor ?? null);
+          setHasMore(body.data?.hasMore ?? false);
+          // Seed idle counters from server last_active
+          entries.forEach((e) => {
+            idleCounters.current[e.session_id] = Math.floor(
+              (Date.now() - new Date(e.last_active).getTime()) / 1000
+            );
+          });
+        }
+      )
       .catch(() => {
         // Server may be unavailable on first load — silently ignore and wait for socket events
       });
@@ -515,6 +525,44 @@ export default function ObserverView() {
       });
   }, []);
 
+  // ── Load more sessions ───────────────────────────────────────────────────
+  const loadMore = useCallback(() => {
+    if (!cursor || loadingMore) return;
+    setLoadingMore(true);
+    void fetch(`/api/sessions?limit=50&after=${encodeURIComponent(cursor)}`)
+      .then((r) => r.json())
+      .then(
+        (body: {
+          status: string;
+          data?: { sessions?: RegistryEntry[]; cursor?: string | null; hasMore?: boolean };
+        }) => {
+          const entries: RegistryEntry[] = body.data?.sessions ?? [];
+          setSessions((prev) => {
+            const existingIds = new Set(prev.map((s) => s.entry.session_id));
+            const newSessions = entries
+              .filter((e) => !existingIds.has(e.session_id))
+              .map((entry) => ({
+                entry,
+                events: [] as AngelEyeEvent[],
+                idleSecs: Math.floor((Date.now() - new Date(entry.last_active).getTime()) / 1000),
+              }));
+            return [...prev, ...newSessions];
+          });
+          entries.forEach((e) => {
+            idleCounters.current[e.session_id] = Math.floor(
+              (Date.now() - new Date(e.last_active).getTime()) / 1000
+            );
+          });
+          setCursor(body.data?.cursor ?? null);
+          setHasMore(body.data?.hasMore ?? false);
+        }
+      )
+      .catch(() => {
+        // Non-fatal — silently ignore
+      })
+      .finally(() => setLoadingMore(false));
+  }, [cursor, loadingMore]);
+
   const activeSessions = sessions.filter((s) => s.entry.status === 'active');
   const anyActive = activeSessions.length > 0;
   const baseVisible = hideJunk ? sessions.filter((s) => s.entry.is_junk !== true) : sessions;
@@ -647,6 +695,7 @@ export default function ObserverView() {
           const sessionType = s.entry.session_type;
           const badgeClass = sessionType ? sessionTypeBadgeClass(sessionType) : '';
           const isStarred = s.entry.tags?.includes('starred') ?? false;
+          const isNamed = s.entry.name != null && s.entry.name !== '';
           return (
             <div
               key={s.entry.session_id}
@@ -655,7 +704,9 @@ export default function ObserverView() {
                 'flex items-start gap-3 px-3 py-2.5 cursor-pointer rounded-md border border-border bg-card shadow-sm hover:shadow-md hover:bg-[#faf8f4] transition-all text-sm',
                 isFocused
                   ? 'border-l-[3px] border-l-primary'
-                  : 'border-l-[3px] border-l-transparent',
+                  : isNamed
+                    ? 'border-l-[3px] border-l-amber-500'
+                    : 'border-l-[3px] border-l-transparent',
               ].join(' ')}
             >
               {/* Status dot */}
@@ -681,16 +732,23 @@ export default function ObserverView() {
                       onClick={(e) => e.stopPropagation()}
                     />
                   ) : (
-                    <span
-                      className="text-foreground font-medium truncate shrink-0 max-w-[140px] cursor-pointer hover:underline"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setRenamingId(s.entry.session_id);
-                      }}
-                      title="Click to rename"
-                    >
-                      {sessionLabel(s.entry)}
-                    </span>
+                    <>
+                      <span
+                        className={`text-foreground font-medium truncate cursor-pointer hover:underline ${isNamed ? 'flex-1 min-w-0' : 'shrink-0 max-w-[140px]'}`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setRenamingId(s.entry.session_id);
+                        }}
+                        title="Click to rename"
+                      >
+                        {sessionLabel(s.entry)}
+                      </span>
+                      {isNamed && (
+                        <span className="text-[9px] font-bebas tracking-wider px-1 py-0.5 rounded shrink-0 bg-amber-500/15 text-amber-600 border border-amber-300/40">
+                          ⚑ named
+                        </span>
+                      )}
+                    </>
                   )}
                   {sessionType && (
                     <span
@@ -757,6 +815,15 @@ export default function ObserverView() {
                   })()}
                 </div>
 
+                {/* Named session secondary line — project + cwd */}
+                {isNamed && (s.entry.project || s.entry.project_dir) && (
+                  <span className="text-[10px] text-muted-foreground/50 truncate">
+                    {s.entry.project ? s.entry.project : ''}
+                    {s.entry.project && s.entry.project_dir ? ' · ' : ''}
+                    {s.entry.project_dir ?? ''}
+                  </span>
+                )}
+
                 {/* Bottom row — prompt or last event, full width */}
                 {(s.entry.first_real_prompt ?? lastEvent) && (
                   <span
@@ -774,6 +841,17 @@ export default function ObserverView() {
             </div>
           );
         })}
+        {hasMore && (
+          <div className="flex justify-center py-3">
+            <button
+              onClick={loadMore}
+              disabled={loadingMore}
+              className="text-xs font-bebas tracking-wider px-4 py-1.5 rounded border border-border bg-card hover:bg-[#faf8f4] text-muted-foreground hover:text-foreground transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loadingMore ? 'Loading…' : 'Load more sessions'}
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Layer 3: Focus Panel */}

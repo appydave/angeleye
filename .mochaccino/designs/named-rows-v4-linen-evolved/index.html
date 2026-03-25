@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Named Rows v4: Linen Evolved — Mochaccino</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #e8e0d4; --surface: #ede7dc; --surface-mid: #ddd6cc;
+    --card: #f5f1eb; --border: #d4cdc4; --border-raised: #ccc5bb;
+    --primary: #c8841a; --fg: #2a2018; --muted: #7a6e5e; --muted-dim: #9e9484;
+    --amber: #c8841a;
+  }
+  body { background: var(--bg); color: var(--fg); font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.5; }
+  .banner { background: var(--border); color: var(--muted); font-size: 11px; padding: 6px 16px; letter-spacing: 0.5px; }
+  .page { max-width: 1360px; margin: 0 auto; padding: 32px 24px; }
+  h1 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+  .subtitle { color: var(--muted); font-size: 13px; margin-bottom: 32px; line-height: 1.6; }
+
+  /* ── Group header ────────────────────────────── */
+  .group-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 0 6px 4px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .group-header .count {
+    font-size: 10px;
+    font-weight: 600;
+    background: var(--surface-mid);
+    color: var(--muted);
+    padding: 1px 6px;
+    border-radius: 8px;
+  }
+
+  /* ── Column header ───────────────────────────── */
+  .col-header {
+    display: grid;
+    grid-template-columns: 20px 1fr 100px 80px 56px 56px 20px;
+    gap: 8px;
+    padding: 6px 16px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted-dim);
+    border-bottom: 1px solid var(--border);
+  }
+  .col-header span:nth-child(4),
+  .col-header span:nth-child(5),
+  .col-header span:nth-child(6) { text-align: right; }
+
+  /* ── List ─────────────────────────────────────── */
+  .session-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); border-radius: 0 0 8px 8px; overflow: hidden; }
+
+  .row {
+    display: grid;
+    grid-template-columns: 20px 1fr 100px 80px 56px 56px 20px;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: var(--surface);
+    border-left: 3px solid transparent;
+    cursor: pointer;
+    min-height: 46px;
+  }
+  .row:hover { background: var(--surface-mid); }
+  .row.named { border-left-color: var(--amber); }
+
+  /* Dot */
+  .dot { width: 8px; height: 8px; border-radius: 50%; justify-self: center; }
+  .dot.active { background: #5a9a3c; }
+  .dot.recent { background: var(--amber); }
+  .dot.idle { border: 1.5px solid var(--muted-dim); }
+
+  /* ── Session cell ────────────────────────────── */
+  .session-cell { min-width: 0; }
+  .session-top { display: flex; align-items: baseline; gap: 6px; white-space: nowrap; overflow: hidden; }
+
+  .name {
+    font-size: 13px; font-weight: 600; color: var(--fg);
+    overflow: hidden; text-overflow: ellipsis;
+  }
+  .project-label {
+    font-size: 13px; font-weight: 500; color: var(--fg);
+    overflow: hidden; text-overflow: ellipsis; max-width: 180px;
+  }
+  .ctx { font-size: 11px; color: var(--muted-dim); flex-shrink: 0; }
+
+  .prompt {
+    font-size: 11.5px; color: var(--muted); font-style: italic;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px;
+  }
+
+  /* ── Type column ─────────────────────────────── */
+  .type-cell { justify-self: start; }
+  .badge {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.4px;
+    padding: 2px 6px; border-radius: 3px; text-transform: uppercase; display: inline-block;
+  }
+  .badge.build { background: #5a9a3c; color: #fff; }
+  .badge.orientation { background: #8b7355; color: #fff; }
+  .badge.knowledge { background: #2a6e8a; color: #fff; }
+  .badge.research { background: #7a5ca8; color: #fff; }
+  .badge.ops { background: #555; color: #fff; }
+  .badge.test { background: #c0392b; color: #fff; }
+
+  /* ── Fixed columns ───────────────────────────── */
+  .when { font-size: 12px; color: var(--muted); white-space: nowrap; text-align: right; }
+  .pulse { font-size: 11px; font-weight: 600; font-family: 'SF Mono', 'Menlo', monospace; text-align: right; }
+  .pulse.green { color: #5a9a3c; } .pulse.amber { color: var(--amber); } .pulse.red { color: #c0392b; } .pulse.none { color: var(--border); }
+  .star { font-size: 14px; cursor: pointer; color: var(--muted-dim); text-align: center; }
+  .star.filled { color: var(--amber); }
+  .actions { color: var(--muted-dim); cursor: pointer; text-align: center; font-size: 14px; }
+
+  /* ── Notes ────────────────────────────────────── */
+  .notes { margin-top: 48px; padding: 20px 24px; background: var(--card); border-radius: 8px; border: 1px solid var(--border); }
+  .notes h2 { font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+  .notes ul { list-style: none; padding: 0; }
+  .notes li { font-size: 13px; color: var(--muted); padding: 4px 0 4px 16px; position: relative; line-height: 1.6; }
+  .notes li::before { content: '—'; position: absolute; left: 0; color: var(--border-raised); }
+  .notes li strong { color: var(--fg); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="banner">Mochaccino — named-rows-v4-linen-evolved — 2026-03-25</div>
+<div class="page">
+  <h1>v4: Linen Evolved</h1>
+  <p class="subtitle">Takes the column structure from v2-linen (which you liked), adds session type, pulse, and the improved named row treatment. Type badge gets its own column so you can scan session types vertically.</p>
+
+  <!-- ── ACTIVE ────────────────────────────────── -->
+  <div class="group-header">Active <span class="count">4</span></div>
+  <div class="col-header">
+    <span></span>
+    <span>Session</span>
+    <span>Type</span>
+    <span style="text-align:right">When</span>
+    <span style="text-align:right">Pulse</span>
+    <span></span>
+    <span></span>
+  </div>
+  <div class="session-list">
+
+    <div class="row named">
+      <div class="dot active"></div>
+      <div class="session-cell">
+        <div class="session-top">
+          <span class="name">angeleye-brain-app-architecture</span>
+          <span class="ctx">brains</span>
+        </div>
+        <div class="prompt">Now what I want you to do is get back over the history of probably two or three days.</div>
+      </div>
+      <div class="type-cell"><span class="badge build">BUILD</span></div>
+      <span class="when">18m ago</span>
+      <span class="pulse amber">24m</span>
+      <span class="star filled">&#9733;</span>
+      <span class="actions">&#8943;</span>
+    </div>
+
+    <div class="row">
+      <div class="dot active"></div>
+      <div class="session-cell">
+        <div class="session-top">
+          <span class="project-label">angeleye</span>
+        </div>
+        <div class="prompt">/ralphy</div>
+      </div>
+      <div class="type-cell"><span class="badge build">BUILD</span></div>
+      <span class="when">11m ago</span>
+      <span class="pulse green">11m</span>
+      <span class="star">&#9734;</span>
+      <span class="actions">&#8943;</span>
+    </div>
+
+    <div class="row">
+      <div class="dot active"></div>
+      <div class="session-cell">
+        <div class="session-top">
+          <span class="project-label">signal-studio</span>
+        </div>
+        <div class="prompt">Havned looked at the project in a week or two, I'm about to hit you with some new changes today.</div>
+      </div>
+      <div class="type-cell"><span class="badge build">BUILD</span></div>
+      <span class="when">0s ago</span>
+      <span class="pulse green">1s</span>
+      <span class="star">&#9734;</span>
+      <span class="actions">&#8943;</span>
+    </div>
+
+    <div class="row">
+      <div class="dot recent"></div>
+      <div class="session-cell">
+        <div class="session-top">
+          <span class="project-label">flihub</span>
+        </div>
+        <div class="prompt">[Image #2] Here is a front-end designer and any other UX experts, and tell me your thoughts</div>
+      </div>
+      <div class="type-cell"><span class="badge build">BUILD</span></div>
+      <span class="when">3m ago</span>
+      <span class="pulse green">3m</span>
+      <span class="star">&#9734;</span>
+      <span class="actions">&#8943;</span>
+    </div>
+
+  </div>
+
+  <!-- ── RECENT ────────────────────────────────── -->
+  <div class="group-header">Ended <span class="count">6</span></div>
+  <div class="session-list">
+
+    <div class="row">
+      <div class="dot idle"></div>
+      <div class="session-cell">
+        <div class="session-top">
+          <span class="project-label">brains</span>
+        </div>
+        <div class="prompt">what do we know about dynamous community and colemedin, and also upstream repos</div>
+      </div>
+      <div class="type-cell"><span class="badge knowledge">KNOWLEDGE</span></div>
+      <span class="when">18m ago</span>
+      <span class="pulse none">—</span>
+      <span class="star">&#9734;</span>
+      <span class="actions">&#8943;</span>
+    </div>
+
+    <div class="row named">
+      <div class="dot idle"></div>
+      <div class="session-cell">
+        <div class="session-top">
+          <span class="name">bmad-oversight-command-setup</span>
+          <span class="ctx">supportsignal</span>
+        </div>
+        <div class="prompt">bmad-oversight</div>
+      </div>
+      <div class="type-cell"><span class="badge orientation">ORIENTATION</span></div>
+      <span class="when">5h ago</span>
+      <span class="pulse none">—</span>
+      <span class="star">&#9734;</span>
+      <span class="actions">&#8943;</span>
+    </div>
+
+    <div class="row">
+      <div class="dot idle"></div>
+      <div class="session-cell">
+        <div class="session-top">
+          <span class="project-label">app.supportsignal....</span>
+        </div>
+        <div class="prompt">/bmad-sm VS 0.1</div>
+      </div>
+      <div class="type-cell"><span class="badge build">BUILD</span></div>
+      <span class="when">5h ago</span>
+      <span class="pulse none">—</span>
+      <span class="star">&#9734;</span>
+      <span class="actions">&#8943;</span>
+    </div>
+
+    <div class="row named">
+      <div class="dot idle"></div>
+      <div class="session-cell">
+        <div class="session-top">
+          <span class="name">bmad-relay</span>
+          <span class="ctx">supportsignal</span>
+        </div>
+        <div class="prompt">Can you read in the BMAD relay design docs please? And then give us a good name</div>
+      </div>
+      <div class="type-cell"><span class="badge build">BUILD</span></div>
+      <span class="when">6h ago</span>
+      <span class="pulse none">—</span>
+      <span class="star">&#9734;</span>
+      <span class="actions">&#8943;</span>
+    </div>
+
+    <div class="row named">
+      <div class="dot idle"></div>
+      <div class="session-cell">
+        <div class="session-top">
+          <span class="name">lisa-kdd-upgrade-pass1</span>
+          <span class="ctx">supportsignal</span>
+        </div>
+        <div class="prompt">/bmad-lib</div>
+      </div>
+      <div class="type-cell"><span class="badge build">BUILD</span></div>
+      <span class="when">6h ago</span>
+      <span class="pulse none">—</span>
+      <span class="star">&#9734;</span>
+      <span class="actions">&#8943;</span>
+    </div>
+
+    <div class="row">
+      <div class="dot idle"></div>
+      <div class="session-cell">
+        <div class="session-top">
+          <span class="project-label">brains</span>
+        </div>
+        <div class="prompt">The quick brown fox jumped over the lazy dog.</div>
+      </div>
+      <div class="type-cell"><span class="badge orientation">ORIENTATION</span></div>
+      <span class="when">1h ago</span>
+      <span class="pulse none">—</span>
+      <span class="star">&#9734;</span>
+      <span class="actions">&#8943;</span>
+    </div>
+
+  </div>
+
+  <div class="notes">
+    <h2>Why this version</h2>
+    <ul>
+      <li><strong>Takes the v2-linen structure you liked</strong> — fixed columns, Active/Ended grouping, clean alignment — and evolves it with the data model as it stands today.</li>
+      <li><strong>Type badge in its own column.</strong> You can scan session types vertically — all the BUILDs line up, the KNOWLEDGE stands out immediately. In v1-v3 the badge was inline with the name, making it impossible to scan by type.</li>
+      <li><strong>Named rows: name replaces project, project becomes context.</strong> "bmad-relay" is the hero, "supportsignal" is the quiet context after it. No pennant, no badge, no extra line — just bolder text and the amber left border.</li>
+      <li><strong>Active/Ended grouping</strong> answers "what's running right now?" at a glance. The count badges give you the number without counting rows.</li>
+      <li><strong>Session ID removed from view.</strong> Available on click (copy to clipboard) but not wasting space on every row.</li>
+      <li><strong>Prompt stays as the second line for everyone.</strong> It's the most useful context for "what was this session about?" — more useful than a path or ID.</li>
+      <li><strong>Three-dot menu (&#8943;)</strong> replaces the em-dash. Conventional affordance for "more actions" without cluttering the row.</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

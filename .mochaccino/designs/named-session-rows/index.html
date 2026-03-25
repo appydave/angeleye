@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Named Session Rows — Mochaccino</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #e8e0d4;
+    --surface: #ede7dc;
+    --surface-mid: #ddd6cc;
+    --card: #f5f1eb;
+    --border: #d4cdc4;
+    --border-raised: #ccc5bb;
+    --primary: #c8841a;
+    --fg: #2a2018;
+    --muted: #7a6e5e;
+    --muted-dim: #9e9484;
+    --amber: #c8841a;
+    --amber-subtle: rgba(200, 132, 26, 0.12);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .banner {
+    background: var(--border);
+    color: var(--muted);
+    font-size: 11px;
+    padding: 6px 16px;
+    letter-spacing: 0.5px;
+  }
+
+  .page {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 32px 24px;
+  }
+
+  h1 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--fg);
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 32px;
+  }
+
+  /* ── Section headers ─────────────────────────── */
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+    padding-left: 4px;
+  }
+
+  .section + .section { margin-top: 40px; }
+
+  /* ── Session row ─────────────────────────────── */
+  .session-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    background: var(--surface);
+    border-left: 3px solid transparent;
+    transition: background 0.15s ease;
+    cursor: pointer;
+    min-height: 52px;
+  }
+
+  .row:hover {
+    background: var(--surface-mid);
+  }
+
+  /* ── Named row: amber left accent only ───────── */
+  .row.named {
+    border-left-color: var(--amber);
+  }
+
+  /* ── Focused row ─────────────────────────────── */
+  .row.focused {
+    border-left-color: var(--primary);
+    background: var(--surface-mid);
+  }
+
+  /* ── Status dot ──────────────────────────────── */
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot.active { background: #5a9a3c; }
+  .dot.recent { background: var(--amber); }
+  .dot.idle   { border: 1.5px solid var(--muted-dim); background: transparent; }
+
+  /* ── Content area ────────────────────────────── */
+  .content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .top-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  /* ── Session label (name or project) ─────────── */
+  .label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--fg);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  /* Named sessions: name is the hero, no width cap */
+  .row.named .label {
+    font-weight: 600;
+    flex-shrink: 0;
+    max-width: none;
+  }
+
+  /* Unnamed sessions: project name, compact */
+  .row:not(.named) .label {
+    max-width: 160px;
+    flex-shrink: 0;
+  }
+
+  /* ── Pennant glyph for named rows ────────────── */
+  .pennant {
+    color: var(--amber);
+    font-size: 11px;
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+
+  /* ── Project context (named rows only) ───────── */
+  .project-ctx {
+    font-size: 11px;
+    color: var(--muted-dim);
+    flex-shrink: 0;
+  }
+
+  /* ── Type badge ──────────────────────────────── */
+  .badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 2px 7px;
+    border-radius: 3px;
+    flex-shrink: 0;
+    text-transform: uppercase;
+  }
+  .badge.build       { background: #5a9a3c; color: #fff; }
+  .badge.orientation  { background: #8b7355; color: #fff; }
+  .badge.knowledge    { background: #2a6e8a; color: #fff; }
+  .badge.research     { background: #7a5ca8; color: #fff; }
+  .badge.test         { background: #c0392b; color: #fff; }
+  .badge.ops          { background: #555; color: #fff; }
+
+  /* ── Session ID ──────────────────────────────── */
+  .sid {
+    font-size: 11px;
+    font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
+    color: var(--muted-dim);
+    flex-shrink: 0;
+  }
+
+  /* ── Prompt / second line ────────────────────── */
+  .prompt-line {
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ── Right cluster (when, star, pulse) ───────── */
+  .right-cluster {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
+  .star {
+    color: var(--muted-dim);
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .star.filled { color: var(--amber); }
+
+  .when {
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    min-width: 56px;
+    text-align: right;
+  }
+
+  .pulse {
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'SF Mono', 'Menlo', monospace;
+    min-width: 36px;
+    text-align: right;
+  }
+  .pulse.green  { color: #5a9a3c; }
+  .pulse.amber  { color: var(--amber); }
+  .pulse.red    { color: #c0392b; }
+  .pulse.none   { color: transparent; }
+
+  .menu {
+    color: var(--muted-dim);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0 2px;
+  }
+
+  /* ── Comparison layout ───────────────────────── */
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 40px;
+  }
+
+  .comparison-panel h2 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .comparison-panel .note {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+
+  /* ── Design notes ────────────────────────────── */
+  .design-notes {
+    margin-top: 48px;
+    padding: 20px 24px;
+    background: var(--card);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+
+  .design-notes h2 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .design-notes ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .design-notes li {
+    font-size: 13px;
+    color: var(--muted);
+    padding: 4px 0;
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .design-notes li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border-raised);
+  }
+
+  .design-notes li strong {
+    color: var(--fg);
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<div class="banner">Mochaccino — named-session-rows — 2026-03-25</div>
+
+<div class="page">
+  <h1>Named Session Rows</h1>
+  <p class="subtitle">Same row height. Name is the elevation. Everything else gets out of the way.</p>
+
+  <!-- ── MIXED LIST (the real scenario) ─────────── -->
+  <div class="section">
+    <div class="section-label">Observer — mixed list (named + unnamed together)</div>
+    <div class="session-list">
+
+      <!-- Named: active -->
+      <div class="row named">
+        <div class="dot active"></div>
+        <div class="content">
+          <div class="top-line">
+            <span class="pennant">&#9873;</span>
+            <span class="label">angeleye-brain-app-architecture</span>
+            <span class="project-ctx">brains</span>
+            <span class="badge build">BUILD</span>
+            <span class="sid">25d74454</span>
+          </div>
+          <div class="prompt-line">Now what I want you to do is get back over the history of probably two or three days.</div>
+        </div>
+        <div class="right-cluster">
+          <span class="star filled">&#9733;</span>
+          <span class="when">18m ago</span>
+          <span class="pulse amber">24m</span>
+          <span class="menu">—</span>
+        </div>
+      </div>
+
+      <!-- Unnamed -->
+      <div class="row">
+        <div class="dot active"></div>
+        <div class="content">
+          <div class="top-line">
+            <span class="label">angeleye</span>
+            <span class="badge build">BUILD</span>
+            <span class="sid">08fbfe17</span>
+          </div>
+          <div class="prompt-line">/ralphy</div>
+        </div>
+        <div class="right-cluster">
+          <span class="star">&#9734;</span>
+          <span class="when">11m ago</span>
+          <span class="pulse green">11m</span>
+          <span class="menu">—</span>
+        </div>
+      </div>
+
+      <!-- Unnamed -->
+      <div class="row">
+        <div class="dot idle"></div>
+        <div class="content">
+          <div class="top-line">
+            <span class="label">brains</span>
+            <span class="badge knowledge">KNOWLEDGE</span>
+            <span class="sid">d26d8019</span>
+          </div>
+          <div class="prompt-line">what do we know about dynamous community and colemedin, and also upstream repos</div>
+        </div>
+        <div class="right-cluster">
+          <span class="star">&#9734;</span>
+          <span class="when">18m ago</span>
+          <span class="pulse none">—</span>
+          <span class="menu">—</span>
+        </div>
+      </div>
+
+      <!-- Named -->
+      <div class="row named">
+        <div class="dot idle"></div>
+        <div class="content">
+          <div class="top-line">
+            <span class="pennant">&#9873;</span>
+            <span class="label">bmad-oversight-command-setup</span>
+            <span class="project-ctx">supportsignal</span>
+            <span class="badge orientation">ORIENTATION</span>
+            <span class="sid">fef74880</span>
+          </div>
+          <div class="prompt-line">bmad-oversight</div>
+        </div>
+        <div class="right-cluster">
+          <span class="star">&#9734;</span>
+          <span class="when">5h ago</span>
+          <span class="pulse none">—</span>
+          <span class="menu">—</span>
+        </div>
+      </div>
+
+      <!-- Unnamed -->
+      <div class="row">
+        <div class="dot idle"></div>
+        <div class="content">
+          <div class="top-line">
+            <span class="label">app.supportsignal....</span>
+            <span class="badge build">BUILD</span>
+            <span class="sid">3c0ca17d</span>
+          </div>
+          <div class="prompt-line">/bmad-sm VS 0.1</div>
+        </div>
+        <div class="right-cluster">
+          <span class="star">&#9734;</span>
+          <span class="when">5h ago</span>
+          <span class="pulse amber">316m</span>
+          <span class="menu">—</span>
+        </div>
+      </div>
+
+      <!-- Named -->
+      <div class="row named">
+        <div class="dot idle"></div>
+        <div class="content">
+          <div class="top-line">
+            <span class="pennant">&#9873;</span>
+            <span class="label">bmad-relay</span>
+            <span class="project-ctx">supportsignal</span>
+            <span class="badge build">BUILD</span>
+            <span class="sid">9ce6fb0e</span>
+          </div>
+          <div class="prompt-line">Can you read in the BMAD relay design docs please? And then give us a good name for this conversation</div>
+        </div>
+        <div class="right-cluster">
+          <span class="star">&#9734;</span>
+          <span class="when">6h ago</span>
+          <span class="pulse amber">376m</span>
+          <span class="menu">—</span>
+        </div>
+      </div>
+
+      <!-- Unnamed -->
+      <div class="row">
+        <div class="dot idle"></div>
+        <div class="content">
+          <div class="top-line">
+            <span class="label">app.supportsignal....</span>
+            <span class="badge build">BUILD</span>
+            <span class="sid">c0c3a020</span>
+          </div>
+          <div class="prompt-line">/bmad-lib CU 2.1</div>
+        </div>
+        <div class="right-cluster">
+          <span class="star">&#9734;</span>
+          <span class="when">6h ago</span>
+          <span class="pulse none">—</span>
+          <span class="menu">—</span>
+        </div>
+      </div>
+
+      <!-- Named -->
+      <div class="row named">
+        <div class="dot idle"></div>
+        <div class="content">
+          <div class="top-line">
+            <span class="pennant">&#9873;</span>
+            <span class="label">lisa-kdd-upgrade-pass1</span>
+            <span class="project-ctx">supportsignal</span>
+            <span class="badge build">BUILD</span>
+            <span class="sid">9cf1804f</span>
+          </div>
+          <div class="prompt-line">/bmad-lib</div>
+        </div>
+        <div class="right-cluster">
+          <span class="star">&#9734;</span>
+          <span class="when">6h ago</span>
+          <span class="pulse amber">382m</span>
+          <span class="menu">—</span>
+        </div>
+      </div>
+
+      <!-- Unnamed -->
+      <div class="row">
+        <div class="dot idle"></div>
+        <div class="content">
+          <div class="top-line">
+            <span class="label">brains</span>
+            <span class="badge orientation">ORIENTATION</span>
+            <span class="sid">7e55c656</span>
+          </div>
+          <div class="prompt-line">The quick brown fox jumped over the lazy dog.</div>
+        </div>
+        <div class="right-cluster">
+          <span class="star">&#9734;</span>
+          <span class="when">1h ago</span>
+          <span class="pulse none">—</span>
+          <span class="menu">—</span>
+        </div>
+      </div>
+
+      <!-- Unnamed -->
+      <div class="row">
+        <div class="dot idle"></div>
+        <div class="content">
+          <div class="top-line">
+            <span class="label">flihub</span>
+            <span class="badge orientation">ORIENTATION</span>
+            <span class="sid">9c3c681e</span>
+          </div>
+          <div class="prompt-line">[Image #1] I'm giving you a screenshot of Jan's machine. He's the editor. And at the moment, there's a project problem.</div>
+        </div>
+        <div class="right-cluster">
+          <span class="star">&#9734;</span>
+          <span class="when">2h ago</span>
+          <span class="pulse amber">129m</span>
+          <span class="menu">—</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── DESIGN RATIONALE ──────────────────────── -->
+  <div class="design-notes">
+    <h2>Design Rationale</h2>
+    <ul>
+      <li><strong>Same row height everywhere.</strong> Named and unnamed rows are identical in structure — two lines (label + prompt). Consistent rhythm means the list is scannable at any length.</li>
+      <li><strong>3px amber left border</strong> is the only structural difference. Subtle enough not to compete with focus state, visible enough to catch the eye when scrolling.</li>
+      <li><strong>No "named" badge.</strong> The presence of a human-chosen name is self-evident. Labelling it is redundant.</li>
+      <li><strong>Single &#9873; pennant glyph</strong> in amber before the name — a quiet signal, not a badge. Takes zero extra vertical space.</li>
+      <li><strong>Project name as muted context</strong> (e.g. "supportsignal", "brains") appears inline after the name, same line, tiny and dim. No full paths — just the project slug, enough to orient without noise.</li>
+      <li><strong>Name replaces project as hero text.</strong> Named rows show the name where unnamed rows show the project. The name IS the elevation — it doesn't need extra visual weight.</li>
+      <li><strong>No background wash.</strong> The amber border does the work. Background changes are reserved for hover and focus states, not categories.</li>
+      <li><strong>Prompt text stays on line two</strong> for both named and unnamed. This is the most useful secondary info. Never push it to line three.</li>
+    </ul>
+  </div>
+</div>
+
+</body>
+</html>

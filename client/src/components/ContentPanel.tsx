@@ -2,11 +2,13 @@ import { useNav } from '../contexts/NavContext.js';
 import ObserverView from '../views/ObserverView.js';
 import OrganiserView from '../views/OrganiserView.js';
 import SettingsView from '../views/SettingsView.js';
+import MockupsView from '../views/MockupsView.js';
 
 const viewMap: Record<string, React.ComponentType> = {
   observer: ObserverView,
   organiser: OrganiserView,
   settings: SettingsView,
+  mockups: MockupsView,
 };
 
 export default function ContentPanel() {

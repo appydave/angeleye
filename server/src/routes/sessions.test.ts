@@ -123,6 +123,100 @@ describe('GET /api/sessions', () => {
   });
 });
 
+// ── GET /api/sessions (paginated) ──────────────────────────────────────────────
+
+describe('GET /api/sessions (paginated)', () => {
+  async function seedSessions(count: number) {
+    for (let i = 0; i < count; i++) {
+      const id = `ses-page-${String(i).padStart(3, '0')}`;
+      await updateRegistry(id, {
+        session_id: id,
+        project_dir: `/projects/page-${i}`,
+        last_active: new Date(Date.UTC(2026, 0, 1, 0, 0, i)).toISOString(),
+      });
+    }
+  }
+
+  it('returns all sessions when no limit param is provided (backward compatible)', async () => {
+    await seedSessions(10);
+    const res = await request(app).get('/api/sessions');
+
+    expect(res.status).toBe(200);
+    expect(res.body.data.sessions).toHaveLength(10);
+    // No cursor or hasMore in backward-compatible mode
+    expect(res.body.data.cursor).toBeUndefined();
+    expect(res.body.data.hasMore).toBeUndefined();
+  });
+
+  it('limit=5 returns only 5 sessions', async () => {
+    await seedSessions(10);
+    const res = await request(app).get('/api/sessions?limit=5');
+
+    expect(res.status).toBe(200);
+    expect(res.body.data.sessions).toHaveLength(5);
+    expect(res.body.data.hasMore).toBe(true);
+    expect(res.body.data.cursor).toBeDefined();
+  });
+
+  it('after=<id> returns the next page of sessions', async () => {
+    await seedSessions(10);
+
+    // First page
+    const page1 = await request(app).get('/api/sessions?limit=5');
+    expect(page1.body.data.sessions).toHaveLength(5);
+    const cursor = page1.body.data.cursor;
+
+    // Second page
+    const page2 = await request(app).get(`/api/sessions?limit=5&after=${cursor}`);
+    expect(page2.body.data.sessions).toHaveLength(5);
+
+    // No overlap between pages
+    const page1Ids = (page1.body.data.sessions as Array<{ session_id: string }>).map(
+      (s) => s.session_id
+    );
+    const page2Ids = (page2.body.data.sessions as Array<{ session_id: string }>).map(
+      (s) => s.session_id
+    );
+    expect(page1Ids.filter((id: string) => page2Ids.includes(id))).toEqual([]);
+  });
+
+  it('hasMore is false when at the end', async () => {
+    await seedSessions(3);
+    const res = await request(app).get('/api/sessions?limit=10');
+
+    expect(res.status).toBe(200);
+    expect(res.body.data.sessions).toHaveLength(3);
+    expect(res.body.data.hasMore).toBe(false);
+  });
+
+  it('invalid limit values are handled gracefully', async () => {
+    await seedSessions(5);
+
+    // Negative limit clamps to 1
+    const res1 = await request(app).get('/api/sessions?limit=-5');
+    expect(res1.status).toBe(200);
+    expect(res1.body.data.sessions).toHaveLength(1);
+
+    // Non-numeric limit defaults to 50
+    const res2 = await request(app).get('/api/sessions?limit=abc');
+    expect(res2.status).toBe(200);
+    expect(res2.body.data.sessions).toHaveLength(5); // only 5 seeded
+
+    // Limit > 200 clamps to 200
+    const res3 = await request(app).get('/api/sessions?limit=500');
+    expect(res3.status).toBe(200);
+    expect(res3.body.data.sessions).toHaveLength(5); // only 5 seeded, but limit was clamped
+  });
+
+  it('after with unknown cursor id starts from the beginning', async () => {
+    await seedSessions(5);
+    const res = await request(app).get('/api/sessions?limit=3&after=ses-nonexistent');
+
+    expect(res.status).toBe(200);
+    expect(res.body.data.sessions).toHaveLength(3);
+  });
+});
+
 // ── GET /api/sessions/:id/events ──────────────────────────────────────────────
 
 describe('GET /api/sessions/:id/events', () => {

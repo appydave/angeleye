@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Named Rows v2: Tight — Mochaccino</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #e8e0d4; --surface: #ede7dc; --surface-mid: #ddd6cc;
+    --card: #f5f1eb; --border: #d4cdc4; --border-raised: #ccc5bb;
+    --primary: #c8841a; --fg: #2a2018; --muted: #7a6e5e; --muted-dim: #9e9484;
+    --amber: #c8841a;
+  }
+  body { background: var(--bg); color: var(--fg); font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.5; }
+  .banner { background: var(--border); color: var(--muted); font-size: 11px; padding: 6px 16px; letter-spacing: 0.5px; }
+  .page { max-width: 1280px; margin: 0 auto; padding: 32px 24px; }
+  h1 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+  .subtitle { color: var(--muted); font-size: 13px; margin-bottom: 32px; }
+  .section-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; padding-left: 4px; }
+
+  /* ── List ─────────────────────────────────────── */
+  .session-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); border-radius: 8px; overflow: hidden; }
+
+  .row {
+    display: grid;
+    grid-template-columns: 20px 1fr auto;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    background: var(--surface);
+    border-left: 3px solid transparent;
+    cursor: pointer;
+    min-height: 48px;
+  }
+  .row:hover { background: var(--surface-mid); }
+  .row.named { border-left-color: var(--amber); }
+
+  /* Dot */
+  .dot { width: 8px; height: 8px; border-radius: 50%; justify-self: center; }
+  .dot.active { background: #5a9a3c; }
+  .dot.recent { background: var(--amber); }
+  .dot.idle { border: 1.5px solid var(--muted-dim); }
+
+  /* Center content — single line with wrapped prompt below */
+  .center { min-width: 0; }
+
+  .meta {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fg);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .project-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--fg);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 160px;
+  }
+
+  /* Separator dot between name and project context */
+  .ctx-sep {
+    color: var(--border-raised);
+    font-size: 10px;
+    flex-shrink: 0;
+  }
+
+  .ctx {
+    font-size: 11px;
+    color: var(--muted-dim);
+    flex-shrink: 0;
+  }
+
+  .badge {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
+    padding: 1px 6px; border-radius: 3px; flex-shrink: 0; text-transform: uppercase;
+  }
+  .badge.build { background: #5a9a3c; color: #fff; }
+  .badge.orientation { background: #8b7355; color: #fff; }
+  .badge.knowledge { background: #2a6e8a; color: #fff; }
+  .badge.research { background: #7a5ca8; color: #fff; }
+  .badge.ops { background: #555; color: #fff; }
+
+  /* Session ID hidden by default, shown on hover */
+  .sid {
+    font-size: 10px;
+    font-family: 'SF Mono', 'Menlo', monospace;
+    color: var(--muted-dim);
+    opacity: 0;
+    transition: opacity 0.15s;
+    flex-shrink: 0;
+  }
+  .row:hover .sid { opacity: 1; }
+
+  .prompt {
+    font-size: 12px; color: var(--muted); font-style: italic;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    margin-top: 1px;
+  }
+
+  /* Right side */
+  .right {
+    display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+    font-size: 12px; color: var(--muted);
+  }
+  .star { font-size: 14px; cursor: pointer; color: var(--muted-dim); }
+  .star.filled { color: var(--amber); }
+  .when { white-space: nowrap; min-width: 52px; text-align: right; }
+  .pulse { font-size: 11px; font-weight: 600; font-family: 'SF Mono', 'Menlo', monospace; min-width: 32px; text-align: right; }
+  .pulse.green { color: #5a9a3c; } .pulse.amber { color: var(--amber); } .pulse.red { color: #c0392b; } .pulse.none { color: transparent; }
+  .menu { color: var(--muted-dim); cursor: pointer; }
+
+  /* ── Design notes ────────────────────────────── */
+  .notes { margin-top: 48px; padding: 20px 24px; background: var(--card); border-radius: 8px; border: 1px solid var(--border); }
+  .notes h2 { font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+  .notes ul { list-style: none; padding: 0; }
+  .notes li { font-size: 13px; color: var(--muted); padding: 4px 0 4px 16px; position: relative; line-height: 1.5; }
+  .notes li::before { content: '—'; position: absolute; left: 0; color: var(--border-raised); }
+  .notes li strong { color: var(--fg); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="banner">Mochaccino — named-rows-v2-tight — 2026-03-25</div>
+<div class="page">
+  <h1>v2: Tight — Hide the Session ID</h1>
+  <p class="subtitle">Session IDs only appear on hover. Less visual noise, same information density when you need it.</p>
+
+  <div class="section-label">Observer — mixed list</div>
+  <div class="session-list">
+
+    <div class="row named">
+      <div class="dot active"></div>
+      <div class="center">
+        <div class="meta">
+          <span class="name">angeleye-brain-app-architecture</span>
+          <span class="ctx-sep">&middot;</span>
+          <span class="ctx">brains</span>
+          <span class="badge build">BUILD</span>
+          <span class="sid">25d74454</span>
+        </div>
+        <div class="prompt">Now what I want you to do is get back over the history of probably two or three days.</div>
+      </div>
+      <div class="right">
+        <span class="star filled">&#9733;</span>
+        <span class="when">18m ago</span>
+        <span class="pulse amber">24m</span>
+        <span class="menu">—</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="dot active"></div>
+      <div class="center">
+        <div class="meta">
+          <span class="project-label">angeleye</span>
+          <span class="badge build">BUILD</span>
+          <span class="sid">08fbfe17</span>
+        </div>
+        <div class="prompt">/ralphy</div>
+      </div>
+      <div class="right">
+        <span class="star">&#9734;</span>
+        <span class="when">11m ago</span>
+        <span class="pulse green">11m</span>
+        <span class="menu">—</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="dot idle"></div>
+      <div class="center">
+        <div class="meta">
+          <span class="project-label">brains</span>
+          <span class="badge knowledge">KNOWLEDGE</span>
+          <span class="sid">d26d8019</span>
+        </div>
+        <div class="prompt">what do we know about dynamous community and colemedin, and also upstream repos</div>
+      </div>
+      <div class="right">
+        <span class="star">&#9734;</span>
+        <span class="when">18m ago</span>
+        <span class="pulse none">—</span>
+        <span class="menu">—</span>
+      </div>
+    </div>
+
+    <div class="row named">
+      <div class="dot idle"></div>
+      <div class="center">
+        <div class="meta">
+          <span class="name">bmad-oversight-command-setup</span>
+          <span class="ctx-sep">&middot;</span>
+          <span class="ctx">supportsignal</span>
+          <span class="badge orientation">ORIENTATION</span>
+          <span class="sid">fef74880</span>
+        </div>
+        <div class="prompt">bmad-oversight</div>
+      </div>
+      <div class="right">
+        <span class="star">&#9734;</span>
+        <span class="when">5h ago</span>
+        <span class="pulse none">—</span>
+        <span class="menu">—</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="dot idle"></div>
+      <div class="center">
+        <div class="meta">
+          <span class="project-label">app.supportsignal....</span>
+          <span class="badge build">BUILD</span>
+          <span class="sid">3c0ca17d</span>
+        </div>
+        <div class="prompt">/bmad-sm VS 0.1</div>
+      </div>
+      <div class="right">
+        <span class="star">&#9734;</span>
+        <span class="when">5h ago</span>
+        <span class="pulse amber">316m</span>
+        <span class="menu">—</span>
+      </div>
+    </div>
+
+    <div class="row named">
+      <div class="dot idle"></div>
+      <div class="center">
+        <div class="meta">
+          <span class="name">bmad-relay</span>
+          <span class="ctx-sep">&middot;</span>
+          <span class="ctx">supportsignal</span>
+          <span class="badge build">BUILD</span>
+          <span class="sid">9ce6fb0e</span>
+        </div>
+        <div class="prompt">Can you read in the BMAD relay design docs please? And then give us a good name for this conversation</div>
+      </div>
+      <div class="right">
+        <span class="star">&#9734;</span>
+        <span class="when">6h ago</span>
+        <span class="pulse amber">376m</span>
+        <span class="menu">—</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="dot idle"></div>
+      <div class="center">
+        <div class="meta">
+          <span class="project-label">app.supportsignal....</span>
+          <span class="badge build">BUILD</span>
+          <span class="sid">c0c3a020</span>
+        </div>
+        <div class="prompt">/bmad-lib CU 2.1</div>
+      </div>
+      <div class="right">
+        <span class="star">&#9734;</span>
+        <span class="when">6h ago</span>
+        <span class="pulse none">—</span>
+        <span class="menu">—</span>
+      </div>
+    </div>
+
+    <div class="row named">
+      <div class="dot idle"></div>
+      <div class="center">
+        <div class="meta">
+          <span class="name">lisa-kdd-upgrade-pass1</span>
+          <span class="ctx-sep">&middot;</span>
+          <span class="ctx">supportsignal</span>
+          <span class="badge build">BUILD</span>
+          <span class="sid">9cf1804f</span>
+        </div>
+        <div class="prompt">/bmad-lib</div>
+      </div>
+      <div class="right">
+        <span class="star">&#9734;</span>
+        <span class="when">6h ago</span>
+        <span class="pulse amber">382m</span>
+        <span class="menu">—</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="dot idle"></div>
+      <div class="center">
+        <div class="meta">
+          <span class="project-label">brains</span>
+          <span class="badge orientation">ORIENTATION</span>
+          <span class="sid">7e55c656</span>
+        </div>
+        <div class="prompt">The quick brown fox jumped over the lazy dog.</div>
+      </div>
+      <div class="right">
+        <span class="star">&#9734;</span>
+        <span class="when">1h ago</span>
+        <span class="pulse none">—</span>
+        <span class="menu">—</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="dot idle"></div>
+      <div class="center">
+        <div class="meta">
+          <span class="project-label">flihub</span>
+          <span class="badge orientation">ORIENTATION</span>
+          <span class="sid">9c3c681e</span>
+        </div>
+        <div class="prompt">[Image #1] I'm giving you a screenshot of Jan's machine. He's the editor.</div>
+      </div>
+      <div class="right">
+        <span class="star">&#9734;</span>
+        <span class="when">2h ago</span>
+        <span class="pulse amber">129m</span>
+        <span class="menu">—</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="notes">
+    <h2>What changed from v1</h2>
+    <ul>
+      <li><strong>Session ID is hover-only.</strong> It's there when you need to copy it, invisible otherwise. Removes 8 characters of noise from every row.</li>
+      <li><strong>Middot separator</strong> between name and project context — cleaner than a space, lighter than a badge.</li>
+      <li><strong>Smaller badges</strong> (9px) — still readable, takes less horizontal space.</li>
+      <li><strong>Grid layout</strong> instead of flexbox — dot, content, and right-cluster are always aligned across rows.</li>
+      <li><strong>Tighter vertical padding</strong> (8px vs 10px) — fits more rows on screen without feeling cramped.</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

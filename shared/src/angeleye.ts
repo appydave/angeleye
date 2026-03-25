@@ -35,6 +35,48 @@ export type SessionType =
   | 'OPS' // infrastructure, CI/CD, Bash-only campaigns
   | 'ORIENTATION'; // cold start, reorientation, lookup
 
+// ── Session Subtypes (B043) ─────────────────────────────────────────────────
+// Confirmed subtypes with N >= 3 occurrences from 924-session campaign.
+// Keyed by parent SessionType. Detection logic is NOT yet implemented —
+// these types exist so downstream code can reference them.
+
+export type SessionSubtype =
+  // BUILD subtypes
+  | 'bug_fix_round'
+  | 'feature_implementation'
+  | 'refactoring'
+  | 'test_writing'
+  | 'ci_pipeline'
+  // ORIENTATION subtypes
+  | 'codebase_exploration'
+  | 'file_retrieval'
+  | 'artifact_lookup'
+  // KNOWLEDGE subtypes
+  | 'brain_maintenance'
+  | 'advisory_refinement'
+  | 'brain_capture'
+  // RESEARCH subtypes
+  | 'technology_survey'
+  | 'hardware_setup_troubleshooting'
+  | 'release_exploration'
+  // OPS subtypes
+  | 'poem_execution'
+  | 'directory_cleanup'
+  | 'paperclip_agent'
+  // PLANNING subtypes
+  | 'daily_planning'
+  | 'interactive_design'
+  | 'sprint_planning'
+  // SETUP subtypes
+  | 'mcp_integration'
+  | 'environment_setup'
+  | 'dependency_management'
+  // TEST subtypes
+  | 'playwright_e2e'
+  | 'test_debugging'
+  // META subtypes
+  | 'session_about_sessions';
+
 export type ToolPattern =
   | 'playwright-heavy' // mcp__playwright__ > 40% of tool calls
   | 'bash-heavy' // Bash > 40% of tool calls
@@ -60,6 +102,7 @@ export interface RegistryEntry {
   // rule-based classification (no LLM, computed from events)
   is_junk?: boolean;
   session_type?: SessionType;
+  session_subtype?: SessionSubtype;
   tool_pattern?: ToolPattern;
   first_edited_dir?: string; // first directory meaningfully touched
   first_real_prompt?: string; // first non-junk prompt snippet, max 200 chars

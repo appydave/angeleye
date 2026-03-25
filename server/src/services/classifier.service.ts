@@ -1,12 +1,14 @@
 import path from 'node:path';
-import type { AngelEyeEvent, SessionType, ToolPattern } from '@appystack/shared';
+import type { AngelEyeEvent, SessionSubtype, SessionType, ToolPattern } from '@appystack/shared';
 
 export interface ClassificationResult {
   is_junk: boolean;
   session_type?: SessionType;
+  session_subtype?: SessionSubtype;
   tool_pattern?: ToolPattern;
   first_edited_dir?: string;
   first_real_prompt?: string;
+  pii_flags?: string[];
 }
 
 // ── is_junk detection ─────────────────────────────────────────────────────────
@@ -253,6 +255,45 @@ export function findFirstRealPrompt(events: AngelEyeEvent[]): string | undefined
   return undefined;
 }
 
+// ── PII detection (B040) ──────────────────────────────────────────────────────
+
+const PII_PATTERNS: [string, RegExp][] = [
+  ['email', /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/],
+  ['ipv4', /\b(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\b/],
+  ['npm_token', /\bnpm_[a-zA-Z0-9]{20,}\b/],
+  ['openai_key', /\bsk-[a-zA-Z0-9]{20,}\b/],
+  ['bsa_key', /\bBSA[a-zA-Z0-9]{20,}\b/],
+  ['github_token', /\bghp_[a-zA-Z0-9]{20,}\b/],
+  ['slack_token', /\bxoxb-[a-zA-Z0-9-]{20,}\b/],
+  ['aws_key', /\bAKIA[A-Z0-9]{12,}\b/],
+  [
+    'birthdate',
+    /\b(?:born|dob|birthday)\b.*?\b(?:\d{2}[/.-]\d{2}[/.-]\d{4}|\d{4}[/.-]\d{2}[/.-]\d{2})\b/i,
+  ],
+  ['generic_secret', /\b[a-fA-F0-9]{40,}\b/],
+  ['generic_base64_secret', /\b[A-Za-z0-9+/]{40,}={0,2}\b/],
+];
+
+export function detectPiiFlags(events: AngelEyeEvent[]): string[] {
+  const found = new Set<string>();
+
+  for (const e of events) {
+    if (e.event !== 'user_prompt' || !e.prompt) continue;
+
+    for (const [label, pattern] of PII_PATTERNS) {
+      if (found.has(label)) continue;
+      if (pattern.test(e.prompt)) {
+        found.add(label);
+      }
+    }
+
+    // Early exit if all patterns matched
+    if (found.size === PII_PATTERNS.length) break;
+  }
+
+  return Array.from(found).sort();
+}
+
 // ── classifySession (main entry point) ───────────────────────────────────────
 
 export function classifySession(
@@ -270,6 +311,7 @@ export function classifySession(
   const session_type = detectSessionType(tool_pattern, projectDir, events);
   const first_edited_dir = findFirstEditedDir(events);
   const first_real_prompt = findFirstRealPrompt(events);
+  const pii_flags = detectPiiFlags(events);
 
   return {
     is_junk: false,
@@ -277,5 +319,6 @@ export function classifySession(
     session_type,
     ...(first_edited_dir !== undefined && { first_edited_dir }),
     ...(first_real_prompt !== undefined && { first_real_prompt }),
+    ...(pii_flags.length > 0 && { pii_flags }),
   };
 }

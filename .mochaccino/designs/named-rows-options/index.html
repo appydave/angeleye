@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Named Row Options — Mochaccino</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #e8e0d4; --surface: #ede7dc; --surface-mid: #ddd6cc;
+    --card: #f5f1eb; --border: #d4cdc4; --border-raised: #ccc5bb;
+    --primary: #c8841a; --fg: #2a2018; --muted: #7a6e5e; --muted-dim: #9e9484;
+    --amber: #c8841a;
+  }
+  body { background: var(--bg); color: var(--fg); font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.5; }
+  .banner { background: var(--border); color: var(--muted); font-size: 11px; padding: 6px 16px; letter-spacing: 0.5px; }
+  .page { max-width: 1360px; margin: 0 auto; padding: 32px 24px; }
+  h1 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+  .page-subtitle { color: var(--muted); font-size: 13px; margin-bottom: 40px; line-height: 1.6; }
+
+  /* ── Option block ────────────────────────────── */
+  .option { margin-bottom: 48px; }
+  .option-header {
+    display: flex; align-items: baseline; gap: 12px;
+    margin-bottom: 6px; padding-left: 4px;
+  }
+  .option-title { font-size: 16px; font-weight: 600; }
+  .option-desc { font-size: 12px; color: var(--muted); }
+  .option-notes {
+    font-size: 12px; color: var(--muted); padding: 8px 12px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 6px;
+    margin-top: 8px; line-height: 1.6;
+  }
+  .option-notes strong { color: var(--fg); }
+
+  /* ── Column header (matches real Observer) ───── */
+  .col-header {
+    display: flex; align-items: center; gap: 16px;
+    padding: 6px 12px 6px 16px;
+    font-size: 10px; font-weight: 700; letter-spacing: 1px;
+    font-family: 'Bebas Neue', sans-serif;
+    text-transform: uppercase; color: var(--muted-dim);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0;
+  }
+  .col-header .session-col { width: 120px; }
+  .col-header .activity-col { flex: 1; }
+  .col-header .right-col { margin-left: auto; display: flex; gap: 16px; }
+  .col-header .right-col span { font-size: 10px; }
+
+  /* ── Session list ────────────────────────────── */
+  .session-list { display: flex; flex-direction: column; gap: 6px; padding-top: 6px; }
+
+  /* ── Row — matches real Observer card style ──── */
+  .row {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 10px 12px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    transition: all 0.15s;
+  }
+  .row:hover { box-shadow: 0 2px 6px rgba(0,0,0,0.08); background: #faf8f4; }
+
+  /* ── Status dot ──────────────────────────────── */
+  .dot { width: 10px; flex-shrink: 0; margin-top: 5px; font-size: 12px; line-height: 1; }
+  .dot.active { color: #5a9a3c; }
+  .dot.idle { color: var(--muted-dim); }
+
+  /* ── Content (two-row) ───────────────────────── */
+  .content { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+
+  /* Top row: label + badge + id + spacer + copy + star + when + pulse */
+  .top-row { display: flex; align-items: center; gap: 8px; min-width: 0; }
+
+  .label {
+    font-size: 13px; font-weight: 500; color: var(--fg);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    max-width: 160px; flex-shrink: 0; cursor: pointer;
+  }
+  .label:hover { text-decoration: underline; }
+
+  .badge {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
+    font-family: 'Bebas Neue', sans-serif;
+    padding: 1px 6px; border-radius: 3px; flex-shrink: 0;
+    text-transform: uppercase;
+  }
+  .badge.build { background: rgba(42,32,24,0.85); color: var(--primary); }
+  .badge.orientation { background: rgba(42,32,24,0.40); color: #d4c9b8; }
+  .badge.knowledge { background: rgba(42,32,24,0.85); color: #6dbf6d; }
+  .badge.research { background: rgba(42,32,24,0.85); color: #c4a0e8; }
+
+  .sid {
+    font-size: 11px; font-family: 'SF Mono', 'Menlo', monospace;
+    color: var(--muted-dim); flex-shrink: 0;
+  }
+
+  .spacer { flex: 1; }
+
+  .copy-btn { font-size: 12px; color: var(--muted-dim); opacity: 0.4; cursor: pointer; flex-shrink: 0; }
+  .star { font-size: 13px; color: var(--muted-dim); opacity: 0.4; cursor: pointer; flex-shrink: 0; }
+  .star.filled { color: var(--amber); opacity: 1; }
+  .when { font-size: 12px; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
+  .pulse { font-size: 11px; font-weight: 600; font-family: 'SF Mono', 'Menlo', monospace; width: 32px; text-align: right; flex-shrink: 0; }
+  .pulse.green { color: #5a9a3c; } .pulse.amber { color: var(--amber); } .pulse.none { color: var(--muted-dim); }
+  .menu-dots { color: var(--muted-dim); cursor: pointer; flex-shrink: 0; font-size: 14px; }
+
+  /* Bottom row: prompt */
+  .prompt {
+    font-size: 12px; color: var(--muted); font-style: italic;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  /* ── OPTION-SPECIFIC STYLES ──────────────────── */
+
+  /* Option A: Just amber border, bolder name, no extra badges or lines */
+  .optA .row.named { border-left-color: var(--amber); }
+  .optA .row.named .label { font-weight: 600; max-width: none; flex-shrink: 1; }
+
+  /* Option B: Amber border + pennant glyph + project context inline */
+  .optB .row.named { border-left-color: var(--amber); }
+  .optB .row.named .label { font-weight: 600; max-width: none; flex-shrink: 1; }
+  .optB .pennant { color: var(--amber); font-size: 11px; flex-shrink: 0; opacity: 0.6; }
+  .optB .ctx { font-size: 11px; color: var(--muted-dim); flex-shrink: 0; }
+
+  /* Option C: Amber border + name on its own line above the standard row */
+  .optC .row.named { border-left-color: var(--amber); }
+  .optC .name-hero {
+    font-size: 13px; font-weight: 600; color: var(--fg);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    margin-bottom: 1px;
+  }
+
+  /* Option D: Subtle warm background tint + bolder name, no border change */
+  .optD .row.named { background: rgba(200, 132, 26, 0.06); border-left-color: var(--amber); }
+  .optD .row.named:hover { background: rgba(200, 132, 26, 0.10); }
+  .optD .row.named .label { font-weight: 600; max-width: none; flex-shrink: 1; }
+  .optD .ctx { font-size: 11px; color: var(--muted-dim); flex-shrink: 0; }
+</style>
+</head>
+<body>
+<div class="banner">Mochaccino — named-rows-options — 2026-03-25</div>
+<div class="page">
+  <h1>Named Session Rows — Four Options</h1>
+  <p class="page-subtitle">Same Observer layout. Same row structure. Only the named row treatment varies.<br>Each option shows the same 6 sessions — 3 named, 3 unnamed — so you can compare directly.</p>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- OPTION A: Minimal — just amber border + bold -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="option optA">
+    <div class="option-header">
+      <span class="option-title">Option A: Minimal</span>
+      <span class="option-desc">Amber border + bolder name. Nothing else changes.</span>
+    </div>
+    <div class="session-list">
+      <!-- Named -->
+      <div class="row named">
+        <span class="dot active">●</span>
+        <div class="content">
+          <div class="top-row">
+            <span class="label">angeleye-brain-app-architecture</span>
+            <span class="badge build">BUILD</span>
+            <span class="sid">25d74454</span>
+            <span class="spacer"></span>
+            <span class="copy-btn">⎘</span>
+            <span class="star filled">★</span>
+            <span class="when">18m ago</span>
+            <span class="pulse amber">24m</span>
+            <span class="menu-dots">—</span>
+          </div>
+          <div class="prompt">Now what I want you to do is get back over the history of probably two or three days.</div>
+        </div>
+      </div>
+      <!-- Unnamed -->
+      <div class="row">
+        <span class="dot active">●</span>
+        <div class="content">
+          <div class="top-row">
+            <span class="label">angeleye</span>
+            <span class="badge build">BUILD</span>
+            <span class="sid">08fbfe17</span>
+            <span class="spacer"></span>
+            <span class="copy-btn">⎘</span>
+            <span class="star">☆</span>
+            <span class="when">11m ago</span>
+            <span class="pulse green">11m</span>
+            <span class="menu-dots">—</span>
+          </div>
+          <div class="prompt">/ralphy</div>
+        </div>
+      </div>
+      <!-- Named -->
+      <div class="row named">
+        <span class="dot idle">○</span>
+        <div class="content">
+          <div class="top-row">
+            <span class="label">bmad-relay</span>
+            <span class="badge build">BUILD</span>
+            <span class="sid">9ce6fb0e</span>
+            <span class="spacer"></span>
+            <span class="copy-btn">⎘</span>
+            <span class="star">☆</span>
+            <span class="when">6h ago</span>
+            <span class="pulse none">—</span>
+            <span class="menu-dots">—</span>
+          </div>
+          <div class="prompt">Can you read in the BMAD relay design docs please? And then give us a good name</div>
+        </div>
+      </div>
+      <!-- Unnamed -->
+      <div class="row">
+        <span class="dot idle">○</span>
+        <div class="content">
+          <div class="top-row">
+            <span class="label">brains</span>
+            <span class="badge knowledge">KNOWLEDGE</span>
+            <span class="sid">d26d8019</span>
+            <span class="spacer"></span>
+            <span class="copy-btn">⎘</span>
+            <span class="star">☆</span>
+            <span class="when">18m ago</span>
+            <span class="pulse none">—</span>
+            <span class="menu-dots">—</span>
+          </div>
+          <div class="prompt">what do we know about dynamous community and colemedin</div>
+        </div>
+      </div>
+      <!-- Named -->
+      <div class="row named">
+        <span class="dot idle">○</span>
+        <div class="content">
+          <div class="top-row">
+            <span class="label">bmad-oversight-command-setup</span>
+            <span class="badge orientation">ORIENTATION</span>
+            <span class="sid">fef74880</span>
+            <span class="spacer"></span>
+            <span class="copy-btn">⎘</span>
+            <span class="star">☆</span>
+            <span class="when">5h ago</span>
+            <span class="pulse none">—</span>
+            <span class="menu-dots">—</span>
+          </div>
+          <div class="prompt">bmad-oversight</div>
+        </div>
+      </div>
+      <!-- Unnamed -->
+      <div class="row">
+        <span class="dot idle">○</span>
+        <div class="content">
+          <div class="top-row">
+            <span class="label">app.supportsignal....</span>
+            <span class="badge build">BUILD</span>
+            <span class="sid">3c0ca17d</span>
+            <span class="spacer"></span>
+            <span class="copy-btn">⎘</span>
+            <span class="star">☆</span>
+            <span class="when">5h ago</span>
+            <span class="pulse amber">316m</span>
+            <span class="menu-dots">—</span>
+          </div>
+          <div class="prompt">/bmad-sm VS 0.1</div>
+        </div>
+      </div>
+    </div>
+    <div class="option-notes">
+      <strong>Changes:</strong> amber left border, name goes bold (600 vs 500), max-width cap removed so the name can breathe.<br>
+      <strong>Keeps:</strong> Session ID, star, copy, when, pulse, menu — all in original positions. Same row height. No extra badges or lines.
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- OPTION B: Pennant + project context -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="option optB">
+    <div class="option-header">
+      <span class="option-title">Option B: Pennant + Context</span>
+      <span class="option-desc">Small ⚑ before name, project slug after name. Still one line.</span>
+    </div>
+    <div class="session-list">
+      <!-- Named -->
+      <div class="row named">
+        <span class="dot active">●</span>
+        <div class="content">
+          <div class="top-row">
+            <span class="pennant">⚑</span>
+            <span class="label">angeleye-brain-app-architecture</span>
+            <span class="ctx">brains</span>
+            <span class="badge build">BUILD</span>
+            <span class="sid">25d74454</span>
+            <span class="spacer"></span>
+            <span class="copy-btn">⎘</span>
+            <span class="star filled">★</span>
+            <span class="when">18m ago</span>
+            <span class="pulse amber">24m</span>
+            <span class="menu-dots">—</span>
+          </div>
+          <div class="prompt">Now what I want you to do is get back over the history of probably two or three days.</div>
+        </div>
+      </div>
+      <!-- Unnamed -->
+      <div class="row">
+        <span class="dot active">●</span>
+        <div class="content">
+          <div class="top-row">
+            <span class="label">angeleye</span>
+            <span class="badge build">BUILD</span>
+            <span class="sid">08fbfe17</span>
+            <span class="spacer"></span>
+            <span class="copy-btn">⎘</span>
+            <span class="star">☆</span>
+            <span class="when">11m ago</span>
+            <span class="pulse green">11m</span>
+            <span class="menu-dots">—</span>
+          </div>
+          <div class="prompt">/ralphy</div>
+        </div>
+      </div>
+      <!-- Named -->
+      <div class="row named">
+        <span class="dot idle">○</span>
+        <div class="content">
+          <div class="top-row">
+            <span class="pennant">⚑</span>
+            <span class="label">bmad-relay</span>
+            <span class="ctx">supportsignal</span>
+            <span class="badge build">BUILD</span>
+            <span class="sid">9ce6fb0e</span>
+            <span class="spacer"></span>
+            <span class="copy-btn">⎘</span>
+            <span class="star">☆</span>
+            <span class="when">6h ago</span>
+            <span class="pulse none">—</span>
+            <span class="menu-dots">—</span>
+          </div>
+          <div class="prompt">Can you read in the BMAD relay design docs please? And then give us a good name</div>
+        </div>
+      </div>
+      <!-- Unnamed -->
+      <div class="row">
+        <span class="dot idle">○</span>
+        <div class="content">
+          <div class="top-row">
+            <span class="label">brains</span>
+            <span class="badge knowledge">KNOWLEDGE</span>
+            <span class="sid">d26d8019</span>
+            <span class="spacer"></span>
+            <span class="copy-btn">⎘</span>
+            <span class="star">☆</span>
+            <span class="when">18m ago</span>
+            <span class="pulse none">—</span>
+            <span class="menu-dots">—</span>
+          </div>
+          <div class="prompt">what do we know about dynamous community and colemedin</div>
+        </div>
+      </div>
+      <!-- Named -->
+      <div class="row named">
+        <span class="dot idle">○</span>
+        <div class="content">
+          <div class="top-row">
+            <span class="pennant">⚑</span>
+            <span class="label">bmad-oversight-command-setup</span>
+            <span class="ctx">supportsignal</span>
+            <span class="badge orientation">ORIENTATION</span>
+            <span class="sid">fef74880</span>
+            <span class="spacer"></span>
+            <span class="copy-btn">⎘</span>
+            <span class="star">☆</span>
+            <span class="when">5h ago</span>
+            <span class="pulse none">—</span>
+            <span class="menu-dots">—</span>
+          </div>
+          <div class="prompt">bmad-oversight</div>
+        </div>
+      </div>
+      <!-- Unnamed -->
+      <div class="row">
+        <span class="dot idle">○</span>
+        <div class="content">
+          <div class="top-row">
+            <span class="label">app.supportsignal....</span>
+            <span class="badge build">BUILD</span>
+            <span class="sid">3c0ca17d</span>
+            <span class="spacer"></span>
+            <span class="copy-btn">⎘</span>
+            <span class="star">☆</span>
+            <span class="when">5h ago</span>
+            <span class="pulse amber">316m</span>
+            <span class="menu-dots">—</span>
+          </div>
+          <div class="prompt">/bmad-sm VS 0.1</div>
+        </div>
+      </div>
+    </div>
+    <div class="option-notes">
+      <strong>Changes:</strong> Amber border + small ⚑ glyph before name + project slug ("brains", "supportsignal") after name in dim text. All still on one line.<br>
+      <strong>Trade-off:</strong> Named rows have more metadata on the top line, but nothing moves position. Unnamed rows are identical to today.
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- OPTION C: Name as its own line above -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="option optC">
+    <div class="option-header">
+      <span class="option-title">Option C: Name Above</span>
+      <span class="option-desc">Name gets its own line. Standard row sits below it unchanged.</span>
+    </div>
+    <div class="session-list">
+      <!-- Named -->
+      <div class="row named">
+        <span class="dot active">●</span>
+        <div class="content">
+          <div class="name-hero">angeleye-brain-app-architecture</div>
+          <div class="top-row">
+            <span class="label">brains</span>
+            <span class="badge build">BUILD</span>
+            <span class="sid">25d74454</span>
+            <span class="spacer"></span>
+            <span class="copy-btn">⎘</span>
+            <span class="star filled">★</span>
+            <span class="when">18m ago</span>
+            <span class="pulse amber">24m</span>
+            <span class="menu-dots">—</span>
+          </div>
+          <div class="prompt">Now what I want you to do is get back over the history of probably two or three days.</div>
+        </div>
+      </div>
+      <!-- Unnamed -->
+      <div class="row">
+        <span class="dot active">●</span>
+        <div class="content">
+          <div class="top-row">
+            <span class="label">angeleye</span>
+            <span class="badge build">BUILD</span>
+            <span class="sid">08fbfe17</span>
+            <span class="spacer"></span>
+            <span class="copy-btn">⎘</span>
+            <span class="star">☆</span>
+            <span class="when">11m ago</span>
+            <span class="pulse green">11m</span>
+            <span class="menu-dots">—</span>
+          </div>
+          <div class="prompt">/ralphy</div>
+        </div>
+      </div>
+      <!-- Named -->
+      <div class="row named">
+        <span class="dot idle">○</span>
+        <div class="content">
+          <div class="name-hero">bmad-relay</div>
+          <div class="top-row">
+            <span class="label">supportsignal</span>
+            <span class="badge build">BUILD</span>
+            <span class="sid">9ce6fb0e</span>
+            <span class="spacer"></span>
+            <span class="copy-btn">⎘</span>
+            <span class="star">☆</span>
+            <span class="when">6h ago</span>
+            <span class="pulse none">—</span>
+            <span class="menu-dots">—</span>
+          </div>
+          <div class="prompt">Can you read in the BMAD relay design docs please? And then give us a good name</div>
+        </div>
+      </div>
+      <!-- Unnamed -->
+      <div class="row">
+        <span class="dot idle">○</span>
+        <div class="content">
+          <div class="top-row">
+            <span class="label">brains</span>
+            <span class="badge knowledge">KNOWLEDGE</span>
+            <span class="sid">d26d8019</span>
+            <span class="spacer"></span>
+            <span class="copy-btn">⎘</span>
+            <span class="star">☆</span>
+            <span class="when">18m ago</span>
+            <span class="pulse none">—</span>
+            <span class="menu-dots">—</span>
+          </div>
+          <div class="prompt">what do we know about dynamous community and colemedin</div>
+        </div>
+      </div>
+      <!-- Named -->
+      <div class="row named">
+        <span class="dot idle">○</span>
+        <div class="content">
+          <div class="name-hero">bmad-oversight-command-setup</div>
+          <div class="top-row">
+            <span class="label">supportsignal</span>
+            <span class="badge orientation">ORIENTATION</span>
+            <span class="sid">fef74880</span>
+            <span class="spacer"></span>
+            <span class="copy-btn">⎘</span>
+            <span class="star">☆</span>
+            <span class="when">5h ago</span>
+            <span class="pulse none">—</span>
+            <span class="menu-dots">—</span>
+          </div>
+          <div class="prompt">bmad-oversight</div>
+        </div>
+      </div>
+      <!-- Unnamed -->
+      <div class="row">
+        <span class="dot idle">○</span>
+        <div class="content">
+          <div class="top-row">
+            <span class="label">app.supportsignal....</span>
+            <span class="badge build">BUILD</span>
+            <span class="sid">3c0ca17d</span>
+            <span class="spacer"></span>
+            <span class="copy-btn">⎘</span>
+            <span class="star">☆</span>
+            <span class="when">5h ago</span>
+            <span class="pulse amber">316m</span>
+            <span class="menu-dots">—</span>
+          </div>
+          <div class="prompt">/bmad-sm VS 0.1</div>
+        </div>
+      </div>
+    </div>
+    <div class="option-notes">
+      <strong>Changes:</strong> Name sits as a bold line above the standard project + badge row. Project name drops into the position where the name was. Three-line named rows vs two-line unnamed.<br>
+      <strong>Trade-off:</strong> Named rows are taller (breaks scanning rhythm), but the name is unmissable and the standard row is completely unchanged beneath it.
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- OPTION D: Warm tint + context -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="option optD">
+    <div class="option-header">
+      <span class="option-title">Option D: Warm Tint</span>
+      <span class="option-desc">Very subtle warm background + amber border + project context. Same height.</span>
+    </div>
+    <div class="session-list">
+      <!-- Named -->
+      <div class="row named">
+        <span class="dot active">●</span>
+        <div class="content">
+          <div class="top-row">
+            <span class="label">angeleye-brain-app-architecture</span>
+            <span class="ctx">brains</span>
+            <span class="badge build">BUILD</span>
+            <span class="sid">25d74454</span>
+            <span class="spacer"></span>
+            <span class="copy-btn">⎘</span>
+            <span class="star filled">★</span>
+            <span class="when">18m ago</span>
+            <span class="pulse amber">24m</span>
+            <span class="menu-dots">—</span>
+          </div>
+          <div class="prompt">Now what I want you to do is get back over the history of probably two or three days.</div>
+        </div>
+      </div>
+      <!-- Unnamed -->
+      <div class="row">
+        <span class="dot active">●</span>
+        <div class="content">
+          <div class="top-row">
+            <span class="label">angeleye</span>
+            <span class="badge build">BUILD</span>
+            <span class="sid">08fbfe17</span>
+            <span class="spacer"></span>
+            <span class="copy-btn">⎘</span>
+            <span class="star">☆</span>
+            <span class="when">11m ago</span>
+            <span class="pulse green">11m</span>
+            <span class="menu-dots">—</span>
+          </div>
+          <div class="prompt">/ralphy</div>
+        </div>
+      </div>
+      <!-- Named -->
+      <div class="row named">
+        <span class="dot idle">○</span>
+        <div class="content">
+          <div class="top-row">
+            <span class="label">bmad-relay</span>
+            <span class="ctx">supportsignal</span>
+            <span class="badge build">BUILD</span>
+            <span class="sid">9ce6fb0e</span>
+            <span class="spacer"></span>
+            <span class="copy-btn">⎘</span>
+            <span class="star">☆</span>
+            <span class="when">6h ago</span>
+            <span class="pulse none">—</span>
+            <span class="menu-dots">—</span>
+          </div>
+          <div class="prompt">Can you read in the BMAD relay design docs please? And then give us a good name</div>
+        </div>
+      </div>
+      <!-- Unnamed -->
+      <div class="row">
+        <span class="dot idle">○</span>
+        <div class="content">
+          <div class="top-row">
+            <span class="label">brains</span>
+            <span class="badge knowledge">KNOWLEDGE</span>
+            <span class="sid">d26d8019</span>
+            <span class="spacer"></span>
+            <span class="copy-btn">⎘</span>
+            <span class="star">☆</span>
+            <span class="when">18m ago</span>
+            <span class="pulse none">—</span>
+            <span class="menu-dots">—</span>
+          </div>
+          <div class="prompt">what do we know about dynamous community and colemedin</div>
+        </div>
+      </div>
+      <!-- Named -->
+      <div class="row named">
+        <span class="dot idle">○</span>
+        <div class="content">
+          <div class="top-row">
+            <span class="label">bmad-oversight-command-setup</span>
+            <span class="ctx">supportsignal</span>
+            <span class="badge orientation">ORIENTATION</span>
+            <span class="sid">fef74880</span>
+            <span class="spacer"></span>
+            <span class="copy-btn">⎘</span>
+            <span class="star">☆</span>
+            <span class="when">5h ago</span>
+            <span class="pulse none">—</span>
+            <span class="menu-dots">—</span>
+          </div>
+          <div class="prompt">bmad-oversight</div>
+        </div>
+      </div>
+      <!-- Unnamed -->
+      <div class="row">
+        <span class="dot idle">○</span>
+        <div class="content">
+          <div class="top-row">
+            <span class="label">app.supportsignal....</span>
+            <span class="badge build">BUILD</span>
+            <span class="sid">3c0ca17d</span>
+            <span class="spacer"></span>
+            <span class="copy-btn">⎘</span>
+            <span class="star">☆</span>
+            <span class="when">5h ago</span>
+            <span class="pulse amber">316m</span>
+            <span class="menu-dots">—</span>
+          </div>
+          <div class="prompt">/bmad-sm VS 0.1</div>
+        </div>
+      </div>
+    </div>
+    <div class="option-notes">
+      <strong>Changes:</strong> Amber border + very subtle warm background tint (6% opacity amber) + bolder name + project slug inline. Same row height.<br>
+      <strong>Trade-off:</strong> The tint is gentle enough that it doesn't look like a selection state, but gives named rows a "warmer" feel that your eye picks up while scrolling.
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

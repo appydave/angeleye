@@ -8,13 +8,36 @@ import type { RegistryEntry } from '@appystack/shared';
 
 const router = Router();
 
-router.get('/api/sessions', async (_req, res, next) => {
+router.get('/api/sessions', async (req, res, next) => {
   try {
     const registry = await readRegistry();
-    const sessions = Object.values(registry).sort(
+    const allSessions = Object.values(registry).sort(
       (a, b) => new Date(b.last_active).getTime() - new Date(a.last_active).getTime()
     );
-    apiSuccess(res, { sessions });
+
+    // If no limit param, return all sessions (backward compatible)
+    const limitParam = req.query.limit;
+    if (limitParam === undefined) {
+      apiSuccess(res, { sessions: allSessions });
+      return;
+    }
+
+    const limit = Math.min(Math.max(1, parseInt(String(limitParam), 10) || 50), 200);
+    const after = req.query.after ? String(req.query.after) : undefined;
+
+    let startIndex = 0;
+    if (after) {
+      const cursorIndex = allSessions.findIndex((s) => s.session_id === after);
+      if (cursorIndex !== -1) {
+        startIndex = cursorIndex + 1;
+      }
+    }
+
+    const page = allSessions.slice(startIndex, startIndex + limit);
+    const hasMore = startIndex + limit < allSessions.length;
+    const cursor = page.length > 0 ? page[page.length - 1].session_id : null;
+
+    apiSuccess(res, { sessions: page, cursor, hasMore });
   } catch (err) {
     logger.error({ err }, 'Failed to read sessions registry');
     next(err);

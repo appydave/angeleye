@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Named Rows v5: Aligned — Mochaccino</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #e8e0d4; --surface: #ede7dc; --surface-mid: #ddd6cc;
+    --card: #f5f1eb; --border: #d4cdc4; --border-raised: #ccc5bb;
+    --primary: #c8841a; --fg: #2a2018; --muted: #7a6e5e; --muted-dim: #9e9484;
+    --amber: #c8841a;
+  }
+  body { background: var(--bg); color: var(--fg); font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.5; }
+  .banner { background: var(--border); color: var(--muted); font-size: 11px; padding: 6px 16px; letter-spacing: 0.5px; }
+
+  /* ── App shell (mimics real Observer) ─────────── */
+  .shell { display: flex; height: calc(100vh - 28px); }
+
+  .sidebar {
+    width: 224px; flex-shrink: 0;
+    border-right: 1px solid var(--border); background: var(--surface);
+    padding: 16px 8px;
+  }
+  .sidebar .brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; letter-spacing: 2px; color: var(--primary);
+    padding: 0 12px 16px;
+  }
+  .sidebar .nav-group-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--muted-dim);
+    padding: 12px 12px 4px;
+  }
+  .sidebar .nav-item {
+    display: block; width: 100%; text-align: left;
+    padding: 8px 12px; border-radius: 4px; font-size: 13px;
+    color: var(--fg); background: none; border: none; cursor: pointer;
+    border-left: 2px solid transparent;
+  }
+  .sidebar .nav-item.active {
+    border-left-color: var(--primary); font-weight: 600; background: var(--surface-mid);
+  }
+  .sidebar .nav-item:hover:not(.active) { background: var(--surface-mid); }
+
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); }
+
+  /* ── Header bar ──────────────────────────────── */
+  .header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px 8px;
+  }
+  .header h1 { font-size: 22px; font-weight: 600; }
+  .header .session-count { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+  .header .session-count .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #5a9a3c; }
+
+  /* ── Filter bar ──────────────────────────────── */
+  .filter-bar {
+    display: flex; align-items: center; gap: 16px;
+    padding: 4px 20px 8px; font-size: 12px;
+  }
+  .filter-bar .col-labels {
+    flex: 1; display: grid;
+    grid-template-columns: 24px 1fr 100px 72px 48px 48px 24px;
+    gap: 8px; align-items: center;
+    font-size: 10px; font-weight: 700; font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 1px; text-transform: uppercase; color: var(--muted-dim);
+    padding: 0 12px;
+  }
+  .filter-bar .col-labels .r { text-align: right; }
+  .filter-tabs { display: flex; gap: 2px; }
+  .filter-tab {
+    font-size: 11px; font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 0.8px; padding: 3px 10px; border-radius: 4px;
+    border: none; cursor: pointer; background: transparent; color: var(--muted);
+  }
+  .filter-tab.active { background: var(--primary); color: #fff; }
+  .filter-tab:hover:not(.active) { background: var(--surface-mid); }
+
+  .toggles { display: flex; gap: 12px; font-size: 11px; color: var(--muted); }
+  .toggles label { cursor: pointer; display: flex; align-items: center; gap: 4px; }
+
+  /* ── Session list ────────────────────────────── */
+  .session-list {
+    flex: 1; overflow-y: auto; padding: 0 20px 20px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+
+  /* ── Row — grid-based, matches Observer card style ── */
+  .row {
+    display: grid;
+    grid-template-columns: 24px 1fr 100px 72px 48px 48px 24px;
+    align-items: center;
+    gap: 8px;
+    padding: 0 12px;
+    min-height: 56px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    transition: all 0.15s;
+  }
+  .row:hover { box-shadow: 0 2px 6px rgba(0,0,0,0.08); background: #faf8f4; }
+
+  /* Named row: amber left border */
+  .row.named { border-left-color: var(--amber); }
+
+  /* Focused row */
+  .row.focused { border-left-color: var(--primary); background: var(--surface-mid); }
+
+  /* ── Col 1: Status dot ───────────────────────── */
+  .dot { font-size: 12px; text-align: center; }
+  .dot.active { color: #5a9a3c; }
+  .dot.recent { color: var(--amber); }
+  .dot.idle { color: var(--muted-dim); }
+
+  /* ── Col 2: Session cell (two lines) ─────────── */
+  .session-cell {
+    min-width: 0; padding: 8px 0;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .session-top {
+    display: flex; align-items: baseline; gap: 6px;
+    white-space: nowrap; overflow: hidden;
+  }
+  .label {
+    font-size: 13px; font-weight: 500; color: var(--fg);
+    overflow: hidden; text-overflow: ellipsis;
+    cursor: pointer; max-width: 180px; flex-shrink: 0;
+  }
+  .label:hover { text-decoration: underline; }
+
+  /* Named: bolder, wider */
+  .row.named .label { font-weight: 600; max-width: none; flex-shrink: 1; }
+
+  .ctx { font-size: 11px; color: var(--muted-dim); flex-shrink: 0; }
+
+  .sid {
+    font-size: 10px; font-family: 'SF Mono', 'Menlo', monospace;
+    color: var(--muted-dim); opacity: 0.5; flex-shrink: 0;
+  }
+
+  .prompt {
+    font-size: 12px; color: var(--muted); font-style: italic;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  /* ── Col 3: Type badge — FIXED COLUMN ────────── */
+  .type-cell { justify-self: start; }
+  .badge {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.3px;
+    font-family: system-ui, -apple-system, sans-serif;
+    padding: 2px 8px; border-radius: 3px; text-transform: uppercase;
+    display: inline-block; white-space: nowrap; color: #fff;
+  }
+  .badge.build { background: #5a9a3c; }
+  .badge.orientation { background: #8b7355; }
+  .badge.knowledge { background: #2a6e8a; }
+  .badge.research { background: #7a5ca8; }
+  .badge.ops { background: #e67e22; }
+  .badge.test { background: #c0392b; }
+
+  /* ── Col 4: When ─────────────────────────────── */
+  .when { font-size: 12px; color: var(--muted); text-align: right; white-space: nowrap; }
+
+  /* ── Col 5: Pulse ────────────────────────────── */
+  .pulse {
+    font-size: 11px; font-weight: 600;
+    font-family: 'SF Mono', 'Menlo', monospace;
+    text-align: right;
+  }
+  .pulse.green { color: #5a9a3c; }
+  .pulse.amber { color: var(--amber); }
+  .pulse.red { color: #c0392b; }
+  .pulse.none { color: var(--muted-dim); }
+
+  /* ── Col 6: Star ─────────────────────────────── */
+  .star { font-size: 13px; cursor: pointer; text-align: center; }
+  .star.empty { color: var(--muted-dim); opacity: 0.4; }
+  .star.filled { color: var(--amber); }
+
+  /* ── Col 7: Menu ─────────────────────────────── */
+  .menu-dots { color: var(--muted-dim); cursor: pointer; text-align: center; font-size: 14px; }
+
+  /* ── Focus panel stub ────────────────────────── */
+  .focus-panel {
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    padding: 12px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .focus-panel .focus-name { font-size: 15px; font-weight: 600; color: var(--primary); }
+  .focus-panel .focus-close { cursor: pointer; color: var(--muted); font-size: 16px; }
+  .focus-panel .focus-meta { font-size: 12px; color: var(--muted); }
+
+  /* ── Notes ────────────────────────────────────── */
+  .notes-overlay {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--card); border-top: 2px solid var(--border);
+    padding: 16px 24px; max-height: 240px; overflow-y: auto;
+    font-size: 13px; color: var(--muted); line-height: 1.6;
+    z-index: 10;
+  }
+  .notes-overlay h2 { font-size: 14px; font-weight: 600; color: var(--fg); margin-bottom: 8px; }
+  .notes-overlay ul { list-style: none; padding: 0; }
+  .notes-overlay li { padding: 2px 0 2px 16px; position: relative; }
+  .notes-overlay li::before { content: '—'; position: absolute; left: 0; color: var(--border-raised); }
+  .notes-overlay li strong { color: var(--fg); }
+  .notes-toggle {
+    position: fixed; bottom: 8px; right: 24px; z-index: 11;
+    font-size: 11px; padding: 4px 12px; border-radius: 4px;
+    background: var(--fg); color: var(--card); border: none; cursor: pointer;
+    font-family: 'Bebas Neue', sans-serif; letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+<div class="banner">Mochaccino — named-rows-v5-aligned — 2026-03-25</div>
+
+<div class="shell">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="brand">ANGELEYE</div>
+    <div class="nav-group-label">Main</div>
+    <button class="nav-item active">Observer</button>
+    <button class="nav-item">Organiser</button>
+    <div class="nav-group-label">System</div>
+    <button class="nav-item">Settings</button>
+    <button class="nav-item">Mockups</button>
+  </div>
+
+  <div class="main">
+    <!-- Header -->
+    <div class="header">
+      <h1>Observer</h1>
+      <div class="session-count">50 sessions <span class="live-dot"></span></div>
+    </div>
+
+    <!-- Filter + column headers -->
+    <div class="filter-bar">
+      <div class="col-labels">
+        <span></span>
+        <span>Session</span>
+        <span>Type</span>
+        <span class="r">When</span>
+        <span class="r">Pulse</span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px; padding: 0 20px 8px 32px;">
+      <div class="filter-tabs">
+        <button class="filter-tab active">All</button>
+        <button class="filter-tab">Starred</button>
+        <button class="filter-tab">Named</button>
+      </div>
+      <div class="toggles">
+        <label><input type="checkbox" checked disabled> show junk</label>
+      </div>
+    </div>
+
+    <!-- Session list -->
+    <div class="session-list">
+
+      <!-- Named: active, starred -->
+      <div class="row named">
+        <span class="dot active">●</span>
+        <div class="session-cell">
+          <div class="session-top">
+            <span class="label">angeleye-brain-app-architecture</span>
+            <span class="ctx">brains</span>
+            <span class="sid">25d74454</span>
+          </div>
+          <div class="prompt">Now what I want you to do is get back over the history of probably two or three days.</div>
+        </div>
+        <div class="type-cell"><span class="badge build">BUILD</span></div>
+        <span class="when">18m ago</span>
+        <span class="pulse amber">24m</span>
+        <span class="star filled">★</span>
+        <span class="menu-dots">—</span>
+      </div>
+
+      <!-- Unnamed: active -->
+      <div class="row">
+        <span class="dot active">●</span>
+        <div class="session-cell">
+          <div class="session-top">
+            <span class="label">angeleye</span>
+            <span class="sid">08fbfe17</span>
+          </div>
+          <div class="prompt">/ralphy</div>
+        </div>
+        <div class="type-cell"><span class="badge build">BUILD</span></div>
+        <span class="when">11m ago</span>
+        <span class="pulse green">11m</span>
+        <span class="star empty">☆</span>
+        <span class="menu-dots">—</span>
+      </div>
+
+      <!-- Unnamed: active -->
+      <div class="row focused">
+        <span class="dot active">●</span>
+        <div class="session-cell">
+          <div class="session-top">
+            <span class="label">signal-studio</span>
+            <span class="sid">82754c82</span>
+          </div>
+          <div class="prompt">Havned looked at the project in a week or two, I'm about to hit you with some new changes today.</div>
+        </div>
+        <div class="type-cell"><span class="badge build">BUILD</span></div>
+        <span class="when">0s ago</span>
+        <span class="pulse green">1s</span>
+        <span class="star empty">☆</span>
+        <span class="menu-dots">—</span>
+      </div>
+
+      <!-- Unnamed -->
+      <div class="row">
+        <span class="dot recent">●</span>
+        <div class="session-cell">
+          <div class="session-top">
+            <span class="label">flihub</span>
+            <span class="sid">9c3c681e</span>
+          </div>
+          <div class="prompt">[Image #2] Here is a front-end designer and any other UX experts, and tell me your thoughts</div>
+        </div>
+        <div class="type-cell"><span class="badge build">BUILD</span></div>
+        <span class="when">3m ago</span>
+        <span class="pulse green">3m</span>
+        <span class="star empty">☆</span>
+        <span class="menu-dots">—</span>
+      </div>
+
+      <!-- Unnamed -->
+      <div class="row">
+        <span class="dot idle">○</span>
+        <div class="session-cell">
+          <div class="session-top">
+            <span class="label">brains</span>
+            <span class="sid">d26d8019</span>
+          </div>
+          <div class="prompt">what do we know about dynamous community and colemedin, and also upstream repos</div>
+        </div>
+        <div class="type-cell"><span class="badge knowledge">KNOWLEDGE</span></div>
+        <span class="when">18m ago</span>
+        <span class="pulse none">—</span>
+        <span class="star empty">☆</span>
+        <span class="menu-dots">—</span>
+      </div>
+
+      <!-- Unnamed -->
+      <div class="row">
+        <span class="dot idle">○</span>
+        <div class="session-cell">
+          <div class="session-top">
+            <span class="label">brains</span>
+            <span class="sid">35bd69a7</span>
+          </div>
+          <div class="prompt">/refresh-claude-brain</div>
+        </div>
+        <div class="type-cell"><span class="badge build">BUILD</span></div>
+        <span class="when">53m ago</span>
+        <span class="pulse amber">53m</span>
+        <span class="star empty">☆</span>
+        <span class="menu-dots">—</span>
+      </div>
+
+      <!-- Named -->
+      <div class="row named">
+        <span class="dot idle">○</span>
+        <div class="session-cell">
+          <div class="session-top">
+            <span class="label">bmad-oversight-command-setup</span>
+            <span class="ctx">supportsignal</span>
+            <span class="sid">fef74880</span>
+          </div>
+          <div class="prompt">bmad-oversight</div>
+        </div>
+        <div class="type-cell"><span class="badge orientation">ORIENTATION</span></div>
+        <span class="when">7h ago</span>
+        <span class="pulse none">—</span>
+        <span class="star empty">☆</span>
+        <span class="menu-dots">—</span>
+      </div>
+
+      <!-- Unnamed -->
+      <div class="row">
+        <span class="dot idle">○</span>
+        <div class="session-cell">
+          <div class="session-top">
+            <span class="label">app.supportsignal....</span>
+            <span class="sid">3c0ca17d</span>
+          </div>
+          <div class="prompt">/bmad-sm VS 0.1</div>
+        </div>
+        <div class="type-cell"><span class="badge build">BUILD</span></div>
+        <span class="when">8h ago</span>
+        <span class="pulse amber">488m</span>
+        <span class="star empty">☆</span>
+        <span class="menu-dots">—</span>
+      </div>
+
+      <!-- Named -->
+      <div class="row named">
+        <span class="dot idle">○</span>
+        <div class="session-cell">
+          <div class="session-top">
+            <span class="label">bmad-relay</span>
+            <span class="ctx">supportsignal</span>
+            <span class="sid">9ce6fb0e</span>
+          </div>
+          <div class="prompt">Can you read in the BMAD relay design docs please? And then give us a good name for this conversation</div>
+        </div>
+        <div class="type-cell"><span class="badge build">BUILD</span></div>
+        <span class="when">9h ago</span>
+        <span class="pulse amber">548m</span>
+        <span class="star empty">☆</span>
+        <span class="menu-dots">—</span>
+      </div>
+
+      <!-- Unnamed -->
+      <div class="row">
+        <span class="dot idle">○</span>
+        <div class="session-cell">
+          <div class="session-top">
+            <span class="label">app.supportsignal....</span>
+            <span class="sid">c0c3a020</span>
+          </div>
+          <div class="prompt">/bmad-lib CU 2.1</div>
+        </div>
+        <div class="type-cell"><span class="badge build">BUILD</span></div>
+        <span class="when">9h ago</span>
+        <span class="pulse none">—</span>
+        <span class="star empty">☆</span>
+        <span class="menu-dots">—</span>
+      </div>
+
+      <!-- Named -->
+      <div class="row named">
+        <span class="dot idle">○</span>
+        <div class="session-cell">
+          <div class="session-top">
+            <span class="label">lisa-kdd-upgrade-pass1</span>
+            <span class="ctx">supportsignal</span>
+            <span class="sid">9cf1804f</span>
+          </div>
+          <div class="prompt">/bmad-lib</div>
+        </div>
+        <div class="type-cell"><span class="badge build">BUILD</span></div>
+        <span class="when">9h ago</span>
+        <span class="pulse amber">554m</span>
+        <span class="star empty">☆</span>
+        <span class="menu-dots">—</span>
+      </div>
+
+      <!-- Unnamed -->
+      <div class="row">
+        <span class="dot idle">○</span>
+        <div class="session-cell">
+          <div class="session-top">
+            <span class="label">brains</span>
+            <span class="sid">7e55c656</span>
+          </div>
+          <div class="prompt">The quick brown fox jumped over the lazy dog.</div>
+        </div>
+        <div class="type-cell"><span class="badge orientation">ORIENTATION</span></div>
+        <span class="when">1h ago</span>
+        <span class="pulse none">—</span>
+        <span class="star empty">☆</span>
+        <span class="menu-dots">—</span>
+      </div>
+
+    </div>
+
+    <!-- Focus panel stub -->
+    <div class="focus-panel">
+      <span class="focus-name">signal-studio</span>
+      <span class="focus-meta">24 tool calls · 1 stop · 1 session event · 1 subagent event</span>
+      <span class="focus-close">✕</span>
+    </div>
+  </div>
+</div>
+
+<button class="notes-toggle" onclick="document.getElementById('notes').style.display = document.getElementById('notes').style.display === 'none' ? 'block' : 'none'">Design Notes</button>
+<div id="notes" class="notes-overlay" style="display:none">
+  <h2>What this fixes</h2>
+  <ul>
+    <li><strong>Type badges line up vertically.</strong> BUILD, KNOWLEDGE, ORIENTATION are in a fixed column — your eye can scan straight down. This was the main problem with the current Observer.</li>
+    <li><strong>When and Pulse also align.</strong> Time column and pulse column are fixed-width, so they stack cleanly too.</li>
+    <li><strong>Same linen card style.</strong> Rounded borders, shadow-sm, hover shadow-md, same colour tokens, Bebas Neue for badges. This IS the current Observer — just with a grid backbone.</li>
+    <li><strong>Named rows: amber border + bolder name + project context.</strong> That's it. No extra badges, no extra lines, no pennants. The name replaces the project as hero text, project slug appears dimmed after it.</li>
+    <li><strong>Session ID stays visible</strong> (dimmed, after the name/project). Available for copy-click without hover tricks.</li>
+    <li><strong>Full app shell included</strong> — sidebar, header, filters, focus panel — so you can see it in context, not isolated.</li>
+    <li><strong>Column headers</strong> using Bebas Neue match the existing badge style. Lightweight guide for the grid.</li>
+  </ul>
+</div>
+
+</body>
+</html>

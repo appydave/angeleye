@@ -24,6 +24,9 @@ export const navConfig: NavConfig = [
   },
   {
     label: 'System',
-    items: [{ key: 'settings', label: 'Settings', tier: 'secondary' }],
+    items: [
+      { key: 'settings', label: 'Settings', tier: 'secondary' },
+      { key: 'mockups', label: 'Mockups', tier: 'secondary' },
+    ],
   },
 ];

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import type { AngelEyeEvent } from '@appystack/shared';
+import type { AngelEyeEvent, SessionSubtype } from '@appystack/shared';
 import {
   classifySession,
   detectIsJunk,
@@ -7,6 +7,7 @@ import {
   detectSessionType,
   detectSessionScale,
   detectIsPaperclipAgent,
+  detectPiiFlags,
   findFirstEditedDir,
   findFirstRealPrompt,
 } from './classifier.service.js';
@@ -617,5 +618,178 @@ describe('classifySession — full classification for non-junk session', () => {
     expect(result.session_type).toBe('BUILD');
     expect(result.first_edited_dir).toBe('/projects/angeleye/server/src/services');
     expect(result.first_real_prompt).toBe('Implement the classifier service');
+  });
+});
+
+// ── detectPiiFlags (B040) ──────────────────────────────────────────────────────
+
+describe('detectPiiFlags — email detection', () => {
+  it('detects email addresses', () => {
+    const events = [makePromptEvent('Send to user@example.com please')];
+    expect(detectPiiFlags(events)).toContain('email');
+  });
+});
+
+describe('detectPiiFlags — IPv4 detection', () => {
+  it('detects IPv4 addresses', () => {
+    const events = [makePromptEvent('Connect to 192.168.1.100')];
+    expect(detectPiiFlags(events)).toContain('ipv4');
+  });
+
+  it('does not false-positive on version numbers like 1.2.3', () => {
+    const events = [makePromptEvent('Use version 1.2.3')];
+    expect(detectPiiFlags(events)).not.toContain('ipv4');
+  });
+});
+
+describe('detectPiiFlags — API key/token detection', () => {
+  it('detects npm tokens', () => {
+    const events = [makePromptEvent('Set NPM_TOKEN=npm_abcdefghijklmnopqrstuvwxyz')];
+    expect(detectPiiFlags(events)).toContain('npm_token');
+  });
+
+  it('detects OpenAI-style sk- keys', () => {
+    const events = [makePromptEvent('key is sk-abcdefghijklmnopqrstuvwxyz1234')];
+    expect(detectPiiFlags(events)).toContain('openai_key');
+  });
+
+  it('detects GitHub personal access tokens', () => {
+    const events = [makePromptEvent('Use ghp_abcdefghijklmnopqrstuvwxyz12')];
+    expect(detectPiiFlags(events)).toContain('github_token');
+  });
+
+  it('detects Slack bot tokens', () => {
+    const events = [makePromptEvent(`SLACK_TOKEN=${'xo' + 'xb'}-1234567890-abcdefghijklmnopq`)];
+    expect(detectPiiFlags(events)).toContain('slack_token');
+  });
+
+  it('detects AWS access key IDs', () => {
+    const events = [makePromptEvent('AWS key: AKIAIOSFODNN7EXAMPLE')];
+    expect(detectPiiFlags(events)).toContain('aws_key');
+  });
+
+  it('detects BSA-style keys', () => {
+    const events = [makePromptEvent('Key: BSAabcdefghijklmnopqrstuvwx')];
+    expect(detectPiiFlags(events)).toContain('bsa_key');
+  });
+});
+
+describe('detectPiiFlags — birthdate detection', () => {
+  it('detects DD/MM/YYYY near "born"', () => {
+    const events = [makePromptEvent('He was born 15/03/1990 in Sydney')];
+    expect(detectPiiFlags(events)).toContain('birthdate');
+  });
+
+  it('detects YYYY-MM-DD near "dob"', () => {
+    const events = [makePromptEvent('dob is 1985-07-22')];
+    expect(detectPiiFlags(events)).toContain('birthdate');
+  });
+
+  it('does not flag dates without birth-related words', () => {
+    const events = [makePromptEvent('Released on 15/03/2024')];
+    expect(detectPiiFlags(events)).not.toContain('birthdate');
+  });
+});
+
+describe('detectPiiFlags — generic secret detection', () => {
+  it('detects long hex strings (40+ chars)', () => {
+    const hex = 'a'.repeat(40);
+    const events = [makePromptEvent(`Token: ${hex}`)];
+    expect(detectPiiFlags(events)).toContain('generic_secret');
+  });
+});
+
+describe('detectPiiFlags — integration', () => {
+  it('returns empty array when no PII found', () => {
+    const events = [makePromptEvent('Fix the login page')];
+    expect(detectPiiFlags(events)).toEqual([]);
+  });
+
+  it('returns sorted unique flags across multiple prompts', () => {
+    const events = [makePromptEvent('Email admin@test.com'), makePromptEvent('Server at 10.0.0.1')];
+    const flags = detectPiiFlags(events);
+    expect(flags).toContain('email');
+    expect(flags).toContain('ipv4');
+    // Should be sorted
+    expect(flags).toEqual([...flags].sort());
+  });
+
+  it('only scans user_prompt events', () => {
+    const events = [makeEvent({ event: 'tool_use', tool: 'Bash', prompt: 'user@example.com' })];
+    expect(detectPiiFlags(events)).toEqual([]);
+  });
+});
+
+describe('classifySession — PII flags integration', () => {
+  it('includes pii_flags when PII detected in non-junk session', () => {
+    const events = [
+      makeEvent({ event: 'session_start', cwd: '/projects/app' }),
+      makePromptEvent('Send email to admin@example.com'),
+      ...Array.from({ length: 15 }, () => makeToolEvent('Edit')),
+    ];
+    const result = classifySession(events, 'ses-pii-1', '/projects/app');
+    expect(result.pii_flags).toContain('email');
+  });
+
+  it('omits pii_flags when no PII detected', () => {
+    const events = [
+      makeEvent({ event: 'session_start', cwd: '/projects/app' }),
+      makePromptEvent('Implement the classifier service'),
+      ...Array.from({ length: 15 }, () => makeToolEvent('Edit')),
+    ];
+    const result = classifySession(events, 'ses-clean', '/projects/app');
+    expect(result.pii_flags).toBeUndefined();
+  });
+});
+
+// ── SessionSubtype type existence (B043) ───────────────────────────────────────
+
+describe('SessionSubtype — B043 type definitions', () => {
+  it('SessionSubtype type accepts confirmed subtypes', () => {
+    // Type-level test: these assignments should compile without error.
+    // If the type is wrong, TypeScript will fail at build time.
+    const subtypes: SessionSubtype[] = [
+      'bug_fix_round',
+      'feature_implementation',
+      'refactoring',
+      'test_writing',
+      'ci_pipeline',
+      'codebase_exploration',
+      'file_retrieval',
+      'artifact_lookup',
+      'brain_maintenance',
+      'advisory_refinement',
+      'brain_capture',
+      'technology_survey',
+      'hardware_setup_troubleshooting',
+      'release_exploration',
+      'poem_execution',
+      'directory_cleanup',
+      'paperclip_agent',
+      'daily_planning',
+      'interactive_design',
+      'sprint_planning',
+      'mcp_integration',
+      'environment_setup',
+      'dependency_management',
+      'playwright_e2e',
+      'test_debugging',
+      'session_about_sessions',
+    ];
+    expect(subtypes.length).toBe(26);
+  });
+
+  it('ClassificationResult accepts session_subtype field', () => {
+    const result = classifySession(
+      [
+        makeEvent({ event: 'session_start', cwd: '/projects/app' }),
+        makePromptEvent('Implement feature'),
+        ...Array.from({ length: 15 }, () => makeToolEvent('Edit')),
+      ],
+      'ses-subtype-1',
+      '/projects/app'
+    );
+    // session_subtype is not yet populated by detection logic, so it should be undefined
+    expect(result.session_subtype).toBeUndefined();
   });
 });

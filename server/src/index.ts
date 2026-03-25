@@ -59,6 +59,10 @@ app.use('/api', backfillRouter);
 app.use('/api/sync', syncRouter);
 app.use('/api/stats', statsRouter);
 
+// Serve mockup/dashboard HTML files from monorepo root
+const monorepoRoot = join(__dirname, '../..');
+app.use('/mockups', express.static(monorepoRoot, { dotfiles: 'allow' }));
+
 // Production static file serving — serve the built client app
 if (env.isProduction) {
   const clientDist = join(__dirname, '../../client/dist');
