@@ -39,7 +39,16 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents>(httpServer, {
 });
 
 // Middleware
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        'script-src': ["'self'", "'unsafe-inline'", 'https://cdn.jsdelivr.net'],
+      },
+    },
+  })
+);
 app.use(compression());
 app.use(cors({ origin: env.CLIENT_URL }));
 app.use(express.json());

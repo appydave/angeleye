@@ -28,6 +28,38 @@ _(empty — add items as you work)_
 
 _Current direction, analysis, priorities. Updated by Claude at the start of each session after reading the David section._
 
+### BMAD BI Enrichment — Extension Plan + Implementation Sprint (2026-03-27)
+
+**What was done this session:**
+
+- Received handover from BMAD inventory session (3 workflow orchestration docs: bmad-session-inventory.md, bmad-session-boundaries.md, bmad-lifecycle-handover.md)
+- Wrote formal Pipeline Extension Plan (docs/planning/enrichment-pipeline/pipeline-extension-plan.md) — 4 new capability layers:
+  1. Extractors (E01-E04) — positional value extraction with opening/closing windows
+  2. Domain Overlays (C14-C16) — generic workflow roles with pluggable domain-specific mappings (BMAD overlay example)
+  3. Affinity Groups — cross-folder session correlation into business units (Story Units → Epic Sprints → Project Phases)
+  4. Agent Genesis (P31-P35, C22) — infrastructure impact detection
+- Ran doc coherence review (docs/planning/enrichment-pipeline/doc-coherence-review.md) — found 8 contradictions, 6 loose ends
+- Ran gap analysis (docs/planning/enrichment-pipeline/gap-analysis.md) — ~10% of documented enrichment was implemented, core pipeline solid
+- Fixed doc quick wins: P16 label, observation count (7 not 8), B038/B039/B040 moved to resolved
+- Added pii_flags and session_scale to shared TypeScript types
+- Implemented 11 new Tier 1 detections in classifier.service.ts:
+  - P05 (playwright), P09 (compaction), P12 (machine-initiated), P19 (web research), P20 (parallel subagents), P21 (task orchestration), P22 (git outcome), P34 (skill created), P35 (skill modified)
+  - E01 (trigger_command), E02 (trigger_arguments)
+- Added positional windows documentation to PATTERNS.md
+
+**Implementation totals now:** 17 implemented enrichment items (up from 6), out of 58 documented. All Tier 1 deterministic predicates are now covered.
+
+**What's next (recommended priority):**
+
+1. Tier 2 predicates (P04, P06, P08, P11, P17, P18, P25) — regex/heuristic, no LLM cost
+2. Domain overlay infrastructure (JSON config loader + C14-C16 generic classifiers)
+3. Affinity group correlator (start with deterministic links: shared story IDs, temporal proximity)
+4. Tier 3 LLM infrastructure (API client, enrichment queue, batch processing)
+
+**Helmet CSP fix** from prior session is still uncommitted in server/src/index.ts.
+
+---
+
 ### Campaign Complete + v3 Schema Migrated (2026-03-24)
 
 **angeleye-analysis-1 is done.** 924 sessions fully processed across M4 Mini (807) and M4 Pro (116). Three analysis passes complete: forward (waves 1-14), backward (P17-P22, C08-C11, O06-O07), final (P23-P25, C12-C13, O08).
@@ -35,12 +67,6 @@ _Current direction, analysis, priorities. Updated by Claude at the start of each
 **v3 schema migration complete.** All 924 entries unified into consistent structure — canonical P/C/O-prefixed keys, normalized predicate/classifier formats, `forward_pass` metadata (null for 418 backward-pass-born entries). Migration script at `brains/angeleye/analysis/migrations/migrate-v2-to-v3.py`.
 
 **Doc updates complete:** PATTERNS.md (v3 schema + 924-session findings), requirements.md (operational status), README.md, campaign dashboard + infographic (Chart.js + data tables).
-
-**High-priority backlog items from the campaign:**
-
-- B038 — Scale-aware BUILD guard (micro=0%, light<15% accuracy — proven across 924 sessions)
-- B039 — Iron-clad classifier rules (3 rules, definitive evidence)
-- B040 — PII detection (flagged 14 waves, still no mechanism)
 
 **Optional future work:**
 
@@ -56,3 +82,7 @@ _Processed items moved here for reference. Date + brief resolution note._
 <!-- Example:
 - 2026-03-18 [blocker] HTTP hook 404 → resolved: server wasn't mounting /events route, fixed in server/src/index.ts
 -->
+
+- 2026-03-24 B038 — Scale-aware BUILD guard → implemented in commit 3f593607
+- 2026-03-24 B039 — Iron-clad classifier rules → implemented in commit 3f593607
+- 2026-03-24 B040 — PII detection → implemented in classifier.service.ts (detectPiiFlags with pattern matching)

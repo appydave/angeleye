@@ -1,14 +1,32 @@
 import path from 'node:path';
-import type { AngelEyeEvent, SessionSubtype, SessionType, ToolPattern } from '@appystack/shared';
+import type {
+  AngelEyeEvent,
+  SessionScale,
+  SessionSubtype,
+  SessionType,
+  ToolPattern,
+} from '@appystack/shared';
 
 export interface ClassificationResult {
   is_junk: boolean;
   session_type?: SessionType;
   session_subtype?: SessionSubtype;
   tool_pattern?: ToolPattern;
+  session_scale?: SessionScale;
   first_edited_dir?: string;
   first_real_prompt?: string;
   pii_flags?: string[];
+  has_playwright_calls?: boolean;
+  is_compaction_resume?: boolean;
+  is_machine_initiated?: boolean;
+  has_web_research?: boolean;
+  has_parallel_subagent_bursts?: boolean;
+  has_task_orchestration?: boolean;
+  has_git_outcome?: boolean;
+  trigger_command?: string | null;
+  trigger_arguments?: string | null;
+  has_skill_created?: boolean;
+  has_skill_modified?: boolean;
 }
 
 // ── is_junk detection ─────────────────────────────────────────────────────────
@@ -118,8 +136,6 @@ export function detectToolPattern(events: AngelEyeEvent[]): ToolPattern {
 
 // ── session scale detection ──────────────────────────────────────────────────
 // Scale thresholds validated across 924-session campaign (angeleye-analysis-1)
-
-export type SessionScale = 'micro' | 'light' | 'moderate' | 'heavy' | 'marathon';
 
 export function detectSessionScale(events: AngelEyeEvent[]): SessionScale {
   const toolCount = events.filter((e) => e.event === 'tool_use').length;
@@ -294,6 +310,124 @@ export function detectPiiFlags(events: AngelEyeEvent[]): string[] {
   return Array.from(found).sort();
 }
 
+// ── P05: has_playwright_calls ────────────────────────────────────────────────
+
+export function detectHasPlaywrightCalls(events: AngelEyeEvent[]): boolean {
+  return events.some(
+    (e) =>
+      e.event === 'tool_use' && typeof e.tool === 'string' && e.tool.startsWith('mcp__playwright__')
+  );
+}
+
+// ── P09: is_compaction_resume ───────────────────────────────────────────────
+
+export function detectIsCompactionResume(events: AngelEyeEvent[]): boolean {
+  return events.some((e) => e.event === 'pre_compact' || e.event === 'post_compact');
+}
+
+// ── P12: is_machine_initiated ───────────────────────────────────────────────
+
+export function detectIsMachineInitiated(events: AngelEyeEvent[]): boolean {
+  if (events.length === 0) return false;
+  return events[0]!.event !== 'user_prompt';
+}
+
+// ── P19: has_web_research ───────────────────────────────────────────────────
+
+export function detectHasWebResearch(events: AngelEyeEvent[]): boolean {
+  return events.some((e) => {
+    if (e.event !== 'tool_use') return false;
+    const tool = e.tool ?? '';
+    return tool === 'WebFetch' || tool === 'WebSearch' || tool.startsWith('mcp__brave-search__');
+  });
+}
+
+// ── P20: has_parallel_subagent_bursts ───────────────────────────────────────
+
+export function detectHasParallelSubagentBursts(events: AngelEyeEvent[]): boolean {
+  const agentEvents = events.filter((e) => e.event === 'tool_use' && e.tool === 'Agent');
+  if (agentEvents.length < 3) return false;
+
+  for (let i = 0; i <= agentEvents.length - 3; i++) {
+    const windowStart = new Date(agentEvents[i]!.ts).getTime();
+    const windowEnd = new Date(agentEvents[i + 2]!.ts).getTime();
+    if (windowEnd - windowStart <= 60_000) return true;
+  }
+
+  return false;
+}
+
+// ── P21: has_task_orchestration ─────────────────────────────────────────────
+
+export function detectHasTaskOrchestration(events: AngelEyeEvent[]): boolean {
+  const taskTools = new Set(['TaskCreate', 'TaskUpdate', 'TaskOutput', 'TaskList']);
+  return events.some((e) => e.event === 'tool_use' && taskTools.has(e.tool ?? ''));
+}
+
+// ── P22: has_git_outcome ────────────────────────────────────────────────────
+
+const GIT_OUTCOME_PATTERNS = [/git\s+commit/, /git\s+push/, /git\s+merge/, /gh\s+pr\s+create/];
+
+export function detectHasGitOutcome(events: AngelEyeEvent[]): boolean {
+  return events.some((e) => {
+    if (e.event !== 'tool_use' || e.tool !== 'Bash') return false;
+    const command =
+      typeof e.tool_summary?.['command'] === 'string' ? e.tool_summary['command'] : '';
+    return GIT_OUTCOME_PATTERNS.some((p) => p.test(command));
+  });
+}
+
+// ── E01: trigger_command ────────────────────────────────────────────────────
+
+const SLASH_COMMAND_PATTERN = /^\/([\w:-]+)/;
+
+export function extractTriggerCommand(events: AngelEyeEvent[]): string | null {
+  const firstPrompt = events.find((e) => e.event === 'user_prompt');
+  if (!firstPrompt?.prompt) return null;
+
+  const trimmed = firstPrompt.prompt.trim();
+  const match = trimmed.match(SLASH_COMMAND_PATTERN);
+  if (match) return match[1]!;
+
+  return null;
+}
+
+// ── E02: trigger_arguments ──────────────────────────────────────────────────
+
+export function extractTriggerArguments(events: AngelEyeEvent[]): string | null {
+  const firstPrompt = events.find((e) => e.event === 'user_prompt');
+  if (!firstPrompt?.prompt) return null;
+
+  const trimmed = firstPrompt.prompt.trim();
+  const match = trimmed.match(SLASH_COMMAND_PATTERN);
+  if (!match) return null;
+
+  const afterCommand = trimmed.replace(/^\/[\w:-]+\s*/, '').trim();
+  if (afterCommand.length === 0) return null;
+
+  return afterCommand;
+}
+
+// ── P34: has_skill_created ──────────────────────────────────────────────────
+
+export function detectHasSkillCreated(events: AngelEyeEvent[]): boolean {
+  return events.some((e) => {
+    if (e.event !== 'tool_use' || e.tool !== 'Write') return false;
+    const file = typeof e.tool_summary?.['file'] === 'string' ? e.tool_summary['file'] : '';
+    return file.includes('/.claude/skills/');
+  });
+}
+
+// ── P35: has_skill_modified ─────────────────────────────────────────────────
+
+export function detectHasSkillModified(events: AngelEyeEvent[]): boolean {
+  return events.some((e) => {
+    if (e.event !== 'tool_use' || (e.tool !== 'Edit' && e.tool !== 'MultiEdit')) return false;
+    const file = typeof e.tool_summary?.['file'] === 'string' ? e.tool_summary['file'] : '';
+    return file.includes('/.claude/skills/');
+  });
+}
+
 // ── classifySession (main entry point) ───────────────────────────────────────
 
 export function classifySession(
@@ -308,17 +442,41 @@ export function classifySession(
   }
 
   const tool_pattern = detectToolPattern(events);
+  const session_scale = detectSessionScale(events);
   const session_type = detectSessionType(tool_pattern, projectDir, events);
   const first_edited_dir = findFirstEditedDir(events);
   const first_real_prompt = findFirstRealPrompt(events);
   const pii_flags = detectPiiFlags(events);
+  const has_playwright_calls = detectHasPlaywrightCalls(events);
+  const is_compaction_resume = detectIsCompactionResume(events);
+  const is_machine_initiated = detectIsMachineInitiated(events);
+  const has_web_research = detectHasWebResearch(events);
+  const has_parallel_subagent_bursts = detectHasParallelSubagentBursts(events);
+  const has_task_orchestration = detectHasTaskOrchestration(events);
+  const has_git_outcome = detectHasGitOutcome(events);
+  const trigger_command = extractTriggerCommand(events);
+  const trigger_arguments = extractTriggerArguments(events);
+  const has_skill_created = detectHasSkillCreated(events);
+  const has_skill_modified = detectHasSkillModified(events);
 
   return {
     is_junk: false,
     tool_pattern,
+    session_scale,
     session_type,
     ...(first_edited_dir !== undefined && { first_edited_dir }),
     ...(first_real_prompt !== undefined && { first_real_prompt }),
     ...(pii_flags.length > 0 && { pii_flags }),
+    has_playwright_calls,
+    is_compaction_resume,
+    is_machine_initiated,
+    has_web_research,
+    has_parallel_subagent_bursts,
+    has_task_orchestration,
+    has_git_outcome,
+    trigger_command,
+    trigger_arguments,
+    has_skill_created,
+    has_skill_modified,
   };
 }

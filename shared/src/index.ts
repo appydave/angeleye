@@ -16,4 +16,5 @@ export type {
   SessionType,
   SessionSubtype,
   ToolPattern,
+  SessionScale,
 } from './angeleye.js';

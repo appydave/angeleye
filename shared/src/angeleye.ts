@@ -108,6 +108,8 @@ export type ToolPattern =
   | 'read-heavy' // Glob+Read+Grep > 60% of tool calls, minimal writes
   | 'mixed'; // no single dominant pattern
 
+export type SessionScale = 'micro' | 'light' | 'moderate' | 'heavy' | 'marathon';
+
 export interface RegistryEntry {
   session_id: string;
   project: string;
@@ -125,8 +127,24 @@ export interface RegistryEntry {
   session_type?: SessionType;
   session_subtype?: SessionSubtype;
   tool_pattern?: ToolPattern;
+  session_scale?: SessionScale;
   first_edited_dir?: string; // first directory meaningfully touched
   first_real_prompt?: string; // first non-junk prompt snippet, max 200 chars
+  pii_flags?: string[];
+  // Tier 1 predicates
+  has_playwright_calls?: boolean;
+  is_compaction_resume?: boolean;
+  is_machine_initiated?: boolean;
+  has_web_research?: boolean;
+  has_parallel_subagent_bursts?: boolean;
+  has_task_orchestration?: boolean;
+  has_git_outcome?: boolean;
+  // Tier 1 extractors
+  trigger_command?: string | null;
+  trigger_arguments?: string | null;
+  // Agent genesis predicates
+  has_skill_created?: boolean;
+  has_skill_modified?: boolean;
 }
 
 export interface WorkspaceEntry {

@@ -28,6 +28,7 @@
 9. [Observations Log](#9-observations-log)
 10. [Known Gaps and Hard Limits](#10-known-gaps-and-hard-limits)
 11. [Multi-Machine Analysis](#11-multi-machine-analysis)
+12. [Positional Windows](#12-positional-windows)
 
 ---
 
@@ -445,9 +446,9 @@ Better activity signals than file size or clock duration:
 - `edit_count / tool_count > 0.35` → build-focused session
 - `bash_count / tool_count > 0.40` → execution/ops-focused session
 
-### CLAUDE.md Auto-Load Anti-Pattern (P16) `[VALIDATED-924-NEW]`
+### CLAUDE.md Auto-Load Anti-Pattern `[VALIDATED-924-NEW]`
 
-P16 (CLAUDE.md auto-load) is an escalating pattern. In sessions where it triggers, the tool-to-prompt ratio can reach **32:1** — Claude reads dozens of files before the user types anything. This inflates tool counts and distorts classification if not accounted for. Sessions with P16=true should have their tool counts adjusted by subtracting the auto-load burst.
+CLAUDE.md auto-load is an escalating pattern (distinct from P16_excessive_changes). In sessions where it triggers, the tool-to-prompt ratio can reach **32:1** — Claude reads dozens of files before the user types anything. This inflates tool counts and distorts classification if not accounted for. Sessions exhibiting this pattern should have their tool counts adjusted by subtracting the auto-load burst.
 
 ---
 
@@ -694,7 +695,7 @@ Confirmed as a production autonomous system. Sessions attributed to this agent s
 
 **P13+P14 co-occurrence is the dominant friction pattern `[VALIDATED-924-NEW]`.** Error recovery (P13) combined with repeated tool failure (P14) is the most common frustration signal. When both fire, the session almost always contains frustration language (P09) as well. This triple is a reliable "session-under-stress" indicator.
 
-**CLAUDE.md auto-load anti-pattern (P16) is escalating `[VALIDATED-924-NEW]`.** Sessions with P16=true show a 32:1 tool-to-prompt ratio from auto-loaded CLAUDE.md reads alone. This distorts tool_count, tool_profile, and autonomy_ratio. Classification must account for this inflation.
+**CLAUDE.md auto-load anti-pattern is escalating `[VALIDATED-924-NEW]`.** Sessions exhibiting this pattern show a 32:1 tool-to-prompt ratio from auto-loaded CLAUDE.md reads alone. This distorts tool_count, tool_profile, and autonomy_ratio. Classification must account for this inflation. (Note: this is distinct from P16_excessive_changes.)
 
 **Paperclip/JJ Agent is a production autonomous system `[VALIDATED-924-NEW]`.** Not a test artifact. Sessions from this agent have distinct characteristics: agent_dispatched initiation, high autonomy, minimal user interaction. Classification should handle these as a separate category.
 
@@ -825,3 +826,113 @@ Machine character affects classification accuracy:
 - **O07_machine_character** observation field captures per-session machine behavioral notes.
 
 The recommendation is to include `machine` as a feature in classifiers, not just metadata. A session's machine context provides signal about expected voice rate, delegation style, and session scale distribution.
+
+---
+
+## 12. Positional Windows
+
+### Concept
+
+Every predicate, classifier, extractor, and observation operates on a **window** of the session transcript. A window declares which portion of the JSONL a detector needs to read:
+
+| Window      | Scope            | What to read           | Performance implication                   |
+| ----------- | ---------------- | ---------------------- | ----------------------------------------- |
+| **opening** | First ~5 entries | Head of the JSONL only | Skip everything after the first N entries |
+| **closing** | Last ~10 entries | Tail of the JSONL only | Skip everything before the last N entries |
+| **full**    | All entries      | Entire transcript      | Must scan the complete file               |
+
+Windows are a **schema attribute**, not a runtime field on the session record. They guide the enrichment pipeline: a detector declared as `opening` never needs to see the closing entries, and vice versa. This matters at scale — some sessions have 2,000+ entries, and skipping irrelevant portions saves significant I/O.
+
+Most items today are `full` because they were designed before positional optimisation was considered. Some full-window items could be narrowed in future (e.g., P22 `has_git_outcome` is almost always closing-phase in practice but may appear mid-session in multi-phase sessions).
+
+### Reference Table — All Items by Window
+
+#### Opening Window (first ~5 entries)
+
+| ID  | Name                 | Type       | Tier   | Notes                                                                       |
+| --- | -------------------- | ---------- | ------ | --------------------------------------------------------------------------- |
+| P12 | is_machine_initiated | Predicate  | Tier 1 | First prompt is agent-generated, not human-typed                            |
+| P17 | has_handover_context | Predicate  | Tier 2 | First prompt contains pasted prior-session output or handover doc           |
+| P23 | is_paperclip_agent   | Predicate  | Tier 1 | Agent-dispatched session matching Paperclip/JJ signature                    |
+| C03 | opening_style        | Classifier | Tier 2 | How the session opens (question, paste, command, approval)                  |
+| C09 | session_continuity   | Classifier | Tier 2 | fresh, handover_paste, compaction, skill_launcher, recall                   |
+| C11 | initiation_source    | Classifier | Tier 2 | user_typed, voice_dictated, handover_paste, skill_invoked, agent_dispatched |
+| E01 | trigger_command      | Extractor  | Tier 1 | Skill or slash command that launched the session                            |
+| E02 | trigger_arguments    | Extractor  | Tier 1 | Arguments passed to the trigger command                                     |
+
+#### Closing Window (last ~10 entries)
+
+| ID  | Name                 | Type       | Tier   | Notes                                                                 |
+| --- | -------------------- | ---------- | ------ | --------------------------------------------------------------------- |
+| P25 | has_closing_ceremony | Predicate  | Tier 3 | User explicitly wraps up ("commit and push", "anything outstanding?") |
+| C04 | closing_style        | Classifier | Tier 2 | How the session ends (ceremony, abandon, context-exhausted, ghost)    |
+| C13 | session_lifecycle    | Classifier | Tier 3 | complete, abandoned, ghost, interrupted, stub                         |
+| E03 | final_artifact       | Extractor  | Tier 2 | What was produced — file path, commit hash, verdict, PR URL           |
+| E04 | final_state          | Extractor  | Tier 3 | LLM-generated 1-2 sentence deliverable summary                        |
+
+#### Full Session (all entries)
+
+| ID  | Name                            | Type        | Tier   | Notes                                                                  |
+| --- | ------------------------------- | ----------- | ------ | ---------------------------------------------------------------------- |
+| P01 | is_feature_construction         | Predicate   | Tier 3 | Requires scanning tool events across the full session                  |
+| P02 | has_frustration_signals         | Predicate   | Tier 3 | Frustration language can appear anywhere in the session                |
+| P03 | is_multi_phase                  | Predicate   | Tier 2 | Phase boundaries detected by time gaps across all entries              |
+| P04 | has_brain_file_writes           | Predicate   | Tier 1 | Write/Edit to brains/ paths — can appear at any point                  |
+| P05 | has_playwright_calls            | Predicate   | Tier 1 | Playwright tool events distributed throughout                          |
+| P06 | has_cross_session_refs          | Predicate   | Tier 3 | References to other sessions can appear in any prompt                  |
+| P07 | has_skill_gap_signal            | Predicate   | Tier 3 | Skill gap evidence emerges mid-session                                 |
+| P08 | has_unauthorized_edits          | Predicate   | Tier 3 | Unauthorized changes can happen at any point                           |
+| P09 | is_compaction_resume            | Predicate   | Tier 1 | Context injection events appear throughout marathon sessions           |
+| P10 | is_cwd_incidental               | Predicate   | Tier 2 | Requires comparing CWD against tool paths across session               |
+| P11 | has_voice_dictation_artifacts   | Predicate   | Tier 2 | Voice artifacts appear in any prompt                                   |
+| P13 | misunderstood_request           | Predicate   | Tier 3 | Can occur at any interaction point                                     |
+| P14 | wrong_approach                  | Predicate   | Tier 3 | Detected from tool sequences and user corrections                      |
+| P15 | buggy_output                    | Predicate   | Tier 3 | Bug evidence emerges during execution                                  |
+| P16 | excessive_changes               | Predicate   | Tier 3 | Scope creep accumulates across the session                             |
+| P18 | has_cross_project_reads         | Predicate   | Tier 1 | Read/Glob events outside project_dir — any point                       |
+| P19 | has_web_research                | Predicate   | Tier 1 | WebFetch/brave-search events distributed throughout                    |
+| P20 | has_parallel_subagent_bursts    | Predicate   | Tier 1 | Subagent events can appear in any phase                                |
+| P21 | has_task_orchestration          | Predicate   | Tier 1 | TaskCreate/TaskUpdate events throughout                                |
+| P22 | has_git_outcome                 | Predicate   | Tier 1 | Usually closing-phase but can appear mid-session in multi-phase work   |
+| P24 | has_pii_content                 | Predicate   | Tier 3 | PII can appear in any prompt or tool output                            |
+| P31 | has_agent_definition_created    | Predicate   | Tier 2 | Write events to agent definition paths — any point                     |
+| P32 | has_agent_definition_modified   | Predicate   | Tier 2 | Edit events to agent definition paths — any point                      |
+| P33 | has_workflow_definition_changed | Predicate   | Tier 2 | Write/Edit to workflow config paths — any point                        |
+| P34 | has_skill_created               | Predicate   | Tier 1 | Write to SKILL.md paths — any point                                    |
+| P35 | has_skill_modified              | Predicate   | Tier 1 | Edit to SKILL.md paths — any point                                     |
+| C01 | session_type                    | Classifier  | Tier 2 | Requires full tool and prompt distribution                             |
+| C02 | session_scale                   | Classifier  | Tier 1 | Computed from total event count and duration                           |
+| C05 | tool_profile                    | Classifier  | Tier 1 | Aggregated tool ratios across all events                               |
+| C06 | project_attribution             | Classifier  | Tier 2 | May require tool path analysis across session                          |
+| C07 | session_subtype                 | Classifier  | Tier 3 | Requires full session context for subtype assignment                   |
+| C08 | delegation_style                | Classifier  | Tier 2 | Tool-to-prompt ratio computed across full session                      |
+| C10 | output_type                     | Classifier  | Tier 2 | Requires scanning all tool events for output artifacts                 |
+| C12 | prompt_verbosity                | Classifier  | Tier 1 | Computed from all user prompts                                         |
+| C14 | workflow_role                   | Classifier  | Tier 2 | Heuristic fallback requires full session tool analysis                 |
+| C15 | workflow_identity               | Classifier  | Tier 1 | Derived from E01 via overlay lookup (opening data, but depends on E01) |
+| C16 | workflow_action                 | Classifier  | Tier 1 | Derived from E02 via overlay lookup (opening data, but depends on E02) |
+| C22 | infrastructure_impact           | Classifier  | Tier 2 | Rollup of P31-P35 which are all full-session                           |
+| O02 | frustration_analysis            | Observation | Tier 3 | Requires reading prompts across full session                           |
+| O03 | phase_breakdown                 | Observation | Tier 3 | Describes phases spanning the full session                             |
+| O04 | skill_gap                       | Observation | Tier 3 | Skill gap evidence emerges throughout                                  |
+| O05 | session_chain                   | Observation | Tier 3 | Cross-session references found anywhere                                |
+| O06 | autonomy_profile                | Observation | Tier 3 | Computed from full session tool/prompt patterns                        |
+| O07 | machine_character               | Observation | Tier 3 | Behavioural notes derived from full session                            |
+| O08 | tool_diversity_index            | Observation | Tier 1 | Aggregated from all tool events                                        |
+
+### Summary Counts by Window
+
+| Window      | Predicates                                   | Classifiers                                    | Extractors   | Observations | Total  |
+| ----------- | -------------------------------------------- | ---------------------------------------------- | ------------ | ------------ | ------ |
+| **opening** | 3 (P12, P17, P23)                            | 3 (C03, C09, C11)                              | 2 (E01, E02) | 0            | **8**  |
+| **closing** | 1 (P25)                                      | 2 (C04, C13)                                   | 2 (E03, E04) | 0            | **5**  |
+| **full**    | 26 (P01-P11, P13-P16, P18-P22, P24, P31-P35) | 12 (C01, C02, C05-C08, C10, C12, C14-C16, C22) | 0            | 7 (O02-O08)  | **45** |
+| **Total**   | **30**                                       | **17**                                         | **4**        | **7**        | **58** |
+
+### Notes on Window Assignment
+
+**C15 and C16 deserve explanation.** Their input data comes from E01/E02 (opening window), and their overlay lookup is trivial. However, they are classified as `full` because C14's heuristic fallback (which influences the overlay resolution path) may need full-session tool analysis when no overlay matches. In practice, when an overlay does match, C15/C16 could be computed from opening data alone. A future optimisation could split these into "opening if overlay matches, full otherwise."
+
+**P22 (has_git_outcome) is a narrowing candidate.** In 90%+ of sessions where git outcomes appear, they are in the final 10 entries. However, multi-phase sessions with mid-session "commit and push" events make this unreliable as a closing-only detector. It remains `full` for correctness.
+
+**Observations are all full-session.** Observations produce free-text summaries that inherently require understanding the complete session arc. None can be meaningfully computed from a positional window alone.
