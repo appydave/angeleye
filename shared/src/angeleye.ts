@@ -157,6 +157,8 @@ export interface RegistryEntry {
   workflow_role?: string | null;
   workflow_identity?: string | null;
   workflow_action?: string | null;
+  // Affinity group references
+  group_ids?: string[];
 }
 
 export interface WorkspaceEntry {
@@ -186,4 +188,21 @@ export interface OverlayResult {
   role: string;
   identity: string | null;
   action: string | null;
+}
+
+// ── Affinity Groups ─────────────────────────────────────────────────────────
+
+export type AffinityGroupType = 'story_unit' | 'epic_sprint' | 'project_phase' | 'ad_hoc';
+
+export type AffinityConfidence = 'deterministic' | 'heuristic' | 'inferred';
+
+export interface AffinityGroup {
+  group_id: string;
+  group_type: AffinityGroupType;
+  label: string;
+  session_ids: string[];
+  confidence: AffinityConfidence;
+  domain_overlay?: string;
+  created_at: string;
+  metadata?: Record<string, unknown>;
 }

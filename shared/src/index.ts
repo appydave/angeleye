@@ -20,4 +20,7 @@ export type {
   DomainRoleMapping,
   DomainOverlay,
   OverlayResult,
+  AffinityGroup,
+  AffinityGroupType,
+  AffinityConfidence,
 } from './angeleye.js';

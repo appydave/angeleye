@@ -17,7 +17,7 @@ Claude Code generates a firehose of session data — JSONL transcripts, tool cal
 - **What kind of work is each session doing — and did I already start something similar in another terminal?**
 - **Where did that session I renamed last Tuesday end up?**
 
-AngelEye answers these by parsing Claude Code's own event model — 7 hook event types, normalised into a durable session registry — and projecting them into a live operational view. It doesn't wrap or replace Claude Code. It sits alongside it, the way a team lead uses a project board while engineers use their IDEs.
+AngelEye answers these by parsing Claude Code's own event model — all 24 hook event types, normalised into a durable session registry — and projecting them into a live operational view. It doesn't wrap or replace Claude Code. It sits alongside it, the way a team lead uses a project board while engineers use their IDEs.
 
 No other tool in the Claude Code ecosystem does this. Paperclip and similar orchestrators optimise for autonomous execution. AngelEye optimises for operator awareness — giving you the visibility to decide when to intervene, when to let agents run, and when to redirect.
 
@@ -27,7 +27,7 @@ No other tool in the Claude Code ecosystem does this. Paperclip and similar orch
 
 **Observer** — Your running sessions are invisible by default. AngelEye's live feed turns them into a status board: every active and recent session with real-time status indicators (active/warm/inactive), session type, workspace, opening prompt, and idle timer. Click any session to expand its full event history with tool call details and a note field. When a session goes quiet, you see it immediately — not 30 minutes later when you switch terminals.
 
-**Classification** — Claude Code doesn't know what kind of work a session is doing. AngelEye does. A pure rule-based classifier (no LLM) runs automatically on every session, detecting BUILD, TEST, RESEARCH, KNOWLEDGE, OPS, and ORIENTATION sessions from tool usage patterns and project directory signals. It also catches junk — accidental starts, single-event abandoned sessions, subagent noise — so your session list shows real work, not debris.
+**Classification** — Claude Code doesn't know what kind of work a session is doing. AngelEye does. A three-tier detection system (deterministic rules, regex/heuristic, and LLM enrichment) runs automatically on every session. The deterministic tier fires on every sync, classifying session type, scale, tool pattern, and 20 boolean predicates with zero LLM cost. It detects BUILD, TEST, RESEARCH, KNOWLEDGE, OPS, and ORIENTATION sessions from tool usage patterns, project directory signals, and session scale. The analysis campaign validated 12+ top-level types and 500+ subtypes across the full corpus — far richer than what any single classifier captures.
 
 **Organiser** — Sessions start in an inbox; drag them into named workspaces to group related work. AngelEye suggests workspace assignments based on project directory patterns. This is how you go from "I have 40 sessions from this week" to "these 6 are the FliVideo feature branch, these 4 are the brain update campaign."
 
@@ -37,22 +37,53 @@ No other tool in the Claude Code ecosystem does this. Paperclip and similar orch
 
 ---
 
-## Analysis Campaign
+## Enrichment Pipeline
 
-AngelEye includes an ongoing analysis campaign (`docs/planning/angeleye-analysis-1/`) that systematically analyses session JSONL files to stress-test and improve the classification system. The findings so far reveal how much is hidden in Claude Code session data:
+AngelEye's classifier has grown from a simple 6-type rule engine into a multi-tier enrichment pipeline, driven by findings from a 924-session analysis campaign (`docs/planning/angeleye-analysis-1/`).
 
-- **268 sessions analysed** across 30+ projects
-- **155+ subtypes discovered** — the 6 top-level types (BUILD, TEST, etc.) are just the surface; underneath are fine-grained patterns like "spike-prototype", "config-migration", "brain-curation", "ci-fix"
-- **8 classifiers identified** with 12 predicates and 5 gated observations — a taxonomy far richer than the current rule-based system
-- **BUILD accuracy is ~20%** — the most common classification is also the least precise. What the registry calls BUILD is actually a grab-bag of prototyping, refactoring, debugging, config work, and feature development. The analysis campaign is producing the evidence to fix this.
+### What's Detected
 
-This research feeds directly back into AngelEye's classifier. The goal: when you glance at your session list, the type badges actually tell you what's happening.
+The pipeline currently defines 58 enrichment items across four categories:
+
+| Category     | IDs              | Count | Description                                                                       |
+| ------------ | ---------------- | ----- | --------------------------------------------------------------------------------- |
+| Predicates   | P01-P25, P31-P35 | 30    | Boolean signals (has playwright calls, is machine-initiated, has PII, etc.)       |
+| Classifiers  | C01-C16, C22     | 17    | Categorical labels (session type, scale, tool profile, workflow role, etc.)       |
+| Extractors   | E01-E04          | 4     | Positional value extraction (trigger command, arguments, opening/closing windows) |
+| Observations | O02-O08          | 7     | Free-text analysis summaries (frustration, phase breakdown, skill gaps)           |
+
+29 of these 58 items are implemented and run on every sync. The remainder are either Tier 2 heuristic (partially implemented) or Tier 3 LLM-required (pending infrastructure).
+
+### Three-Tier Detection
+
+| Tier                       | What it does                                                          | Cost       | Items implemented |
+| -------------------------- | --------------------------------------------------------------------- | ---------- | ----------------- |
+| **Tier 1 — Deterministic** | Count events, check tool names, match paths. Same input = same answer | Zero       | All 11            |
+| **Tier 2 — Heuristic**     | Regex on prompt text, file paths. High accuracy, not 100%             | Zero       | All 12            |
+| **Tier 3 — LLM-Required**  | Claude reads conversation content and makes judgment calls            | API tokens | 0 of 22 (pending) |
+
+### Domain Overlay System
+
+Generic workflow role detection (C14-C16) with pluggable domain-specific configuration. A session that invokes `/bmad-sm` gets classified as `role: orchestrator, identity: SallyMae, action: WN` via a JSON-based domain mapping. Currently ships with a BMAD v6 overlay config.
+
+### Analysis Campaign Results
+
+The analysis campaign processed **924 sessions** across 30+ projects on two machines (M4 Mini: 807, M4 Pro: 116). Key findings:
+
+- **12+ top-level session types** validated (BUILD, TEST, RESEARCH, KNOWLEDGE, OPERATIONS, ORIENTATION, META, SYSOPS, PLANNING, MIXED, SKILL, SETUP, and others)
+- **500+ subtypes** discovered — the 6 classifier types are just the surface
+- **Session scale** is the strongest predictor of classification accuracy — micro sessions are mostly junk, marathon sessions are almost always BUILD
+- BUILD accuracy varies 0-70% by scale; the scale-aware guard (B038) prevents mis-classification of small sessions
+
+Full campaign findings: `docs/intelligence/PATTERNS.md`
+
+### Coming Soon: Affinity Groups
+
+Cross-session correlation that groups related sessions into business units — Story Units (sessions working on one story), Epic Sprints (stories grouped by epic), and Project Phases. Designed from analysis of BMAD workflow orchestration sessions. See `docs/planning/enrichment-pipeline/pipeline-extension-plan.md`.
 
 ### Complementary to `/insights`
 
-Claude Code's built-in `/insights` command generates retrospective HTML reports using Haiku-extracted facets (friction categories, satisfaction signals, goal categories). AngelEye's analysis campaign has independently discovered a richer taxonomy — 15 session types vs 5, 52 subtypes vs none, plus session chain tracking, subagent awareness, and CWD attribution that `/insights` doesn't attempt.
-
-The two systems are complementary: `/insights` captures quality-of-experience metrics (was the user satisfied? did Claude's code work? was there friction?) while AngelEye captures work-type classification (what kind of session is this? how does it relate to other sessions? what project does it actually belong to?). A gap analysis (`docs/planning/insights-angeleye-comparison.md`) maps the two schemas and identifies where each system is stronger, plus opportunities to ingest `/insights` cached facets as a free supplementary data source.
+Claude Code's built-in `/insights` command generates retrospective HTML reports using Haiku-extracted facets (friction categories, satisfaction signals, goal categories). AngelEye captures a different dimension: work-type classification, cross-session correlation, and project attribution. A gap analysis (`docs/planning/insights-angeleye-comparison.md`) maps the two schemas.
 
 ---
 
@@ -95,13 +126,15 @@ Without the hook, AngelEye still works — it backfills from existing Claude Cod
 
 ```
 Claude Code session
-    ↓ hook POST
+    | hook POST
 AngelEye server (/hooks/:event)
-    ↓ normalise → store → classify → broadcast
-JSONL event file + registry.json + Socket.io → browser
+    | normalise -> store -> classify -> broadcast
+JSONL event file + registry.json + Socket.io -> browser
 ```
 
-Seven Claude Code hook events are captured:
+All 24 Claude Code hook events are accepted. The original 7 core events drive classification; the remaining 17 (added in wave 11) are stored for future enrichment:
+
+**Core events (classification triggers):**
 
 | Hook Event         | What AngelEye Does                                 |
 | ------------------ | -------------------------------------------------- |
@@ -113,39 +146,49 @@ Seven Claude Code hook events are captured:
 | `SubagentStart`    | Tracks subagent spawning                           |
 | `SubagentStop`     | Tracks subagent completion                         |
 
+**Additional events (stored, enrichment-ready):**
+
+`ToolFailure`, `StopFailure`, `WorktreeCreate`, `WorktreeRemove`, `CwdChanged`, `PreToolUse`, `InstructionsLoaded`, `PreCompact`, `PostCompact`, `PermissionRequest`, `Notification`, `TeammateIdle`, `TaskCompleted`, `ConfigChange`, `Elicitation`, `ElicitationResult`, `FileChanged`
+
 A stop-hook guard prevents infinite loops when AngelEye's own hook fires during a Claude Code stop event.
 
 ### Data Storage
 
 ```
 ~/.claude/angeleye/
-├── registry.json           ← session index (keyed by session_id)
-├── workspaces.json         ← workspace definitions
-├── last-sync.json          ← last sync timestamp and counts
-├── sessions/
-│   └── session-<id>.jsonl  ← active session events (one JSON line per event)
-└── archive/
-    └── session-<id>.jsonl  ← completed sessions (moved here at SessionEnd)
++-- registry.json           <- session index (keyed by session_id)
++-- workspaces.json         <- workspace definitions
++-- last-sync.json          <- last sync timestamp and counts
++-- sessions/
+|   +-- session-<id>.jsonl  <- active session events (one JSON line per event)
++-- archive/
+    +-- session-<id>.jsonl  <- completed sessions (moved here at SessionEnd)
 ```
 
 Registry writes use a serial promise queue with atomic write-to-temp-then-rename to prevent lost updates from concurrent hook events.
 
 ### Classification
 
-Pure rule-based, no LLM. Runs at `stop` and `session_end` events.
+Pure rule-based at Tier 1 and 2, no LLM. Runs at `stop` and `session_end` events, and on bulk re-classify via sync.
 
-**Junk detection**: single-event empty prompts, `/tmp` CWD starts, subagent files, ultra-short sessions with no tool use.
+**Junk detection**: single-event empty prompts, `/tmp` CWD starts, subagent files, ultra-short sessions with no tool use, auto-hello prompts.
+
+**Session scale**: micro (0-3 tools), light (4-10), moderate (11-50), heavy (51-200), marathon (200+). Scale gates classification — micro/light sessions are demoted from BUILD to ORIENTATION to avoid false positives.
 
 **Tool pattern**: derived from tool_use event distribution — `edit-heavy`, `bash-heavy`, `playwright-heavy`, `read-heavy`, `agent-heavy`, `task-heavy`, `websearch-heavy`, `mixed`.
 
-**Session type**: derived from tool pattern + project directory:
+**Session type**: derived from tool pattern + project directory + session scale:
 
-- **BUILD** — edit-heavy/task-heavy/agent-heavy in product repos
+- **BUILD** — edit-heavy/task-heavy/agent-heavy in product repos (moderate+ scale only)
 - **TEST** — playwright-heavy
 - **RESEARCH** — websearch-heavy
-- **KNOWLEDGE** — read-heavy in brain directories
-- **OPS** — bash-heavy in infrastructure directories
-- **ORIENTATION** — read-heavy in non-brain directories
+- **KNOWLEDGE** — read-heavy in brain directories, or any light session in brain dirs
+- **OPS** — bash-heavy in infrastructure directories, paperclip agents, poem execution
+- **ORIENTATION** — read-heavy in non-brain directories, zero tool calls, micro/light scale
+
+**Predicates**: 20 boolean signals fire per session, covering playwright usage, compaction, machine initiation, web research, subagent bursts, task orchestration, git outcomes, skill creation/modification, brain file writes, cross-session references, unauthorized edits, voice dictation artifacts, handover context, cross-project reads, closing ceremonies, and PII detection.
+
+**Domain overlays**: Workflow role (C14), identity (C15), and action (C16) resolved from trigger command via pluggable JSON config.
 
 ---
 
@@ -169,11 +212,11 @@ Pure rule-based, no LLM. Runs at `stop` and `session_end` events.
 
 ### Socket.io Events
 
-| Direction       | Event            | Payload                                 |
-| --------------- | ---------------- | --------------------------------------- |
-| Server → Client | `angeleye:event` | Real-time hook event as `AngelEyeEvent` |
-| Client → Server | `client:ping`    | Keepalive                               |
-| Server → Client | `server:pong`    | Keepalive response                      |
+| Direction        | Event            | Payload                                 |
+| ---------------- | ---------------- | --------------------------------------- |
+| Server -> Client | `angeleye:event` | Real-time hook event as `AngelEyeEvent` |
+| Client -> Server | `client:ping`    | Keepalive                               |
+| Server -> Client | `server:pong`    | Keepalive response                      |
 
 ---
 
@@ -184,7 +227,7 @@ Pure rule-based, no LLM. Runs at `stop` and `session_end` events.
 The live session feed. Sessions are sorted by last activity with real-time status indicators:
 
 - **Green dot** — active (event within 30s)
-- **Amber dot** — warm (30s–2min since last event)
+- **Amber dot** — warm (30s-2min since last event)
 - **Grey dot** — inactive (>2min)
 
 Each row shows: session name, type badge, workspace badge, project, opening prompt, idle timer. Click to expand the focus panel showing full event history with collapsible tool call groups and a note field.
@@ -202,7 +245,7 @@ Drag sessions between inbox and workspaces. AngelEye suggests workspace assignme
 
 ### Settings
 
-- **Sync** — trigger backfill + classification, see last sync results
+- **Sync** — trigger backfill + classification, see last sync results with diff table showing what changed
 - **Stats** — session type breakdown (how many BUILD, TEST, RESEARCH, etc.)
 
 ---
@@ -212,7 +255,7 @@ Drag sessions between inbox and workspaces. AngelEye suggests workspace assignme
 | Script                 | What it does                           |
 | ---------------------- | -------------------------------------- |
 | `npm run dev`          | Start client + server concurrently     |
-| `npm run build`        | Build shared → server → client         |
+| `npm run build`        | Build shared -> server -> client       |
 | `npm test`             | Run all tests                          |
 | `npm run typecheck`    | TypeScript check across all workspaces |
 | `npm run lint`         | ESLint across all workspaces           |
@@ -246,11 +289,15 @@ Each session in `registry.json` tracks:
 
 - **Identity**: `session_id`, `project`, `project_dir`, `name`, `tags`
 - **Lifecycle**: `status` (active/ended), `started_at`, `last_active`, `source` (hook/transcript)
-- **Classification**: `session_type`, `tool_pattern`, `is_junk`
+- **Classification**: `session_type`, `session_subtype`, `tool_pattern`, `session_scale`, `is_junk`
+- **Predicates**: 20 boolean flags (playwright, compaction, machine-initiated, web research, subagent bursts, task orchestration, git outcome, skill created/modified, brain writes, cross-session refs, unauthorized edits, voice dictation, handover context, cross-project reads, closing ceremony)
+- **Extractors**: `trigger_command`, `trigger_arguments`
+- **Domain overlay**: `workflow_role`, `workflow_identity`, `workflow_action`
+- **PII**: `pii_flags` (email, IP, API keys, tokens, secrets)
 - **Context**: `first_real_prompt` (first 200 chars), `first_edited_dir`
 - **Organisation**: `workspace_id`, `note`
 
-The registry currently holds 794 sessions across 30+ projects.
+The registry currently holds 894+ sessions across 30+ projects. The analysis campaign's session index covers 924 sessions (includes a second machine).
 
 ---
 

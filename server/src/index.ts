@@ -20,6 +20,7 @@ import { createHooksRouter } from './routes/hooks.js';
 import backfillRouter from './routes/backfill.js';
 import syncRouter from './routes/sync.js';
 import statsRouter from './routes/stats.js';
+import affinityRouter from './routes/affinity.js';
 import { initAngelEyeDirs } from './services/registry.service.js';
 import { backfillTranscripts } from './services/backfill.service.js';
 import type { ServerToClientEvents, ClientToServerEvents } from '@appystack/shared';
@@ -67,6 +68,7 @@ app.use('/api/backfill', backfillRouter);
 app.use('/api', backfillRouter);
 app.use('/api/sync', syncRouter);
 app.use('/api/stats', statsRouter);
+app.use('/api/affinity-groups', affinityRouter);
 
 // Serve mockup/dashboard HTML files from monorepo root
 const monorepoRoot = join(__dirname, '../..');

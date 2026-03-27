@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngelEye — Sprint Board — Mochaccino</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #e8e0d4;
+    --surface: #ede7dc;
+    --surface-mid: #ddd6cc;
+    --card: #f5f1eb;
+    --border: #d4cdc4;
+    --border-raised: #ccc5bb;
+    --primary: #c8841a;
+    --fg: #2a2018;
+    --muted: #7a6e5e;
+    --muted-dim: #9e9484;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Banner */
+  .banner {
+    background: var(--fg);
+    color: var(--muted);
+    font-size: 11px;
+    text-align: center;
+    padding: 3px 0;
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+  }
+
+  /* Layout */
+  .app-layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 224px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    overflow-y: auto;
+  }
+
+  .sidebar-brand {
+    padding: 20px 16px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-brand h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 0.18em;
+    color: var(--primary);
+    font-weight: 400;
+  }
+
+  .sidebar-brand .brand-sub {
+    font-size: 10px;
+    color: var(--muted-dim);
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+  }
+
+  .sidebar-section {
+    padding: 16px 0 8px;
+  }
+
+  .sidebar-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 16px 6px;
+  }
+
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #4a3e30;
+    cursor: pointer;
+    transition: background 0.12s;
+    border-left: 2px solid transparent;
+  }
+
+  .sidebar-item:hover {
+    background: var(--surface-mid);
+  }
+
+  .sidebar-item.active {
+    background: var(--surface);
+    border-left: 2px solid var(--primary);
+    color: var(--fg);
+    font-weight: 600;
+  }
+
+  .sidebar-item .item-icon {
+    font-size: 14px;
+    opacity: 0.7;
+    width: 18px;
+    text-align: center;
+  }
+
+  .sidebar-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 8px 16px;
+  }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    font-size: 10px;
+    color: var(--muted-dim);
+    letter-spacing: 0.04em;
+  }
+
+  /* Main area */
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Header */
+  .main-header {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .main-header-left h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 0.08em;
+    color: var(--fg);
+    font-weight: 400;
+  }
+
+  .main-header-left .subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .main-header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 4px;
+  }
+
+  .btn-correlate {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--card);
+    background: var(--fg);
+    border: none;
+    padding: 5px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: background 0.15s;
+  }
+
+  .btn-correlate:hover {
+    background: #3d3224;
+  }
+
+  /* Epic header */
+  .epic-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 8px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .epic-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+
+  .epic-summary {
+    font-size: 11px;
+    color: var(--muted-dim);
+    letter-spacing: 0.02em;
+  }
+
+  .epic-summary strong {
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  /* Board */
+  .board {
+    flex: 1;
+    display: flex;
+    gap: 12px;
+    padding: 16px 20px;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  /* Column */
+  .column {
+    min-width: 195px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 260px;
+  }
+
+  .column-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 4px 10px;
+  }
+
+  .column-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .column-codes {
+    font-size: 9px;
+    color: var(--muted-dim);
+    letter-spacing: 0.04em;
+  }
+
+  .column-count {
+    margin-left: auto;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+    background: var(--surface-mid);
+    padding: 1px 7px;
+    border-radius: 8px;
+  }
+
+  .column-cards {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+
+  /* Card */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  .card:hover {
+    border-color: var(--border-raised);
+    box-shadow: 0 2px 8px rgba(42, 32, 24, 0.06);
+  }
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .card-id {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--fg);
+    white-space: nowrap;
+  }
+
+  .card-title {
+    font-size: 11px;
+    color: var(--muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+  }
+
+  .card-mid {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .avatar {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .avatar-blue { background: #4a7fb5; }
+  .avatar-green { background: #4a9e6e; }
+  .avatar-orange { background: #c87a2a; }
+  .avatar-purple { background: #7a5eb5; }
+  .avatar-pink { background: #b55e8a; }
+
+  .action-code {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+    background: var(--surface-mid);
+    padding: 1px 6px;
+    border-radius: 3px;
+    letter-spacing: 0.06em;
+  }
+
+  .status-badge {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    margin-left: auto;
+  }
+
+  .status-active { color: #3a8a5c; }
+  .status-waiting { color: #b5862a; }
+  .status-blocked { color: #c44a3a; }
+  .status-complete { color: #3a8a5c; }
+  .status-backtracking { color: #b5862a; }
+
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .status-dot-active {
+    background: #3a8a5c;
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(58, 138, 92, 0.4); }
+    50% { opacity: 0.7; box-shadow: 0 0 0 4px rgba(58, 138, 92, 0); }
+  }
+
+  .status-icon {
+    font-size: 11px;
+    line-height: 1;
+  }
+
+  .duration {
+    font-size: 10px;
+    color: var(--muted-dim);
+    white-space: nowrap;
+  }
+
+  .card-bottom {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .progress-bar {
+    flex: 1;
+    height: 3px;
+    background: var(--surface-mid);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.3s;
+  }
+
+  .progress-fill-active { background: var(--primary); }
+  .progress-fill-complete { background: #3a8a5c; }
+  .progress-fill-blocked { background: #c44a3a; }
+
+  .progress-label {
+    font-size: 9px;
+    color: var(--muted-dim);
+    white-space: nowrap;
+    font-weight: 600;
+  }
+
+  /* Blocked card accent */
+  .card-blocked {
+    border-left: 3px solid rgba(196, 74, 58, 0.35);
+  }
+
+  /* Active card accent */
+  .card-active {
+    border-left: 3px solid rgba(58, 138, 92, 0.3);
+  }
+
+  /* Complete cards — slightly muted */
+  .card-complete {
+    opacity: 0.82;
+  }
+
+  .card-complete:hover {
+    opacity: 1;
+  }
+
+  /* Empty column placeholder */
+  .column-empty {
+    font-size: 11px;
+    color: var(--muted-dim);
+    text-align: center;
+    padding: 24px 8px;
+    font-style: italic;
+  }
+
+  /* Scrollbar */
+  .column-cards::-webkit-scrollbar { width: 4px; }
+  .column-cards::-webkit-scrollbar-track { background: transparent; }
+  .column-cards::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<!-- Banner -->
+<div class="banner">Mochaccino &mdash; chain-sprint-board &mdash; 2026-03-27</div>
+
+<div class="app-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <h1>ANGELEYE</h1>
+      <div class="brand-sub">Ambient Intelligence</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Views</div>
+      <div class="sidebar-item">
+        <span class="item-icon">&#9678;</span> Observer
+      </div>
+      <div class="sidebar-item">
+        <span class="item-icon">&#9776;</span> Organiser
+      </div>
+      <div class="sidebar-item active">
+        <span class="item-icon">&#9632;</span> Sprint Board
+      </div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Manage</div>
+      <div class="sidebar-item">
+        <span class="item-icon">&#9881;</span> Settings
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      AngelEye v0.4 &middot; 924 sessions
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- Header -->
+    <div class="main-header">
+      <div class="main-header-left">
+        <h2>SPRINT BOARD</h2>
+        <div class="subtitle">SupportSignal v2 &middot; Epic 2 + Epic 0 interleaves</div>
+      </div>
+      <div class="main-header-right">
+        <button class="btn-correlate">Correlate</button>
+      </div>
+    </div>
+
+    <!-- Epic header -->
+    <div class="epic-header">
+      <span class="epic-label">EPIC 2 &mdash; CORE NDIS FEATURES</span>
+      <span class="epic-summary"><strong>5</strong> stories &middot; <strong>3</strong> complete &middot; <strong>1</strong> in progress &middot; <strong>1</strong> blocked</span>
+    </div>
+
+    <!-- Board -->
+    <div class="board">
+
+      <!-- PLAN -->
+      <div class="column">
+        <div class="column-header">
+          <span class="column-title">PLAN</span>
+          <span class="column-codes">WN, CS, VS</span>
+          <span class="column-count">1</span>
+        </div>
+        <div class="column-cards">
+
+          <!-- Story 2.5 -->
+          <div class="card">
+            <div class="card-top">
+              <span class="card-id">2.5</span>
+              <span class="card-title">Audit Log Events</span>
+            </div>
+            <div class="card-mid">
+              <div class="avatar avatar-blue">B</div>
+              <span class="action-code">WN</span>
+              <div class="status-badge status-waiting">
+                <span class="status-icon">&#128336;</span>
+                <span>Pending</span>
+              </div>
+              <span class="duration">&mdash;</span>
+            </div>
+            <div class="card-bottom">
+              <div class="progress-bar">
+                <div class="progress-fill progress-fill-active" style="width: 0%"></div>
+              </div>
+              <span class="progress-label">0/8</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- BUILD -->
+      <div class="column">
+        <div class="column-header">
+          <span class="column-title">BUILD</span>
+          <span class="column-codes">DS</span>
+          <span class="column-count">1</span>
+        </div>
+        <div class="column-cards">
+
+          <!-- Story 2.4 -->
+          <div class="card card-active">
+            <div class="card-top">
+              <span class="card-id">2.4</span>
+              <span class="card-title">Participant Publish Endpoint</span>
+            </div>
+            <div class="card-mid">
+              <div class="avatar avatar-green">A</div>
+              <span class="action-code">DS</span>
+              <div class="status-badge status-active">
+                <span class="status-dot status-dot-active"></span>
+                <span>Active</span>
+              </div>
+              <span class="duration">47m</span>
+            </div>
+            <div class="card-bottom">
+              <div class="progress-bar">
+                <div class="progress-fill progress-fill-active" style="width: 50%"></div>
+              </div>
+              <span class="progress-label">4/8</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- REVIEW -->
+      <div class="column">
+        <div class="column-header">
+          <span class="column-title">REVIEW</span>
+          <span class="column-codes">DR</span>
+          <span class="column-count">1</span>
+        </div>
+        <div class="column-cards">
+
+          <!-- Story 2.3 -->
+          <div class="card card-blocked">
+            <div class="card-top">
+              <span class="card-id">2.3</span>
+              <span class="card-title">Paginated Support Plans</span>
+            </div>
+            <div class="card-mid">
+              <div class="avatar avatar-orange">N</div>
+              <span class="action-code">DR</span>
+              <div class="status-badge status-blocked">
+                <span class="status-icon">&#9888;</span>
+                <span>Blocked</span>
+              </div>
+              <span class="duration">2h</span>
+            </div>
+            <div class="card-bottom">
+              <div class="progress-bar">
+                <div class="progress-fill progress-fill-blocked" style="width: 50%"></div>
+              </div>
+              <span class="progress-label">4/8</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- TEST -->
+      <div class="column">
+        <div class="column-header">
+          <span class="column-title">TEST</span>
+          <span class="column-codes">SAT</span>
+          <span class="column-count">0</span>
+        </div>
+        <div class="column-cards">
+          <div class="column-empty">No stories in test</div>
+        </div>
+      </div>
+
+      <!-- CURATE -->
+      <div class="column">
+        <div class="column-header">
+          <span class="column-title">CURATE</span>
+          <span class="column-codes">CU</span>
+          <span class="column-count">0</span>
+        </div>
+        <div class="column-cards">
+          <div class="column-empty">No stories curating</div>
+        </div>
+      </div>
+
+      <!-- SHIP -->
+      <div class="column">
+        <div class="column-header">
+          <span class="column-title">SHIP</span>
+          <span class="column-codes"></span>
+          <span class="column-count">4</span>
+        </div>
+        <div class="column-cards">
+
+          <!-- Story 2.2 -->
+          <div class="card card-complete">
+            <div class="card-top">
+              <span class="card-id">2.2</span>
+              <span class="card-title">Contact Notification Rules</span>
+            </div>
+            <div class="card-mid">
+              <div class="avatar avatar-green" style="opacity:0.7">A</div>
+              <span class="action-code">SHIP</span>
+              <div class="status-badge status-complete">
+                <span class="status-icon">&#10003;</span>
+                <span>Complete</span>
+              </div>
+            </div>
+            <div class="card-bottom">
+              <div class="progress-bar">
+                <div class="progress-fill progress-fill-complete" style="width: 100%"></div>
+              </div>
+              <span class="progress-label">8/8</span>
+            </div>
+          </div>
+
+          <!-- Story 2.1 -->
+          <div class="card card-complete">
+            <div class="card-top">
+              <span class="card-id">2.1</span>
+              <span class="card-title">Support Plan CRUD</span>
+            </div>
+            <div class="card-mid">
+              <div class="avatar avatar-green" style="opacity:0.7">A</div>
+              <span class="action-code">SHIP</span>
+              <div class="status-badge status-complete">
+                <span class="status-icon">&#10003;</span>
+                <span>Complete</span>
+              </div>
+            </div>
+            <div class="card-bottom">
+              <div class="progress-bar">
+                <div class="progress-fill progress-fill-complete" style="width: 100%"></div>
+              </div>
+              <span class="progress-label">8/8</span>
+            </div>
+          </div>
+
+          <!-- Story 0.2 -->
+          <div class="card card-complete">
+            <div class="card-top">
+              <span class="card-id">0.2</span>
+              <span class="card-title">Environment Config</span>
+            </div>
+            <div class="card-mid">
+              <div class="avatar avatar-purple" style="opacity:0.7">T</div>
+              <span class="action-code">SHIP</span>
+              <div class="status-badge status-complete">
+                <span class="status-icon">&#10003;</span>
+                <span>Complete</span>
+              </div>
+            </div>
+            <div class="card-bottom">
+              <div class="progress-bar">
+                <div class="progress-fill progress-fill-complete" style="width: 100%"></div>
+              </div>
+              <span class="progress-label">4/4</span>
+            </div>
+          </div>
+
+          <!-- Story 0.1 -->
+          <div class="card card-complete">
+            <div class="card-top">
+              <span class="card-id">0.1</span>
+              <span class="card-title">CI Pipeline Fix</span>
+            </div>
+            <div class="card-mid">
+              <div class="avatar avatar-blue" style="opacity:0.7">B</div>
+              <span class="action-code">SHIP</span>
+              <div class="status-badge status-complete">
+                <span class="status-icon">&#10003;</span>
+                <span>Complete</span>
+              </div>
+            </div>
+            <div class="card-bottom">
+              <div class="progress-bar">
+                <div class="progress-fill progress-fill-complete" style="width: 100%"></div>
+              </div>
+              <span class="progress-label">3/3</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+    <!-- /board -->
+
+  </div>
+  <!-- /main -->
+
+</div>
+<!-- /app-layout -->
+
+</body>
+</html>
