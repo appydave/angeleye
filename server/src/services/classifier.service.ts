@@ -6,6 +6,7 @@ import type {
   SessionType,
   ToolPattern,
 } from '@appystack/shared';
+import { resolveOverlay } from './overlay.service.js';
 
 export interface ClassificationResult {
   is_junk: boolean;
@@ -27,6 +28,18 @@ export interface ClassificationResult {
   trigger_arguments?: string | null;
   has_skill_created?: boolean;
   has_skill_modified?: boolean;
+  // Tier 2 predicates (regex/heuristic)
+  has_brain_file_writes?: boolean;
+  has_cross_session_refs?: boolean;
+  has_unauthorized_edits?: boolean;
+  has_voice_dictation_artifacts?: boolean;
+  has_handover_context?: boolean;
+  has_cross_project_reads?: boolean;
+  has_closing_ceremony?: boolean;
+  // Domain overlay classifiers (C14-C16)
+  workflow_role?: string | null;
+  workflow_identity?: string | null;
+  workflow_action?: string | null;
 }
 
 // ── is_junk detection ─────────────────────────────────────────────────────────
@@ -428,6 +441,153 @@ export function detectHasSkillModified(events: AngelEyeEvent[]): boolean {
   });
 }
 
+// ── P04: has_brain_file_writes ───────────────────────────────────────────────
+
+export function detectHasBrainFileWrites(events: AngelEyeEvent[]): boolean {
+  return events.some((e) => {
+    if (
+      e.event !== 'tool_use' ||
+      (e.tool !== 'Edit' && e.tool !== 'Write' && e.tool !== 'MultiEdit')
+    )
+      return false;
+    const file = typeof e.tool_summary?.['file'] === 'string' ? e.tool_summary['file'] : '';
+    return file.includes('/brains/');
+  });
+}
+
+// ── P06: has_cross_session_refs ─────────────────────────────────────────────
+
+const UUID_PATTERN = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
+const CROSS_SESSION_PHRASES =
+  /\b(?:previous session|last time|earlier conversation|last session|prior session)\b/i;
+
+export function detectHasCrossSessionRefs(events: AngelEyeEvent[]): boolean {
+  for (const e of events) {
+    if (e.event !== 'user_prompt' || !e.prompt) continue;
+    if (UUID_PATTERN.test(e.prompt)) return true;
+    if (CROSS_SESSION_PHRASES.test(e.prompt)) return true;
+  }
+  return false;
+}
+
+// ── P08: has_unauthorized_edits ─────────────────────────────────────────────
+
+export function detectHasUnauthorizedEdits(events: AngelEyeEvent[], projectDir: string): boolean {
+  const normalizedDir = projectDir.endsWith('/') ? projectDir : projectDir + '/';
+
+  return events.some((e) => {
+    if (
+      e.event !== 'tool_use' ||
+      (e.tool !== 'Edit' && e.tool !== 'Write' && e.tool !== 'MultiEdit')
+    )
+      return false;
+    const file = typeof e.tool_summary?.['file'] === 'string' ? e.tool_summary['file'] : '';
+    if (!file) return false;
+    return !file.startsWith(normalizedDir) && !file.startsWith(projectDir);
+  });
+}
+
+// ── P11: has_voice_dictation_artifacts ───────────────────────────────────────
+
+const STT_ERRORS = /\b(?:cloud|claw)\b/i;
+export function detectHasVoiceDictationArtifacts(events: AngelEyeEvent[]): boolean {
+  for (const e of events) {
+    if (e.event !== 'user_prompt' || !e.prompt) continue;
+    const prompt = e.prompt;
+
+    // Check for run-on sentences: >100 words without punctuation breaks
+    // Split by sentence-ending punctuation and check each segment
+    const segments = prompt.split(/[.!?]+/);
+    for (const seg of segments) {
+      const words = seg
+        .trim()
+        .split(/\s+/)
+        .filter((w) => w.length > 0);
+      if (words.length > 100) return true;
+    }
+
+    // Check for common STT errors in context suggesting Claude was intended
+    // "cloud" near coding/AI context, "claw" as misrecognition of "Claude"
+    if (STT_ERRORS.test(prompt)) {
+      // Only flag if prompt is long enough to be dictation (not just mentioning weather)
+      const wordCount = prompt.trim().split(/\s+/).length;
+      if (wordCount >= 20) return true;
+    }
+
+    // Missing markdown formatting in technical prompts (long prompt, no code fences, no headers)
+    const wordCount = prompt.trim().split(/\s+/).length;
+    if (
+      wordCount >= 50 &&
+      !prompt.includes('```') &&
+      !prompt.includes('##') &&
+      !prompt.includes('- ') &&
+      !prompt.includes('\n\n')
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// ── P17: has_handover_context ───────────────────────────────────────────────
+
+export function detectHasHandoverContext(events: AngelEyeEvent[]): boolean {
+  const firstPrompt = events.find((e) => e.event === 'user_prompt');
+  if (!firstPrompt?.prompt) return false;
+
+  const prompt = firstPrompt.prompt.trim();
+
+  if (prompt.startsWith('This session is being continued')) return true;
+  if (prompt.includes('<task-notification')) return true;
+  if (prompt.startsWith('Session Context:')) return true;
+  if (firstPrompt.prompt.length > 2000) return true;
+
+  return false;
+}
+
+// ── P18: has_cross_project_reads ────────────────────────────────────────────
+
+export function detectHasCrossProjectReads(events: AngelEyeEvent[], projectDir: string): boolean {
+  const normalizedDir = projectDir.endsWith('/') ? projectDir : projectDir + '/';
+  const readTools = new Set(['Read', 'Glob', 'Grep']);
+
+  return events.some((e) => {
+    if (e.event !== 'tool_use' || !readTools.has(e.tool ?? '')) return false;
+    const file = typeof e.tool_summary?.['file'] === 'string' ? e.tool_summary['file'] : '';
+    if (!file) return false;
+    return !file.startsWith(normalizedDir) && !file.startsWith(projectDir);
+  });
+}
+
+// ── P25: has_closing_ceremony ───────────────────────────────────────────────
+
+const GIT_COMMIT_PUSH_PATTERN = /git\s+(commit|push)/;
+const CLOSING_SUMMARY_PATTERN =
+  /\b(?:committed|pushed|merged|shipped|deployed|all done|that's it)\b/i;
+
+export function detectHasClosingCeremony(events: AngelEyeEvent[]): boolean {
+  // Examine last 10 events
+  const tail = events.slice(-10);
+
+  // Check for git commit + git push in Bash tool events within the tail
+  const tailToolEvents = tail.filter((e) => e.event === 'tool_use' && e.tool === 'Bash');
+  const hasGitCommitPush = tailToolEvents.some((e) => {
+    const command =
+      typeof e.tool_summary?.['command'] === 'string' ? e.tool_summary['command'] : '';
+    return GIT_COMMIT_PUSH_PATTERN.test(command);
+  });
+
+  if (hasGitCommitPush) return true;
+
+  // Check final assistant message (last_message on stop events) for summary language
+  const lastStop = [...tail].reverse().find((e) => e.event === 'stop');
+  if (lastStop?.last_message && CLOSING_SUMMARY_PATTERN.test(lastStop.last_message)) {
+    return true;
+  }
+
+  return false;
+}
+
 // ── classifySession (main entry point) ───────────────────────────────────────
 
 export function classifySession(
@@ -458,6 +618,20 @@ export function classifySession(
   const trigger_arguments = extractTriggerArguments(events);
   const has_skill_created = detectHasSkillCreated(events);
   const has_skill_modified = detectHasSkillModified(events);
+  // Tier 2 predicates
+  const has_brain_file_writes = detectHasBrainFileWrites(events);
+  const has_cross_session_refs = detectHasCrossSessionRefs(events);
+  const has_unauthorized_edits = detectHasUnauthorizedEdits(events, projectDir);
+  const has_voice_dictation_artifacts = detectHasVoiceDictationArtifacts(events);
+  const has_handover_context = detectHasHandoverContext(events);
+  const has_cross_project_reads = detectHasCrossProjectReads(events, projectDir);
+  const has_closing_ceremony = detectHasClosingCeremony(events);
+
+  // Domain overlay resolution (C14-C16)
+  const overlayResult = resolveOverlay(trigger_command, trigger_arguments);
+  const workflow_role = overlayResult?.role ?? null;
+  const workflow_identity = overlayResult?.identity ?? null;
+  const workflow_action = overlayResult?.action ?? null;
 
   return {
     is_junk: false,
@@ -478,5 +652,15 @@ export function classifySession(
     trigger_arguments,
     has_skill_created,
     has_skill_modified,
+    has_brain_file_writes,
+    has_cross_session_refs,
+    has_unauthorized_edits,
+    has_voice_dictation_artifacts,
+    has_handover_context,
+    has_cross_project_reads,
+    has_closing_ceremony,
+    workflow_role,
+    workflow_identity,
+    workflow_action,
   };
 }

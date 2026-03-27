@@ -17,4 +17,7 @@ export type {
   SessionSubtype,
   ToolPattern,
   SessionScale,
+  DomainRoleMapping,
+  DomainOverlay,
+  OverlayResult,
 } from './angeleye.js';

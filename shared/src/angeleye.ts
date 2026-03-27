@@ -145,6 +145,18 @@ export interface RegistryEntry {
   // Agent genesis predicates
   has_skill_created?: boolean;
   has_skill_modified?: boolean;
+  // Tier 2 predicates (regex/heuristic)
+  has_brain_file_writes?: boolean;
+  has_cross_session_refs?: boolean;
+  has_unauthorized_edits?: boolean;
+  has_voice_dictation_artifacts?: boolean;
+  has_handover_context?: boolean;
+  has_cross_project_reads?: boolean;
+  has_closing_ceremony?: boolean;
+  // Domain overlay classifiers (C14-C16)
+  workflow_role?: string | null;
+  workflow_identity?: string | null;
+  workflow_action?: string | null;
 }
 
 export interface WorkspaceEntry {
@@ -155,3 +167,23 @@ export interface WorkspaceEntry {
 }
 
 export type Registry = Record<string, RegistryEntry>;
+
+// ── Domain Overlay types (C14-C16) ─────────────────────────────────────────
+
+export interface DomainRoleMapping {
+  role: string; // generic: builder, reviewer, tester, planner, observer, orchestrator, advisor, shipper
+  identity: string | null; // agent name: Bob, Amelia, Nate, etc.
+  actions: string[]; // action codes: WN, CS, VS, DS, DR, etc.
+}
+
+export interface DomainOverlay {
+  domain: string; // e.g., "bmad-v6"
+  role_mappings: Record<string, DomainRoleMapping>; // key is skill command pattern e.g., "/bmad-sm"
+}
+
+export interface OverlayResult {
+  domain: string;
+  role: string;
+  identity: string | null;
+  action: string | null;
+}

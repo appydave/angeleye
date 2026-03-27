@@ -10,6 +10,13 @@ import {
   detectPiiFlags,
   findFirstEditedDir,
   findFirstRealPrompt,
+  detectHasBrainFileWrites,
+  detectHasCrossSessionRefs,
+  detectHasUnauthorizedEdits,
+  detectHasVoiceDictationArtifacts,
+  detectHasHandoverContext,
+  detectHasCrossProjectReads,
+  detectHasClosingCeremony,
 } from './classifier.service.js';
 
 // ── Helper ─────────────────────────────────────────────────────────────────────
@@ -791,5 +798,320 @@ describe('SessionSubtype — B043 type definitions', () => {
     );
     // session_subtype is not yet populated by detection logic, so it should be undefined
     expect(result.session_subtype).toBeUndefined();
+  });
+});
+
+// ── P04: detectHasBrainFileWrites ───────────────────────────────────────────
+
+describe('detectHasBrainFileWrites', () => {
+  it('returns true when Edit targets a brains/ path', () => {
+    const events = [makeToolEvent('Edit', { file: '/dev/ad/brains/angeleye/concepts.md' })];
+    expect(detectHasBrainFileWrites(events)).toBe(true);
+  });
+
+  it('returns true when Write targets a brains/ path', () => {
+    const events = [makeToolEvent('Write', { file: '/dev/ad/brains/brand-dave/ops.md' })];
+    expect(detectHasBrainFileWrites(events)).toBe(true);
+  });
+
+  it('returns false when Edit targets a non-brains path', () => {
+    const events = [makeToolEvent('Edit', { file: '/projects/myapp/src/index.ts' })];
+    expect(detectHasBrainFileWrites(events)).toBe(false);
+  });
+
+  it('returns false for Read events even in brains/ path', () => {
+    const events = [makeToolEvent('Read', { file: '/dev/ad/brains/angeleye/concepts.md' })];
+    expect(detectHasBrainFileWrites(events)).toBe(false);
+  });
+
+  it('returns false when no tool events exist', () => {
+    const events = [makePromptEvent('Update the brain')];
+    expect(detectHasBrainFileWrites(events)).toBe(false);
+  });
+});
+
+// ── P06: detectHasCrossSessionRefs ──────────────────────────────────────────
+
+describe('detectHasCrossSessionRefs', () => {
+  it('returns true when prompt contains a UUID', () => {
+    const events = [makePromptEvent('Continue from session 27231022-d305-4069-a16a-472c98259e33')];
+    expect(detectHasCrossSessionRefs(events)).toBe(true);
+  });
+
+  it('returns true when prompt says "previous session"', () => {
+    const events = [makePromptEvent('In the previous session we fixed the auth bug')];
+    expect(detectHasCrossSessionRefs(events)).toBe(true);
+  });
+
+  it('returns true when prompt says "last time"', () => {
+    const events = [makePromptEvent('Last time we worked on the migration')];
+    expect(detectHasCrossSessionRefs(events)).toBe(true);
+  });
+
+  it('returns true when prompt says "earlier conversation"', () => {
+    const events = [makePromptEvent('As discussed in an earlier conversation')];
+    expect(detectHasCrossSessionRefs(events)).toBe(true);
+  });
+
+  it('returns true when prompt says "last session"', () => {
+    const events = [makePromptEvent('Pick up where we left off last session')];
+    expect(detectHasCrossSessionRefs(events)).toBe(true);
+  });
+
+  it('returns true when prompt says "prior session"', () => {
+    const events = [makePromptEvent('The prior session had errors')];
+    expect(detectHasCrossSessionRefs(events)).toBe(true);
+  });
+
+  it('returns false for normal prompts without session refs', () => {
+    const events = [makePromptEvent('Fix the login bug')];
+    expect(detectHasCrossSessionRefs(events)).toBe(false);
+  });
+
+  it('only scans user_prompt events', () => {
+    const events = [makeEvent({ event: 'tool_use', tool: 'Bash', prompt: 'previous session' })];
+    expect(detectHasCrossSessionRefs(events)).toBe(false);
+  });
+});
+
+// ── P08: detectHasUnauthorizedEdits ─────────────────────────────────────────
+
+describe('detectHasUnauthorizedEdits', () => {
+  it('returns true when Edit path is outside project_dir', () => {
+    const events = [makeToolEvent('Edit', { file: '/dev/ad/brains/angeleye/data.md' })];
+    expect(detectHasUnauthorizedEdits(events, '/projects/myapp')).toBe(true);
+  });
+
+  it('returns true when Write path is outside project_dir', () => {
+    const events = [makeToolEvent('Write', { file: '/tmp/scratch.ts' })];
+    expect(detectHasUnauthorizedEdits(events, '/projects/myapp')).toBe(true);
+  });
+
+  it('returns false when Edit path is inside project_dir', () => {
+    const events = [makeToolEvent('Edit', { file: '/projects/myapp/src/index.ts' })];
+    expect(detectHasUnauthorizedEdits(events, '/projects/myapp')).toBe(false);
+  });
+
+  it('returns false when no file in tool_summary', () => {
+    const events = [makeToolEvent('Edit', { command: 'something' })];
+    expect(detectHasUnauthorizedEdits(events, '/projects/myapp')).toBe(false);
+  });
+
+  it('handles project_dir with trailing slash', () => {
+    const events = [makeToolEvent('Edit', { file: '/projects/myapp/src/index.ts' })];
+    expect(detectHasUnauthorizedEdits(events, '/projects/myapp/')).toBe(false);
+  });
+});
+
+// ── P11: detectHasVoiceDictationArtifacts ───────────────────────────────────
+
+describe('detectHasVoiceDictationArtifacts', () => {
+  it('returns true for run-on sentence with >100 words and no punctuation', () => {
+    const words = Array.from({ length: 110 }, (_, i) => `word${i}`).join(' ');
+    const events = [makePromptEvent(words)];
+    expect(detectHasVoiceDictationArtifacts(events)).toBe(true);
+  });
+
+  it('returns true for long prompt with STT error "cloud" (when prompt is long)', () => {
+    const longPrompt =
+      'I want to use cloud code to fix the auth service and then deploy the new version to production server so we can test it with the real users who have been waiting for this fix for a while now';
+    const events = [makePromptEvent(longPrompt)];
+    expect(detectHasVoiceDictationArtifacts(events)).toBe(true);
+  });
+
+  it('returns false for short prompt mentioning "cloud"', () => {
+    const events = [makePromptEvent('Deploy to cloud')];
+    expect(detectHasVoiceDictationArtifacts(events)).toBe(false);
+  });
+
+  it('returns true for long technical prompt without markdown formatting', () => {
+    const words = Array.from({ length: 55 }, (_, i) => `implement${i}`).join(' ');
+    const events = [makePromptEvent(words)];
+    expect(detectHasVoiceDictationArtifacts(events)).toBe(true);
+  });
+
+  it('returns false for long prompt with markdown formatting', () => {
+    const words = Array.from({ length: 55 }, (_, i) => `word${i}`).join(' ');
+    const events = [makePromptEvent(`## Task\n\n${words}`)];
+    expect(detectHasVoiceDictationArtifacts(events)).toBe(false);
+  });
+
+  it('returns false for normal typed prompt', () => {
+    const events = [makePromptEvent('Fix the login bug. Add tests.')];
+    expect(detectHasVoiceDictationArtifacts(events)).toBe(false);
+  });
+
+  it('only scans user_prompt events', () => {
+    const words = Array.from({ length: 110 }, (_, i) => `word${i}`).join(' ');
+    const events = [makeEvent({ event: 'tool_use', tool: 'Bash', prompt: words })];
+    expect(detectHasVoiceDictationArtifacts(events)).toBe(false);
+  });
+});
+
+// ── P17: detectHasHandoverContext ───────────────────────────────────────────
+
+describe('detectHasHandoverContext', () => {
+  it('returns true when first prompt starts with "This session is being continued"', () => {
+    const events = [
+      makePromptEvent('This session is being continued from a previous conversation.'),
+    ];
+    expect(detectHasHandoverContext(events)).toBe(true);
+  });
+
+  it('returns true when first prompt contains <task-notification', () => {
+    const events = [
+      makePromptEvent('<task-notification>Build the new feature</task-notification>'),
+    ];
+    expect(detectHasHandoverContext(events)).toBe(true);
+  });
+
+  it('returns true when first prompt starts with "Session Context:"', () => {
+    const events = [makePromptEvent('Session Context: we were working on the classifier')];
+    expect(detectHasHandoverContext(events)).toBe(true);
+  });
+
+  it('returns true when first prompt is > 2000 chars (large paste)', () => {
+    const events = [makePromptEvent('x'.repeat(2001))];
+    expect(detectHasHandoverContext(events)).toBe(true);
+  });
+
+  it('returns false for normal first prompt', () => {
+    const events = [makePromptEvent('Fix the login bug')];
+    expect(detectHasHandoverContext(events)).toBe(false);
+  });
+
+  it('returns false when no user_prompt events', () => {
+    const events = [makeEvent({ event: 'session_start' })];
+    expect(detectHasHandoverContext(events)).toBe(false);
+  });
+});
+
+// ── P18: detectHasCrossProjectReads ─────────────────────────────────────────
+
+describe('detectHasCrossProjectReads', () => {
+  it('returns true when Read path is outside project_dir', () => {
+    const events = [makeToolEvent('Read', { file: '/dev/ad/brains/angeleye/concepts.md' })];
+    expect(detectHasCrossProjectReads(events, '/projects/myapp')).toBe(true);
+  });
+
+  it('returns true when Grep path is outside project_dir', () => {
+    const events = [makeToolEvent('Grep', { file: '/other/project/src/index.ts' })];
+    expect(detectHasCrossProjectReads(events, '/projects/myapp')).toBe(true);
+  });
+
+  it('returns true when Glob path is outside project_dir', () => {
+    const events = [makeToolEvent('Glob', { file: '/other/project/src/types.ts' })];
+    expect(detectHasCrossProjectReads(events, '/projects/myapp')).toBe(true);
+  });
+
+  it('returns false when Read path is inside project_dir', () => {
+    const events = [makeToolEvent('Read', { file: '/projects/myapp/src/index.ts' })];
+    expect(detectHasCrossProjectReads(events, '/projects/myapp')).toBe(false);
+  });
+
+  it('returns false for Edit events outside project_dir (not a read tool)', () => {
+    const events = [makeToolEvent('Edit', { file: '/other/project/src/index.ts' })];
+    expect(detectHasCrossProjectReads(events, '/projects/myapp')).toBe(false);
+  });
+
+  it('returns false when no file in tool_summary', () => {
+    const events = [makeToolEvent('Read', { command: 'something' })];
+    expect(detectHasCrossProjectReads(events, '/projects/myapp')).toBe(false);
+  });
+});
+
+// ── P25: detectHasClosingCeremony ───────────────────────────────────────────
+
+describe('detectHasClosingCeremony', () => {
+  it('returns true when last events include git commit in Bash', () => {
+    const events = [
+      makePromptEvent('Commit the changes'),
+      ...Array.from({ length: 8 }, () => makeToolEvent('Edit')),
+      makeToolEvent('Bash', { command: 'git commit -m "feat: add feature"' }),
+    ];
+    expect(detectHasClosingCeremony(events)).toBe(true);
+  });
+
+  it('returns true when last events include git push in Bash', () => {
+    const events = [
+      makePromptEvent('Push to remote'),
+      ...Array.from({ length: 8 }, () => makeToolEvent('Edit')),
+      makeToolEvent('Bash', { command: 'git push origin main' }),
+    ];
+    expect(detectHasClosingCeremony(events)).toBe(true);
+  });
+
+  it('returns true when final stop event has closing summary language', () => {
+    const events = [
+      makePromptEvent('Fix the bug'),
+      ...Array.from({ length: 5 }, () => makeToolEvent('Edit')),
+      makeEvent({ event: 'stop', last_message: 'All changes have been committed and pushed.' }),
+    ];
+    expect(detectHasClosingCeremony(events)).toBe(true);
+  });
+
+  it('returns false when git commit is early in session (not in last 10)', () => {
+    const events = [
+      makeToolEvent('Bash', { command: 'git commit -m "initial"' }),
+      ...Array.from({ length: 15 }, () => makeToolEvent('Edit')),
+    ];
+    expect(detectHasClosingCeremony(events)).toBe(false);
+  });
+
+  it('returns false when no closing patterns', () => {
+    const events = [
+      makePromptEvent('Fix the bug'),
+      ...Array.from({ length: 5 }, () => makeToolEvent('Edit')),
+      makeEvent({ event: 'stop', last_message: 'What would you like me to do next?' }),
+    ];
+    expect(detectHasClosingCeremony(events)).toBe(false);
+  });
+});
+
+// ── Tier 2 predicates — classifySession integration ─────────────────────────
+
+describe('classifySession — Tier 2 predicates integration', () => {
+  it('includes all Tier 2 predicates in non-junk classification', () => {
+    const events = [
+      makeEvent({ event: 'session_start', cwd: '/projects/app' }),
+      makePromptEvent('Implement the feature'),
+      ...Array.from({ length: 15 }, () =>
+        makeToolEvent('Edit', { file: '/projects/app/src/index.ts' })
+      ),
+    ];
+    const result = classifySession(events, 'ses-tier2', '/projects/app');
+    expect(result.has_brain_file_writes).toBe(false);
+    expect(result.has_cross_session_refs).toBe(false);
+    expect(result.has_unauthorized_edits).toBe(false);
+    expect(result.has_voice_dictation_artifacts).toBe(false);
+    expect(result.has_handover_context).toBe(false);
+    expect(result.has_cross_project_reads).toBe(false);
+    expect(result.has_closing_ceremony).toBe(false);
+  });
+
+  it('detects brain file writes via classifySession', () => {
+    const events = [
+      makeEvent({ event: 'session_start', cwd: '/projects/app' }),
+      makePromptEvent('Update the brain docs'),
+      makeToolEvent('Write', { file: '/dev/ad/brains/angeleye/data.md' }),
+      ...Array.from({ length: 14 }, () =>
+        makeToolEvent('Edit', { file: '/projects/app/src/x.ts' })
+      ),
+    ];
+    const result = classifySession(events, 'ses-brain', '/projects/app');
+    expect(result.has_brain_file_writes).toBe(true);
+  });
+
+  it('detects handover context via classifySession', () => {
+    const events = [
+      makeEvent({ event: 'session_start', cwd: '/projects/app' }),
+      makePromptEvent('This session is being continued from previous work.'),
+      makePromptEvent('Now fix the auth module'),
+      ...Array.from({ length: 15 }, () =>
+        makeToolEvent('Edit', { file: '/projects/app/src/x.ts' })
+      ),
+    ];
+    const result = classifySession(events, 'ses-handover', '/projects/app');
+    expect(result.has_handover_context).toBe(true);
   });
 });

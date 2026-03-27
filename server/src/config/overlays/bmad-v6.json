@@ -1,0 +1,20 @@
+{
+  "domain": "bmad-v6",
+  "role_mappings": {
+    "/bmad-sm": { "role": "planner", "identity": "Bob", "actions": ["WN", "CS", "VS", "ER"] },
+    "/bmad-dev": { "role": "builder", "identity": "Amelia", "actions": ["DS"] },
+    "/bmad-dr": { "role": "reviewer", "identity": "Nate", "actions": ["DR"] },
+    "/bmad-sat": { "role": "tester", "identity": "Taylor", "actions": ["CS", "RA", "CU"] },
+    "/bmad-lib": { "role": "advisor", "identity": "Lisa", "actions": ["CU"] },
+    "/bmad-ship": { "role": "shipper", "identity": null, "actions": ["commit", "push", "ci"] },
+    "/bmad-oversight": { "role": "observer", "identity": null, "actions": ["review", "correct"] },
+    "/bmad-architect": { "role": "planner", "identity": "Winston", "actions": ["CA", "IR"] },
+    "/bmad-ux-designer": { "role": "planner", "identity": "Sally", "actions": ["CU"] },
+    "/bmad-agent-pm": {
+      "role": "planner",
+      "identity": "John",
+      "actions": ["CP", "VP", "CE", "CC"]
+    },
+    "/bmad-code-review": { "role": "reviewer", "identity": "Amelia", "actions": ["CR"] }
+  }
+}
