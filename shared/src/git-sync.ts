@@ -22,6 +22,8 @@ export interface GitSyncStatus {
   behind: number;
   ahead: number;
   dirty: boolean;
+  dirtyFiles: string[];
+  dirtyCount: number;
   lastChecked: string;
   error?: string;
   behindCommits?: CommitSummary[];

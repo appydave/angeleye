@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngelEye — Wave Sprint Board — Mochaccino</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #e8e0d4;
+    --surface: #ede7dc;
+    --surface-mid: #ddd6cc;
+    --card: #f5f1eb;
+    --border: #d4cdc4;
+    --border-raised: #ccc5bb;
+    --primary: #c8841a;
+    --fg: #2a2018;
+    --muted: #7a6e5e;
+    --muted-dim: #9e9484;
+    --green: #5a9a3c;
+    --amber: #d4860a;
+    --red: #c05040;
+    --blue: #4a7fb5;
+    --orange: #c07030;
+    --purple: #8a6ab5;
+    --pink: #b56a8a;
+    --gray: #8a8a8a;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Banner */
+  .banner {
+    background: var(--fg);
+    color: var(--muted);
+    font-size: 11px;
+    text-align: center;
+    padding: 3px 0;
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+  }
+  .banner span { color: var(--primary); font-weight: 600; }
+
+  /* Layout */
+  .app-layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 224px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    overflow-y: auto;
+  }
+
+  .sidebar-brand {
+    padding: 20px 16px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-brand h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 0.18em;
+    color: var(--primary);
+    font-weight: 400;
+  }
+
+  .sidebar-brand .brand-sub {
+    font-size: 10px;
+    color: var(--muted-dim);
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+  }
+
+  .sidebar-section {
+    padding: 16px 0 8px;
+  }
+
+  .sidebar-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 16px 6px;
+  }
+
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #4a3e30;
+    cursor: pointer;
+    transition: background 0.12s;
+    border-left: 2px solid transparent;
+  }
+
+  .sidebar-item:hover {
+    background: var(--surface-mid);
+  }
+
+  .sidebar-item.active {
+    background: var(--surface);
+    border-left: 2px solid var(--primary);
+    color: var(--fg);
+    font-weight: 600;
+  }
+
+  .sidebar-item .item-icon {
+    font-size: 14px;
+    opacity: 0.7;
+    width: 18px;
+    text-align: center;
+  }
+
+  .sidebar-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 8px 16px;
+  }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    font-size: 10px;
+    color: var(--muted-dim);
+    letter-spacing: 0.04em;
+  }
+
+  /* Main area */
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Page header */
+  .page-header {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px 12px;
+    flex-shrink: 0;
+  }
+
+  .breadcrumb {
+    font-size: 10px;
+    color: var(--muted-dim);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .page-header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .page-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 0.08em;
+    color: var(--fg);
+    font-weight: 400;
+    line-height: 1;
+  }
+
+  .page-subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .page-subtitle strong {
+    color: var(--fg);
+    font-weight: 600;
+  }
+
+  .header-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 6px;
+  }
+
+  /* Epic 0 toggle */
+  .toggle-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--muted);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .toggle-track {
+    width: 32px;
+    height: 16px;
+    background: var(--border);
+    border-radius: 8px;
+    position: relative;
+    transition: background 0.2s;
+  }
+
+  .toggle-track.on {
+    background: var(--primary);
+  }
+
+  .toggle-knob {
+    width: 12px;
+    height: 12px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.2s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+  }
+
+  .toggle-track.on .toggle-knob {
+    transform: translateX(16px);
+  }
+
+  /* Board */
+  .board-container {
+    flex: 1;
+    overflow-x: auto;
+    overflow-y: auto;
+    padding: 16px 20px;
+  }
+
+  .board {
+    display: flex;
+    gap: 14px;
+    min-height: 100%;
+    align-items: flex-start;
+  }
+
+  /* Column */
+  .column {
+    min-width: 220px;
+    max-width: 280px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .column.col-review {
+    min-width: 260px;
+    max-width: 320px;
+    flex: 1.3;
+  }
+
+  .column.col-complete {
+    min-width: 240px;
+    max-width: 300px;
+    flex: 1.2;
+  }
+
+  .column-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .column-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+  }
+
+  .column-count {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted-dim);
+    background: var(--bg);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .column-body {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+
+  .column-empty {
+    padding: 20px 10px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted-dim);
+    font-style: italic;
+  }
+
+  /* Story card */
+  .story-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px;
+    cursor: pointer;
+    transition: box-shadow 0.15s, border-color 0.15s;
+    position: relative;
+  }
+
+  .story-card:hover {
+    box-shadow: 0 2px 8px rgba(42, 32, 24, 0.1);
+    border-color: var(--border-raised);
+  }
+
+  /* Active card glow */
+  .story-card.card-active {
+    border-color: var(--amber);
+    box-shadow: 0 0 0 1px var(--amber), 0 2px 12px rgba(212, 134, 10, 0.2);
+    animation: pulse-glow 2.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 0 1px var(--amber), 0 2px 12px rgba(212, 134, 10, 0.18); }
+    50% { box-shadow: 0 0 0 2px var(--amber), 0 4px 20px rgba(212, 134, 10, 0.3); }
+  }
+
+  /* Complete card — green left border, compact */
+  .story-card.card-complete {
+    border-left: 3px solid var(--green);
+    padding: 9px 10px;
+  }
+
+  /* Planned card — gray left border */
+  .story-card.card-planned {
+    border-left: 3px solid var(--gray);
+    opacity: 0.85;
+  }
+
+  /* Card top row */
+  .card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+
+  .story-id {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    background: var(--fg);
+    color: var(--card);
+    padding: 1px 7px;
+    border-radius: 3px;
+    line-height: 1.3;
+  }
+
+  .story-id.id-active {
+    background: var(--amber);
+    color: white;
+  }
+
+  .story-id.id-planned {
+    background: var(--gray);
+    color: white;
+  }
+
+  .health-badge {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 2px 6px;
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+
+  .health-healthy {
+    background: rgba(90, 154, 60, 0.12);
+    color: var(--green);
+  }
+
+  .health-backtrack {
+    background: rgba(212, 134, 10, 0.12);
+    color: var(--amber);
+  }
+
+  .health-patches {
+    background: rgba(212, 134, 10, 0.12);
+    color: var(--amber);
+  }
+
+  .health-blocked {
+    background: rgba(192, 80, 64, 0.12);
+    color: var(--red);
+  }
+
+  .health-cleanest {
+    background: rgba(90, 154, 60, 0.12);
+    color: var(--green);
+  }
+
+  .health-next {
+    background: rgba(138, 138, 138, 0.12);
+    color: var(--gray);
+  }
+
+  /* Card title */
+  .card-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fg);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .card-complete .card-title {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  /* Epic tag */
+  .epic-tag {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    background: rgba(138, 106, 181, 0.12);
+    color: var(--purple);
+    padding: 1px 5px;
+    border-radius: 2px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  /* Agent row */
+  .agent-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+
+  .agent-avatar {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .card-complete .agent-avatar {
+    width: 18px;
+    height: 18px;
+    font-size: 9px;
+  }
+
+  .agent-info {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.3;
+  }
+
+  .agent-name {
+    font-weight: 600;
+    color: var(--fg);
+  }
+
+  .action-code {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    background: rgba(200, 132, 26, 0.1);
+    color: var(--primary);
+    padding: 0 4px;
+    border-radius: 2px;
+    margin-left: 4px;
+  }
+
+  /* Progress bar */
+  .progress-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+
+  .progress-bar {
+    display: flex;
+    gap: 2px;
+    flex: 1;
+  }
+
+  .progress-step {
+    height: 5px;
+    flex: 1;
+    border-radius: 2px;
+    background: var(--border);
+  }
+
+  .progress-step.done {
+    background: var(--green);
+  }
+
+  .progress-step.active {
+    background: var(--amber);
+  }
+
+  .progress-step.empty {
+    background: var(--border);
+  }
+
+  .progress-label {
+    font-size: 9px;
+    color: var(--muted-dim);
+    white-space: nowrap;
+    font-weight: 600;
+  }
+
+  /* Card footer */
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .duration {
+    font-size: 10px;
+    color: var(--muted-dim);
+  }
+
+  /* Mini avatar dots */
+  .avatar-dots {
+    display: flex;
+    gap: 0;
+  }
+
+  .avatar-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1.5px solid var(--card);
+    margin-left: -4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 7px;
+    font-weight: 700;
+    color: white;
+  }
+
+  .avatar-dot:first-child {
+    margin-left: 0;
+  }
+
+  .card-complete .avatar-dot {
+    width: 12px;
+    height: 12px;
+    font-size: 6px;
+    margin-left: -3px;
+  }
+
+  /* Agent colors */
+  .ag-bob { background: var(--blue); }
+  .ag-amelia { background: var(--green); }
+  .ag-nate { background: var(--orange); }
+  .ag-taylor { background: var(--purple); }
+  .ag-lisa { background: var(--pink); }
+  .ag-sally { background: var(--red); }
+  .ag-winston { background: #5a8a8a; }
+  .ag-none { background: var(--gray); }
+
+  /* Compact complete cards */
+  .card-complete .agent-row {
+    margin-bottom: 5px;
+  }
+
+  .card-complete .progress-row {
+    margin-bottom: 4px;
+  }
+
+  .card-complete .card-footer {
+    margin-top: 0;
+  }
+
+  /* Epic 0 cards hidden by default */
+  .story-card.epic0 {
+    display: block;
+  }
+
+  .story-card.epic0.hidden {
+    display: none;
+  }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .sidebar { width: 180px; }
+    .column { min-width: 180px; }
+  }
+
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="banner">Mochaccino <span>&middot;</span> wave-sprint-board</div>
+
+<div class="app-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <h1>ANGELEYE</h1>
+      <div class="brand-sub">Ambient Intelligence Layer</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Navigation</div>
+      <div class="sidebar-item">
+        <span class="item-icon">&#9678;</span> Observer
+      </div>
+      <div class="sidebar-item">
+        <span class="item-icon">&#9776;</span> Organiser
+      </div>
+      <div class="sidebar-item active">
+        <span class="item-icon">&#9881;</span> Workflows
+      </div>
+      <div class="sidebar-item">
+        <span class="item-icon">&#9881;</span> Settings
+      </div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Workflows</div>
+      <div class="sidebar-item active">
+        <span class="item-icon">&#9634;</span> Sprint Board
+      </div>
+      <div class="sidebar-item">
+        <span class="item-icon">&#9656;</span> Story Pipeline
+      </div>
+      <div class="sidebar-item">
+        <span class="item-icon">&#9673;</span> Session Detail
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      AngelEye v0.4 &middot; Mochaccino mockup
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+
+    <!-- Page header -->
+    <div class="page-header">
+      <div class="breadcrumb">Workflows</div>
+      <div class="page-header-row">
+        <div>
+          <h2 class="page-title">SPRINT BOARD</h2>
+          <div class="page-subtitle">
+            <strong>Epic 2 &mdash; SupportSignal Core Features</strong> &middot; 5 stories &middot; 3 complete, 1 active, 1 planned
+          </div>
+        </div>
+        <div class="header-controls">
+          <div class="toggle-wrap" id="epic0Toggle" onclick="toggleEpic0()">
+            <div class="toggle-track on" id="epic0Track">
+              <div class="toggle-knob"></div>
+            </div>
+            <span>Epic 0 Stories</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Board -->
+    <div class="board-container">
+      <div class="board">
+
+        <!-- PLAN column -->
+        <div class="column">
+          <div class="column-header">
+            <span class="column-title">PLAN</span>
+            <span class="column-count">1</span>
+          </div>
+          <div class="column-body">
+
+            <!-- Story 2.5 — planned -->
+            <div class="story-card card-planned">
+              <div class="card-top">
+                <span class="story-id id-planned">2.5</span>
+                <span class="health-badge health-next">Next Up</span>
+              </div>
+              <div class="card-title">User Notification System</div>
+              <div class="agent-row">
+                <div class="agent-avatar ag-none">?</div>
+                <div class="agent-info">
+                  <span style="color: var(--muted-dim); font-style: italic;">No agent assigned</span>
+                </div>
+              </div>
+              <div class="progress-row">
+                <div class="progress-bar">
+                  <div class="progress-step empty"></div>
+                  <div class="progress-step empty"></div>
+                  <div class="progress-step empty"></div>
+                  <div class="progress-step empty"></div>
+                  <div class="progress-step empty"></div>
+                  <div class="progress-step empty"></div>
+                  <div class="progress-step empty"></div>
+                  <div class="progress-step empty"></div>
+                </div>
+                <span class="progress-label">0/8</span>
+              </div>
+              <div class="card-footer">
+                <span class="duration">&mdash;</span>
+                <div class="avatar-dots"></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- BUILD column (empty) -->
+        <div class="column">
+          <div class="column-header">
+            <span class="column-title">BUILD</span>
+            <span class="column-count">0</span>
+          </div>
+          <div class="column-body">
+            <div class="column-empty">No stories in build</div>
+          </div>
+        </div>
+
+        <!-- REVIEW column -->
+        <div class="column col-review">
+          <div class="column-header">
+            <span class="column-title">REVIEW</span>
+            <span class="column-count">1</span>
+          </div>
+          <div class="column-body">
+
+            <!-- Story 2.4 — active -->
+            <div class="story-card card-active">
+              <div class="card-top">
+                <span class="story-id id-active">2.4</span>
+                <span class="health-badge health-healthy">Healthy</span>
+              </div>
+              <div class="card-title">Chain Visualization Pipeline</div>
+              <div class="agent-row">
+                <div class="agent-avatar ag-nate">N</div>
+                <div class="agent-info">
+                  <span class="agent-name">Nate</span>
+                  <span class="action-code">DR</span>
+                  <br><span style="font-size:10px; color: var(--muted-dim);">Design Review</span>
+                </div>
+              </div>
+              <div class="progress-row">
+                <div class="progress-bar">
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step active"></div>
+                  <div class="progress-step empty"></div>
+                  <div class="progress-step empty"></div>
+                  <div class="progress-step empty"></div>
+                </div>
+                <span class="progress-label">4/8</span>
+              </div>
+              <div class="card-footer">
+                <span class="duration">2h 15m total</span>
+                <div class="avatar-dots">
+                  <div class="avatar-dot ag-bob">B</div>
+                  <div class="avatar-dot ag-amelia">A</div>
+                  <div class="avatar-dot ag-nate">N</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- TEST column (empty) -->
+        <div class="column">
+          <div class="column-header">
+            <span class="column-title">TEST</span>
+            <span class="column-count">0</span>
+          </div>
+          <div class="column-body">
+            <div class="column-empty">No stories in test</div>
+          </div>
+        </div>
+
+        <!-- COMPLETE column -->
+        <div class="column col-complete">
+          <div class="column-header">
+            <span class="column-title">COMPLETE</span>
+            <span class="column-count" id="completeCount">5</span>
+          </div>
+          <div class="column-body" id="completeBody">
+
+            <!-- Story 2.1 — complete -->
+            <div class="story-card card-complete">
+              <div class="card-top">
+                <span class="story-id">2.1</span>
+                <span class="health-badge health-healthy">Healthy</span>
+              </div>
+              <div class="card-title">Session Registry &amp; Backfill</div>
+              <div class="agent-row">
+                <div class="agent-avatar ag-bob" style="width:18px;height:18px;font-size:9px;">B</div>
+                <div class="agent-info">
+                  <span class="agent-name">Bob</span>
+                  <span style="font-size:10px; color:var(--muted-dim);">+ 4 agents</span>
+                </div>
+              </div>
+              <div class="progress-row">
+                <div class="progress-bar">
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                </div>
+                <span class="progress-label">8/8</span>
+              </div>
+              <div class="card-footer">
+                <span class="duration">4h 32m total</span>
+                <div class="avatar-dots">
+                  <div class="avatar-dot ag-bob">B</div>
+                  <div class="avatar-dot ag-amelia">A</div>
+                  <div class="avatar-dot ag-nate">N</div>
+                  <div class="avatar-dot ag-taylor">T</div>
+                  <div class="avatar-dot ag-lisa">L</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Story 2.2 — complete, cleanest run -->
+            <div class="story-card card-complete">
+              <div class="card-top">
+                <span class="story-id">2.2</span>
+                <span class="health-badge health-cleanest">Cleanest Run</span>
+              </div>
+              <div class="card-title">Enrichment Classifier Engine</div>
+              <div class="agent-row">
+                <div class="agent-avatar ag-bob" style="width:18px;height:18px;font-size:9px;">B</div>
+                <div class="agent-info">
+                  <span class="agent-name">Bob</span>
+                  <span style="font-size:10px; color:var(--muted-dim);">+ 3 agents</span>
+                </div>
+              </div>
+              <div class="progress-row">
+                <div class="progress-bar">
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                </div>
+                <span class="progress-label">7/7</span>
+              </div>
+              <div class="card-footer">
+                <span class="duration">3h 10m total</span>
+                <div class="avatar-dots">
+                  <div class="avatar-dot ag-bob">B</div>
+                  <div class="avatar-dot ag-amelia">A</div>
+                  <div class="avatar-dot ag-nate">N</div>
+                  <div class="avatar-dot ag-taylor">T</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Story 2.3 — complete, 1 backtrack -->
+            <div class="story-card card-complete">
+              <div class="card-top">
+                <span class="story-id">2.3</span>
+                <span class="health-badge health-backtrack">1 Backtrack</span>
+              </div>
+              <div class="card-title">Affinity Group Correlator</div>
+              <div class="agent-row">
+                <div class="agent-avatar ag-amelia" style="width:18px;height:18px;font-size:9px;">A</div>
+                <div class="agent-info">
+                  <span class="agent-name">Amelia</span>
+                  <span style="font-size:10px; color:var(--muted-dim);">+ 4 agents</span>
+                </div>
+              </div>
+              <div class="progress-row">
+                <div class="progress-bar">
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                </div>
+                <span class="progress-label">9/9</span>
+              </div>
+              <div class="card-footer">
+                <span class="duration">5h 04m total</span>
+                <div class="avatar-dots">
+                  <div class="avatar-dot ag-bob">B</div>
+                  <div class="avatar-dot ag-amelia">A</div>
+                  <div class="avatar-dot ag-nate">N</div>
+                  <div class="avatar-dot ag-taylor">T</div>
+                  <div class="avatar-dot ag-lisa">L</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Story 0.1 — complete, Epic 0 -->
+            <div class="story-card card-complete epic0" id="epic01">
+              <div class="card-top">
+                <span class="story-id">0.1</span>
+                <span class="health-badge health-patches">3 Patches</span>
+              </div>
+              <div class="epic-tag">Epic 0</div>
+              <div class="card-title">Project Scaffold &amp; Hook Wiring</div>
+              <div class="agent-row">
+                <div class="agent-avatar ag-bob" style="width:18px;height:18px;font-size:9px;">B</div>
+                <div class="agent-info">
+                  <span class="agent-name">Bob</span>
+                  <span style="font-size:10px; color:var(--muted-dim);">+ 3 agents</span>
+                </div>
+              </div>
+              <div class="progress-row">
+                <div class="progress-bar">
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                </div>
+                <span class="progress-label">9/9</span>
+              </div>
+              <div class="card-footer">
+                <span class="duration">6h 18m total</span>
+                <div class="avatar-dots">
+                  <div class="avatar-dot ag-bob">B</div>
+                  <div class="avatar-dot ag-amelia">A</div>
+                  <div class="avatar-dot ag-winston">W</div>
+                  <div class="avatar-dot ag-nate">N</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Story 0.2 — complete, Epic 0 -->
+            <div class="story-card card-complete epic0" id="epic02">
+              <div class="card-top">
+                <span class="story-id">0.2</span>
+                <span class="health-badge health-healthy">Healthy</span>
+              </div>
+              <div class="epic-tag">Epic 0</div>
+              <div class="card-title">BMAD Overlay &amp; Agent Mapping</div>
+              <div class="agent-row">
+                <div class="agent-avatar ag-bob" style="width:18px;height:18px;font-size:9px;">B</div>
+                <div class="agent-info">
+                  <span class="agent-name">Bob</span>
+                  <span style="font-size:10px; color:var(--muted-dim);">+ 2 agents</span>
+                </div>
+              </div>
+              <div class="progress-row">
+                <div class="progress-bar">
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                  <div class="progress-step done"></div>
+                </div>
+                <span class="progress-label">5/5</span>
+              </div>
+              <div class="card-footer">
+                <span class="duration">1h 48m total</span>
+                <div class="avatar-dots">
+                  <div class="avatar-dot ag-bob">B</div>
+                  <div class="avatar-dot ag-amelia">A</div>
+                  <div class="avatar-dot ag-nate">N</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  let epic0Visible = true;
+
+  function toggleEpic0() {
+    epic0Visible = !epic0Visible;
+    const track = document.getElementById('epic0Track');
+    const cards = document.querySelectorAll('.story-card.epic0');
+    const countEl = document.getElementById('completeCount');
+
+    if (epic0Visible) {
+      track.classList.add('on');
+      cards.forEach(c => c.classList.remove('hidden'));
+      countEl.textContent = '5';
+    } else {
+      track.classList.remove('on');
+      cards.forEach(c => c.classList.add('hidden'));
+      countEl.textContent = '3';
+    }
+  }
+</script>
+
+</body>
+</html>

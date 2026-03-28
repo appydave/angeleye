@@ -227,46 +227,8 @@ open .mochaccino/designs/[name]/index.html
 
 ---
 
-## API-Driven Mockups & Sample Data Fallback
-
-**Read `.mochaccino/mock-data-fallback.md` before creating any mockup that
-fetches data from an API.**
-
-Mockups in this project fetch data from `/api/mock-views/*` endpoints rather
-than embedding hardcoded data in the HTML. This architecture supports two modes:
-
-- **Live mode** — real data from AngelEye sessions
-- **Sample mode** — curated JSON from `.mochaccino/samples/`
-
-### When creating a new mockup that needs data:
-
-1. Write the HTML to fetch from `/api/mock-views/{view-name}`
-2. Create a sample JSON file at `.mochaccino/samples/{view-name}.json`
-   (or `{view-name}/_default.json` for parameterized endpoints)
-3. The JSON must match the exact payload shape the HTML expects
-4. No server code changes needed — the generic catch-all route serves it
-5. Use `_sampleMeta` key in the JSON for documentation (stripped before serving)
-6. Use this API base URL pattern in HTML:
-   ```javascript
-   const API = window.location.port === '5051' ? '' : `http://${window.location.hostname}:5051`;
-   ```
-
-### Forcing sample data
-
-Append `?sample=true` to any endpoint to bypass real data — useful for design
-exploration, demos, and machines without real data.
-
-### Response envelope
-
-All responses include `"source": "live"` or `"source": "sample"` — mockups
-can use this to show a data-source indicator if helpful.
-
----
-
 ## References
 
-- `.mochaccino/mock-data-fallback.md` — Full architecture documentation for the
-  API-driven mockup pattern and sample data fallback mechanism
 - `.mochaccino/references/design-context.md` — If this file exists, read it
   before running design token discovery. It is the pre-filled design reference
   for this project, filled in by the developer or generated on a previous

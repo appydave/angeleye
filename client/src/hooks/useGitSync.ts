@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import type { GitSyncStatus, GitPullResult } from '@appystack/shared';
 
 const DEFAULT_POLL_MS = 120_000;
@@ -7,9 +7,11 @@ export function useGitSync() {
   const [status, setStatus] = useState<GitSyncStatus | null>(null);
   const [pulling, setPulling] = useState(false);
   const [pullResult, setPullResult] = useState<GitPullResult | null>(null);
+  const mountedRef = useRef(true);
+  const healthPollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
-    let mounted = true;
+    mountedRef.current = true;
     let intervalId: ReturnType<typeof setInterval> | undefined;
 
     async function getPollInterval(): Promise<number> {
@@ -29,7 +31,7 @@ export function useGitSync() {
       try {
         const res = await fetch('/api/git-sync/status');
         const json = await res.json();
-        if (mounted && json.status === 'ok') setStatus(json.data);
+        if (mountedRef.current && json.status === 'ok') setStatus(json.data);
       } catch {
         /* server down — ignore */
       }
@@ -37,17 +39,21 @@ export function useGitSync() {
 
     async function start() {
       const pollMs = await getPollInterval();
-      if (!mounted) return;
+      if (!mountedRef.current) return;
       await check();
-      if (!mounted) return;
+      if (!mountedRef.current) return;
       intervalId = setInterval(check, pollMs);
     }
 
     start();
 
     return () => {
-      mounted = false;
+      mountedRef.current = false;
       if (intervalId) clearInterval(intervalId);
+      if (healthPollRef.current) {
+        clearInterval(healthPollRef.current);
+        healthPollRef.current = null;
+      }
     };
   }, []);
 
@@ -57,16 +63,18 @@ export function useGitSync() {
     try {
       const res = await fetch('/api/git-sync/pull', { method: 'POST' });
       const json = await res.json();
+      if (!mountedRef.current) return null;
       const result = json.data as GitPullResult;
       setPullResult(result);
 
       if (result.restartTriggered) {
         // Poll /health until server returns, then reload page
-        const pollHealth = setInterval(async () => {
+        healthPollRef.current = setInterval(async () => {
           try {
             const h = await fetch('/health');
             if (h.ok) {
-              clearInterval(pollHealth);
+              if (healthPollRef.current) clearInterval(healthPollRef.current);
+              healthPollRef.current = null;
               window.location.reload();
             }
           } catch {
@@ -78,7 +86,7 @@ export function useGitSync() {
         try {
           const sr = await fetch('/api/git-sync/status');
           const sj = await sr.json();
-          if (sj.status === 'ok') setStatus(sj.data);
+          if (mountedRef.current && sj.status === 'ok') setStatus(sj.data);
         } catch {
           /* ignore */
         }
@@ -87,7 +95,7 @@ export function useGitSync() {
     } catch {
       return null;
     } finally {
-      setPulling(false);
+      if (mountedRef.current) setPulling(false);
     }
   }, []);
 

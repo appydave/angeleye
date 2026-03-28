@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngelEye — Wave Visualization Design System</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #e8e0d4;
+    --surface: #ede7dc;
+    --card: #f5f1eb;
+    --card-alt: #f9f6f1;
+    --border: #d4cdc4;
+    --border-raised: #ccc5bb;
+    --primary: #c8841a;
+    --fg: #2a2018;
+    --muted: #7a6e5e;
+    --muted-dim: #9e9484;
+    --green: #5a9a3c;
+    --green-bg: #eef5ea;
+    --green-light: #d4e8cc;
+    --amber: #d4860a;
+    --amber-bg: #fdf3e0;
+    --amber-light: #f0ddb8;
+    --red: #c0392b;
+    --red-bg: #fdeaea;
+    --red-light: #f0c4c4;
+    --blue: #4a7fb5;
+    --orange: #c07030;
+    --purple: #8a6ab5;
+    --pink: #b56a8a;
+    --gray-agent: #8a8a8a;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 0;
+  }
+
+  .page {
+    max-width: 1360px;
+    margin: 0 auto;
+    padding: 40px 48px 80px;
+  }
+
+  h2.section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 3px;
+    color: var(--fg);
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--primary);
+    display: inline-block;
+  }
+
+  .section {
+    margin-bottom: 56px;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+
+  .muted { color: var(--muted); }
+  .muted-dim { color: var(--muted-dim); }
+  .small { font-size: 12px; }
+  .mono { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; }
+
+  /* ===================== 1. TITLE BANNER ===================== */
+
+  .title-banner {
+    background: var(--fg);
+    border-radius: 16px;
+    padding: 48px 56px;
+    margin-bottom: 56px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .title-banner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(circle at 15% 50%, rgba(200,132,26,0.15) 0%, transparent 50%),
+      radial-gradient(circle at 85% 30%, rgba(74,127,181,0.1) 0%, transparent 40%);
+    pointer-events: none;
+  }
+
+  .title-banner h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    letter-spacing: 8px;
+    color: #f5f1eb;
+    line-height: 1.1;
+    position: relative;
+  }
+
+  .title-banner h1 span.accent {
+    color: var(--primary);
+  }
+
+  .title-banner .subtitle {
+    font-size: 16px;
+    color: var(--muted-dim);
+    margin-top: 12px;
+    letter-spacing: 0.5px;
+    position: relative;
+  }
+
+  .title-banner .brand-mark {
+    position: absolute;
+    top: 40px; right: 56px;
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .brand-mark .eye-icon {
+    width: 48px; height: 48px;
+    border: 3px solid var(--primary);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .brand-mark .eye-icon::after {
+    content: '';
+    width: 18px; height: 18px;
+    background: var(--primary);
+    border-radius: 50%;
+  }
+
+  .brand-mark .brand-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: var(--primary);
+  }
+
+  /* ===================== 2. THE WAVE CONCEPT ===================== */
+
+  .wave-container {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 40px 40px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    overflow-x: auto;
+  }
+
+  .wave-track {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    position: relative;
+    min-width: 960px;
+    padding: 20px 0 36px;
+  }
+
+  .wave-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    flex: 1;
+    min-width: 110px;
+  }
+
+  .wave-connector {
+    position: absolute;
+    top: 24px;
+    left: calc(50% + 24px);
+    width: calc(100% - 48px);
+    height: 2px;
+    background: var(--border-raised);
+    z-index: 0;
+  }
+
+  .wave-step.done .wave-connector { background: var(--green-light); }
+  .wave-step.active .wave-connector { background: var(--amber-light); }
+
+  .step-avatar {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 700; color: white;
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s;
+  }
+
+  .wave-step.done .step-avatar {
+    box-shadow: 0 0 0 3px var(--green-light);
+  }
+
+  .wave-step.active .step-avatar {
+    width: 56px; height: 56px;
+    font-size: 20px;
+    box-shadow: 0 0 0 4px rgba(200,132,26,0.25), 0 0 16px rgba(200,132,26,0.2);
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 0 4px rgba(200,132,26,0.25), 0 0 16px rgba(200,132,26,0.2); }
+    50% { box-shadow: 0 0 0 6px rgba(200,132,26,0.35), 0 0 24px rgba(200,132,26,0.3); }
+  }
+
+  .wave-step.pending .step-avatar {
+    opacity: 0.35;
+  }
+
+  .av-blue { background: var(--blue); }
+  .av-orange { background: var(--orange); }
+  .av-green { background: var(--green); }
+  .av-purple { background: var(--purple); }
+  .av-pink { background: var(--pink); }
+  .av-gray { background: var(--gray-agent); }
+
+  .step-label {
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  .step-agent-name {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .step-action {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 2px;
+    color: var(--fg);
+    line-height: 1.1;
+  }
+
+  .wave-step.active .step-action { color: var(--primary); font-size: 26px; }
+  .wave-step.pending .step-action { color: var(--muted-dim); }
+
+  .step-status {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+    padding: 2px 8px;
+    border-radius: 8px;
+  }
+
+  .status-done { background: var(--green-bg); color: var(--green); }
+  .status-active { background: var(--amber-bg); color: var(--amber); }
+  .status-pending { background: transparent; color: var(--muted-dim); }
+
+  /* Backtrack arrow */
+  .backtrack-svg {
+    position: absolute;
+    top: -10px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: visible;
+  }
+
+  .wave-legend-row {
+    display: flex;
+    gap: 24px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+
+  .wave-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .wave-legend-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+  }
+
+  /* ===================== 3. THREE-PANEL LAYOUT ===================== */
+
+  .layout-wireframe {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    gap: 0;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    min-height: 420px;
+    background: var(--card);
+  }
+
+  .lw-wave-bar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .lw-wave-bar .lw-dot {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    opacity: 0.7;
+  }
+
+  .lw-wave-bar .lw-dot.active-dot {
+    opacity: 1;
+    box-shadow: 0 0 0 3px rgba(200,132,26,0.3);
+  }
+
+  .lw-wave-bar .lw-connector {
+    width: 24px; height: 2px;
+    background: var(--border-raised);
+  }
+
+  .lw-middle {
+    display: grid;
+    grid-template-columns: 260px 1fr 280px;
+    min-height: 320px;
+  }
+
+  .lw-panel {
+    padding: 20px;
+    position: relative;
+  }
+
+  .lw-panel-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .lw-left {
+    background: #f0ebe3;
+    border-right: 1px solid var(--border);
+  }
+
+  .lw-center {
+    background: var(--card);
+  }
+
+  .lw-right {
+    background: #eee9e0;
+    border-left: 1px solid var(--border);
+  }
+
+  .lw-status-bar {
+    background: var(--fg);
+    color: var(--muted-dim);
+    padding: 8px 24px;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* Panel content placeholders */
+  .lw-profile-block {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--blue);
+    margin: 0 auto 12px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 22px; font-weight: 700;
+  }
+
+  .lw-profile-text {
+    text-align: center;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .lw-meta-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .lw-chat-bubble {
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: var(--fg);
+    max-width: 85%;
+  }
+
+  .lw-chat-bubble.agent-bubble {
+    background: #e4edf6;
+    margin-left: auto;
+    border-bottom-right-radius: 2px;
+  }
+
+  .lw-chat-bubble.user-bubble {
+    border-bottom-left-radius: 2px;
+  }
+
+  .lw-audit-entry {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+  }
+
+  .lw-audit-time { color: var(--muted-dim); font-family: 'SF Mono', monospace; font-size: 10px; }
+  .lw-audit-event { color: var(--fg); margin-top: 2px; }
+
+  /* ===================== 4. FOUR ANALYSIS PATTERNS ===================== */
+
+  .patterns-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .pattern-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+
+  .pattern-card .pattern-icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+
+  .pattern-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--fg);
+    margin-bottom: 4px;
+  }
+
+  .pattern-card .pattern-question {
+    font-size: 13px;
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 12px;
+    font-style: italic;
+  }
+
+  .pattern-card .pattern-example {
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 12px;
+  }
+
+  .badge-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .badge {
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .badge-true { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-light); }
+  .badge-false { background: #f0ebe3; color: var(--muted-dim); border: 1px solid var(--border); }
+
+  .obs-line {
+    padding: 4px 0;
+    font-size: 11px;
+    color: var(--fg);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .obs-time { color: var(--muted-dim); font-family: monospace; font-size: 10px; }
+
+  .kv-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: 11px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .kv-key { color: var(--muted); }
+  .kv-val { font-weight: 600; color: var(--fg); }
+
+  .extract-field {
+    margin-bottom: 6px;
+  }
+
+  .extract-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted-dim);
+  }
+
+  .extract-value {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--fg);
+    padding: 4px 8px;
+    background: var(--card);
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    margin-top: 2px;
+  }
+
+  /* ===================== 5. AGENT ROSTER ===================== */
+
+  .roster-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 14px;
+  }
+
+  .agent-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 16px;
+    text-align: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .agent-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+  }
+
+  .agent-card.a-bob::before { background: var(--blue); }
+  .agent-card.a-amelia::before { background: var(--orange); }
+  .agent-card.a-nate::before { background: var(--green); }
+  .agent-card.a-taylor::before { background: var(--purple); }
+  .agent-card.a-lisa::before { background: var(--pink); }
+  .agent-card.a-ship::before { background: var(--gray-agent); }
+
+  .agent-card .agent-av {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 700; color: white;
+    margin: 0 auto 10px;
+  }
+
+  .agent-card .agent-name-lg {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    color: var(--fg);
+    margin-bottom: 2px;
+  }
+
+  .agent-card .agent-role {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .agent-card .action-codes {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .action-badge {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--surface);
+    color: var(--fg);
+    border: 1px solid var(--border);
+  }
+
+  /* ===================== 6. WAVE STATES LEGEND ===================== */
+
+  .states-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .state-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .state-visual {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: var(--surface);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 18px; font-weight: 700; color: var(--muted);
+  }
+
+  .state-done .state-visual {
+    border: 3px solid var(--green);
+    color: var(--green);
+  }
+
+  .state-active .state-visual {
+    border: 3px solid var(--primary);
+    color: var(--primary);
+    box-shadow: 0 0 12px rgba(200,132,26,0.25);
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  .state-pending .state-visual {
+    opacity: 0.35;
+    border: 2px dashed var(--border-raised);
+  }
+
+  .state-conditional .state-visual {
+    border: 3px dashed var(--amber);
+    color: var(--amber);
+  }
+
+  .state-failed .state-visual {
+    border: 3px solid var(--red);
+    color: var(--red);
+    background: var(--red-bg);
+  }
+
+  .state-skipped .state-visual {
+    border: 2px dotted var(--muted-dim);
+    color: var(--muted-dim);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  .state-info h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 17px;
+    letter-spacing: 1.5px;
+    color: var(--fg);
+  }
+
+  .state-info p {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ===================== 7. PROGRESSIVE DISCLOSURE ===================== */
+
+  .disclosure-stack {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    position: relative;
+  }
+
+  .disclosure-card {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 24px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+
+  .disclosure-card .level-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    color: var(--border-raised);
+    line-height: 1;
+  }
+
+  .disclosure-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    color: var(--fg);
+    margin: 8px 0 4px;
+  }
+
+  .disclosure-card p {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .disclosure-card.level-active {
+    border-color: var(--primary);
+    box-shadow: 0 2px 12px rgba(200,132,26,0.15);
+  }
+
+  .disclosure-card.level-active .level-num {
+    color: var(--primary);
+  }
+
+  .disclosure-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    flex-shrink: 0;
+  }
+
+  .disclosure-arrow svg {
+    width: 36px; height: 36px;
+    fill: none;
+    stroke: var(--primary);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* ===================== 8. STORY 5.1 WALKTHROUGH ===================== */
+
+  .walkthrough-timeline {
+    position: relative;
+    padding-left: 40px;
+  }
+
+  .walkthrough-timeline::before {
+    content: '';
+    position: absolute;
+    left: 18px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: var(--border-raised);
+  }
+
+  .wt-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+
+  .wt-dot {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    position: absolute;
+    left: -30px;
+    top: 4px;
+    z-index: 2;
+  }
+
+  .wt-step-content {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .wt-step-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--muted-dim);
+    width: 28px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .wt-agent-mini {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: white;
+    flex-shrink: 0;
+  }
+
+  .wt-code {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 1.5px;
+    color: var(--fg);
+    width: 36px;
+    flex-shrink: 0;
+  }
+
+  .wt-desc {
+    font-size: 13px;
+    color: var(--muted);
+    flex: 1;
+  }
+
+  .wt-step.backtrack .wt-step-content {
+    border-color: var(--amber-light);
+    background: var(--amber-bg);
+  }
+
+  /* Print friendly */
+  @media print {
+    body { background: white; }
+    .page { padding: 20px; }
+    .title-banner { background: #333; }
+  }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .patterns-grid { grid-template-columns: repeat(2, 1fr); }
+    .roster-grid { grid-template-columns: repeat(3, 1fr); }
+    .states-grid { grid-template-columns: repeat(2, 1fr); }
+    .lw-middle { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ==================== 1. TITLE BANNER ==================== -->
+  <div class="title-banner">
+    <div class="brand-mark">
+      <div class="eye-icon"></div>
+      <div class="brand-text">ANGELEYE</div>
+    </div>
+    <h1>WAVE <span class="accent">VISUALIZATION</span> DESIGN</h1>
+    <p class="subtitle">A design system for visualizing multi-agent workflow execution in Claude Code sessions</p>
+  </div>
+
+  <!-- ==================== 2. THE WAVE CONCEPT ==================== -->
+  <div class="section">
+    <h2 class="section-title">THE WAVE CONCEPT</h2>
+    <p class="muted" style="margin-bottom: 16px;">A horizontal pipeline of agent steps. Each node represents one Claude Code session in a story chain. States show progress; backtrack arrows show review loops.</p>
+
+    <div class="wave-container">
+      <div class="wave-track" id="waveTrack">
+        <!-- SVG backtrack arrow overlay -->
+        <svg class="backtrack-svg" viewBox="0 0 960 180" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#d4860a" />
+            </marker>
+          </defs>
+          <!-- Curved backtrack from step 4 (DR) back to step 3 (DS) -->
+          <path d="M 460,120 C 460,160 340,160 340,120" fill="none" stroke="#d4860a" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrowhead)" />
+          <text x="400" y="170" fill="#d4860a" font-size="10" font-family="system-ui" text-anchor="middle">CONDITIONAL PASS</text>
+        </svg>
+
+        <!-- Step 1: Bob CS -->
+        <div class="wave-step done">
+          <div class="step-avatar av-blue">B</div>
+          <div class="step-label">
+            <div class="step-agent-name">Bob</div>
+            <div class="step-action">CS</div>
+            <div class="step-status status-done">Done</div>
+          </div>
+          <div class="wave-connector"></div>
+        </div>
+
+        <!-- Step 2: Bob VS -->
+        <div class="wave-step done">
+          <div class="step-avatar av-blue">B</div>
+          <div class="step-label">
+            <div class="step-agent-name">Bob</div>
+            <div class="step-action">VS</div>
+            <div class="step-status status-done">Done</div>
+          </div>
+          <div class="wave-connector"></div>
+        </div>
+
+        <!-- Step 3: Amelia DS -->
+        <div class="wave-step done">
+          <div class="step-avatar av-orange">A</div>
+          <div class="step-label">
+            <div class="step-agent-name">Amelia</div>
+            <div class="step-action">DS</div>
+            <div class="step-status status-done">Done</div>
+          </div>
+          <div class="wave-connector"></div>
+        </div>
+
+        <!-- Step 4: Nate DR -->
+        <div class="wave-step done">
+          <div class="step-avatar av-green">N</div>
+          <div class="step-label">
+            <div class="step-agent-name">Nate</div>
+            <div class="step-action">DR</div>
+            <div class="step-status status-done">Done</div>
+          </div>
+          <div class="wave-connector"></div>
+        </div>
+
+        <!-- Step 5: Taylor CS (ACTIVE) -->
+        <div class="wave-step active">
+          <div class="step-avatar av-purple">T</div>
+          <div class="step-label">
+            <div class="step-agent-name">Taylor</div>
+            <div class="step-action">CS</div>
+            <div class="step-status status-active">Active</div>
+          </div>
+          <div class="wave-connector"></div>
+        </div>
+
+        <!-- Step 6: Taylor RA -->
+        <div class="wave-step pending">
+          <div class="step-avatar av-purple">T</div>
+          <div class="step-label">
+            <div class="step-agent-name">Taylor</div>
+            <div class="step-action">RA</div>
+            <div class="step-status status-pending">Pending</div>
+          </div>
+          <div class="wave-connector"></div>
+        </div>
+
+        <!-- Step 7: Lisa CU -->
+        <div class="wave-step pending">
+          <div class="step-avatar av-pink">L</div>
+          <div class="step-label">
+            <div class="step-agent-name">Lisa</div>
+            <div class="step-action">CU</div>
+            <div class="step-status status-pending">Pending</div>
+          </div>
+          <div class="wave-connector"></div>
+        </div>
+
+        <!-- Step 8: Ship -->
+        <div class="wave-step pending" style="flex: 0.8;">
+          <div class="step-avatar av-gray">S</div>
+          <div class="step-label">
+            <div class="step-agent-name">Ship</div>
+            <div class="step-action">SH</div>
+            <div class="step-status status-pending">Pending</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wave-legend-row">
+        <div class="wave-legend-item">
+          <div class="wave-legend-dot" style="background: var(--green); box-shadow: 0 0 0 2px var(--green-light);"></div>
+          Done (green ring)
+        </div>
+        <div class="wave-legend-item">
+          <div class="wave-legend-dot" style="background: var(--primary); box-shadow: 0 0 8px rgba(200,132,26,0.4);"></div>
+          Active (amber glow)
+        </div>
+        <div class="wave-legend-item">
+          <div class="wave-legend-dot" style="background: var(--muted-dim); opacity: 0.35;"></div>
+          Pending (ghosted)
+        </div>
+        <div class="wave-legend-item">
+          <svg width="40" height="12" style="margin-right: -4px;">
+            <path d="M 4,8 C 10,2 30,2 36,8" fill="none" stroke="#d4860a" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arrowhead)"/>
+          </svg>
+          Backtrack (dashed amber arc)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 3. THREE-PANEL LAYOUT ==================== -->
+  <div class="section">
+    <h2 class="section-title">THREE-PANEL LAYOUT</h2>
+    <p class="muted" style="margin-bottom: 16px;">The Wave View presents session detail through a three-column layout anchored by the wave bar at top.</p>
+
+    <div class="layout-wireframe">
+      <!-- Wave Bar -->
+      <div class="lw-wave-bar">
+        <div class="lw-dot av-blue" style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;font-weight:700;">B</div>
+        <div class="lw-connector"></div>
+        <div class="lw-dot av-blue" style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;font-weight:700;">B</div>
+        <div class="lw-connector"></div>
+        <div class="lw-dot av-orange" style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;font-weight:700;">A</div>
+        <div class="lw-connector"></div>
+        <div class="lw-dot av-green" style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;font-weight:700;">N</div>
+        <div class="lw-connector"></div>
+        <div class="lw-dot av-purple active-dot" style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;font-weight:700;">T</div>
+        <div class="lw-connector" style="opacity:0.3;"></div>
+        <div class="lw-dot av-purple" style="width:28px;height:28px;border-radius:50%;opacity:0.35;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;font-weight:700;">T</div>
+        <div class="lw-connector" style="opacity:0.3;"></div>
+        <div class="lw-dot av-pink" style="width:28px;height:28px;border-radius:50%;opacity:0.35;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;font-weight:700;">L</div>
+        <div class="lw-connector" style="opacity:0.3;"></div>
+        <div class="lw-dot av-gray" style="width:28px;height:28px;border-radius:50%;opacity:0.35;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;font-weight:700;">S</div>
+        <span style="margin-left: auto; font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 2px; color: var(--muted);">WAVE BAR</span>
+      </div>
+
+      <!-- Three panels -->
+      <div class="lw-middle">
+        <div class="lw-panel lw-left">
+          <div class="lw-panel-label">AGENT PROFILE</div>
+          <div class="lw-profile-block">T</div>
+          <div class="lw-profile-text"><strong style="color: var(--fg);">Taylor</strong><br>Tester / QA</div>
+          <div class="lw-meta-line"><span>Action</span><span style="color:var(--fg);font-weight:600;">CS</span></div>
+          <div class="lw-meta-line"><span>Duration</span><span style="color:var(--fg);">12m 34s</span></div>
+          <div class="lw-meta-line"><span>Status</span><span style="color:var(--primary);font-weight:600;">Active</span></div>
+          <div class="lw-meta-line"><span>Tool calls</span><span style="color:var(--fg);">47</span></div>
+          <div class="lw-meta-line"><span>Verdict</span><span style="color:var(--muted-dim);">Pending</span></div>
+        </div>
+
+        <div class="lw-panel lw-center">
+          <div class="lw-panel-label">CONVERSATION TRANSCRIPT</div>
+          <div class="lw-chat-bubble user-bubble">Run the code specification tests for Story 5.1 acceptance criteria.</div>
+          <div class="lw-chat-bubble agent-bubble">I'll run the test suite targeting the Story 5.1 acceptance criteria. Let me start by examining the test files...</div>
+          <div class="lw-chat-bubble agent-bubble" style="background: #e8e4db; font-family: monospace; font-size: 11px; max-width: 90%;">$ npm test -- --grep "Story 5.1"<br><span style="color:var(--green);">PASS</span> src/test/story-5.1.spec.ts<br>&nbsp;&nbsp;12 passing (3.4s)</div>
+          <div class="lw-chat-bubble agent-bubble">All 12 acceptance tests for Story 5.1 are passing. The implementation covers...</div>
+        </div>
+
+        <div class="lw-panel lw-right">
+          <div class="lw-panel-label">AUDIT LOG</div>
+          <div class="lw-audit-entry">
+            <div class="lw-audit-time">14:23:01</div>
+            <div class="lw-audit-event">Session started (Taylor / CS)</div>
+          </div>
+          <div class="lw-audit-entry">
+            <div class="lw-audit-time">14:23:04</div>
+            <div class="lw-audit-event">Read: test/story-5.1.spec.ts</div>
+          </div>
+          <div class="lw-audit-entry">
+            <div class="lw-audit-time">14:23:18</div>
+            <div class="lw-audit-event">Bash: npm test --grep "5.1"</div>
+          </div>
+          <div class="lw-audit-entry">
+            <div class="lw-audit-time">14:23:52</div>
+            <div class="lw-audit-event">Read: src/services/feature.ts</div>
+          </div>
+          <div class="lw-audit-entry">
+            <div class="lw-audit-time">14:24:15</div>
+            <div class="lw-audit-event">Bash: npm test (full suite)</div>
+          </div>
+          <div class="lw-audit-entry">
+            <div class="lw-audit-time">14:25:30</div>
+            <div class="lw-audit-event" style="color: var(--green); font-weight: 600;">Verdict: PASS detected</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Status bar -->
+      <div class="lw-status-bar">
+        <span>Story 5.1 &mdash; Step 5 of 8</span>
+        <span>Taylor / Code Specification &mdash; 12m 34s elapsed</span>
+        <span>Context: 42% used</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 4. FOUR ANALYSIS PATTERNS ==================== -->
+  <div class="section">
+    <h2 class="section-title">FOUR ANALYSIS PATTERNS</h2>
+    <p class="muted" style="margin-bottom: 16px;">Every enrichment data point falls into one of four extraction patterns. Each has a distinct visual rendering.</p>
+
+    <div class="patterns-grid">
+      <!-- Predicate -->
+      <div class="pattern-card">
+        <div class="pattern-icon">P</div>
+        <h3>PREDICATE</h3>
+        <div class="pattern-question">"Did X happen?"</div>
+        <div class="pattern-example">
+          <div class="badge-grid">
+            <span class="badge badge-true">P05 Playwright</span>
+            <span class="badge badge-true">P22 Git Outcome</span>
+            <span class="badge badge-false">P09 Compaction</span>
+            <span class="badge badge-true">P21 Task Orch.</span>
+            <span class="badge badge-false">P02 Frustration</span>
+            <span class="badge badge-false">P12 Machine Init</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Observation -->
+      <div class="pattern-card">
+        <div class="pattern-icon">O</div>
+        <h3>OBSERVATION</h3>
+        <div class="pattern-question">"What is noteworthy?"</div>
+        <div class="pattern-example">
+          <div class="obs-line"><span class="obs-time">O02</span> Clean 5-step chain with zero backtracks</div>
+          <div class="obs-line"><span class="obs-time">O06</span> Agent context budget stayed under 40%</div>
+          <div class="obs-line"><span class="obs-time">O08</span> Closing ceremony with explicit handover</div>
+        </div>
+      </div>
+
+      <!-- Classification -->
+      <div class="pattern-card">
+        <div class="pattern-icon">C</div>
+        <h3>CLASSIFICATION</h3>
+        <div class="pattern-question">"What category?"</div>
+        <div class="pattern-example">
+          <div class="kv-row"><span class="kv-key">C01 Session Type</span><span class="kv-val">BUILD</span></div>
+          <div class="kv-row"><span class="kv-key">C05 Tool Profile</span><span class="kv-val">edit-heavy</span></div>
+          <div class="kv-row"><span class="kv-key">C02 Scale</span><span class="kv-val">standard</span></div>
+          <div class="kv-row"><span class="kv-key">C14 Workflow Role</span><span class="kv-val">builder</span></div>
+        </div>
+      </div>
+
+      <!-- Extraction -->
+      <div class="pattern-card">
+        <div class="pattern-icon">E</div>
+        <h3>EXTRACTION</h3>
+        <div class="pattern-question">"What value?"</div>
+        <div class="pattern-example">
+          <div class="extract-field">
+            <div class="extract-label">E01 Trigger Command</div>
+            <div class="extract-value">/bmad-dev</div>
+          </div>
+          <div class="extract-field">
+            <div class="extract-label">E02 Trigger Arguments</div>
+            <div class="extract-value">DS 5.1</div>
+          </div>
+          <div class="extract-field">
+            <div class="extract-label">E03 Story ID</div>
+            <div class="extract-value">5.1</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 5. AGENT ROSTER ==================== -->
+  <div class="section">
+    <h2 class="section-title">AGENT ROSTER</h2>
+    <p class="muted" style="margin-bottom: 16px;">The six BMAD agents that participate in story chains. Each has a unique color and set of action codes.</p>
+
+    <div class="roster-grid">
+      <div class="agent-card a-bob">
+        <div class="agent-av av-blue">B</div>
+        <div class="agent-name-lg">BOB</div>
+        <div class="agent-role">Planner / PM</div>
+        <div class="action-codes">
+          <span class="action-badge">WN</span>
+          <span class="action-badge">CS</span>
+          <span class="action-badge">VS</span>
+        </div>
+      </div>
+
+      <div class="agent-card a-amelia">
+        <div class="agent-av av-orange">A</div>
+        <div class="agent-name-lg">AMELIA</div>
+        <div class="agent-role">Builder / Developer</div>
+        <div class="action-codes">
+          <span class="action-badge">DS</span>
+          <span class="action-badge">IM</span>
+        </div>
+      </div>
+
+      <div class="agent-card a-nate">
+        <div class="agent-av av-green">N</div>
+        <div class="agent-name-lg">NATE</div>
+        <div class="agent-role">Reviewer / QA</div>
+        <div class="action-codes">
+          <span class="action-badge">DR</span>
+          <span class="action-badge">CR</span>
+        </div>
+      </div>
+
+      <div class="agent-card a-taylor">
+        <div class="agent-av av-purple">T</div>
+        <div class="agent-name-lg">TAYLOR</div>
+        <div class="agent-role">Tester / QA</div>
+        <div class="action-codes">
+          <span class="action-badge">CS</span>
+          <span class="action-badge">RA</span>
+        </div>
+      </div>
+
+      <div class="agent-card a-lisa">
+        <div class="agent-av av-pink">L</div>
+        <div class="agent-name-lg">LISA</div>
+        <div class="agent-role">Advisor / Curator</div>
+        <div class="action-codes">
+          <span class="action-badge">CU</span>
+          <span class="action-badge">AD</span>
+        </div>
+      </div>
+
+      <div class="agent-card a-ship">
+        <div class="agent-av av-gray">S</div>
+        <div class="agent-name-lg">SHIP</div>
+        <div class="agent-role">Shipper / Release</div>
+        <div class="action-codes">
+          <span class="action-badge">SH</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 6. WAVE STATES LEGEND ==================== -->
+  <div class="section">
+    <h2 class="section-title">WAVE STATES LEGEND</h2>
+    <p class="muted" style="margin-bottom: 16px;">Each step in the wave can be in one of six visual states, encoded through border, opacity, and glow.</p>
+
+    <div class="states-grid">
+      <div class="state-card state-done">
+        <div class="state-visual">B</div>
+        <div class="state-info">
+          <h4>DONE</h4>
+          <p>Green border ring. Session completed successfully with a PASS verdict.</p>
+        </div>
+      </div>
+
+      <div class="state-card state-active">
+        <div class="state-visual">T</div>
+        <div class="state-info">
+          <h4>ACTIVE</h4>
+          <p>Amber glow with pulse animation. The currently executing session.</p>
+        </div>
+      </div>
+
+      <div class="state-card state-pending">
+        <div class="state-visual">L</div>
+        <div class="state-info">
+          <h4>PENDING</h4>
+          <p>Ghosted at 35% opacity. Not yet started; waiting for upstream steps.</p>
+        </div>
+      </div>
+
+      <div class="state-card state-conditional">
+        <div class="state-visual">N</div>
+        <div class="state-info">
+          <h4>CONDITIONAL PASS</h4>
+          <p>Amber dashed border. Passed with patches — triggers a backtrack loop.</p>
+        </div>
+      </div>
+
+      <div class="state-card state-failed">
+        <div class="state-visual">A</div>
+        <div class="state-info">
+          <h4>FAILED</h4>
+          <p>Red border on light red background. Session ended with REJECT or FAIL.</p>
+        </div>
+      </div>
+
+      <div class="state-card state-skipped">
+        <div class="state-visual">S</div>
+        <div class="state-info">
+          <h4>SKIPPED</h4>
+          <p>Dotted border, half opacity, strikethrough. Step was bypassed (lighter ceremony).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 7. PROGRESSIVE DISCLOSURE ==================== -->
+  <div class="section">
+    <h2 class="section-title">PROGRESSIVE DISCLOSURE STACK</h2>
+    <p class="muted" style="margin-bottom: 16px;">Three levels of detail, each reachable by clicking into the previous. The wave view sits at Level 2.</p>
+
+    <div class="disclosure-stack">
+      <div class="disclosure-card">
+        <div class="level-num">1</div>
+        <h3>SPRINT BOARD</h3>
+        <p>Kanban overview of all stories in a sprint. Columns: Planned, In Progress, Review, Done. Each card shows story ID, agent chain progress, and health status.</p>
+      </div>
+
+      <div class="disclosure-arrow">
+        <svg viewBox="0 0 36 36"><polyline points="12,8 24,18 12,28" /></svg>
+      </div>
+
+      <div class="disclosure-card level-active">
+        <div class="level-num">2</div>
+        <h3>WAVE VIEW</h3>
+        <p>This design. The horizontal agent pipeline for a single story. Shows every session as a step with state, backtrack arcs, and the three-panel detail layout.</p>
+      </div>
+
+      <div class="disclosure-arrow">
+        <svg viewBox="0 0 36 36"><polyline points="12,8 24,18 12,28" /></svg>
+      </div>
+
+      <div class="disclosure-card">
+        <div class="level-num">3</div>
+        <h3>SESSION DETAIL</h3>
+        <p>Full event feed for a single session. Every tool call, file edit, bash command, and LLM exchange rendered as a scrollable timeline with enrichment badges.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 8. STORY 5.1 WALKTHROUGH ==================== -->
+  <div class="section">
+    <h2 class="section-title">STORY 5.1 WALKTHROUGH</h2>
+    <p class="muted" style="margin-bottom: 16px;">A sample 8-step story chain showing the full BMAD lifecycle from planning through ship.</p>
+
+    <div class="walkthrough-timeline">
+      <div class="wt-step">
+        <div class="wt-dot av-blue"></div>
+        <div class="wt-step-content">
+          <div class="wt-step-num">1</div>
+          <div class="wt-agent-mini av-blue">B</div>
+          <div class="wt-code">CS</div>
+          <div class="wt-desc">Bob writes the code specification &mdash; defines acceptance criteria, API contracts, and component boundaries for Story 5.1</div>
+        </div>
+      </div>
+
+      <div class="wt-step">
+        <div class="wt-dot av-blue"></div>
+        <div class="wt-step-content">
+          <div class="wt-step-num">2</div>
+          <div class="wt-agent-mini av-blue">B</div>
+          <div class="wt-code">VS</div>
+          <div class="wt-desc">Bob validates the specification &mdash; checks internal consistency, confirms all edge cases are covered, ensures feasibility</div>
+        </div>
+      </div>
+
+      <div class="wt-step">
+        <div class="wt-dot av-orange"></div>
+        <div class="wt-step-content">
+          <div class="wt-step-num">3</div>
+          <div class="wt-agent-mini av-orange">A</div>
+          <div class="wt-code">DS</div>
+          <div class="wt-desc">Amelia implements the design &mdash; builds the feature to spec, writes production code across server/client/shared</div>
+        </div>
+      </div>
+
+      <div class="wt-step backtrack">
+        <div class="wt-dot av-green" style="border: 2px dashed var(--amber);"></div>
+        <div class="wt-step-content">
+          <div class="wt-step-num">4</div>
+          <div class="wt-agent-mini av-green">N</div>
+          <div class="wt-code">DR</div>
+          <div class="wt-desc">Nate reviews the implementation &mdash; issues CONDITIONAL PASS with 3 patches. Triggers backtrack to step 3 for Amelia to apply fixes.</div>
+        </div>
+      </div>
+
+      <div class="wt-step">
+        <div class="wt-dot av-purple"></div>
+        <div class="wt-step-content">
+          <div class="wt-step-num">5</div>
+          <div class="wt-agent-mini av-purple">T</div>
+          <div class="wt-code">CS</div>
+          <div class="wt-desc">Taylor runs code specification tests &mdash; executes the acceptance test suite against the (now patched) implementation</div>
+        </div>
+      </div>
+
+      <div class="wt-step">
+        <div class="wt-dot av-purple"></div>
+        <div class="wt-step-content">
+          <div class="wt-step-num">6</div>
+          <div class="wt-agent-mini av-purple">T</div>
+          <div class="wt-code">RA</div>
+          <div class="wt-desc">Taylor runs regression and acceptance tests &mdash; broader test sweep to ensure nothing else broke</div>
+        </div>
+      </div>
+
+      <div class="wt-step">
+        <div class="wt-dot av-pink"></div>
+        <div class="wt-step-content">
+          <div class="wt-step-num">7</div>
+          <div class="wt-agent-mini av-pink">L</div>
+          <div class="wt-code">CU</div>
+          <div class="wt-desc">Lisa curates the final output &mdash; reviews documentation, checks naming conventions, verifies the story file is complete</div>
+        </div>
+      </div>
+
+      <div class="wt-step">
+        <div class="wt-dot av-gray"></div>
+        <div class="wt-step-content">
+          <div class="wt-step-num">8</div>
+          <div class="wt-agent-mini av-gray">S</div>
+          <div class="wt-code">SH</div>
+          <div class="wt-desc">Ship packages and deploys &mdash; runs the release checklist, creates commit, updates sprint board status to Done</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="text-align: center; padding-top: 24px; border-top: 1px solid var(--border); color: var(--muted-dim); font-size: 12px;">
+    AngelEye Wave Visualization Design &mdash; Mochaccino Design System &mdash; 2026-03-28
+  </div>
+
+</div>
+</body>
+</html>

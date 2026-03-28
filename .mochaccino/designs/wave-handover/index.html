@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngelEye — Wave Handover — Mochaccino</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #e8e0d4;
+    --surface: #ede7dc;
+    --surface-mid: #ddd6cc;
+    --card: #f5f1eb;
+    --border: #d4cdc4;
+    --border-raised: #ccc5bb;
+    --primary: #c8841a;
+    --fg: #2a2018;
+    --muted: #7a6e5e;
+    --muted-dim: #9e9484;
+
+    --green: #5a9a3c;
+    --amber: #d4860a;
+    --red: #c05040;
+    --blue: #4a7fb5;
+    --orange: #c07030;
+    --purple: #8a6ab5;
+    --pink: #b56a8a;
+    --gray: #8a8a8a;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Banner */
+  .banner {
+    background: var(--fg);
+    color: var(--muted);
+    font-size: 11px;
+    text-align: center;
+    padding: 3px 0;
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+  }
+
+  /* Layout */
+  .app-layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 224px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    overflow-y: auto;
+  }
+
+  .sidebar-brand {
+    padding: 20px 16px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-brand h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 0.18em;
+    color: var(--primary);
+    font-weight: 400;
+  }
+
+  .sidebar-brand .brand-sub {
+    font-size: 10px;
+    color: var(--muted-dim);
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+  }
+
+  .sidebar-section {
+    padding: 16px 0 8px;
+  }
+
+  .sidebar-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 16px 6px;
+  }
+
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #4a3e30;
+    cursor: pointer;
+    transition: background 0.12s;
+    border-left: 2px solid transparent;
+  }
+
+  .sidebar-item:hover {
+    background: var(--surface-mid);
+  }
+
+  .sidebar-item.active {
+    background: var(--surface);
+    border-left: 2px solid var(--primary);
+    color: var(--fg);
+    font-weight: 600;
+  }
+
+  .sidebar-icon {
+    width: 16px;
+    height: 16px;
+    opacity: 0.6;
+  }
+
+  /* Main content */
+  .main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 28px 32px;
+  }
+
+  .page-header {
+    margin-bottom: 28px;
+  }
+
+  .page-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 0.12em;
+    color: var(--fg);
+    font-weight: 400;
+  }
+
+  .page-header p {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* Scenario card */
+  .scenario-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 28px;
+    box-shadow: 0 1px 3px rgba(42, 32, 24, 0.06);
+    overflow: hidden;
+  }
+
+  .scenario-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .scenario-header h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+    color: var(--fg);
+  }
+
+  .scenario-header .scenario-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 3px;
+    color: white;
+  }
+
+  .scenario-tag.pass { background: var(--green); }
+  .scenario-tag.conditional { background: var(--amber); }
+  .scenario-tag.reject { background: var(--red); }
+
+  .scenario-body {
+    display: flex;
+    gap: 0;
+  }
+
+  /* Left side — wave bar mini */
+  .scenario-left {
+    width: 280px;
+    flex-shrink: 0;
+    padding: 20px;
+    border-right: 1px solid var(--border);
+    background: rgba(0,0,0,0.015);
+  }
+
+  .mini-wave-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .mini-wave {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+    position: relative;
+  }
+
+  .mini-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    position: relative;
+  }
+
+  .mini-step-node {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: white;
+    position: relative;
+    z-index: 2;
+  }
+
+  .mini-step-label {
+    font-size: 9px;
+    color: var(--muted);
+    text-align: center;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .mini-step-node.done { background: var(--green); }
+  .mini-step-node.active { background: var(--green); box-shadow: 0 0 0 3px rgba(90, 154, 60, 0.3); }
+  .mini-step-node.active-amber { background: var(--amber); box-shadow: 0 0 0 3px rgba(212, 134, 10, 0.3); }
+  .mini-step-node.active-red { background: var(--red); box-shadow: 0 0 0 3px rgba(192, 80, 64, 0.3); }
+  .mini-step-node.pending { background: var(--surface-mid); color: var(--muted); }
+  .mini-step-node.skip { background: transparent; border: 2px dashed var(--border-raised); color: var(--muted); }
+
+  .mini-connector {
+    width: 20px;
+    height: 2px;
+    background: var(--border-raised);
+    align-self: flex-start;
+    margin-top: 17px;
+  }
+
+  .mini-connector.done { background: var(--green); }
+
+  /* Backtrack arrow overlay */
+  .backtrack-overlay {
+    position: relative;
+    margin-top: 8px;
+  }
+
+  .backtrack-arrow {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    font-size: 10px;
+    font-weight: 600;
+    border-radius: 4px;
+  }
+
+  .backtrack-arrow.amber {
+    color: var(--amber);
+    background: rgba(212, 134, 10, 0.08);
+    border: 1px dashed var(--amber);
+  }
+
+  .backtrack-arrow.red {
+    color: var(--red);
+    background: rgba(192, 80, 64, 0.08);
+    border: 1px dashed var(--red);
+  }
+
+  .backtrack-arrow svg {
+    flex-shrink: 0;
+  }
+
+  .wave-story-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--fg);
+    margin-bottom: 4px;
+  }
+
+  .wave-story-sub {
+    font-size: 10px;
+    color: var(--muted-dim);
+    margin-bottom: 14px;
+  }
+
+  /* Right side — handover detail */
+  .scenario-right {
+    flex: 1;
+    padding: 20px 24px;
+    min-width: 0;
+  }
+
+  /* Verdict banner */
+  .verdict-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+
+  .verdict-banner.pass {
+    background: rgba(90, 154, 60, 0.1);
+    border: 1px solid rgba(90, 154, 60, 0.3);
+  }
+
+  .verdict-banner.conditional {
+    background: rgba(212, 134, 10, 0.1);
+    border: 1px solid rgba(212, 134, 10, 0.3);
+  }
+
+  .verdict-banner.reject {
+    background: rgba(192, 80, 64, 0.1);
+    border: 1px solid rgba(192, 80, 64, 0.3);
+  }
+
+  .verdict-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .verdict-icon.pass { background: var(--green); }
+  .verdict-icon.conditional { background: var(--amber); }
+  .verdict-icon.reject { background: var(--red); }
+
+  .verdict-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+
+  .verdict-text.pass { color: var(--green); }
+  .verdict-text.conditional { color: var(--amber); }
+  .verdict-text.reject { color: var(--red); }
+
+  /* Handover direction */
+  .handover-direction {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    padding: 10px 14px;
+    background: rgba(0,0,0,0.025);
+    border-radius: 6px;
+  }
+
+  .agent-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .agent-avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .agent-avatar.nate { background: var(--green); }
+  .agent-avatar.taylor { background: var(--purple); }
+  .agent-avatar.amelia { background: var(--orange); }
+  .agent-avatar.bob { background: var(--blue); }
+
+  .agent-role {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-left: -2px;
+  }
+
+  .direction-arrow {
+    color: var(--muted);
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  /* Context preview */
+  .context-section {
+    margin-bottom: 16px;
+  }
+
+  .context-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .context-preview {
+    background: #faf8f4;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 11.5px;
+    line-height: 1.6;
+    color: var(--fg);
+    white-space: pre-wrap;
+    overflow-x: auto;
+  }
+
+  .context-preview .ctx-h2 {
+    font-weight: 700;
+    font-size: 12.5px;
+    color: var(--fg);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .context-preview .ctx-h3 {
+    font-weight: 700;
+    font-size: 11.5px;
+    color: var(--fg);
+    display: block;
+    margin-top: 8px;
+    margin-bottom: 2px;
+  }
+
+  .context-preview .ctx-bold {
+    font-weight: 700;
+  }
+
+  .context-preview .ctx-pass { color: var(--green); font-weight: 700; }
+  .context-preview .ctx-cond { color: var(--amber); font-weight: 700; }
+  .context-preview .ctx-fail { color: var(--red); font-weight: 700; }
+
+  .context-preview .ctx-dim {
+    color: var(--muted);
+  }
+
+  .context-preview .ctx-bullet {
+    display: block;
+    padding-left: 12px;
+    position: relative;
+  }
+
+  .context-preview .ctx-bullet::before {
+    content: "\2022";
+    position: absolute;
+    left: 0;
+  }
+
+  /* Patch list */
+  .patch-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .patch-item {
+    background: #faf8f4;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .patch-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: background 0.12s;
+  }
+
+  .patch-header:hover {
+    background: rgba(0,0,0,0.02);
+  }
+
+  .patch-number {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--amber);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .patch-title {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--fg);
+    flex: 1;
+  }
+
+  .patch-chevron {
+    color: var(--muted);
+    font-size: 12px;
+    transition: transform 0.2s;
+  }
+
+  .patch-detail {
+    padding: 0 14px 12px;
+    border-top: 1px solid var(--border);
+    font-size: 11.5px;
+    line-height: 1.6;
+  }
+
+  .patch-detail-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+  }
+
+  .patch-detail-label {
+    font-weight: 700;
+    color: var(--muted);
+    flex-shrink: 0;
+    min-width: 36px;
+  }
+
+  .patch-detail-value {
+    color: var(--fg);
+  }
+
+  .patch-detail-value code {
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 11px;
+    background: rgba(0,0,0,0.04);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  /* Rejection details */
+  .rejection-block {
+    background: rgba(192, 80, 64, 0.05);
+    border: 1px solid rgba(192, 80, 64, 0.2);
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+
+  .rejection-block p {
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--fg);
+  }
+
+  .recommendation-block {
+    background: rgba(74, 127, 181, 0.06);
+    border: 1px solid rgba(74, 127, 181, 0.2);
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+
+  .recommendation-block p {
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--fg);
+  }
+
+  .impact-block {
+    background: rgba(192, 80, 64, 0.04);
+    border-left: 3px solid var(--red);
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .impact-block p {
+    font-size: 12px;
+    color: var(--fg);
+    line-height: 1.5;
+  }
+
+  .impact-label {
+    font-weight: 700;
+    color: var(--red);
+  }
+
+  /* Action buttons */
+  .action-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.02em;
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: #b5760f;
+  }
+
+  .btn-green {
+    background: var(--green);
+    color: white;
+  }
+
+  .btn-green:hover {
+    background: #4e8a34;
+  }
+
+  .btn-amber {
+    background: var(--amber);
+    color: white;
+  }
+
+  .btn-amber:hover {
+    background: #c07a08;
+  }
+
+  .btn-red {
+    background: var(--red);
+    color: white;
+  }
+
+  .btn-red:hover {
+    background: #a84438;
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--fg);
+    border: 1px solid var(--border-raised);
+  }
+
+  .btn-outline:hover {
+    background: var(--surface-mid);
+  }
+
+  .btn svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
+  /* Scrollbar */
+  .main::-webkit-scrollbar { width: 6px; }
+  .main::-webkit-scrollbar-track { background: transparent; }
+  .main::-webkit-scrollbar-thumb { background: var(--border-raised); border-radius: 3px; }
+  .main::-webkit-scrollbar-thumb:hover { background: var(--muted-dim); }
+</style>
+</head>
+<body>
+
+<!-- Banner -->
+<div class="banner">Mochaccino &middot; wave-handover</div>
+
+<!-- Layout -->
+<div class="app-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <h1>ANGELEYE</h1>
+      <div class="brand-sub">Ambient Intelligence Layer</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Views</div>
+
+      <div class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="2"/>
+        </svg>
+        Observer
+      </div>
+
+      <div class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="2" width="12" height="12" rx="2"/><line x1="2" y1="6" x2="14" y2="6"/><line x1="6" y1="6" x2="6" y2="14"/>
+        </svg>
+        Organiser
+      </div>
+
+      <div class="sidebar-item active">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="2,12 5,4 8,9 11,2 14,8"/><line x1="2" y1="14" x2="14" y2="14"/>
+        </svg>
+        Workflows
+      </div>
+
+      <div class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/>
+        </svg>
+        Settings
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Handover</div>
+      <div class="sidebar-item" style="color: var(--green);">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none" stroke="var(--green)" stroke-width="1.5"><polyline points="3,8 6,11 13,4"/></svg>
+        Pass (Clean)
+      </div>
+      <div class="sidebar-item" style="color: var(--amber);">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none" stroke="var(--amber)" stroke-width="1.5"><path d="M8 3l6 10H2z"/><line x1="8" y1="7" x2="8" y2="9"/><circle cx="8" cy="11" r="0.5" fill="var(--amber)"/></svg>
+        Conditional
+      </div>
+      <div class="sidebar-item" style="color: var(--red);">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none" stroke="var(--red)" stroke-width="1.5"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg>
+        Reject
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+
+    <div class="page-header">
+      <h2>HANDOVER EXPERIENCE</h2>
+      <p>Verdict detection, handover preparation, and paste-back message flow between agents</p>
+    </div>
+
+    <!-- ===================== SCENARIO 1: PASS ===================== -->
+    <div class="scenario-card">
+      <div class="scenario-header">
+        <span class="scenario-tag pass">PASS</span>
+        <h3>SCENARIO 1 &mdash; CLEAN HANDOVER</h3>
+        <span style="font-size: 11px; color: var(--muted); margin-left: auto;">Nate DR &rarr; Taylor SAT</span>
+      </div>
+
+      <div class="scenario-body">
+        <!-- Left: mini wave -->
+        <div class="scenario-left">
+          <div class="wave-story-label">Story 2.2</div>
+          <div class="wave-story-sub">Chain visualisation polish</div>
+          <div class="mini-wave-label">Wave Progress</div>
+          <div class="mini-wave">
+            <div class="mini-step">
+              <div class="mini-step-node done">CS</div>
+              <div class="mini-step-label">Bob</div>
+            </div>
+            <div class="mini-connector done"></div>
+            <div class="mini-step">
+              <div class="mini-step-node done">DS</div>
+              <div class="mini-step-label">Amelia</div>
+            </div>
+            <div class="mini-connector done"></div>
+            <div class="mini-step">
+              <div class="mini-step-node active" style="box-shadow: 0 0 0 3px rgba(90,154,60,0.35), 0 0 8px rgba(90,154,60,0.2);">DR</div>
+              <div class="mini-step-label" style="color: var(--green); font-weight: 700;">Nate</div>
+            </div>
+            <div class="mini-connector"></div>
+            <div class="mini-step">
+              <div class="mini-step-node pending">SAT</div>
+              <div class="mini-step-label">Taylor</div>
+            </div>
+            <div class="mini-connector"></div>
+            <div class="mini-step">
+              <div class="mini-step-node pending">PO</div>
+              <div class="mini-step-label">David</div>
+            </div>
+          </div>
+          <div style="margin-top: 14px; font-size: 10px; color: var(--green); font-weight: 600; display: flex; align-items: center; gap: 4px;">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="var(--green)" stroke-width="2"><polyline points="3,8 6,11 13,4"/></svg>
+            DR just completed &mdash; clean pass
+          </div>
+        </div>
+
+        <!-- Right: handover card -->
+        <div class="scenario-right">
+          <!-- Verdict -->
+          <div class="verdict-banner pass">
+            <div class="verdict-icon pass">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="2.5"><polyline points="3,8 6,11 13,4"/></svg>
+            </div>
+            <span class="verdict-text pass">VERDICT: PASS</span>
+          </div>
+
+          <!-- Direction -->
+          <div class="handover-direction">
+            <div class="agent-chip">
+              <div class="agent-avatar nate">N</div>
+              <span>Nate</span>
+              <span class="agent-role">DR</span>
+            </div>
+            <span class="direction-arrow">&rarr;</span>
+            <div class="agent-chip">
+              <div class="agent-avatar taylor">T</div>
+              <span>Taylor</span>
+              <span class="agent-role">SAT CS</span>
+            </div>
+          </div>
+
+          <!-- Context preview -->
+          <div class="context-section">
+            <div class="context-label">Handover Context</div>
+            <div class="context-preview"><span class="ctx-h2">## Story 2.2 &mdash; Delivery Review Complete</span>
+<span class="ctx-bold">Verdict</span>: <span class="ctx-pass">PASS</span>
+<span class="ctx-bold">Reviewed by</span>: Nate (DR)
+<span class="ctx-bold">Duration</span>: 18m  |  <span class="ctx-bold">Context</span>: 34%
+<span class="ctx-h3">### Review Intelligence Summary</span><span class="ctx-bullet">Code quality: excellent, follows existing patterns</span><span class="ctx-bullet">Test coverage: 92%, all edge cases covered</span><span class="ctx-bullet">No security concerns identified</span><span class="ctx-bullet">Architecture decisions align with CLAUDE.md conventions</span>
+<span class="ctx-h3">### Recommendation</span>
+Proceed to acceptance testing. No patches required.</div>
+          </div>
+
+          <!-- Actions -->
+          <div class="action-row">
+            <button class="btn btn-primary">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="8" height="8" rx="1"/><path d="M6 6h8v8H6"/></svg>
+              Copy to Clipboard
+            </button>
+            <button class="btn btn-outline">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="2"/><polyline points="4,6 8,9 12,6"/></svg>
+              Open Taylor SAT Terminal
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== SCENARIO 2: CONDITIONAL PASS ===================== -->
+    <div class="scenario-card">
+      <div class="scenario-header">
+        <span class="scenario-tag conditional">CONDITIONAL</span>
+        <h3>SCENARIO 2 &mdash; BACKTRACK WITH PATCHES</h3>
+        <span style="font-size: 11px; color: var(--muted); margin-left: auto;">Nate DR &rarr; Amelia DS</span>
+      </div>
+
+      <div class="scenario-body">
+        <!-- Left: mini wave -->
+        <div class="scenario-left">
+          <div class="wave-story-label">Story 0.1</div>
+          <div class="wave-story-sub">Mock data fallback layer</div>
+          <div class="mini-wave-label">Wave Progress</div>
+          <div class="mini-wave">
+            <div class="mini-step">
+              <div class="mini-step-node done">CS</div>
+              <div class="mini-step-label">Bob</div>
+            </div>
+            <div class="mini-connector done"></div>
+            <div class="mini-step">
+              <div class="mini-step-node done">DS</div>
+              <div class="mini-step-label">Amelia</div>
+            </div>
+            <div class="mini-connector done"></div>
+            <div class="mini-step">
+              <div class="mini-step-node active-amber" style="border: 2px dashed var(--amber);">DR<sub>1</sub></div>
+              <div class="mini-step-label" style="color: var(--amber); font-weight: 700;">Nate</div>
+            </div>
+            <div class="mini-connector"></div>
+            <div class="mini-step">
+              <div class="mini-step-node pending">SAT</div>
+              <div class="mini-step-label">Taylor</div>
+            </div>
+            <div class="mini-connector"></div>
+            <div class="mini-step">
+              <div class="mini-step-node pending">PO</div>
+              <div class="mini-step-label">David</div>
+            </div>
+          </div>
+
+          <!-- Backtrack arrow -->
+          <div class="backtrack-overlay">
+            <div class="backtrack-arrow amber">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="var(--amber)" stroke-width="1.5"><path d="M14 8H4M4 8l3-3M4 8l3 3"/></svg>
+              Backtrack to DS (patch cycle)
+            </div>
+          </div>
+
+          <div style="margin-top: 10px; font-size: 10px; color: var(--amber); font-weight: 600; display: flex; align-items: center; gap: 4px;">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="var(--amber)" stroke-width="2"><path d="M8 3l6 10H2z"/></svg>
+            3 patches required
+          </div>
+        </div>
+
+        <!-- Right: handover card -->
+        <div class="scenario-right">
+          <!-- Verdict -->
+          <div class="verdict-banner conditional">
+            <div class="verdict-icon conditional">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="2.5"><path d="M8 4v5"/><circle cx="8" cy="12" r="1" fill="white" stroke="none"/></svg>
+            </div>
+            <span class="verdict-text conditional">VERDICT: CONDITIONAL PASS</span>
+          </div>
+
+          <!-- Direction -->
+          <div class="handover-direction">
+            <div class="agent-chip">
+              <div class="agent-avatar nate">N</div>
+              <span>Nate</span>
+              <span class="agent-role">DR</span>
+            </div>
+            <span class="direction-arrow">&rarr;</span>
+            <div class="agent-chip">
+              <div class="agent-avatar amelia">A</div>
+              <span>Amelia</span>
+              <span class="agent-role">DS (Patch Cycle)</span>
+            </div>
+          </div>
+
+          <!-- Patches -->
+          <div class="context-section">
+            <div class="context-label">Patches Required</div>
+            <div class="patch-list">
+
+              <!-- Patch 1 -->
+              <div class="patch-item">
+                <div class="patch-header">
+                  <div class="patch-number">1</div>
+                  <span class="patch-title">Add error boundary to ChainView component</span>
+                  <span class="patch-chevron">&#9660;</span>
+                </div>
+                <div class="patch-detail">
+                  <div class="patch-detail-row">
+                    <span class="patch-detail-label">File:</span>
+                    <span class="patch-detail-value"><code>client/src/views/ChainView.tsx</code></span>
+                  </div>
+                  <div class="patch-detail-row">
+                    <span class="patch-detail-label">Issue:</span>
+                    <span class="patch-detail-value">Component crashes on empty affinity group data</span>
+                  </div>
+                  <div class="patch-detail-row">
+                    <span class="patch-detail-label">Fix:</span>
+                    <span class="patch-detail-value">Wrap render in ErrorBoundary, add fallback UI</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Patch 2 -->
+              <div class="patch-item">
+                <div class="patch-header">
+                  <div class="patch-number">2</div>
+                  <span class="patch-title">Update backtrack test edge case</span>
+                  <span class="patch-chevron">&#9660;</span>
+                </div>
+                <div class="patch-detail">
+                  <div class="patch-detail-row">
+                    <span class="patch-detail-label">File:</span>
+                    <span class="patch-detail-value"><code>client/src/test/ChainView.test.tsx</code></span>
+                  </div>
+                  <div class="patch-detail-row">
+                    <span class="patch-detail-label">Issue:</span>
+                    <span class="patch-detail-value">Missing test for 3+ backtracks scenario</span>
+                  </div>
+                  <div class="patch-detail-row">
+                    <span class="patch-detail-label">Fix:</span>
+                    <span class="patch-detail-value">Add test case with mock data containing triple backtrack</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Patch 3 -->
+              <div class="patch-item">
+                <div class="patch-header">
+                  <div class="patch-number">3</div>
+                  <span class="patch-title">Fix SVG connector z-index</span>
+                  <span class="patch-chevron">&#9660;</span>
+                </div>
+                <div class="patch-detail">
+                  <div class="patch-detail-row">
+                    <span class="patch-detail-label">File:</span>
+                    <span class="patch-detail-value"><code>client/src/components/StepNode.tsx</code></span>
+                  </div>
+                  <div class="patch-detail-row">
+                    <span class="patch-detail-label">Issue:</span>
+                    <span class="patch-detail-value">Backtrack arrow renders behind pending nodes</span>
+                  </div>
+                  <div class="patch-detail-row">
+                    <span class="patch-detail-label">Fix:</span>
+                    <span class="patch-detail-value">Set z-index on <code>.backtrack-svg-overlay</code> to 10</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Paste-back preview -->
+          <div class="context-section">
+            <div class="context-label">Paste-Back Message Preview</div>
+            <div class="context-preview"><span class="ctx-h2">Story 0.1 DR returned CONDITIONAL PASS</span>
+3 patches required before re-review.
+
+<span class="ctx-bold">Patch 1</span>: Add error boundary to ChainView
+  <span class="ctx-dim">File: client/src/views/ChainView.tsx</span>
+  <span class="ctx-dim">Issue: Component crashes on empty affinity group data</span>
+  <span class="ctx-dim">Fix: Wrap render in ErrorBoundary, add fallback UI</span>
+
+<span class="ctx-bold">Patch 2</span>: Update backtrack test edge case
+  <span class="ctx-dim">File: client/src/test/ChainView.test.tsx</span>
+  <span class="ctx-dim">Issue: Missing test for 3+ backtracks scenario</span>
+  <span class="ctx-dim">Fix: Add test case with mock data containing triple backtrack</span>
+
+<span class="ctx-bold">Patch 3</span>: Fix SVG connector z-index
+  <span class="ctx-dim">File: client/src/components/StepNode.tsx</span>
+  <span class="ctx-dim">Issue: Backtrack arrow renders behind pending nodes</span>
+  <span class="ctx-dim">Fix: Set z-index on .backtrack-svg-overlay to 10</span>
+
+After applying all patches, Nate will re-review
+focusing only on patched areas.</div>
+          </div>
+
+          <!-- Actions -->
+          <div class="action-row">
+            <button class="btn btn-amber">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="8" height="8" rx="1"/><path d="M6 6h8v8H6"/></svg>
+              Copy Patches
+            </button>
+            <button class="btn btn-primary">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="8" height="8" rx="1"/><path d="M6 6h8v8H6"/></svg>
+              Copy Paste-Back Message
+            </button>
+            <button class="btn btn-outline">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="2"/><polyline points="4,6 8,9 12,6"/></svg>
+              Open Amelia DS Terminal
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== SCENARIO 3: REJECT ===================== -->
+    <div class="scenario-card">
+      <div class="scenario-header">
+        <span class="scenario-tag reject">REJECT</span>
+        <h3>SCENARIO 3 &mdash; FULL BACKTRACK</h3>
+        <span style="font-size: 11px; color: var(--muted); margin-left: auto;">Nate DR &rarr; Bob CS</span>
+      </div>
+
+      <div class="scenario-body">
+        <!-- Left: mini wave -->
+        <div class="scenario-left">
+          <div class="wave-story-label">Story 1.3</div>
+          <div class="wave-story-sub">Server-side AC validation</div>
+          <div class="mini-wave-label">Wave Progress</div>
+          <div class="mini-wave">
+            <div class="mini-step">
+              <div class="mini-step-node done">CS</div>
+              <div class="mini-step-label">Bob</div>
+            </div>
+            <div class="mini-connector done"></div>
+            <div class="mini-step">
+              <div class="mini-step-node done">DS</div>
+              <div class="mini-step-label">Amelia</div>
+            </div>
+            <div class="mini-connector done"></div>
+            <div class="mini-step">
+              <div class="mini-step-node active-red">DR</div>
+              <div class="mini-step-label" style="color: var(--red); font-weight: 700;">Nate</div>
+            </div>
+            <div class="mini-connector"></div>
+            <div class="mini-step">
+              <div class="mini-step-node pending">SAT</div>
+              <div class="mini-step-label">Taylor</div>
+            </div>
+            <div class="mini-connector"></div>
+            <div class="mini-step">
+              <div class="mini-step-node pending">PO</div>
+              <div class="mini-step-label">David</div>
+            </div>
+          </div>
+
+          <!-- Backtrack arrow -->
+          <div class="backtrack-overlay">
+            <div class="backtrack-arrow red">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="var(--red)" stroke-width="1.5"><path d="M14 8H4M4 8l3-3M4 8l3 3"/></svg>
+              Full backtrack to CS (rework)
+            </div>
+          </div>
+
+          <div style="margin-top: 10px; font-size: 10px; color: var(--red); font-weight: 600; display: flex; align-items: center; gap: 4px;">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="var(--red)" stroke-width="2"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg>
+            Rejected &mdash; story rework required
+          </div>
+        </div>
+
+        <!-- Right: handover card -->
+        <div class="scenario-right">
+          <!-- Verdict -->
+          <div class="verdict-banner reject">
+            <div class="verdict-icon reject">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="2.5"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg>
+            </div>
+            <span class="verdict-text reject">VERDICT: REJECT</span>
+          </div>
+
+          <!-- Direction -->
+          <div class="handover-direction">
+            <div class="agent-chip">
+              <div class="agent-avatar nate">N</div>
+              <span>Nate</span>
+              <span class="agent-role">DR</span>
+            </div>
+            <span class="direction-arrow">&rarr;</span>
+            <div class="agent-chip">
+              <div class="agent-avatar bob">B</div>
+              <span>Bob</span>
+              <span class="agent-role">CS (Story Rework)</span>
+            </div>
+          </div>
+
+          <!-- Rejection reason -->
+          <div class="context-section">
+            <div class="context-label">Rejection Reason</div>
+            <div class="rejection-block">
+              <p>Implementation does not match acceptance criteria #3 and #4. The story was interpreted as a UI-only change but AC clearly requires server-side validation. Fundamental approach needs rethinking &mdash; not a patch situation.</p>
+            </div>
+          </div>
+
+          <!-- Recommended action -->
+          <div class="context-section">
+            <div class="context-label">Recommended Action</div>
+            <div class="recommendation-block">
+              <p>Return to Bob for story rework. Bob should clarify AC #3 and #4 with specific implementation guidance, then Amelia re-implements from scratch.</p>
+            </div>
+          </div>
+
+          <!-- Impact -->
+          <div class="context-section">
+            <div class="context-label">Impact</div>
+            <div class="impact-block">
+              <p><span class="impact-label">Warning:</span> Previous DS session (45m, 58% context) will be discarded. Fresh window required.</p>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="action-row">
+            <button class="btn btn-red">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="8" height="8" rx="1"/><path d="M6 6h8v8H6"/></svg>
+              Copy Rejection Details
+            </button>
+            <button class="btn btn-outline">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="2"/><polyline points="4,6 8,9 12,6"/></svg>
+              Open Bob CS Terminal
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+</body>
+</html>

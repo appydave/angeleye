@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useGitSync } from '../hooks/useGitSync.js';
 import GitSyncModal from './GitSyncModal.js';
 import type { GitSyncStatus } from '@appystack/shared';
@@ -12,67 +12,67 @@ interface PillStyle {
 
 function getPillStyle(status: GitSyncStatus, pulling: boolean): PillStyle {
   if (pulling) {
-    return { bg: 'bg-amber-500/15', text: 'text-amber-700', label: 'Pulling\u2026' };
+    return { bg: 'bg-amber-500/15', text: 'text-amber-700', label: 'Updating\u2026' };
   }
   switch (status.state) {
     case 'clean':
-      return { bg: 'bg-green-600/15', text: 'text-green-700', label: 'Synced' };
+      return { bg: 'bg-green-600/15', text: 'text-green-700', label: 'Up to date' };
     case 'behind':
       return {
         bg: 'bg-amber-500',
         text: 'text-white',
-        label: `${status.behind} behind`,
+        label: status.behind === 1 ? 'Update available' : `${status.behind} updates available`,
         animation: 'sync-pulse',
       };
     case 'dirty':
-      return { bg: 'bg-red-500/15', text: 'text-red-700', label: 'Dirty' };
+      return {
+        bg: 'bg-muted-foreground/10',
+        text: 'text-muted-foreground',
+        label: 'Local changes detected',
+      };
     case 'ahead':
-      return { bg: 'bg-blue-500/15', text: 'text-blue-700', label: `${status.ahead} ahead` };
+      return { bg: 'bg-blue-500/15', text: 'text-blue-700', label: 'Changes pending' };
     case 'diverged':
-      return { bg: 'bg-purple-500/15', text: 'text-purple-700', label: 'Diverged' };
+      return {
+        bg: 'bg-purple-500/15',
+        text: 'text-purple-700',
+        label: 'Needs attention',
+        animation: 'sync-pulse',
+      };
     case 'error':
-      return { bg: 'bg-muted-foreground/10', text: 'text-muted-foreground', label: 'Sync error' };
+      return {
+        bg: 'bg-muted-foreground/10',
+        text: 'text-muted-foreground',
+        label: 'Connection issue',
+      };
     default:
       return { bg: 'bg-muted-foreground/10', text: 'text-muted-foreground', label: 'Unknown' };
   }
-}
-
-function tooltipText(status: GitSyncStatus): string {
-  const parts = [`Branch: ${status.branch}`, `Local: ${status.localCommit}`];
-  if (status.remoteCommit) parts.push(`Remote: ${status.remoteCommit}`);
-  if (status.lastChecked)
-    parts.push(`Checked: ${new Date(status.lastChecked).toLocaleTimeString()}`);
-  if (status.error) parts.push(`Error: ${status.error}`);
-  return parts.join(' | ');
 }
 
 export default function GitSyncPill() {
   const { status, pulling, pullResult, pull, clearPullResult } = useGitSync();
   const [modalOpen, setModalOpen] = useState(false);
 
+  const handleClick = useCallback(() => {
+    clearPullResult();
+    setModalOpen(true);
+  }, [clearPullResult]);
+
+  const handleClose = useCallback(() => {
+    setModalOpen(false);
+    clearPullResult();
+  }, [clearPullResult]);
+
   if (!status) return null;
 
   const style = getPillStyle(status, pulling);
-  const clickable = status.state === 'behind' || status.state === 'diverged';
-
-  function handleClick() {
-    if (clickable) {
-      clearPullResult();
-      setModalOpen(true);
-    }
-  }
-
-  function handleClose() {
-    setModalOpen(false);
-    clearPullResult();
-  }
 
   return (
     <>
       <button
         onClick={handleClick}
-        title={clickable ? undefined : tooltipText(status)}
-        className={`inline-flex items-center gap-1.5 text-xs px-2 py-0.5 rounded-full font-medium ${style.bg} ${style.text} ${clickable ? 'cursor-pointer hover:opacity-80' : 'cursor-default'} transition-opacity`}
+        className={`inline-flex items-center gap-1.5 text-xs px-2 py-0.5 rounded-full font-medium ${style.bg} ${style.text} cursor-pointer hover:opacity-80 transition-opacity`}
         style={
           style.animation ? { animation: `${style.animation} 2s ease-in-out infinite` } : undefined
         }

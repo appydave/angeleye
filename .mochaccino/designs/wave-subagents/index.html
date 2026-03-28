@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngelEye — Wave Sub-Agents — Mochaccino</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #e8e0d4;
+    --surface: #ede7dc;
+    --surface-mid: #ddd6cc;
+    --card: #f5f1eb;
+    --border: #d4cdc4;
+    --border-raised: #ccc5bb;
+    --primary: #c8841a;
+    --fg: #2a2018;
+    --muted: #7a6e5e;
+    --muted-dim: #9e9484;
+
+    --green: #5a9a3c;
+    --amber: #d4860a;
+    --red: #c05040;
+    --blue: #4a7fb5;
+    --orange: #c07030;
+    --purple: #8a6ab5;
+    --pink: #b56a8a;
+    --gray: #8a8a8a;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Banner */
+  .banner {
+    background: var(--fg);
+    color: var(--muted);
+    font-size: 11px;
+    text-align: center;
+    padding: 3px 0;
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+  }
+
+  /* Layout */
+  .app-layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 224px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    overflow-y: auto;
+  }
+
+  .sidebar-brand {
+    padding: 20px 16px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-brand h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 0.18em;
+    color: var(--primary);
+    font-weight: 400;
+  }
+
+  .sidebar-brand .brand-sub {
+    font-size: 10px;
+    color: var(--muted-dim);
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+  }
+
+  .sidebar-section {
+    padding: 16px 0 8px;
+  }
+
+  .sidebar-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 16px 6px;
+  }
+
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #4a3e30;
+    cursor: pointer;
+    transition: background 0.12s;
+    border-left: 2px solid transparent;
+  }
+
+  .sidebar-item:hover {
+    background: var(--surface-mid);
+  }
+
+  .sidebar-item.active {
+    background: var(--surface);
+    border-left: 2px solid var(--primary);
+    color: var(--fg);
+    font-weight: 600;
+  }
+
+  .sidebar-icon {
+    width: 16px;
+    height: 16px;
+    opacity: 0.6;
+  }
+
+  /* Main content */
+  .main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 28px 32px;
+  }
+
+  .page-header {
+    margin-bottom: 24px;
+  }
+
+  .page-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 0.12em;
+    color: var(--fg);
+    font-weight: 400;
+  }
+
+  .page-header p {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* Section cards */
+  .section-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(42, 32, 24, 0.06);
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    color: var(--fg);
+    font-weight: 400;
+  }
+
+  .section-subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+    margin-bottom: 20px;
+  }
+
+  /* ───────── TREE VIEW ───────── */
+  .tree-container {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    padding: 12px 0;
+    position: relative;
+  }
+
+  /* Parent node */
+  .tree-parent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 140px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .parent-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: #fff;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(90, 154, 60, 0.35);
+    border: 3px solid #f5f1eb;
+  }
+
+  .parent-label {
+    margin-top: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--fg);
+  }
+
+  .parent-role {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  .parent-badge {
+    margin-top: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    background: var(--green);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 8px;
+    letter-spacing: 0.04em;
+  }
+
+  /* Tree connectors area */
+  .tree-connectors {
+    width: 80px;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  /* Child nodes column */
+  .tree-children {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* Individual child node */
+  .child-node {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    transition: all 0.15s;
+    position: relative;
+  }
+
+  .child-node:hover {
+    border-color: var(--border-raised);
+    box-shadow: 0 1px 4px rgba(42, 32, 24, 0.08);
+  }
+
+  .child-node.severity-green {
+    border-left: 3px solid var(--green);
+  }
+
+  .child-node.severity-amber {
+    border-left: 3px solid var(--amber);
+  }
+
+  .child-node.severity-pending {
+    border-left: 3px solid var(--gray);
+    opacity: 0.5;
+  }
+
+  .child-node.active-glow {
+    border-left: 3px solid var(--amber);
+    box-shadow: 0 0 12px rgba(200, 132, 26, 0.25), 0 1px 4px rgba(42, 32, 24, 0.08);
+    background: #faf6ef;
+  }
+
+  .child-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+
+  .child-icon.green { background: rgba(90, 154, 60, 0.12); color: var(--green); }
+  .child-icon.amber { background: rgba(212, 134, 10, 0.12); color: var(--amber); }
+  .child-icon.blue { background: rgba(74, 127, 181, 0.12); color: var(--blue); }
+  .child-icon.purple { background: rgba(138, 106, 181, 0.12); color: var(--purple); }
+  .child-icon.orange { background: rgba(192, 112, 48, 0.12); color: var(--orange); }
+  .child-icon.pending { background: rgba(138, 138, 138, 0.1); color: var(--gray); }
+
+  .child-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .child-name {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--fg);
+  }
+
+  .child-finding {
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .child-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .child-duration {
+    font-size: 11px;
+    color: var(--muted-dim);
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+
+  .child-status {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 6px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .status-done { background: rgba(90, 154, 60, 0.12); color: var(--green); }
+  .status-active { background: rgba(200, 132, 26, 0.15); color: var(--primary); }
+  .status-pending { background: rgba(138, 138, 138, 0.1); color: var(--gray); }
+
+  .child-check {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .child-check.done { background: var(--green); color: #fff; }
+  .child-check.active-spin { background: var(--primary); color: #fff; animation: pulse-spin 1.5s infinite; }
+  .child-check.pending-empty { border: 1.5px dashed var(--gray); color: transparent; }
+
+  @keyframes pulse-spin {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(200, 132, 26, 0.4); }
+    50% { box-shadow: 0 0 0 5px rgba(200, 132, 26, 0); }
+  }
+
+  /* ───────── DETAIL VIEW ───────── */
+  .detail-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--purple);
+    border-radius: 10px;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .detail-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(138, 106, 181, 0.04);
+  }
+
+  .detail-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .detail-header-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(138, 106, 181, 0.12);
+    color: var(--purple);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+  }
+
+  .detail-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.08em;
+    color: var(--fg);
+    font-weight: 400;
+  }
+
+  .detail-title-sub {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .detail-header-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .detail-duration {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    background: var(--surface);
+    padding: 3px 10px;
+    border-radius: 6px;
+  }
+
+  .detail-status {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--green);
+    background: rgba(90, 154, 60, 0.1);
+    padding: 3px 10px;
+    border-radius: 6px;
+    letter-spacing: 0.04em;
+  }
+
+  /* Tool call timeline */
+  .tool-timeline {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tool-timeline-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 14px;
+    font-weight: 400;
+  }
+
+  .tool-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(212, 205, 196, 0.5);
+    position: relative;
+  }
+
+  .tool-row:last-child {
+    border-bottom: none;
+  }
+
+  /* Timeline connector line */
+  .tool-row::before {
+    content: '';
+    position: absolute;
+    left: 13px;
+    top: 0;
+    height: 100%;
+    width: 1px;
+    background: var(--border);
+  }
+
+  .tool-row:first-child::before {
+    top: 50%;
+    height: 50%;
+  }
+
+  .tool-row:last-child::before {
+    height: 50%;
+  }
+
+  .tool-dot {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    background: var(--card);
+    border: 2px solid var(--border);
+  }
+
+  .tool-dot.read { border-color: var(--blue); color: var(--blue); }
+  .tool-dot.bash { border-color: var(--orange); color: var(--orange); }
+  .tool-dot.grep { border-color: var(--purple); color: var(--purple); }
+
+  .tool-path {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 11.5px;
+    color: var(--fg);
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .tool-dur {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 10.5px;
+    color: var(--muted-dim);
+    flex-shrink: 0;
+    width: 40px;
+    text-align: right;
+  }
+
+  .tool-summary {
+    font-size: 11px;
+    color: var(--muted);
+    flex-shrink: 0;
+    max-width: 260px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Finding card */
+  .finding-section {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .finding-card {
+    background: rgba(212, 134, 10, 0.06);
+    border: 1px solid rgba(212, 134, 10, 0.25);
+    border-radius: 8px;
+    padding: 16px 18px;
+  }
+
+  .finding-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .finding-severity {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: rgba(212, 134, 10, 0.15);
+    color: var(--amber);
+  }
+
+  .finding-title {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--fg);
+  }
+
+  .finding-detail {
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: #4a3e30;
+    margin-bottom: 12px;
+  }
+
+  .finding-files {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 12px;
+  }
+
+  .finding-files-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .finding-file {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 11.5px;
+    color: var(--blue);
+    padding: 2px 8px;
+    background: rgba(74, 127, 181, 0.08);
+    border-radius: 4px;
+    display: inline-block;
+    margin-right: 6px;
+  }
+
+  .finding-recommendation {
+    font-size: 12px;
+    color: var(--fg);
+    background: rgba(90, 154, 60, 0.06);
+    border: 1px solid rgba(90, 154, 60, 0.2);
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-top: 8px;
+  }
+
+  .finding-recommendation-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--green);
+    margin-bottom: 4px;
+  }
+
+  .finding-recommendation code {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 11px;
+    background: rgba(90, 154, 60, 0.1);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  /* Summary table */
+  .summary-section {
+    padding: 20px 24px;
+  }
+
+  .summary-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 12px;
+    font-weight: 400;
+  }
+
+  .summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+
+  .summary-table tr {
+    border-bottom: 1px solid rgba(212, 205, 196, 0.5);
+  }
+
+  .summary-table tr:last-child {
+    border-bottom: none;
+  }
+
+  .summary-table td {
+    padding: 7px 0;
+  }
+
+  .summary-table td:first-child {
+    font-weight: 600;
+    color: var(--muted);
+    width: 160px;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .summary-table td:last-child {
+    color: var(--fg);
+  }
+
+  .summary-table .mono {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 11.5px;
+  }
+
+  .severity-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 5px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .severity-badge.amber { background: rgba(212, 134, 10, 0.12); color: var(--amber); }
+  .severity-badge.green { background: rgba(90, 154, 60, 0.12); color: var(--green); }
+
+  /* Click hint */
+  .click-hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--muted-dim);
+    margin-bottom: 16px;
+    padding: 6px 10px;
+    background: rgba(200, 132, 26, 0.06);
+    border-radius: 6px;
+    border: 1px dashed rgba(200, 132, 26, 0.2);
+    width: fit-content;
+  }
+
+  /* Selected node highlight in tree */
+  .child-node.selected {
+    border: 1.5px solid var(--purple);
+    border-left: 3px solid var(--purple);
+    box-shadow: 0 0 8px rgba(138, 106, 181, 0.2);
+  }
+
+  /* Responsive: make tree scroll on smaller widths */
+  @media (max-width: 1000px) {
+    .tree-container {
+      overflow-x: auto;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Banner -->
+<div class="banner">Mochaccino &middot; wave-subagents</div>
+
+<!-- Layout -->
+<div class="app-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <h1>AngelEye</h1>
+      <div class="brand-sub">Ambient Intelligence for Claude Code</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Navigation</div>
+      <div class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="2"/></svg>
+        Observer
+      </div>
+      <div class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="2" y="2" width="5" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="2" width="5" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><rect x="2" y="9" width="5" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="9" width="5" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+        Organiser
+      </div>
+      <div class="sidebar-item active">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M2 4h12M2 8h8M2 12h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+        Workflows
+      </div>
+      <div class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M8 5v3l2 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" fill="none"/></svg>
+        Settings
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Current Session</div>
+      <div style="padding: 8px 16px; font-size: 11.5px; color: var(--muted);">
+        <div style="font-weight: 600; color: var(--fg); margin-bottom: 3px;">Story 2.4 Review</div>
+        <div style="font-size: 10.5px;">Step: <span style="color: var(--green); font-weight: 600;">DR</span> (Design Review)</div>
+        <div style="font-size: 10.5px; margin-top: 2px;">Agent: <span style="color: var(--green); font-weight: 600;">Nate</span></div>
+        <div style="font-size: 10.5px; margin-top: 2px; color: var(--muted-dim);">6 sub-agents spawned</div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Sub-Agent Status</div>
+      <div style="padding: 4px 16px; font-size: 11px;">
+        <div style="display: flex; align-items: center; gap: 6px; padding: 3px 0;">
+          <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--green); display: inline-block;"></span>
+          <span style="color: var(--muted);">5 completed</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px; padding: 3px 0;">
+          <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--gray); display: inline-block; opacity: 0.5;"></span>
+          <span style="color: var(--muted);">1 pending</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+
+    <div class="page-header">
+      <h2>Sub-Agent Visualization</h2>
+      <p>Nate DR step &mdash; Story 2.4 &mdash; spawned 6 sub-agents to review code quality, tests, security, architecture, docs, and synthesize a verdict.</p>
+    </div>
+
+    <!-- SECTION 1: Tree View -->
+    <div class="section-card">
+      <div class="section-title">Sub-Agent Tree</div>
+      <div class="section-subtitle">Parent agent on the left, sub-agents on the right. Click a sub-agent to expand its detail view below.</div>
+
+      <div class="tree-container">
+
+        <!-- Parent node -->
+        <div class="tree-parent">
+          <div class="parent-avatar">N</div>
+          <div class="parent-label">Nate</div>
+          <div class="parent-role">Design Review</div>
+          <div class="parent-badge">DR</div>
+        </div>
+
+        <!-- SVG connectors -->
+        <div class="tree-connectors">
+          <svg width="80" height="100%" viewBox="0 0 80 396" preserveAspectRatio="none" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+            <!-- Trunk line from parent center -->
+            <line x1="0" y1="198" x2="24" y2="198" stroke="#d4cdc4" stroke-width="2"/>
+            <!-- Vertical backbone -->
+            <line x1="24" y1="30" x2="24" y2="366" stroke="#d4cdc4" stroke-width="2"/>
+            <!-- Branch lines to each child (6 children, evenly spaced) -->
+            <line x1="24" y1="30" x2="80" y2="30" stroke="#d4cdc4" stroke-width="2"/>
+            <line x1="24" y1="97" x2="80" y2="97" stroke="#d4cdc4" stroke-width="2"/>
+            <line x1="24" y1="164" x2="80" y2="164" stroke="#d4cdc4" stroke-width="2"/>
+            <line x1="24" y1="231" x2="80" y2="231" stroke="#d4cdc4" stroke-width="2"/>
+            <line x1="24" y1="298" x2="80" y2="298" stroke="#d4cdc4" stroke-width="2"/>
+            <line x1="24" y1="366" x2="80" y2="366" stroke="#d4cdc4" stroke-width="2"/>
+            <!-- Dots at branch points -->
+            <circle cx="24" cy="30" r="3" fill="#d4cdc4"/>
+            <circle cx="24" cy="97" r="3" fill="#d4cdc4"/>
+            <circle cx="24" cy="164" r="3" fill="#d4cdc4"/>
+            <circle cx="24" cy="231" r="3" fill="#d4cdc4"/>
+            <circle cx="24" cy="298" r="3" fill="#d4cdc4"/>
+            <circle cx="24" cy="366" r="3" fill="#d4cdc4"/>
+          </svg>
+        </div>
+
+        <!-- Child nodes -->
+        <div class="tree-children">
+
+          <!-- 1. Code Quality — green (clean) -->
+          <div class="child-node severity-green">
+            <div class="child-check done">
+              <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5.5 L4 7.5 L8 3" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="child-icon green">
+              <svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 8l2 2 4-5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.3" fill="none"/></svg>
+            </div>
+            <div class="child-info">
+              <div class="child-name">Code Quality</div>
+              <div class="child-finding">Clean patterns, 2 TODOs flagged</div>
+            </div>
+            <div class="child-meta">
+              <span class="child-duration">0m 42s</span>
+              <span class="child-status status-done">Done</span>
+            </div>
+          </div>
+
+          <!-- 2. Test Coverage — amber (gap found) — selected -->
+          <div class="child-node severity-amber selected">
+            <div class="child-check done">
+              <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5.5 L4 7.5 L8 3" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="child-icon purple">
+              <svg width="16" height="16" viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M5 7h6M5 9.5h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            </div>
+            <div class="child-info">
+              <div class="child-name">Test Coverage</div>
+              <div class="child-finding">78% coverage, gap in backtrack rendering</div>
+            </div>
+            <div class="child-meta">
+              <span class="child-duration">1m 08s</span>
+              <span class="child-status status-done">Done</span>
+            </div>
+          </div>
+
+          <!-- 3. Security — green (clean) -->
+          <div class="child-node severity-green">
+            <div class="child-check done">
+              <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5.5 L4 7.5 L8 3" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="child-icon blue">
+              <svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 2 L3 4.5 v4c0 3 5 5.5 5 5.5s5-2.5 5-5.5v-4 L8 2z" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M6 8l1.5 1.5 3-3" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>
+            </div>
+            <div class="child-info">
+              <div class="child-name">Security</div>
+              <div class="child-finding">No vulnerabilities detected</div>
+            </div>
+            <div class="child-meta">
+              <span class="child-duration">0m 35s</span>
+              <span class="child-status status-done">Done</span>
+            </div>
+          </div>
+
+          <!-- 4. Architecture — green (clean) -->
+          <div class="child-node severity-green">
+            <div class="child-check done">
+              <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5.5 L4 7.5 L8 3" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="child-icon orange">
+              <svg width="16" height="16" viewBox="0 0 16 16"><rect x="4" y="2" width="8" height="5" rx="1" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2" fill="none"/><line x1="8" y1="7" x2="4.5" y2="9" stroke="currentColor" stroke-width="1.1"/><line x1="8" y1="7" x2="11.5" y2="9" stroke="currentColor" stroke-width="1.1"/></svg>
+            </div>
+            <div class="child-info">
+              <div class="child-name">Architecture</div>
+              <div class="child-finding">Aligns with CLAUDE.md patterns</div>
+            </div>
+            <div class="child-meta">
+              <span class="child-duration">0m 51s</span>
+              <span class="child-status status-done">Done</span>
+            </div>
+          </div>
+
+          <!-- 5. Documentation — amber (missing JSDoc) -->
+          <div class="child-node severity-amber">
+            <div class="child-check done">
+              <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5.5 L4 7.5 L8 3" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="child-icon amber">
+              <svg width="16" height="16" viewBox="0 0 16 16"><path d="M3 2h7l3 3v9H3V2z" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M5 7h6M5 9.5h4M5 12h5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
+            </div>
+            <div class="child-info">
+              <div class="child-name">Documentation</div>
+              <div class="child-finding">Missing JSDoc on 3 exports</div>
+            </div>
+            <div class="child-meta">
+              <span class="child-duration">0m 28s</span>
+              <span class="child-status status-done">Done</span>
+            </div>
+          </div>
+
+          <!-- 6. Summary — pending (ghosted) -->
+          <div class="child-node severity-pending">
+            <div class="child-check pending-empty"></div>
+            <div class="child-icon pending">
+              <svg width="16" height="16" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M5 6h6M5 8.5h6M5 11h4" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
+            </div>
+            <div class="child-info">
+              <div class="child-name">Summary</div>
+              <div class="child-finding">Waiting for all sub-agents to complete...</div>
+            </div>
+            <div class="child-meta">
+              <span class="child-duration">&mdash;</span>
+              <span class="child-status status-pending">Pending</span>
+            </div>
+          </div>
+
+        </div><!-- /tree-children -->
+      </div><!-- /tree-container -->
+    </div><!-- /section-card -->
+
+
+    <!-- SECTION 2: Expanded Detail View -->
+    <div class="click-hint">
+      <svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6" stroke="#c8841a" stroke-width="1.2" fill="none"/><path d="M7 4v3M7 9v.5" stroke="#c8841a" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Showing expanded detail for <strong style="margin: 0 3px;">Test Coverage</strong> sub-agent (selected above)
+    </div>
+
+    <div class="detail-card">
+
+      <!-- Header -->
+      <div class="detail-header">
+        <div class="detail-header-left">
+          <div class="detail-header-icon">
+            <svg width="18" height="18" viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M5 7h6M5 9.5h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <div class="detail-title">Sub-agent: Test Coverage</div>
+            <div class="detail-title-sub">Analyse test coverage and identify gaps in the test suite</div>
+          </div>
+        </div>
+        <div class="detail-header-right">
+          <div class="detail-duration">1m 08s</div>
+          <div class="detail-status">DONE</div>
+        </div>
+      </div>
+
+      <!-- Tool Call Timeline -->
+      <div class="tool-timeline">
+        <div class="tool-timeline-title">Tool Call Timeline</div>
+
+        <div class="tool-row">
+          <div class="tool-dot read">
+            <svg width="11" height="11" viewBox="0 0 16 16"><path d="M3 2h7l3 3v9H3V2z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+          </div>
+          <span class="tool-path">Read client/src/test/ChainView.test.tsx</span>
+          <span class="tool-dur">0.3s</span>
+          <span class="tool-summary">Read existing test file (4 test cases)</span>
+        </div>
+
+        <div class="tool-row">
+          <div class="tool-dot read">
+            <svg width="11" height="11" viewBox="0 0 16 16"><path d="M3 2h7l3 3v9H3V2z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+          </div>
+          <span class="tool-path">Read client/src/test/StepNode.test.tsx</span>
+          <span class="tool-dur">0.2s</span>
+          <span class="tool-summary">Read step node tests (3 test cases)</span>
+        </div>
+
+        <div class="tool-row">
+          <div class="tool-dot bash">
+            <svg width="11" height="11" viewBox="0 0 16 16"><path d="M4 5l3 3-3 3" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><line x1="9" y1="11" x2="12" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <span class="tool-path">npm test -- --coverage --reporter=text</span>
+          <span class="tool-dur">4.2s</span>
+          <span class="tool-summary">Ran test suite with coverage</span>
+        </div>
+
+        <div class="tool-row">
+          <div class="tool-dot read">
+            <svg width="11" height="11" viewBox="0 0 16 16"><path d="M3 2h7l3 3v9H3V2z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+          </div>
+          <span class="tool-path">Read coverage/lcov-report/index.html</span>
+          <span class="tool-dur">0.1s</span>
+          <span class="tool-summary">Parsed coverage report</span>
+        </div>
+
+        <div class="tool-row">
+          <div class="tool-dot grep">
+            <svg width="11" height="11" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4" stroke="currentColor" stroke-width="1.5" fill="none"/><line x1="10" y1="10" x2="13" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <span class="tool-path">Grep "backtrack|retry|conditional" client/src/test/</span>
+          <span class="tool-dur">0.4s</span>
+          <span class="tool-summary">Searched for backtrack test patterns</span>
+        </div>
+      </div>
+
+      <!-- Finding Card -->
+      <div class="finding-section">
+        <div class="finding-card">
+          <div class="finding-header">
+            <span class="finding-severity">AMBER</span>
+            <span class="finding-title">Test Coverage Gap &mdash; Backtrack Rendering</span>
+          </div>
+          <div class="finding-detail">
+            Overall coverage is 78% (target: 80%). The specific gap is in <code style="font-family: 'SF Mono', 'Fira Code', monospace; font-size: 11.5px; background: rgba(212, 134, 10, 0.1); padding: 1px 4px; border-radius: 3px;">ChainView.tsx</code> lines 142&ndash;168 which handle the backtrack arrow SVG rendering. No test exists for the case where a story has 3+ backtracks, causing the inline retry badges to stack. Recommend adding a test case with mock data containing a triple backtrack scenario.
+          </div>
+          <div class="finding-files">
+            <div class="finding-files-label">Files Affected</div>
+            <div>
+              <span class="finding-file">client/src/views/ChainView.tsx:142-168</span>
+              <span class="finding-file">client/src/test/ChainView.test.tsx</span>
+            </div>
+          </div>
+          <div class="finding-recommendation">
+            <div class="finding-recommendation-label">Recommendation</div>
+            Add test case: <code>'renders stacked retry badges for 3+ backtracks'</code>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inputs/Outputs Summary -->
+      <div class="summary-section">
+        <div class="summary-title">Inputs / Outputs Summary</div>
+        <table class="summary-table">
+          <tr>
+            <td>Input</td>
+            <td>Story 2.4 codebase, test directory</td>
+          </tr>
+          <tr>
+            <td>Files Read</td>
+            <td class="mono">4</td>
+          </tr>
+          <tr>
+            <td>Commands Run</td>
+            <td class="mono">1 <span style="color: var(--muted); font-family: system-ui; font-size: 11.5px;">(npm test --coverage)</span></td>
+          </tr>
+          <tr>
+            <td>Searches</td>
+            <td class="mono">1 <span style="color: var(--muted); font-family: system-ui; font-size: 11.5px;">(backtrack patterns)</span></td>
+          </tr>
+          <tr>
+            <td>Duration</td>
+            <td class="mono">1m 08s</td>
+          </tr>
+          <tr>
+            <td>Output</td>
+            <td>Coverage report: 78%, 1 gap identified</td>
+          </tr>
+          <tr>
+            <td>Severity</td>
+            <td><span class="severity-badge amber">AMBER</span> <span style="color: var(--muted); font-size: 12px; margin-left: 4px;">gap found</span></td>
+          </tr>
+        </table>
+      </div>
+
+    </div><!-- /detail-card -->
+
+  </main>
+</div><!-- /app-layout -->
+
+</body>
+</html>

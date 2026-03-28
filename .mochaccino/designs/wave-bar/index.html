@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngelEye — Wave Bar — Mochaccino</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #e8e0d4;
+    --surface: #ede7dc;
+    --surface-mid: #ddd6cc;
+    --card: #f5f1eb;
+    --border: #d4cdc4;
+    --border-raised: #ccc5bb;
+    --primary: #c8841a;
+    --fg: #2a2018;
+    --muted: #7a6e5e;
+    --muted-dim: #9e9484;
+
+    --green: #5a9a3c;
+    --amber: #d4860a;
+    --red: #c05040;
+    --blue: #4a7fb5;
+    --orange: #c07030;
+    --purple: #8a6ab5;
+    --pink: #b56a8a;
+    --gray: #8a8a8a;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Banner */
+  .banner {
+    background: var(--fg);
+    color: var(--muted);
+    font-size: 11px;
+    text-align: center;
+    padding: 3px 0;
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+  }
+
+  /* Layout */
+  .app-layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 224px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    overflow-y: auto;
+  }
+
+  .sidebar-brand {
+    padding: 20px 16px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-brand h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 0.18em;
+    color: var(--primary);
+    font-weight: 400;
+  }
+
+  .sidebar-brand .brand-sub {
+    font-size: 10px;
+    color: var(--muted-dim);
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+  }
+
+  .sidebar-section {
+    padding: 16px 0 8px;
+  }
+
+  .sidebar-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 16px 6px;
+  }
+
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #4a3e30;
+    cursor: pointer;
+    transition: background 0.12s;
+    border-left: 2px solid transparent;
+  }
+
+  .sidebar-item:hover {
+    background: var(--surface-mid);
+  }
+
+  .sidebar-item.active {
+    background: var(--surface);
+    border-left: 2px solid var(--primary);
+    color: var(--fg);
+    font-weight: 600;
+  }
+
+  .sidebar-icon {
+    width: 16px;
+    height: 16px;
+    opacity: 0.6;
+  }
+
+  /* Main content */
+  .main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 28px 32px;
+  }
+
+  .page-header {
+    margin-bottom: 24px;
+  }
+
+  .page-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 0.12em;
+    color: var(--fg);
+    font-weight: 400;
+  }
+
+  .page-header p {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* Wave card */
+  .wave-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(42, 32, 24, 0.06);
+  }
+
+  .wave-card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    color: var(--fg);
+    font-weight: 400;
+  }
+
+  .wave-card-subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+    margin-bottom: 20px;
+  }
+
+  /* Wave bar */
+  .wave-bar {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    padding: 12px 0 8px;
+    position: relative;
+  }
+
+  .wave-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 88px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .wave-step.active {
+    transform: scale(1.04);
+  }
+
+  .wave-step.pending {
+    opacity: 0.45;
+  }
+
+  .step-agent-name {
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  .step-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: #fff;
+    position: relative;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .step-avatar.done {
+    border-color: var(--green);
+  }
+
+  .step-avatar.active-state {
+    border-color: var(--amber);
+    box-shadow: 0 0 0 3px rgba(212, 134, 10, 0.2);
+  }
+
+  .step-avatar.pending-state {
+    border-color: var(--border);
+  }
+
+  .step-avatar.amber-dashed {
+    border-color: var(--amber);
+    border-style: dashed;
+  }
+
+  /* Avatar colors by agent */
+  .avatar-bob { background: var(--blue); }
+  .avatar-amelia { background: var(--purple); }
+  .avatar-nate { background: var(--orange); }
+  .avatar-taylor { background: var(--green); }
+  .avatar-lisa { background: var(--pink); }
+  .avatar-ship { background: var(--fg); }
+
+  /* Badges */
+  .badge-check {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 14px;
+    height: 14px;
+    background: var(--green);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--card);
+  }
+
+  .badge-check svg {
+    width: 8px;
+    height: 8px;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .badge-pulse {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 14px;
+    height: 14px;
+    background: var(--amber);
+    border-radius: 50%;
+    border: 2px solid var(--card);
+    animation: pulse-dot 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.3); opacity: 0.7; }
+  }
+
+  .badge-patch {
+    position: absolute;
+    top: -6px;
+    right: -14px;
+    background: var(--amber);
+    color: #fff;
+    font-size: 8px;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 6px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .step-code {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--fg);
+    margin-top: 5px;
+    letter-spacing: 0.03em;
+  }
+
+  .step-duration {
+    font-size: 9px;
+    color: var(--muted-dim);
+    margin-top: 2px;
+  }
+
+  /* Connector arrows between steps */
+  .wave-connector {
+    flex-shrink: 0;
+    width: 40px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .wave-connector svg {
+    overflow: visible;
+  }
+
+  /* Backtrack arc container */
+  .wave-bar-with-arc {
+    position: relative;
+  }
+
+  .backtrack-arc {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  .backtrack-label {
+    font-size: 9px;
+    font-weight: 600;
+    fill: var(--amber);
+  }
+</style>
+</head>
+<body>
+
+<div class="banner">Mochaccino &middot; wave-bar</div>
+
+<div class="app-layout">
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-brand">
+      <h1>ANGELEYE</h1>
+      <div class="brand-sub">Session Intelligence</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Views</div>
+      <div class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="2"/></svg>
+        Observer
+      </div>
+      <div class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="2" y="2" width="12" height="12" rx="2"/><line x1="2" y1="6" x2="14" y2="6"/><line x1="6" y1="6" x2="6" y2="14"/></svg>
+        Organiser
+      </div>
+      <div class="sidebar-item active">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><polyline points="2,12 5,6 8,9 11,3 14,7"/></svg>
+        Workflows
+      </div>
+      <div class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="8" cy="8" r="6"/><line x1="8" y1="5" x2="8" y2="8"/><line x1="8" y1="8" x2="11" y2="10"/></svg>
+        Settings
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <main class="main">
+    <div class="page-header">
+      <h2>WAVE BAR</h2>
+      <p>Horizontal step visualization for BMAD story lifecycle chains</p>
+    </div>
+
+    <!-- Wave 1: Clean Run -->
+    <div class="wave-card">
+      <div class="wave-card-title">WAVE 1: CLEAN RUN</div>
+      <div class="wave-card-subtitle">Story 2.2 — All steps completed, zero backtracks. The ideal lifecycle.</div>
+
+      <div class="wave-bar" id="wave1">
+        <!-- Bob CS -->
+        <div class="wave-step">
+          <div class="step-agent-name">Bob</div>
+          <div class="step-avatar avatar-bob done">B
+            <div class="badge-check"><svg viewBox="0 0 8 8"><polyline points="1.5,4 3.5,6 6.5,2"/></svg></div>
+          </div>
+          <div class="step-code">CS</div>
+          <div class="step-duration">4m 12s</div>
+        </div>
+        <div class="wave-connector">
+          <svg width="40" height="12"><line x1="0" y1="6" x2="34" y2="6" stroke="var(--green)" stroke-width="2"/><polygon points="34,2 40,6 34,10" fill="var(--green)"/></svg>
+        </div>
+        <!-- Bob VS -->
+        <div class="wave-step">
+          <div class="step-agent-name">Bob</div>
+          <div class="step-avatar avatar-bob done">B
+            <div class="badge-check"><svg viewBox="0 0 8 8"><polyline points="1.5,4 3.5,6 6.5,2"/></svg></div>
+          </div>
+          <div class="step-code">VS</div>
+          <div class="step-duration">6m 38s</div>
+        </div>
+        <div class="wave-connector">
+          <svg width="40" height="12"><line x1="0" y1="6" x2="34" y2="6" stroke="var(--green)" stroke-width="2"/><polygon points="34,2 40,6 34,10" fill="var(--green)"/></svg>
+        </div>
+        <!-- Amelia DS -->
+        <div class="wave-step">
+          <div class="step-agent-name">Amelia</div>
+          <div class="step-avatar avatar-amelia done">A
+            <div class="badge-check"><svg viewBox="0 0 8 8"><polyline points="1.5,4 3.5,6 6.5,2"/></svg></div>
+          </div>
+          <div class="step-code">DS</div>
+          <div class="step-duration">18m 05s</div>
+        </div>
+        <div class="wave-connector">
+          <svg width="40" height="12"><line x1="0" y1="6" x2="34" y2="6" stroke="var(--green)" stroke-width="2"/><polygon points="34,2 40,6 34,10" fill="var(--green)"/></svg>
+        </div>
+        <!-- Nate DR -->
+        <div class="wave-step">
+          <div class="step-agent-name">Nate</div>
+          <div class="step-avatar avatar-nate done">N
+            <div class="badge-check"><svg viewBox="0 0 8 8"><polyline points="1.5,4 3.5,6 6.5,2"/></svg></div>
+          </div>
+          <div class="step-code">DR</div>
+          <div class="step-duration">8m 22s</div>
+        </div>
+        <div class="wave-connector">
+          <svg width="40" height="12"><line x1="0" y1="6" x2="34" y2="6" stroke="var(--green)" stroke-width="2"/><polygon points="34,2 40,6 34,10" fill="var(--green)"/></svg>
+        </div>
+        <!-- Taylor SAT -->
+        <div class="wave-step">
+          <div class="step-agent-name">Taylor</div>
+          <div class="step-avatar avatar-taylor done">T
+            <div class="badge-check"><svg viewBox="0 0 8 8"><polyline points="1.5,4 3.5,6 6.5,2"/></svg></div>
+          </div>
+          <div class="step-code">SAT</div>
+          <div class="step-duration">5m 44s</div>
+        </div>
+        <div class="wave-connector">
+          <svg width="40" height="12"><line x1="0" y1="6" x2="34" y2="6" stroke="var(--green)" stroke-width="2"/><polygon points="34,2 40,6 34,10" fill="var(--green)"/></svg>
+        </div>
+        <!-- Lisa CU -->
+        <div class="wave-step">
+          <div class="step-agent-name">Lisa</div>
+          <div class="step-avatar avatar-lisa done">L
+            <div class="badge-check"><svg viewBox="0 0 8 8"><polyline points="1.5,4 3.5,6 6.5,2"/></svg></div>
+          </div>
+          <div class="step-code">CU</div>
+          <div class="step-duration">3m 11s</div>
+        </div>
+        <div class="wave-connector">
+          <svg width="40" height="12"><line x1="0" y1="6" x2="34" y2="6" stroke="var(--green)" stroke-width="2"/><polygon points="34,2 40,6 34,10" fill="var(--green)"/></svg>
+        </div>
+        <!-- Ship -->
+        <div class="wave-step">
+          <div class="step-agent-name">Ship</div>
+          <div class="step-avatar avatar-ship done" style="font-size:14px;">&#9875;
+            <div class="badge-check"><svg viewBox="0 0 8 8"><polyline points="1.5,4 3.5,6 6.5,2"/></svg></div>
+          </div>
+          <div class="step-code">SHIP</div>
+          <div class="step-duration">1m 30s</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wave 2: Active with Pending -->
+    <div class="wave-card">
+      <div class="wave-card-title">WAVE 2: ACTIVE WITH PENDING</div>
+      <div class="wave-card-subtitle">Story 2.4 — Design stage in progress, downstream steps awaiting turn.</div>
+
+      <div class="wave-bar" id="wave2">
+        <!-- Bob WN -->
+        <div class="wave-step">
+          <div class="step-agent-name">Bob</div>
+          <div class="step-avatar avatar-bob done">B
+            <div class="badge-check"><svg viewBox="0 0 8 8"><polyline points="1.5,4 3.5,6 6.5,2"/></svg></div>
+          </div>
+          <div class="step-code">WN</div>
+          <div class="step-duration">2m 50s</div>
+        </div>
+        <div class="wave-connector">
+          <svg width="40" height="12"><line x1="0" y1="6" x2="34" y2="6" stroke="var(--green)" stroke-width="2"/><polygon points="34,2 40,6 34,10" fill="var(--green)"/></svg>
+        </div>
+        <!-- Bob CS -->
+        <div class="wave-step">
+          <div class="step-agent-name">Bob</div>
+          <div class="step-avatar avatar-bob done">B
+            <div class="badge-check"><svg viewBox="0 0 8 8"><polyline points="1.5,4 3.5,6 6.5,2"/></svg></div>
+          </div>
+          <div class="step-code">CS</div>
+          <div class="step-duration">5m 18s</div>
+        </div>
+        <div class="wave-connector">
+          <svg width="40" height="12"><line x1="0" y1="6" x2="34" y2="6" stroke="var(--green)" stroke-width="2"/><polygon points="34,2 40,6 34,10" fill="var(--green)"/></svg>
+        </div>
+        <!-- Bob VS -->
+        <div class="wave-step">
+          <div class="step-agent-name">Bob</div>
+          <div class="step-avatar avatar-bob done">B
+            <div class="badge-check"><svg viewBox="0 0 8 8"><polyline points="1.5,4 3.5,6 6.5,2"/></svg></div>
+          </div>
+          <div class="step-code">VS</div>
+          <div class="step-duration">7m 02s</div>
+        </div>
+        <div class="wave-connector">
+          <svg width="40" height="12">
+            <line x1="0" y1="6" x2="34" y2="6" stroke="var(--green)" stroke-width="2" stroke-dasharray="6,3"/>
+            <polygon points="34,2 40,6 34,10" fill="var(--green)"/>
+          </svg>
+        </div>
+        <!-- Amelia DS (active) -->
+        <div class="wave-step active">
+          <div class="step-agent-name" style="color:var(--amber);font-weight:700;">Amelia</div>
+          <div class="step-avatar avatar-amelia active-state">A
+            <div class="badge-pulse"></div>
+          </div>
+          <div class="step-code" style="color:var(--amber);">DS</div>
+          <div class="step-duration">12m 44s...</div>
+        </div>
+        <div class="wave-connector">
+          <svg width="40" height="12">
+            <line x1="0" y1="6" x2="34" y2="6" stroke="var(--gray)" stroke-width="1.5" stroke-dasharray="3,4"/>
+            <polygon points="34,3 40,6 34,9" fill="var(--gray)"/>
+          </svg>
+        </div>
+        <!-- Nate DR (pending) -->
+        <div class="wave-step pending">
+          <div class="step-agent-name">Nate</div>
+          <div class="step-avatar avatar-nate pending-state">N</div>
+          <div class="step-code">DR</div>
+          <div class="step-duration">&mdash;</div>
+        </div>
+        <div class="wave-connector" style="opacity:0.45;">
+          <svg width="40" height="12">
+            <line x1="0" y1="6" x2="34" y2="6" stroke="var(--gray)" stroke-width="1.5" stroke-dasharray="3,4"/>
+            <polygon points="34,3 40,6 34,9" fill="var(--gray)"/>
+          </svg>
+        </div>
+        <!-- Taylor SAT (pending) -->
+        <div class="wave-step pending">
+          <div class="step-agent-name">Taylor</div>
+          <div class="step-avatar avatar-taylor pending-state">T</div>
+          <div class="step-code">SAT</div>
+          <div class="step-duration">&mdash;</div>
+        </div>
+        <div class="wave-connector" style="opacity:0.45;">
+          <svg width="40" height="12">
+            <line x1="0" y1="6" x2="34" y2="6" stroke="var(--gray)" stroke-width="1.5" stroke-dasharray="3,4"/>
+            <polygon points="34,3 40,6 34,9" fill="var(--gray)"/>
+          </svg>
+        </div>
+        <!-- Lisa CU (pending) -->
+        <div class="wave-step pending">
+          <div class="step-agent-name">Lisa</div>
+          <div class="step-avatar avatar-lisa pending-state">L</div>
+          <div class="step-code">CU</div>
+          <div class="step-duration">&mdash;</div>
+        </div>
+        <div class="wave-connector" style="opacity:0.45;">
+          <svg width="40" height="12">
+            <line x1="0" y1="6" x2="34" y2="6" stroke="var(--gray)" stroke-width="1.5" stroke-dasharray="3,4"/>
+            <polygon points="34,3 40,6 34,9" fill="var(--gray)"/>
+          </svg>
+        </div>
+        <!-- Ship (pending) -->
+        <div class="wave-step pending">
+          <div class="step-agent-name">Ship</div>
+          <div class="step-avatar avatar-ship pending-state" style="font-size:14px;">&#9875;</div>
+          <div class="step-code">SHIP</div>
+          <div class="step-duration">&mdash;</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wave 3: Backtrack Scenario -->
+    <div class="wave-card">
+      <div class="wave-card-title">WAVE 3: BACKTRACK SCENARIO</div>
+      <div class="wave-card-subtitle">Story 0.1 — Conditional pass at DR triggers a patch cycle back to DS before continuing.</div>
+
+      <div class="wave-bar-with-arc">
+        <!-- SVG arc overlay — positioned absolutely -->
+        <svg class="backtrack-arc" id="arcSvg" viewBox="0 0 1000 180" preserveAspectRatio="xMidYMid meet">
+          <!-- Arc from DR1 back to DS2 — will be positioned by script -->
+          <defs>
+            <marker id="arc-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+              <polygon points="0,0 8,3 0,6" fill="#d4860a"/>
+            </marker>
+          </defs>
+          <path id="backtrackPath" d="" fill="none" stroke="#d4860a" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arc-arrow)"/>
+          <text id="backtrackLabel" class="backtrack-label" x="0" y="0" text-anchor="middle">CONDITIONAL PASS &#8594; patches</text>
+        </svg>
+
+        <div class="wave-bar" id="wave3">
+          <!-- Bob CS -->
+          <div class="wave-step" data-step="w3-cs">
+            <div class="step-agent-name">Bob</div>
+            <div class="step-avatar avatar-bob done">B
+              <div class="badge-check"><svg viewBox="0 0 8 8"><polyline points="1.5,4 3.5,6 6.5,2"/></svg></div>
+            </div>
+            <div class="step-code">CS</div>
+            <div class="step-duration">3m 55s</div>
+          </div>
+          <div class="wave-connector">
+            <svg width="40" height="12"><line x1="0" y1="6" x2="34" y2="6" stroke="var(--green)" stroke-width="2"/><polygon points="34,2 40,6 34,10" fill="var(--green)"/></svg>
+          </div>
+          <!-- Bob VS -->
+          <div class="wave-step" data-step="w3-vs">
+            <div class="step-agent-name">Bob</div>
+            <div class="step-avatar avatar-bob done">B
+              <div class="badge-check"><svg viewBox="0 0 8 8"><polyline points="1.5,4 3.5,6 6.5,2"/></svg></div>
+            </div>
+            <div class="step-code">VS</div>
+            <div class="step-duration">5m 41s</div>
+          </div>
+          <div class="wave-connector">
+            <svg width="40" height="12"><line x1="0" y1="6" x2="34" y2="6" stroke="var(--green)" stroke-width="2"/><polygon points="34,2 40,6 34,10" fill="var(--green)"/></svg>
+          </div>
+          <!-- Amelia DS -->
+          <div class="wave-step" data-step="w3-ds1">
+            <div class="step-agent-name">Amelia</div>
+            <div class="step-avatar avatar-amelia done">A
+              <div class="badge-check"><svg viewBox="0 0 8 8"><polyline points="1.5,4 3.5,6 6.5,2"/></svg></div>
+            </div>
+            <div class="step-code">DS</div>
+            <div class="step-duration">15m 30s</div>
+          </div>
+          <div class="wave-connector">
+            <svg width="40" height="12"><line x1="0" y1="6" x2="34" y2="6" stroke="var(--green)" stroke-width="2"/><polygon points="34,2 40,6 34,10" fill="var(--green)"/></svg>
+          </div>
+          <!-- Nate DR1 (cond-pass) -->
+          <div class="wave-step" data-step="w3-dr1">
+            <div class="step-agent-name">Nate</div>
+            <div class="step-avatar avatar-nate amber-dashed">N</div>
+            <div class="step-code" style="color:var(--amber);">DR<sub>1</sub></div>
+            <div class="step-duration" style="color:var(--amber);">cond-pass</div>
+          </div>
+          <div class="wave-connector">
+            <svg width="40" height="12">
+              <line x1="0" y1="6" x2="34" y2="6" stroke="var(--amber)" stroke-width="2" stroke-dasharray="5,3"/>
+              <polygon points="34,2 40,6 34,10" fill="var(--amber)"/>
+            </svg>
+          </div>
+          <!-- Amelia DS2 (patch) -->
+          <div class="wave-step" data-step="w3-ds2">
+            <div class="step-agent-name">Amelia</div>
+            <div class="step-avatar avatar-amelia done">A
+              <span class="badge-patch">patch</span>
+              <div class="badge-check"><svg viewBox="0 0 8 8"><polyline points="1.5,4 3.5,6 6.5,2"/></svg></div>
+            </div>
+            <div class="step-code">DS<sub>2</sub></div>
+            <div class="step-duration">9m 18s</div>
+          </div>
+          <div class="wave-connector">
+            <svg width="40" height="12"><line x1="0" y1="6" x2="34" y2="6" stroke="var(--green)" stroke-width="2"/><polygon points="34,2 40,6 34,10" fill="var(--green)"/></svg>
+          </div>
+          <!-- Nate DR2 -->
+          <div class="wave-step" data-step="w3-dr2">
+            <div class="step-agent-name">Nate</div>
+            <div class="step-avatar avatar-nate done">N
+              <div class="badge-check"><svg viewBox="0 0 8 8"><polyline points="1.5,4 3.5,6 6.5,2"/></svg></div>
+            </div>
+            <div class="step-code">DR<sub>2</sub></div>
+            <div class="step-duration">6m 55s</div>
+          </div>
+          <div class="wave-connector">
+            <svg width="40" height="12"><line x1="0" y1="6" x2="34" y2="6" stroke="var(--green)" stroke-width="2"/><polygon points="34,2 40,6 34,10" fill="var(--green)"/></svg>
+          </div>
+          <!-- Taylor SAT -->
+          <div class="wave-step" data-step="w3-sat">
+            <div class="step-agent-name">Taylor</div>
+            <div class="step-avatar avatar-taylor done">T
+              <div class="badge-check"><svg viewBox="0 0 8 8"><polyline points="1.5,4 3.5,6 6.5,2"/></svg></div>
+            </div>
+            <div class="step-code">SAT</div>
+            <div class="step-duration">4m 12s</div>
+          </div>
+          <div class="wave-connector">
+            <svg width="40" height="12"><line x1="0" y1="6" x2="34" y2="6" stroke="var(--green)" stroke-width="2"/><polygon points="34,2 40,6 34,10" fill="var(--green)"/></svg>
+          </div>
+          <!-- Lisa CU -->
+          <div class="wave-step" data-step="w3-cu">
+            <div class="step-agent-name">Lisa</div>
+            <div class="step-avatar avatar-lisa done">L
+              <div class="badge-check"><svg viewBox="0 0 8 8"><polyline points="1.5,4 3.5,6 6.5,2"/></svg></div>
+            </div>
+            <div class="step-code">CU</div>
+            <div class="step-duration">2m 48s</div>
+          </div>
+          <div class="wave-connector">
+            <svg width="40" height="12"><line x1="0" y1="6" x2="34" y2="6" stroke="var(--green)" stroke-width="2"/><polygon points="34,2 40,6 34,10" fill="var(--green)"/></svg>
+          </div>
+          <!-- Ship -->
+          <div class="wave-step" data-step="w3-ship">
+            <div class="step-agent-name">Ship</div>
+            <div class="step-avatar avatar-ship done" style="font-size:14px;">&#9875;
+              <div class="badge-check"><svg viewBox="0 0 8 8"><polyline points="1.5,4 3.5,6 6.5,2"/></svg></div>
+            </div>
+            <div class="step-code">SHIP</div>
+            <div class="step-duration">1m 15s</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// Position the backtrack arc from DR1 to DS2
+function positionBacktrackArc() {
+  const container = document.querySelector('.wave-bar-with-arc');
+  const dr1 = document.querySelector('[data-step="w3-dr1"]');
+  const ds2 = document.querySelector('[data-step="w3-ds2"]');
+  const svg = document.getElementById('arcSvg');
+
+  if (!container || !dr1 || !ds2 || !svg) return;
+
+  const containerRect = container.getBoundingClientRect();
+  const dr1Rect = dr1.getBoundingClientRect();
+  const ds2Rect = ds2.getBoundingClientRect();
+
+  const cw = containerRect.width;
+  const ch = containerRect.height;
+
+  // Update viewBox to match container size
+  svg.setAttribute('viewBox', `0 0 ${cw} ${ch}`);
+
+  // Start from center-top of DR1, end at center-top of DS2
+  const x1 = dr1Rect.left - containerRect.left + dr1Rect.width / 2;
+  const x2 = ds2Rect.left - containerRect.left + ds2Rect.width / 2;
+  const yBase = dr1Rect.top - containerRect.top + 8; // top of avatar area
+
+  // Arc goes upward
+  const arcHeight = 40;
+  const midX = (x1 + x2) / 2;
+
+  const path = `M ${x1} ${yBase} C ${x1} ${yBase - arcHeight}, ${x2} ${yBase - arcHeight}, ${x2} ${yBase}`;
+  document.getElementById('backtrackPath').setAttribute('d', path);
+
+  const label = document.getElementById('backtrackLabel');
+  label.setAttribute('x', midX);
+  label.setAttribute('y', yBase - arcHeight - 6);
+}
+
+// Run on load and resize
+window.addEventListener('load', () => {
+  setTimeout(positionBacktrackArc, 100);
+});
+window.addEventListener('resize', positionBacktrackArc);
+</script>
+
+</body>
+</html>

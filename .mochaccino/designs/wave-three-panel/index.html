@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngelEye — Wave Three-Panel — Mochaccino</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #e8e0d4;
+    --surface: #ede7dc;
+    --surface-mid: #ddd6cc;
+    --card: #f5f1eb;
+    --border: #d4cdc4;
+    --border-raised: #ccc5bb;
+    --primary: #c8841a;
+    --fg: #2a2018;
+    --muted: #7a6e5e;
+    --muted-dim: #9e9484;
+
+    --green: #5a9a3c;
+    --amber: #d4860a;
+    --blue: #4a7fb5;
+    --orange: #c07030;
+    --purple: #8a6ab5;
+    --pink: #b56a8a;
+    --gray: #8a8a8a;
+
+    --mono: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    --heading: 'Bebas Neue', sans-serif;
+    --body: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+    --sidebar-w: 224px;
+    --wave-h: 80px;
+    --status-h: 32px;
+    --banner-h: 24px;
+  }
+
+  body {
+    font-family: var(--body);
+    background: var(--bg);
+    color: var(--fg);
+    font-size: 13px;
+    line-height: 1.5;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Banner ─────────────────────────────────── */
+  .banner {
+    background: var(--fg);
+    color: var(--muted-dim);
+    font-size: 11px;
+    text-align: center;
+    padding: 3px 0;
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+    height: var(--banner-h);
+  }
+  .banner strong { color: var(--primary); }
+
+  /* ── App Layout ─────────────────────────────── */
+  .app-layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* ── Sidebar ────────────────────────────────── */
+  .sidebar {
+    width: var(--sidebar-w);
+    min-width: var(--sidebar-w);
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+  }
+
+  .sidebar-brand {
+    padding: 20px 16px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-brand h1 {
+    font-family: var(--heading);
+    font-size: 28px;
+    letter-spacing: 2px;
+    color: var(--primary);
+    line-height: 1;
+  }
+  .sidebar-brand .subtitle {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .sidebar nav {
+    padding: 12px 0;
+    flex: 1;
+  }
+  .sidebar nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .sidebar nav a:hover { background: var(--surface-mid); color: var(--fg); }
+  .sidebar nav a.active {
+    background: var(--surface-mid);
+    color: var(--primary);
+    font-weight: 600;
+    border-left: 3px solid var(--primary);
+    padding-left: 17px;
+  }
+  .sidebar nav a .icon { width: 18px; text-align: center; font-size: 15px; }
+
+  .sidebar-footer {
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--muted-dim);
+  }
+
+  /* ── Main Container ─────────────────────────── */
+  .main-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ── Wave Bar ───────────────────────────────── */
+  .wave-bar {
+    height: var(--wave-h);
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 24px;
+    flex-shrink: 0;
+    overflow-x: auto;
+  }
+  .wave-bar-inner {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  .wave-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 72px;
+    cursor: default;
+    position: relative;
+  }
+  .wave-node .node-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--heading);
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    color: #fff;
+    transition: all 0.2s;
+  }
+  .wave-node .node-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+  .wave-node .node-agent {
+    font-size: 8px;
+    color: var(--muted-dim);
+    margin-top: -2px;
+  }
+
+  /* Node states */
+  .wave-node.done .node-circle { background: var(--green); }
+  .wave-node.done .node-label { color: var(--green); }
+
+  .wave-node.active .node-circle {
+    background: var(--primary);
+    box-shadow: 0 0 0 3px rgba(200, 132, 26, 0.25), 0 0 12px rgba(200, 132, 26, 0.3);
+    animation: glow 2s ease-in-out infinite;
+  }
+  .wave-node.active .node-label { color: var(--primary); font-weight: 700; }
+
+  .wave-node.pending .node-circle { background: var(--border); color: var(--muted-dim); }
+  .wave-node.pending .node-label { color: var(--muted-dim); }
+
+  @keyframes glow {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(200, 132, 26, 0.25), 0 0 12px rgba(200, 132, 26, 0.3); }
+    50% { box-shadow: 0 0 0 5px rgba(200, 132, 26, 0.15), 0 0 20px rgba(200, 132, 26, 0.4); }
+  }
+
+  /* Connectors */
+  .wave-connector {
+    width: 28px;
+    height: 2px;
+    margin-top: -14px;
+    flex-shrink: 0;
+  }
+  .wave-connector.done { background: var(--green); }
+  .wave-connector.active {
+    background: repeating-linear-gradient(90deg, var(--primary), var(--primary) 4px, transparent 4px, transparent 8px);
+  }
+  .wave-connector.pending {
+    background: repeating-linear-gradient(90deg, var(--border-raised), var(--border-raised) 3px, transparent 3px, transparent 7px);
+  }
+
+  /* ── Three Panel Grid ──────────────────────── */
+  .three-panel {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 240px 1fr 320px;
+    overflow: hidden;
+  }
+
+  /* ── Left Panel: Agent Profile ──────────────── */
+  .panel-left {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 16px;
+  }
+
+  .agent-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+  }
+
+  .agent-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .agent-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--green);
+    color: #fff;
+    font-family: var(--heading);
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .agent-header-text h2 {
+    font-family: var(--heading);
+    font-size: 24px;
+    letter-spacing: 1px;
+    line-height: 1;
+    color: var(--fg);
+  }
+  .agent-header-text .role {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .agent-header-text .action {
+    font-size: 11px;
+    color: var(--primary);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 12px 0;
+  }
+
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px 0;
+    font-size: 12px;
+  }
+  .meta-row .label { color: var(--muted); }
+  .meta-row .value { color: var(--fg); font-weight: 500; }
+  .meta-row .value.mono { font-family: var(--mono); font-size: 11px; }
+
+  .context-bar-track {
+    width: 100%;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-top: 4px;
+  }
+  .context-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--green);
+  }
+
+  .tool-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 8px;
+    font-size: 11px;
+  }
+  .tool-item {
+    display: flex;
+    justify-content: space-between;
+    color: var(--muted);
+  }
+  .tool-item .count { font-weight: 600; color: var(--fg); font-family: var(--mono); font-size: 10px; }
+
+  .verdict-badge {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .verdict-badge.pending { background: var(--surface-mid); color: var(--gray); border: 1px solid var(--border); }
+  .verdict-badge.pass { background: #e8f2e8; color: var(--green); border: 1px solid #b8d8b8; }
+  .verdict-badge.fail { background: #f2e8e8; color: #c05040; border: 1px solid #d8b8b8; }
+
+  .agent-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 12px;
+  }
+  .agent-actions button {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--fg);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: var(--body);
+  }
+  .agent-actions button:hover { background: var(--surface-mid); }
+  .agent-actions button.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .agent-actions button.primary:hover { background: #b5760f; }
+  .agent-actions button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* ── Center Panel: Transcript ──────────────── */
+  .panel-center {
+    overflow-y: auto;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .msg {
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    line-height: 1.55;
+    position: relative;
+  }
+  .msg .timestamp {
+    font-size: 10px;
+    color: var(--muted-dim);
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-family: var(--mono);
+  }
+
+  .msg.user {
+    background: #e2ecf5;
+    border: 1px solid #c4d6e8;
+    max-width: 75%;
+    align-self: flex-start;
+  }
+  .msg.user .sender {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--blue);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .msg.user code {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: rgba(74, 127, 181, 0.12);
+    padding: 1px 6px;
+    border-radius: 3px;
+  }
+
+  .msg.assistant {
+    background: var(--card);
+    border: 1px solid var(--border);
+  }
+  .msg.assistant .sender {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--purple);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .msg.tool-call {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    font-size: 11px;
+    font-family: var(--mono);
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .msg.tool-call:hover { background: var(--surface-mid); }
+  .msg.tool-call .tool-icon {
+    font-size: 12px;
+    color: var(--muted-dim);
+    flex-shrink: 0;
+  }
+  .msg.tool-call .tool-name { color: var(--orange); font-weight: 600; }
+  .msg.tool-call .tool-args { color: var(--muted); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .msg.tool-call .chevron { color: var(--muted-dim); font-size: 10px; margin-left: auto; }
+
+  .subagent-block {
+    border-left: 3px solid var(--purple);
+    background: var(--card);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 14px;
+    margin-left: 16px;
+  }
+  .subagent-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .subagent-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--purple);
+    color: #fff;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .subagent-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--purple);
+  }
+  .subagent-duration {
+    font-size: 10px;
+    color: var(--muted-dim);
+    font-family: var(--mono);
+  }
+  .subagent-tools {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 6px 0;
+  }
+  .subagent-tools .msg.tool-call {
+    font-size: 10px;
+    padding: 4px 8px;
+    margin-left: 0;
+  }
+  .subagent-finding {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 11px;
+    color: var(--fg);
+    margin-top: 6px;
+  }
+  .subagent-finding .finding-label {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted-dim);
+    margin-bottom: 2px;
+  }
+
+  .typing-indicator {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 0 0 4px;
+  }
+  .typing-indicator span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--muted-dim);
+    animation: typing-bounce 1.4s ease-in-out infinite;
+  }
+  .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+  .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typing-bounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+    30% { transform: translateY(-4px); opacity: 1; }
+  }
+
+  /* ── Right Panel: Audit Log ────────────────── */
+  .panel-right {
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .audit-section h3 {
+    font-family: var(--heading);
+    font-size: 16px;
+    letter-spacing: 1.5px;
+    color: var(--fg);
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Predicates grid */
+  .predicate-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+  }
+  .predicate-pill {
+    font-size: 9px;
+    font-weight: 600;
+    padding: 3px 6px;
+    border-radius: 4px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: 0.2px;
+  }
+  .predicate-pill.on {
+    background: #e8f2e8;
+    color: var(--green);
+    border: 1px solid #c8dcc8;
+  }
+  .predicate-pill.off {
+    background: var(--surface-mid);
+    color: var(--muted-dim);
+    border: 1px solid var(--border);
+  }
+
+  /* Observations */
+  .observation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .observation-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--blue);
+    border-radius: 0 6px 6px 0;
+    padding: 6px 10px;
+    font-size: 11px;
+    line-height: 1.4;
+  }
+  .observation-item .obs-time {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--muted-dim);
+    margin-bottom: 2px;
+  }
+
+  /* Classifications */
+  .classification-list {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .classification-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    padding: 2px 0;
+  }
+  .classification-row .ck { color: var(--muted); }
+  .classification-row .cv {
+    font-weight: 600;
+    color: var(--fg);
+    text-align: right;
+  }
+
+  /* Extractions */
+  .extraction-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .extraction-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-size: 11px;
+    gap: 8px;
+  }
+  .extraction-item .ek { color: var(--muted); flex-shrink: 0; }
+  .extraction-item .ev {
+    font-weight: 500;
+    color: var(--fg);
+    font-family: var(--mono);
+    font-size: 10px;
+    text-align: right;
+    word-break: break-all;
+  }
+  .extraction-item .ev.pending-val { color: var(--muted-dim); font-style: italic; font-family: var(--body); }
+  .copy-icon {
+    font-size: 10px;
+    color: var(--muted-dim);
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-left: 4px;
+  }
+  .copy-icon:hover { color: var(--primary); }
+
+  .audit-buttons {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+  }
+  .audit-buttons button {
+    flex: 1;
+    padding: 5px 8px;
+    border-radius: 5px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--body);
+    transition: all 0.15s;
+  }
+  .audit-buttons button:hover { background: var(--surface-mid); color: var(--fg); }
+
+  /* ── Status Bar ─────────────────────────────── */
+  .status-bar {
+    height: var(--status-h);
+    background: var(--fg);
+    color: var(--muted-dim);
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-shrink: 0;
+    letter-spacing: 0.02em;
+  }
+  .status-bar .sep { color: #4a4030; }
+  .status-bar .highlight { color: var(--primary); font-weight: 600; }
+
+  /* ── Scrollbars ─────────────────────────────── */
+  .panel-left::-webkit-scrollbar,
+  .panel-center::-webkit-scrollbar,
+  .panel-right::-webkit-scrollbar {
+    width: 6px;
+  }
+  .panel-left::-webkit-scrollbar-thumb,
+  .panel-center::-webkit-scrollbar-thumb,
+  .panel-right::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+  }
+  .panel-left::-webkit-scrollbar-track,
+  .panel-center::-webkit-scrollbar-track,
+  .panel-right::-webkit-scrollbar-track {
+    background: transparent;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ Banner ═══════════ -->
+<div class="banner"><strong>Mochaccino</strong> &middot; wave-three-panel</div>
+
+<!-- ═══════════ App Layout ═══════════ -->
+<div class="app-layout">
+
+  <!-- ─── Sidebar ─── -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <h1>ANGELEYE</h1>
+      <div class="subtitle">Ambient Intelligence</div>
+    </div>
+    <nav>
+      <a href="#"><span class="icon">&#x1F441;</span> Observer</a>
+      <a href="#"><span class="icon">&#x1F4C2;</span> Organiser</a>
+      <a href="#" class="active"><span class="icon">&#x26A1;</span> Workflows</a>
+      <a href="#"><span class="icon">&#x2699;</span> Settings</a>
+    </nav>
+    <div class="sidebar-footer">AngelEye v0.3 &middot; Mochaccino</div>
+  </aside>
+
+  <!-- ─── Main Container ─── -->
+  <div class="main-container">
+
+    <!-- ═══════════ Wave Bar ═══════════ -->
+    <div class="wave-bar">
+      <div class="wave-bar-inner">
+        <!-- Node 1: Bob WN — done -->
+        <div class="wave-node done">
+          <div class="node-circle">WN</div>
+          <div class="node-label">Bob WN</div>
+        </div>
+        <div class="wave-connector done"></div>
+
+        <!-- Node 2: Bob CS — done -->
+        <div class="wave-node done">
+          <div class="node-circle">CS</div>
+          <div class="node-label">Bob CS</div>
+        </div>
+        <div class="wave-connector done"></div>
+
+        <!-- Node 3: Bob VS — done -->
+        <div class="wave-node done">
+          <div class="node-circle">VS</div>
+          <div class="node-label">Bob VS</div>
+        </div>
+        <div class="wave-connector done"></div>
+
+        <!-- Node 4: Amelia DS — done -->
+        <div class="wave-node done">
+          <div class="node-circle">DS</div>
+          <div class="node-label">Amelia DS</div>
+        </div>
+        <div class="wave-connector active"></div>
+
+        <!-- Node 5: Nate DR — active -->
+        <div class="wave-node active">
+          <div class="node-circle">DR</div>
+          <div class="node-label">Nate DR</div>
+        </div>
+        <div class="wave-connector pending"></div>
+
+        <!-- Node 6: Taylor SAT CS — pending -->
+        <div class="wave-node pending">
+          <div class="node-circle">CS</div>
+          <div class="node-label">Taylor CS</div>
+          <div class="node-agent">SAT</div>
+        </div>
+        <div class="wave-connector pending"></div>
+
+        <!-- Node 7: Taylor SAT RA — pending -->
+        <div class="wave-node pending">
+          <div class="node-circle">RA</div>
+          <div class="node-label">Taylor RA</div>
+          <div class="node-agent">SAT</div>
+        </div>
+        <div class="wave-connector pending"></div>
+
+        <!-- Node 8: Lisa CU — pending -->
+        <div class="wave-node pending">
+          <div class="node-circle">CU</div>
+          <div class="node-label">Lisa CU</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ Three-Panel Grid ═══════════ -->
+    <div class="three-panel">
+
+      <!-- ─── LEFT: Agent Profile ─── -->
+      <div class="panel-left">
+        <div class="agent-card">
+          <div class="agent-header">
+            <div class="agent-avatar">N</div>
+            <div class="agent-header-text">
+              <h2>NATE</h2>
+              <div class="role">Reviewer</div>
+              <div class="action">DR (Delivery Review)</div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="meta-row">
+            <span class="label">Session ID</span>
+            <span class="value mono">f2d9a07c</span>
+          </div>
+          <div class="meta-row">
+            <span class="label">Project</span>
+            <span class="value" style="font-size:10px;">app.supportsignal.com.au</span>
+          </div>
+          <div class="meta-row">
+            <span class="label">Duration</span>
+            <span class="value">22m</span>
+          </div>
+          <div class="meta-row">
+            <span class="label">Context</span>
+            <span class="value">38%</span>
+          </div>
+          <div class="context-bar-track">
+            <div class="context-bar-fill" style="width: 38%;"></div>
+          </div>
+          <div class="meta-row" style="margin-top:6px;">
+            <span class="label">Model</span>
+            <span class="value mono" style="font-size:10px;">claude-opus-4-6</span>
+          </div>
+
+          <div class="divider"></div>
+
+          <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px;">Tools Used</div>
+          <div class="tool-grid">
+            <div class="tool-item"><span>Read</span><span class="count">47</span></div>
+            <div class="tool-item"><span>Grep</span><span class="count">12</span></div>
+            <div class="tool-item"><span>Bash</span><span class="count">8</span></div>
+            <div class="tool-item"><span>Agent</span><span class="count">6</span></div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div style="text-align:center;margin-bottom:4px;">
+            <span class="verdict-badge pending">PENDING</span>
+          </div>
+
+          <div class="agent-actions">
+            <button class="primary">Copy Handover</button>
+            <button>Send to Next</button>
+            <button disabled>Backtrack</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── CENTER: Conversation Transcript ─── -->
+      <div class="panel-center">
+
+        <!-- 1. User prompt -->
+        <div class="msg user">
+          <div class="sender">User</div>
+          <div class="timestamp">10:04</div>
+          <code>/bmad-dr DR 2.4</code>
+        </div>
+
+        <!-- 2. Claude response -->
+        <div class="msg assistant">
+          <div class="sender">Nate (Claude)</div>
+          <div class="timestamp">10:04</div>
+          I'll review Story 2.4 delivery. Let me start by reading the story file and examining the code changes against the acceptance criteria...
+        </div>
+
+        <!-- 3. Tool call (collapsed) -->
+        <div class="msg tool-call">
+          <span class="tool-icon">&#9654;</span>
+          <span class="tool-name">Read</span>
+          <span class="tool-args">_bmad-output/implementation-artifacts/story-2.4.md</span>
+          <span class="chevron">&#x25B8;</span>
+        </div>
+
+        <!-- 4. Tool call -->
+        <div class="msg tool-call">
+          <span class="tool-icon">&#9654;</span>
+          <span class="tool-name">Read</span>
+          <span class="tool-args">client/src/views/ChainView.tsx</span>
+          <span class="chevron">&#x25B8;</span>
+        </div>
+
+        <!-- 5. Tool call -->
+        <div class="msg tool-call">
+          <span class="tool-icon">&#9654;</span>
+          <span class="tool-name">Bash</span>
+          <span class="tool-args">git diff main...HEAD --stat</span>
+          <span class="chevron">&#x25B8;</span>
+        </div>
+
+        <!-- 6. Claude response -->
+        <div class="msg assistant">
+          <div class="sender">Nate (Claude)</div>
+          <div class="timestamp">10:10</div>
+          I've reviewed the implementation against the story definition and examined the diff. Let me now run the sub-agents for detailed analysis across code quality, test coverage, and security posture...
+        </div>
+
+        <!-- 7. Sub-agent block: Code Quality -->
+        <div class="subagent-block">
+          <div class="subagent-header">
+            <div class="subagent-icon">&#x2699;</div>
+            <span class="subagent-title">Sub-agent: Code Quality</span>
+            <span class="subagent-duration">2m 14s</span>
+          </div>
+          <div class="subagent-tools">
+            <div class="msg tool-call">
+              <span class="tool-icon">&#9654;</span>
+              <span class="tool-name">Read</span>
+              <span class="tool-args">client/src/components/ChainTimeline.tsx</span>
+              <span class="chevron">&#x25B8;</span>
+            </div>
+            <div class="msg tool-call">
+              <span class="tool-icon">&#9654;</span>
+              <span class="tool-name">Grep</span>
+              <span class="tool-args">pattern: "TODO|FIXME|HACK" in client/src/</span>
+              <span class="chevron">&#x25B8;</span>
+            </div>
+          </div>
+          <div class="subagent-finding">
+            <div class="finding-label">Finding</div>
+            Clean component decomposition. No leftover TODOs. Minor: consider extracting timeline connector into shared component.
+          </div>
+        </div>
+
+        <!-- 8. Sub-agent block: Test Coverage -->
+        <div class="subagent-block">
+          <div class="subagent-header">
+            <div class="subagent-icon">&#x1F9EA;</div>
+            <span class="subagent-title">Sub-agent: Test Coverage</span>
+            <span class="subagent-duration">1m 08s</span>
+          </div>
+          <div class="subagent-tools">
+            <div class="msg tool-call">
+              <span class="tool-icon">&#9654;</span>
+              <span class="tool-name">Bash</span>
+              <span class="tool-args">npm run test -- --coverage --reporter=json</span>
+              <span class="chevron">&#x25B8;</span>
+            </div>
+          </div>
+          <div class="subagent-finding">
+            <div class="finding-label">Finding</div>
+            78% coverage. <strong style="color:var(--amber);">Gap:</strong> Missing test for backtrack edge case in ChainView when step index exceeds completed count.
+          </div>
+        </div>
+
+        <!-- 9. Claude response (partial / typing) -->
+        <div class="msg assistant">
+          <div class="sender">Nate (Claude)</div>
+          <div class="timestamp">10:18</div>
+          Based on my review and sub-agent findings, here is my assessment of Story 2.4 delivery
+          <div class="typing-indicator">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ─── RIGHT: Audit Log ─── -->
+      <div class="panel-right">
+
+        <!-- Predicates -->
+        <div class="audit-section">
+          <h3>PREDICATES</h3>
+          <div class="predicate-grid">
+            <div class="predicate-pill on">P01 feature &#x2713;</div>
+            <div class="predicate-pill off">P02 frustration &#x2717;</div>
+            <div class="predicate-pill off">P03 playwright &#x2717;</div>
+            <div class="predicate-pill on">P04 git_commit &#x2713;</div>
+            <div class="predicate-pill on">P06 test_run &#x2713;</div>
+            <div class="predicate-pill on">P18 bmad &#x2713;</div>
+            <div class="predicate-pill on">P19 skill &#x2713;</div>
+            <div class="predicate-pill on">P25 subagent &#x2713;</div>
+            <div class="predicate-pill off">P05 file_create &#x2717;</div>
+          </div>
+        </div>
+
+        <!-- Observations -->
+        <div class="audit-section">
+          <h3>OBSERVATIONS</h3>
+          <div class="observation-list">
+            <div class="observation-item">
+              <div class="obs-time">10:04</div>
+              Session opened &mdash; <code>/bmad-dr DR 2.4</code>, fresh window confirmed
+            </div>
+            <div class="observation-item">
+              <div class="obs-time">10:08</div>
+              Heavy Read usage on implementation files &mdash; thorough review pattern
+            </div>
+            <div class="observation-item" style="border-left-color: var(--purple);">
+              <div class="obs-time">10:12</div>
+              Sub-agents spawned &mdash; Code Quality, Test Coverage
+            </div>
+            <div class="observation-item" style="border-left-color: var(--amber);">
+              <div class="obs-time">10:15</div>
+              Test coverage finding: 78% &mdash; gap in backtrack rendering
+            </div>
+          </div>
+        </div>
+
+        <!-- Classifications -->
+        <div class="audit-section">
+          <h3>CLASSIFICATIONS</h3>
+          <div class="classification-list">
+            <div class="classification-row"><span class="ck">Session Type</span><span class="cv">REVIEW</span></div>
+            <div class="classification-row"><span class="ck">Scale</span><span class="cv">moderate</span></div>
+            <div class="classification-row"><span class="ck">Tool Pattern</span><span class="cv">read-heavy</span></div>
+            <div class="classification-row"><span class="ck">Workflow Role</span><span class="cv">reviewer</span></div>
+            <div class="classification-row"><span class="ck">BMAD Identity</span><span class="cv" style="color:var(--primary);">Nate</span></div>
+            <div class="classification-row"><span class="ck">BMAD Action</span><span class="cv" style="color:var(--primary);">DR</span></div>
+            <div class="classification-row"><span class="ck">Story ID</span><span class="cv">2.4</span></div>
+          </div>
+        </div>
+
+        <!-- Extractions -->
+        <div class="audit-section">
+          <h3>EXTRACTIONS</h3>
+          <div class="extraction-list">
+            <div class="extraction-item">
+              <span class="ek">Trigger Command</span>
+              <span class="ev">/bmad-dr</span>
+              <span class="copy-icon" title="Copy">&#x2398;</span>
+            </div>
+            <div class="extraction-item">
+              <span class="ek">Trigger Args</span>
+              <span class="ev">DR 2.4</span>
+              <span class="copy-icon" title="Copy">&#x2398;</span>
+            </div>
+            <div class="extraction-item">
+              <span class="ek">Verdict</span>
+              <span class="ev pending-val">(pending)</span>
+              <span class="copy-icon" title="Copy" style="visibility:hidden;">&#x2398;</span>
+            </div>
+            <div class="extraction-item">
+              <span class="ek">Sub-agents</span>
+              <span class="ev">2 of 6 complete</span>
+              <span class="copy-icon" title="Copy">&#x2398;</span>
+            </div>
+            <div class="extraction-item">
+              <span class="ek">Final Artifact</span>
+              <span class="ev pending-val">(pending)</span>
+              <span class="copy-icon" title="Copy" style="visibility:hidden;">&#x2398;</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="audit-buttons">
+          <button>Copy Extractions</button>
+          <button>Export Audit</button>
+        </div>
+
+      </div>
+
+    </div><!-- /three-panel -->
+
+    <!-- ═══════════ Status Bar ═══════════ -->
+    <div class="status-bar">
+      <span>Story <span class="highlight">2.4</span></span>
+      <span class="sep">&middot;</span>
+      <span>Step <span class="highlight">4/8</span></span>
+      <span class="sep">&middot;</span>
+      <span>DR (Delivery Review)</span>
+      <span class="sep">&middot;</span>
+      <span class="highlight">Nate</span>
+      <span class="sep">&middot;</span>
+      <span>22m elapsed</span>
+      <span class="sep">&middot;</span>
+      <span>Context: 38%</span>
+    </div>
+
+  </div><!-- /main-container -->
+
+</div><!-- /app-layout -->
+
+</body>
+</html>

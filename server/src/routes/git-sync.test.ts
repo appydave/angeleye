@@ -36,6 +36,8 @@ describe('GET /api/git-sync/status', () => {
       behind: 3,
       ahead: 0,
       dirty: false,
+      dirtyFiles: [],
+      dirtyCount: 0,
       lastChecked: '2026-03-27T10:00:00.000Z',
       behindCommits: [
         {
@@ -92,23 +94,23 @@ describe('POST /api/git-sync/pull', () => {
     expect(res.body.data.commitsPulled).toBe(3);
   });
 
-  it('returns 200 with success false when tree is dirty', async () => {
-    const dirtyResult: GitPullResult = {
+  it('returns 200 with success false when pull fails', async () => {
+    const failResult: GitPullResult = {
       success: false,
       previousCommit: 'abc1234',
       newCommit: 'abc1234',
       commitsPulled: 0,
-      error: 'Uncommitted changes detected — commit or stash before pulling',
+      error: 'Pull failed: merge conflict',
       restartTriggered: false,
     };
-    mockPullUpstream.mockResolvedValueOnce(dirtyResult);
+    mockPullUpstream.mockResolvedValueOnce(failResult);
 
     const res = await request(app).post('/api/git-sync/pull');
 
     expect(res.status).toBe(200);
     expect(res.body.status).toBe('ok');
     expect(res.body.data.success).toBe(false);
-    expect(res.body.data.error).toContain('Uncommitted changes');
+    expect(res.body.data.error).toContain('Pull failed');
   });
 
   it('returns 500 when service throws', async () => {

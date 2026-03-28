@@ -1,5 +1,5 @@
 #!/bin/bash
-# AngelEye — Dev Server Launcher
+# AppyStack — Dev Server Launcher
 cd "$(dirname "$0")/.."
 
 ENV_FILE=".env"
@@ -30,15 +30,10 @@ fi
 
 # ── Banner ───────────────────────────────────────────────────────────────────
 
-TAILSCALE_NAME=$(tailscale status --self 2>/dev/null | awk '{print $2}' | head -1)
 echo ""
 echo "══════════════════════════════════════════════"
-echo "  AngelEye — Dev Server"
-echo "  local:   http://localhost:${CLIENT_PORT}"
-if [[ -n "$TAILSCALE_NAME" ]]; then
-echo "  network: http://${TAILSCALE_NAME}:${CLIENT_PORT}"
-fi
-echo "  server:  http://localhost:${SERVER_PORT}"
+echo "  AppyStack — Dev Server"
+echo "  client: http://localhost:${CLIENT_PORT}  server: http://localhost:${SERVER_PORT}"
 echo "══════════════════════════════════════════════"
 echo ""
 

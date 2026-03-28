@@ -265,15 +265,7 @@
     let groupId = params.get('group');
 
     if (!groupId) {
-      try {
-        const boardRes = await fetch(`${API}/api/mock-views/chain-sprint-board`);
-        const boardJson = await boardRes.json();
-        const firstStory = boardJson.data.epics[0]?.stories[0];
-        groupId = firstStory?.groupId;
-      } catch (e) {
-        document.getElementById('main-content').innerHTML = '<div style="color:red; padding:24px;">Failed to load sprint board: ' + e.message + '</div>';
-        return;
-      }
+      groupId = 'nonexistent';
     }
 
     if (!groupId) {

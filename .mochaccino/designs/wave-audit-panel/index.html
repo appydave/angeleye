@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngelEye — Wave Audit Panel — Mochaccino</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #e8e0d4;
+    --surface: #ede7dc;
+    --surface-mid: #ddd6cc;
+    --card: #f5f1eb;
+    --border: #d4cdc4;
+    --border-raised: #ccc5bb;
+    --primary: #c8841a;
+    --fg: #2a2018;
+    --muted: #7a6e5e;
+    --muted-dim: #9e9484;
+
+    --green: #5a9a3c;
+    --amber: #d4860a;
+    --red: #c05040;
+    --blue: #4a7fb5;
+    --orange: #c07030;
+    --purple: #8a6ab5;
+    --pink: #b56a8a;
+    --gray: #8a8a8a;
+
+    --mono: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    --heading: 'Bebas Neue', sans-serif;
+    --body: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+    --sidebar-w: 224px;
+    --banner-h: 24px;
+  }
+
+  body {
+    font-family: var(--body);
+    background: var(--bg);
+    color: var(--fg);
+    font-size: 13px;
+    line-height: 1.5;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Banner ─────────────────────────────────── */
+  .banner {
+    background: var(--fg);
+    color: var(--muted-dim);
+    font-size: 11px;
+    text-align: center;
+    padding: 3px 0;
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+    height: var(--banner-h);
+  }
+  .banner strong { color: var(--primary); }
+
+  /* ── App Layout ─────────────────────────────── */
+  .app-layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* ── Sidebar ────────────────────────────────── */
+  .sidebar {
+    width: var(--sidebar-w);
+    min-width: var(--sidebar-w);
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+  }
+
+  .sidebar-brand {
+    padding: 20px 16px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-brand h1 {
+    font-family: var(--heading);
+    font-size: 28px;
+    letter-spacing: 2px;
+    color: var(--primary);
+    line-height: 1;
+  }
+  .sidebar-brand .subtitle {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .sidebar nav {
+    padding: 12px 0;
+    flex: 1;
+  }
+  .sidebar nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .sidebar nav a:hover { background: var(--surface-mid); color: var(--fg); }
+  .sidebar nav a.active {
+    background: var(--surface-mid);
+    color: var(--primary);
+    font-weight: 600;
+    border-left: 3px solid var(--primary);
+    padding-left: 17px;
+  }
+  .sidebar nav a .icon { width: 18px; text-align: center; font-size: 15px; }
+
+  .sidebar-footer {
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--muted-dim);
+  }
+
+  /* ── Main Container ─────────────────────────── */
+  .main-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ── Page Header ────────────────────────────── */
+  .page-header {
+    padding: 16px 24px 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--card);
+    flex-shrink: 0;
+  }
+  .page-header h2 {
+    font-family: var(--heading);
+    font-size: 24px;
+    letter-spacing: 1.5px;
+    color: var(--fg);
+  }
+  .page-header .page-subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ── Columns Grid ───────────────────────────── */
+  .columns-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+  }
+
+  .columns-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    min-height: 0;
+  }
+
+  /* ── Agent Column ───────────────────────────── */
+  .agent-column {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .agent-column.active-agent {
+    position: relative;
+  }
+  .agent-column.active-agent::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border: 2px solid var(--amber);
+    border-radius: 12px;
+    pointer-events: none;
+    animation: pulse-border 2.5s ease-in-out infinite;
+  }
+  @keyframes pulse-border {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  /* ── Agent Header Card ──────────────────────── */
+  .agent-header {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .agent-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--heading);
+    font-size: 20px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .agent-meta {
+    flex: 1;
+    min-width: 0;
+  }
+  .agent-meta .agent-name {
+    font-family: var(--heading);
+    font-size: 18px;
+    letter-spacing: 1px;
+    line-height: 1.1;
+  }
+  .agent-meta .agent-role {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  .agent-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .agent-duration {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fg);
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .badge-done {
+    background: rgba(90, 154, 60, 0.12);
+    color: var(--green);
+  }
+  .badge-active {
+    background: rgba(212, 134, 10, 0.12);
+    color: var(--amber);
+    animation: badge-pulse 2s ease-in-out infinite;
+  }
+  @keyframes badge-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+
+  /* ── Section Card ───────────────────────────── */
+  .section-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .section-title {
+    font-family: var(--heading);
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    padding: 10px 14px 6px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(0,0,0,0.015);
+  }
+
+  .section-body {
+    padding: 10px 14px 12px;
+  }
+
+  /* ── Predicate Grid ─────────────────────────── */
+  .predicate-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+
+  .pred {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    background: rgba(0,0,0,0.02);
+    border: 1px solid transparent;
+  }
+  .pred .pred-code {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    min-width: 26px;
+  }
+  .pred .pred-label {
+    font-size: 10px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .pred .pred-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .pred.fired .pred-dot { background: var(--green); }
+  .pred.fired .pred-code { color: var(--green); }
+  .pred.off .pred-dot { background: var(--border-raised); }
+  .pred.off .pred-code { color: var(--muted-dim); }
+  .pred.off .pred-label { color: var(--muted-dim); }
+  .pred.warn .pred-dot { background: var(--amber); }
+  .pred.warn .pred-code { color: var(--amber); }
+  .pred.evaluating .pred-dot {
+    background: var(--muted-dim);
+    animation: eval-blink 1.2s ease-in-out infinite;
+  }
+  .pred.evaluating .pred-code { color: var(--muted-dim); }
+  @keyframes eval-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .pred-spinner {
+    font-size: 9px;
+    color: var(--muted-dim);
+    animation: eval-blink 1.2s ease-in-out infinite;
+    margin-left: -2px;
+  }
+
+  /* ── Observations ───────────────────────────── */
+  .obs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .obs-item {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .obs-time {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    min-width: 36px;
+    flex-shrink: 0;
+    padding-top: 1px;
+  }
+  .obs-text {
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--fg);
+  }
+  .obs-item.warning .obs-text { color: var(--amber); font-weight: 500; }
+  .obs-item.in-progress .obs-text {
+    color: var(--muted-dim);
+    font-style: italic;
+  }
+  .obs-item.in-progress .obs-text .typing-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 13px;
+    background: var(--amber);
+    margin-left: 2px;
+    vertical-align: text-bottom;
+    animation: cursor-blink 1s step-end infinite;
+  }
+  @keyframes cursor-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* ── Classifications ────────────────────────── */
+  .class-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 12px;
+  }
+
+  .class-item {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .class-label {
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+  .class-value {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--fg);
+    font-weight: 500;
+  }
+  .class-value.est {
+    color: var(--muted-dim);
+    font-style: italic;
+  }
+  .class-value.est::after {
+    content: ' (est.)';
+    font-size: 10px;
+    font-style: italic;
+  }
+
+  /* ── Extractions ────────────────────────────── */
+  .extract-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 12px;
+  }
+
+  .extract-item {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .extract-label {
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+  .extract-value {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--fg);
+  }
+  .extract-item.full-width {
+    grid-column: 1 / -1;
+  }
+
+  .pending-value {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    color: var(--muted-dim);
+    font-style: italic;
+  }
+  .pending-value .typing-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 12px;
+    background: var(--amber);
+    animation: cursor-blink 1s step-end infinite;
+  }
+
+  /* ── Legend Card ─────────────────────────────── */
+  .legend-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-top: 16px;
+  }
+  .legend-card h3 {
+    font-family: var(--heading);
+    font-size: 16px;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .legend-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 28px;
+  }
+
+  .legend-section h4 {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--fg);
+    margin-bottom: 6px;
+  }
+  .legend-items {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .legend-dot.green { background: var(--green); }
+  .legend-dot.gray { background: var(--border-raised); }
+  .legend-dot.amber { background: var(--amber); }
+  .legend-dot.blink { background: var(--muted-dim); animation: eval-blink 1.2s ease-in-out infinite; }
+
+  .legend-pattern {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+  }
+  .legend-pattern-name {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--primary);
+    min-width: 100px;
+  }
+  .legend-pattern-desc {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ── Scrollbar ──────────────────────────────── */
+  .columns-area::-webkit-scrollbar { width: 6px; }
+  .columns-area::-webkit-scrollbar-track { background: transparent; }
+  .columns-area::-webkit-scrollbar-thumb { background: var(--border-raised); border-radius: 3px; }
+  .columns-area::-webkit-scrollbar-thumb:hover { background: var(--muted-dim); }
+</style>
+</head>
+<body>
+
+<!-- Banner -->
+<div class="banner">
+  <strong>ANGELEYE</strong> &mdash; Mochaccino Mockup &mdash; Wave Audit Panel Deep Dive
+</div>
+
+<!-- App Layout -->
+<div class="app-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <h1>ANGELEYE</h1>
+      <div class="subtitle">Ambient Intelligence</div>
+    </div>
+    <nav>
+      <a href="#"><span class="icon">&#9678;</span> Observer</a>
+      <a href="#"><span class="icon">&#9776;</span> Organiser</a>
+      <a href="#" class="active"><span class="icon">&#9881;</span> Workflows</a>
+      <a href="#"><span class="icon">&#9881;</span> Settings</a>
+    </nav>
+    <div class="sidebar-footer">
+      Story 2.4 &mdash; 3 agents<br>
+      BKK &middot; 2026-03-28
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main-container">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <h2>AUDIT LOG &mdash; STORY 2.4 AGENT COMPARISON</h2>
+      <div class="page-subtitle">Side-by-side intelligence panel for three agents in the Story 2.4 chain &mdash; Predicates, Observations, Classifications, Extractions</div>
+    </div>
+
+    <!-- Three Column Area -->
+    <div class="columns-area">
+      <div class="columns-grid">
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- COLUMN 1: Bob CS (Planner) -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="agent-column">
+
+          <!-- Agent Header -->
+          <div class="agent-header">
+            <div class="agent-avatar" style="background: var(--blue);">B</div>
+            <div class="agent-meta">
+              <div class="agent-name">Bob &mdash; CS</div>
+              <div class="agent-role">Planner</div>
+            </div>
+            <div class="agent-stats">
+              <span class="agent-duration">8m</span>
+              <span class="badge badge-done">DONE</span>
+            </div>
+          </div>
+
+          <!-- Predicates -->
+          <div class="section-card">
+            <div class="section-title">PREDICATES</div>
+            <div class="section-body">
+              <div class="predicate-grid">
+                <div class="pred off"><span class="pred-dot"></span><span class="pred-code">P01</span><span class="pred-label">feature</span></div>
+                <div class="pred off"><span class="pred-dot"></span><span class="pred-code">P02</span><span class="pred-label">frustration</span></div>
+                <div class="pred off"><span class="pred-dot"></span><span class="pred-code">P04</span><span class="pred-label">git_commit</span></div>
+                <div class="pred fired"><span class="pred-dot"></span><span class="pred-code">P05</span><span class="pred-label">file_create</span></div>
+                <div class="pred off"><span class="pred-dot"></span><span class="pred-code">P06</span><span class="pred-label">test_run</span></div>
+                <div class="pred off"><span class="pred-dot"></span><span class="pred-code">P09</span><span class="pred-label">compaction</span></div>
+                <div class="pred off"><span class="pred-dot"></span><span class="pred-code">P12</span><span class="pred-label">machine</span></div>
+                <div class="pred fired"><span class="pred-dot"></span><span class="pred-code">P18</span><span class="pred-label">bmad</span></div>
+                <div class="pred fired"><span class="pred-dot"></span><span class="pred-code">P19</span><span class="pred-label">skill</span></div>
+                <div class="pred off"><span class="pred-dot"></span><span class="pred-code">P20</span><span class="pred-label">parallel</span></div>
+                <div class="pred off"><span class="pred-dot"></span><span class="pred-code">P25</span><span class="pred-label">subagent</span></div>
+                <div class="pred off"><span class="pred-dot"></span><span class="pred-code">P34</span><span class="pred-label">skill_new</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Observations -->
+          <div class="section-card">
+            <div class="section-title">OBSERVATIONS</div>
+            <div class="section-body">
+              <div class="obs-list">
+                <div class="obs-item">
+                  <span class="obs-time">09:12</span>
+                  <span class="obs-text">Read epic plan and PRD &mdash; orientation phase</span>
+                </div>
+                <div class="obs-item">
+                  <span class="obs-time">09:15</span>
+                  <span class="obs-text">Created story-2.4.md &mdash; problem statement, 5 acceptance criteria</span>
+                </div>
+                <div class="obs-item">
+                  <span class="obs-time">09:18</span>
+                  <span class="obs-text">Cross-referenced KDD for prior patterns &mdash; 2 relevant entries found</span>
+                </div>
+                <div class="obs-item">
+                  <span class="obs-time">09:20</span>
+                  <span class="obs-text">Session complete &mdash; clean story creation, no blockers</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Classifications -->
+          <div class="section-card">
+            <div class="section-title">CLASSIFICATIONS</div>
+            <div class="section-body">
+              <div class="class-grid">
+                <div class="class-item">
+                  <span class="class-label">Session Type</span>
+                  <span class="class-value">KNOWLEDGE</span>
+                </div>
+                <div class="class-item">
+                  <span class="class-label">Scale</span>
+                  <span class="class-value">light</span>
+                </div>
+                <div class="class-item">
+                  <span class="class-label">Tool Pattern</span>
+                  <span class="class-value">read-write-balanced</span>
+                </div>
+                <div class="class-item">
+                  <span class="class-label">BMAD Identity</span>
+                  <span class="class-value">Bob</span>
+                </div>
+                <div class="class-item">
+                  <span class="class-label">Action</span>
+                  <span class="class-value">CS</span>
+                </div>
+                <div class="class-item">
+                  <span class="class-label">Story</span>
+                  <span class="class-value">2.4</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Extractions -->
+          <div class="section-card">
+            <div class="section-title">EXTRACTIONS</div>
+            <div class="section-body">
+              <div class="extract-grid">
+                <div class="extract-item">
+                  <span class="extract-label">Trigger</span>
+                  <span class="extract-value">/bmad-sm</span>
+                </div>
+                <div class="extract-item">
+                  <span class="extract-label">Args</span>
+                  <span class="extract-value">CS 2.4</span>
+                </div>
+                <div class="extract-item">
+                  <span class="extract-label">Final Artifact</span>
+                  <span class="extract-value">story-2.4.md created</span>
+                </div>
+                <div class="extract-item">
+                  <span class="extract-label">Final State</span>
+                  <span class="extract-value">complete</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /Column 1 -->
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- COLUMN 2: Amelia DS (Builder) -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="agent-column">
+
+          <!-- Agent Header -->
+          <div class="agent-header">
+            <div class="agent-avatar" style="background: var(--orange);">A</div>
+            <div class="agent-meta">
+              <div class="agent-name">Amelia &mdash; DS</div>
+              <div class="agent-role">Builder</div>
+            </div>
+            <div class="agent-stats">
+              <span class="agent-duration">45m</span>
+              <span class="badge badge-done">DONE</span>
+            </div>
+          </div>
+
+          <!-- Predicates -->
+          <div class="section-card">
+            <div class="section-title">PREDICATES</div>
+            <div class="section-body">
+              <div class="predicate-grid">
+                <div class="pred fired"><span class="pred-dot"></span><span class="pred-code">P01</span><span class="pred-label">feature</span></div>
+                <div class="pred warn"><span class="pred-dot"></span><span class="pred-code">P02</span><span class="pred-label">frustration</span></div>
+                <div class="pred fired"><span class="pred-dot"></span><span class="pred-code">P04</span><span class="pred-label">git_commit</span></div>
+                <div class="pred fired"><span class="pred-dot"></span><span class="pred-code">P05</span><span class="pred-label">file_create</span></div>
+                <div class="pred fired"><span class="pred-dot"></span><span class="pred-code">P06</span><span class="pred-label">test_run</span></div>
+                <div class="pred off"><span class="pred-dot"></span><span class="pred-code">P09</span><span class="pred-label">compaction</span></div>
+                <div class="pred off"><span class="pred-dot"></span><span class="pred-code">P12</span><span class="pred-label">machine</span></div>
+                <div class="pred fired"><span class="pred-dot"></span><span class="pred-code">P18</span><span class="pred-label">bmad</span></div>
+                <div class="pred fired"><span class="pred-dot"></span><span class="pred-code">P19</span><span class="pred-label">skill</span></div>
+                <div class="pred off"><span class="pred-dot"></span><span class="pred-code">P20</span><span class="pred-label">parallel</span></div>
+                <div class="pred off"><span class="pred-dot"></span><span class="pred-code">P25</span><span class="pred-label">subagent</span></div>
+                <div class="pred off"><span class="pred-dot"></span><span class="pred-code">P34</span><span class="pred-label">skill_new</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Observations -->
+          <div class="section-card">
+            <div class="section-title">OBSERVATIONS</div>
+            <div class="section-body">
+              <div class="obs-list">
+                <div class="obs-item">
+                  <span class="obs-time">09:25</span>
+                  <span class="obs-text">Implementation started &mdash; reading story AC and existing codebase</span>
+                </div>
+                <div class="obs-item">
+                  <span class="obs-time">09:32</span>
+                  <span class="obs-text">Created ChainView component &mdash; new file, 180 lines</span>
+                </div>
+                <div class="obs-item">
+                  <span class="obs-time">09:38</span>
+                  <span class="obs-text">Test creation &mdash; 4 test cases for ChainView</span>
+                </div>
+                <div class="obs-item">
+                  <span class="obs-time">09:42</span>
+                  <span class="obs-text">First test run &mdash; 3 pass, 1 fail (backtrack edge case)</span>
+                </div>
+                <div class="obs-item warning">
+                  <span class="obs-time">09:45</span>
+                  <span class="obs-text">Frustration detected &mdash; repeated attempts at SVG connector positioning</span>
+                </div>
+                <div class="obs-item">
+                  <span class="obs-time">09:52</span>
+                  <span class="obs-text">All tests passing &mdash; Dev Agent Record written</span>
+                </div>
+                <div class="obs-item">
+                  <span class="obs-time">10:00</span>
+                  <span class="obs-text">Context at 58% &mdash; session complete</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Classifications -->
+          <div class="section-card">
+            <div class="section-title">CLASSIFICATIONS</div>
+            <div class="section-body">
+              <div class="class-grid">
+                <div class="class-item">
+                  <span class="class-label">Session Type</span>
+                  <span class="class-value">BUILD</span>
+                </div>
+                <div class="class-item">
+                  <span class="class-label">Scale</span>
+                  <span class="class-value">heavy</span>
+                </div>
+                <div class="class-item">
+                  <span class="class-label">Tool Pattern</span>
+                  <span class="class-value">write-heavy</span>
+                </div>
+                <div class="class-item">
+                  <span class="class-label">BMAD Identity</span>
+                  <span class="class-value">Amelia</span>
+                </div>
+                <div class="class-item">
+                  <span class="class-label">Action</span>
+                  <span class="class-value">DS</span>
+                </div>
+                <div class="class-item">
+                  <span class="class-label">Story</span>
+                  <span class="class-value">2.4</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Extractions -->
+          <div class="section-card">
+            <div class="section-title">EXTRACTIONS</div>
+            <div class="section-body">
+              <div class="extract-grid">
+                <div class="extract-item">
+                  <span class="extract-label">Trigger</span>
+                  <span class="extract-value">/bmad-dev</span>
+                </div>
+                <div class="extract-item">
+                  <span class="extract-label">Args</span>
+                  <span class="extract-value">DS 2.4</span>
+                </div>
+                <div class="extract-item">
+                  <span class="extract-label">Files Created</span>
+                  <span class="extract-value">3</span>
+                </div>
+                <div class="extract-item">
+                  <span class="extract-label">Tests</span>
+                  <span class="extract-value">4 pass / 0 fail</span>
+                </div>
+                <div class="extract-item">
+                  <span class="extract-label">Context Used</span>
+                  <span class="extract-value">58%</span>
+                </div>
+                <div class="extract-item">
+                  <span class="extract-label">Final Artifact</span>
+                  <span class="extract-value">Dev Agent Record</span>
+                </div>
+                <div class="extract-item full-width">
+                  <span class="extract-label">Final State</span>
+                  <span class="extract-value">complete</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /Column 2 -->
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- COLUMN 3: Nate DR (Reviewer) — ACTIVE -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="agent-column active-agent">
+
+          <!-- Agent Header -->
+          <div class="agent-header">
+            <div class="agent-avatar" style="background: var(--green);">N</div>
+            <div class="agent-meta">
+              <div class="agent-name">Nate &mdash; DR</div>
+              <div class="agent-role">Reviewer</div>
+            </div>
+            <div class="agent-stats">
+              <span class="agent-duration">22m</span>
+              <span class="badge badge-active">ACTIVE</span>
+            </div>
+          </div>
+
+          <!-- Predicates -->
+          <div class="section-card">
+            <div class="section-title">PREDICATES</div>
+            <div class="section-body">
+              <div class="predicate-grid">
+                <div class="pred off"><span class="pred-dot"></span><span class="pred-code">P01</span><span class="pred-label">feature</span></div>
+                <div class="pred off"><span class="pred-dot"></span><span class="pred-code">P02</span><span class="pred-label">frustration</span></div>
+                <div class="pred off"><span class="pred-dot"></span><span class="pred-code">P04</span><span class="pred-label">git_commit</span></div>
+                <div class="pred evaluating"><span class="pred-dot"></span><span class="pred-code">P05</span><span class="pred-label">file_create</span><span class="pred-spinner">...</span></div>
+                <div class="pred fired"><span class="pred-dot"></span><span class="pred-code">P06</span><span class="pred-label">test_run</span></div>
+                <div class="pred off"><span class="pred-dot"></span><span class="pred-code">P09</span><span class="pred-label">compaction</span></div>
+                <div class="pred off"><span class="pred-dot"></span><span class="pred-code">P12</span><span class="pred-label">machine</span></div>
+                <div class="pred fired"><span class="pred-dot"></span><span class="pred-code">P18</span><span class="pred-label">bmad</span></div>
+                <div class="pred fired"><span class="pred-dot"></span><span class="pred-code">P19</span><span class="pred-label">skill</span></div>
+                <div class="pred evaluating"><span class="pred-dot"></span><span class="pred-code">P20</span><span class="pred-label">parallel</span><span class="pred-spinner">...</span></div>
+                <div class="pred fired"><span class="pred-dot"></span><span class="pred-code">P25</span><span class="pred-label">subagent</span></div>
+                <div class="pred off"><span class="pred-dot"></span><span class="pred-code">P34</span><span class="pred-label">skill_new</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Observations -->
+          <div class="section-card">
+            <div class="section-title">OBSERVATIONS</div>
+            <div class="section-body">
+              <div class="obs-list">
+                <div class="obs-item">
+                  <span class="obs-time">10:04</span>
+                  <span class="obs-text">Fresh window &mdash; bias isolation confirmed (different from DS)</span>
+                </div>
+                <div class="obs-item">
+                  <span class="obs-time">10:08</span>
+                  <span class="obs-text">Thorough read of implementation &mdash; 47 file reads</span>
+                </div>
+                <div class="obs-item">
+                  <span class="obs-time">10:12</span>
+                  <span class="obs-text">Sub-agents spawned: Code Quality, Test Coverage</span>
+                </div>
+                <div class="obs-item">
+                  <span class="obs-time">10:15</span>
+                  <span class="obs-text">Test coverage gap found: 78%, missing backtrack edge case</span>
+                </div>
+                <div class="obs-item in-progress">
+                  <span class="obs-time">10:18</span>
+                  <span class="obs-text">...<span class="typing-cursor"></span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Classifications -->
+          <div class="section-card">
+            <div class="section-title">CLASSIFICATIONS</div>
+            <div class="section-body">
+              <div class="class-grid">
+                <div class="class-item">
+                  <span class="class-label">Session Type</span>
+                  <span class="class-value">REVIEW</span>
+                </div>
+                <div class="class-item">
+                  <span class="class-label">Scale</span>
+                  <span class="class-value est">moderate</span>
+                </div>
+                <div class="class-item">
+                  <span class="class-label">Tool Pattern</span>
+                  <span class="class-value">read-heavy</span>
+                </div>
+                <div class="class-item">
+                  <span class="class-label">BMAD Identity</span>
+                  <span class="class-value">Nate</span>
+                </div>
+                <div class="class-item">
+                  <span class="class-label">Action</span>
+                  <span class="class-value">DR</span>
+                </div>
+                <div class="class-item">
+                  <span class="class-label">Story</span>
+                  <span class="class-value">2.4</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Extractions -->
+          <div class="section-card">
+            <div class="section-title">EXTRACTIONS</div>
+            <div class="section-body">
+              <div class="extract-grid">
+                <div class="extract-item">
+                  <span class="extract-label">Trigger</span>
+                  <span class="extract-value">/bmad-dr</span>
+                </div>
+                <div class="extract-item">
+                  <span class="extract-label">Args</span>
+                  <span class="extract-value">DR 2.4</span>
+                </div>
+                <div class="extract-item">
+                  <span class="extract-label">Sub-agents</span>
+                  <span class="extract-value">2/6 complete</span>
+                </div>
+                <div class="extract-item">
+                  <span class="extract-label">Verdict</span>
+                  <span class="extract-value"><span class="pending-value"><span class="typing-cursor"></span></span></span>
+                </div>
+                <div class="extract-item full-width">
+                  <span class="extract-label">Final Artifact</span>
+                  <span class="extract-value"><span class="pending-value">(pending)<span class="typing-cursor"></span></span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /Column 3 -->
+
+      </div><!-- /columns-grid -->
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- Legend Card -->
+      <!-- ═══════════════════════════════════════ -->
+      <div class="legend-card">
+        <h3>LEGEND</h3>
+        <div class="legend-grid">
+
+          <!-- Predicate Badges -->
+          <div class="legend-section">
+            <h4>Predicate Badges</h4>
+            <div class="legend-items">
+              <div class="legend-item"><span class="legend-dot green"></span> Fired &mdash; predicate detected in session</div>
+              <div class="legend-item"><span class="legend-dot gray"></span> Not fired &mdash; predicate not present</div>
+              <div class="legend-item"><span class="legend-dot amber"></span> Warning &mdash; predicate fired with concern signal</div>
+              <div class="legend-item"><span class="legend-dot blink"></span> Evaluating &mdash; session still in progress, not yet determined</div>
+            </div>
+          </div>
+
+          <!-- Timestamps -->
+          <div class="legend-section">
+            <h4>Timestamps</h4>
+            <div class="legend-items">
+              <div class="legend-item">All observation timestamps are in BKK time (ICT, UTC+7)</div>
+            </div>
+          </div>
+
+          <!-- Four Analysis Patterns -->
+          <div class="legend-section" style="grid-column: 1 / -1;">
+            <h4>The Four Analysis Patterns</h4>
+            <div class="legend-items">
+              <div class="legend-pattern">
+                <span class="legend-pattern-name">PREDICATES</span>
+                <span class="legend-pattern-desc">Boolean detections &mdash; binary signals extracted from session events (file creates, test runs, frustration markers, BMAD triggers)</span>
+              </div>
+              <div class="legend-pattern">
+                <span class="legend-pattern-name">OBSERVATIONS</span>
+                <span class="legend-pattern-desc">Timestamped narrative &mdash; human-readable summary of what the agent did and when, derived from tool-use patterns</span>
+              </div>
+              <div class="legend-pattern">
+                <span class="legend-pattern-name">CLASSIFICATIONS</span>
+                <span class="legend-pattern-desc">Categorical labels &mdash; session type, scale, tool pattern, and domain overlay identity assigned by the enrichment pipeline</span>
+              </div>
+              <div class="legend-pattern">
+                <span class="legend-pattern-name">EXTRACTIONS</span>
+                <span class="legend-pattern-desc">Positional values &mdash; concrete data pulled from opening/closing windows of the session (trigger, arguments, final artifact, state)</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /columns-area -->
+
+  </div><!-- /main-container -->
+</div><!-- /app-layout -->
+
+</body>
+</html>

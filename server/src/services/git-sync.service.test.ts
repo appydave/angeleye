@@ -153,7 +153,7 @@ describe('checkStatus', () => {
     });
   });
 
-  it('returns dirty when status has output, even if also behind', async () => {
+  it('returns diverged when dirty AND behind', async () => {
     enqueueGitResults(
       checkStatusResults({
         revList: '0\t2',
@@ -164,9 +164,23 @@ describe('checkStatus', () => {
 
     const result = await checkStatus();
 
-    expect(result.state).toBe('dirty');
+    expect(result.state).toBe('diverged');
     expect(result.dirty).toBe(true);
     expect(result.behind).toBe(2);
+  });
+
+  it('returns dirty when status has output but not behind', async () => {
+    enqueueGitResults(
+      checkStatusResults({
+        porcelain: ' M server/src/index.ts\n',
+      })
+    );
+
+    const result = await checkStatus();
+
+    expect(result.state).toBe('dirty');
+    expect(result.dirty).toBe(true);
+    expect(result.behind).toBe(0);
   });
 
   it('returns ahead when rev-list shows 2 ahead 0 behind', async () => {
@@ -214,11 +228,11 @@ describe('checkStatus', () => {
 describe('pullUpstream', () => {
   it('returns success when tree is clean and pull succeeds', async () => {
     enqueueGitResults([
-      { stdout: '' }, // 1. status clean
-      { stdout: 'aaa1111' }, // 2. previous commit
+      { stdout: 'aaa1111' }, // 1. rev-parse HEAD (previous commit)
+      { stdout: '' }, // 2. status --porcelain (clean)
       { stdout: '' }, // 3. pull --rebase ok
-      { stdout: 'bbb2222' }, // 4. new commit
-      { stdout: '3' }, // 5. commits pulled
+      { stdout: 'bbb2222' }, // 4. rev-parse HEAD (new commit)
+      { stdout: '3' }, // 5. rev-list count
     ]);
 
     const result = await pullUpstream();
@@ -230,22 +244,40 @@ describe('pullUpstream', () => {
     expect(result.restartTriggered).toBe(false);
   });
 
-  it('refuses pull when tree is dirty', async () => {
+  it('auto-stashes dirty tree, pulls, then restores', async () => {
     enqueueGitResults([
-      { stdout: ' M file.ts\n' }, // 1. status dirty
+      { stdout: 'aaa1111' }, // 1. rev-parse HEAD (previous commit)
+      { stdout: ' M file.ts\n' }, // 2. status --porcelain (dirty)
+      { stdout: '' }, // 3. stash push
+      { stdout: '' }, // 4. pull --rebase ok
+      { stdout: '' }, // 5. stash pop
+      { stdout: 'bbb2222' }, // 6. rev-parse HEAD (new commit)
+      { stdout: '2' }, // 7. rev-list count
     ]);
 
     const result = await pullUpstream();
 
-    expect(result.success).toBe(false);
-    expect(result.error).toContain('Uncommitted');
-    expect(result.restartTriggered).toBe(false);
+    expect(result.success).toBe(true);
+    expect(result.commitsPulled).toBe(2);
+
+    // Verify stash push was called
+    const calls = mockExecFileAsync.mock.calls;
+    const stashPush = calls.find(
+      (c: unknown[]) => Array.isArray(c[1]) && c[1].includes('stash') && c[1].includes('push')
+    );
+    expect(stashPush).toBeDefined();
+
+    // Verify stash pop was called
+    const stashPop = calls.find(
+      (c: unknown[]) => Array.isArray(c[1]) && c[1].includes('stash') && c[1].includes('pop')
+    );
+    expect(stashPop).toBeDefined();
   });
 
-  it('aborts rebase and returns failure when pull throws', async () => {
+  it('aborts rebase and restores stash on pull failure', async () => {
     enqueueGitResults([
-      { stdout: '' }, // 1. status clean
-      { stdout: 'aaa1111' }, // 2. previous commit
+      { stdout: 'aaa1111' }, // 1. rev-parse HEAD
+      { stdout: '' }, // 2. status --porcelain (clean)
       { error: new Error('CONFLICT in file.ts') }, // 3. pull fails
       { stdout: '' }, // 4. rebase --abort
     ]);
@@ -256,7 +288,7 @@ describe('pullUpstream', () => {
     expect(result.error).toContain('Pull failed');
     expect(result.restartTriggered).toBe(false);
 
-    // Verify rebase --abort was called (4th call)
+    // Verify rebase --abort was called
     const calls = mockExecFileAsync.mock.calls;
     const abortCall = calls.find((c: unknown[]) => Array.isArray(c[1]) && c[1].includes('--abort'));
     expect(abortCall).toBeDefined();
