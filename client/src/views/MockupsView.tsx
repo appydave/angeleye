@@ -34,9 +34,60 @@ interface Phase {
 
 const phases: Phase[] = [
   {
+    title: 'Phase 5 — Wave Visualization',
+    tag: 'Latest',
+    tagType: 'new',
+    dates: '2026-03-28',
+    desc: 'Wave-based agent workflow visualization. The complete design system for viewing BMAD story lifecycles as horizontal waves with three-panel drill-down, audit intelligence, handover controls, and sub-agent tree views.',
+    type: 'feature',
+    items: [
+      {
+        name: 'wave-infographic',
+        desc: 'Design system infographic — visual poster of the entire wave visualization concept',
+        path: `${MOCKUP_BASE}/wave-infographic/index.html`,
+        featured: true,
+      },
+      {
+        name: 'wave-three-panel',
+        desc: 'Full wave view — wave bar + agent profile + transcript + audit log',
+        path: `${MOCKUP_BASE}/wave-three-panel/index.html`,
+        featured: true,
+      },
+      {
+        name: 'wave-bar',
+        desc: 'Three wave bar variants — clean run, active+pending, backtrack with SVG arcs',
+        path: `${MOCKUP_BASE}/wave-bar/index.html`,
+        featured: true,
+      },
+      {
+        name: 'wave-audit-panel',
+        desc: 'Audit panel comparison — predicates, observations, classifications, extractions across 3 agents',
+        path: `${MOCKUP_BASE}/wave-audit-panel/index.html`,
+        featured: true,
+      },
+      {
+        name: 'wave-sprint-board',
+        desc: 'Sprint board — Kanban with 7 story cards, Epic 0 toggle, progressive disclosure entry',
+        path: `${MOCKUP_BASE}/wave-sprint-board/index.html`,
+        featured: true,
+      },
+      {
+        name: 'wave-handover',
+        desc: 'Handover UX — PASS, CONDITIONAL PASS, and REJECT scenarios with paste-back messages',
+        path: `${MOCKUP_BASE}/wave-handover/index.html`,
+        featured: true,
+      },
+      {
+        name: 'wave-subagents',
+        desc: "Sub-agent tree — Nate's 6 review agents with expanded tool call timeline and findings",
+        path: `${MOCKUP_BASE}/wave-subagents/index.html`,
+        featured: true,
+      },
+    ] as FeatureMockup[],
+  },
+  {
     title: 'Design System',
     tag: '2 designs',
-    tagType: 'new',
     dates: '2026-03-27',
     desc: 'Logo wordmark explorations and competitive landscape analysis.',
     type: 'feature',
@@ -57,7 +108,7 @@ const phases: Phase[] = [
   },
   {
     title: 'Phase 4 — Chain Visualization',
-    tag: 'Latest',
+    tag: '4 designs',
     dates: '2026-03-27',
     desc: 'Story chain and session enrichment views. Kanban boards, horizontal pipelines, and detail panels for understanding how sessions compose into larger workflows.',
     type: 'feature',
@@ -672,7 +723,7 @@ export default function MockupsView() {
         <div className="ml-auto flex items-center gap-3">
           <FilterBar filter={filter} onFilter={setFilter} counts={counts} />
           <span className="text-[11px] tracking-wide" style={{ color: '#6a5e52' }}>
-            Mar 15 — Mar 27, 2026
+            Mar 15 — Mar 28, 2026
           </span>
           <span className="bg-primary text-foreground text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
             {totalMockups} mockups
