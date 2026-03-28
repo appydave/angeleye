@@ -1,0 +1,176 @@
+{
+  "_sampleMeta": {
+    "description": "42 sessions with selected session showing 4-prompt MCP debugging conversation — tool call groups with timing and errors"
+  },
+  "sessionList": [
+    {
+      "sessionId": "3fa5e03b",
+      "fullSessionId": "3fa5e03b-1111-4000-8000-000000000001",
+      "projectSlug": "app.supportsignal.com.au",
+      "userAssignedName": "bmad-advisor",
+      "sessionType": "build",
+      "status": "active",
+      "elapsedRelative": "8m ago"
+    },
+    {
+      "sessionId": "a1c7f942",
+      "fullSessionId": "a1c7f942-2222-4000-8000-000000000002",
+      "projectSlug": "app.supportsignal.com.au",
+      "userAssignedName": "bmad-oversight-focus",
+      "sessionType": "build",
+      "status": "active",
+      "elapsedRelative": "15m ago"
+    },
+    {
+      "sessionId": "d4e5f678",
+      "fullSessionId": "d4e5f678-3333-4000-8000-000000000003",
+      "projectSlug": "flivideo",
+      "userAssignedName": null,
+      "sessionType": "build",
+      "status": "active",
+      "elapsedRelative": "22m ago"
+    },
+    {
+      "sessionId": "b2c3d4e5",
+      "fullSessionId": "b2c3d4e5-4444-4000-8000-000000000004",
+      "projectSlug": "angeleye",
+      "userAssignedName": "mock-views-conversion",
+      "sessionType": "build",
+      "status": "ended",
+      "elapsedRelative": "1h ago"
+    },
+    {
+      "sessionId": "c3d4e5f6",
+      "fullSessionId": "c3d4e5f6-5555-4000-8000-000000000005",
+      "projectSlug": "poem-os",
+      "userAssignedName": null,
+      "sessionType": "knowledge",
+      "status": "ended",
+      "elapsedRelative": "2h ago"
+    },
+    {
+      "sessionId": "e5f6a7b8",
+      "fullSessionId": "e5f6a7b8-6666-4000-8000-000000000006",
+      "projectSlug": "appydave-tools",
+      "userAssignedName": null,
+      "sessionType": "ops",
+      "status": "ended",
+      "elapsedRelative": "3h ago"
+    },
+    {
+      "sessionId": "f6a7b8c9",
+      "fullSessionId": "f6a7b8c9-7777-4000-8000-000000000007",
+      "projectSlug": "agent-workflow-builder",
+      "userAssignedName": null,
+      "sessionType": "research",
+      "status": "ended",
+      "elapsedRelative": "5h ago"
+    },
+    {
+      "sessionId": "a7b8c9d0",
+      "fullSessionId": "a7b8c9d0-8888-4000-8000-000000000008",
+      "projectSlug": "klueless",
+      "userAssignedName": null,
+      "sessionType": "build",
+      "status": "ended",
+      "elapsedRelative": "6h ago"
+    },
+    {
+      "sessionId": "b8c9d0e1",
+      "fullSessionId": "b8c9d0e1-9999-4000-8000-000000000009",
+      "projectSlug": "app.supportsignal.com.au",
+      "userAssignedName": "bmad-dev-story-2.3",
+      "sessionType": "build",
+      "status": "ended",
+      "elapsedRelative": "8h ago"
+    },
+    {
+      "sessionId": "c9d0e1f2",
+      "fullSessionId": "c9d0e1f2-aaaa-4000-8000-00000000000a",
+      "projectSlug": "storyline-app",
+      "userAssignedName": null,
+      "sessionType": "orientation",
+      "status": "ended",
+      "elapsedRelative": "1d ago"
+    }
+  ],
+  "selectedSession": {
+    "sessionId": "3fa5e03b",
+    "fullSessionId": "3fa5e03b-1111-4000-8000-000000000001",
+    "projectSlug": "app.supportsignal.com.au",
+    "userAssignedName": "bmad-advisor",
+    "sessionType": "build",
+    "status": "active",
+    "startedAt": "2026-03-26T14:32:00.000Z",
+    "lastActive": "2026-03-26T14:40:00.000Z",
+    "totalEvents": 246,
+    "messages": [
+      { "role": "user", "timestamp": "14:32:05", "text": "/focus bmad-v6" },
+      {
+        "role": "claude",
+        "timestamp": "14:32:12",
+        "text": "Focused on BMAD v6 advisor. I found the core config files and noticed a stale Codex endpoint in .claude/settings.json — port 3099 should be 3100 based on the relay doc."
+      },
+      {
+        "role": "user",
+        "timestamp": "14:33:18",
+        "text": "How do we check that all the MCPs are actually working? I know some have been flaky lately."
+      },
+      {
+        "role": "claude",
+        "timestamp": "14:33:42",
+        "text": "MCP health check complete. 3 of 5 MCPs are live:\n\n- Codex (localhost:3100) — responding, 12ms\n- Playwright (localhost:3201) — responding, 185ms  \n- Custom tools (localhost:3202) — responding, 44ms\n\n2 are down:\n- Brave Search (localhost:3200) — connection refused (process not started)\n- Relay (localhost:3099) — timeout after 5012ms (stale port, should be 3100)"
+      },
+      {
+        "role": "user",
+        "timestamp": "14:34:55",
+        "text": "Check BMAD relay document, verify relay rules after v6 changes. Make sure the timeout and permission settings are correct."
+      },
+      {
+        "role": "claude",
+        "timestamp": "14:35:18",
+        "text": "Found 2 issues in docs/bmad/relay.md:\n\n1. Stale timeout: 30s default, should be 15s per v6 spec\n2. Missing bmad-analyst permission in the ACL table — it was added in v6 but the relay doc wasn't updated"
+      },
+      {
+        "role": "user",
+        "timestamp": "14:36:30",
+        "text": "Update timeout, fix the permission table, and check for anything else that needs updating in the relay and settings files."
+      },
+      {
+        "role": "claude",
+        "timestamp": "14:37:05",
+        "text": "I also updated .claude/settings.json to fix the Codex port (3099 → 3100) and ran npm run typecheck to confirm everything compiles. All checks pass.\n\nChanges:\n- relay.md: timeout 30s → 15s, added bmad-analyst to ACL\n- relay.md: health check interval 60s → 30s\n- settings.json: Codex port 3099 → 3100\n- Created .claude/skills/bmad-v6.md (new skill file)"
+      }
+    ],
+    "toolCalls": [
+      { "timestamp": "14:32:06", "tool": "Read", "summary": "docs/bmad/advisor-v6.md" },
+      { "timestamp": "14:32:07", "tool": "Read", "summary": "CLAUDE.md" },
+      { "timestamp": "14:32:07", "tool": "Read", "summary": "STEERING.md" },
+      { "timestamp": "14:32:08", "tool": "Read", "summary": ".claude/settings.json" },
+      { "timestamp": "14:32:09", "tool": "Grep", "summary": "pattern 'bmad' in src/" },
+      { "timestamp": "14:32:10", "tool": "Glob", "summary": "**/*bmad*" },
+      { "timestamp": "14:33:20", "tool": "Bash", "summary": "curl localhost:3100/health" },
+      {
+        "timestamp": "14:33:25",
+        "tool": "Bash",
+        "summary": "curl localhost:3200/health (timeout 5012ms)"
+      },
+      { "timestamp": "14:33:28", "tool": "Bash", "summary": "curl localhost:3201/health" },
+      { "timestamp": "14:33:30", "tool": "Read", "summary": "docs/bmad/mcp-registry.md" },
+      { "timestamp": "14:34:58", "tool": "Read", "summary": "docs/bmad/relay.md" },
+      { "timestamp": "14:36:33", "tool": "Edit", "summary": "docs/bmad/relay.md (timeout)" },
+      { "timestamp": "14:36:35", "tool": "Edit", "summary": "docs/bmad/relay.md (permissions)" },
+      {
+        "timestamp": "14:36:37",
+        "tool": "Edit",
+        "summary": "docs/bmad/relay.md (health interval)"
+      },
+      { "timestamp": "14:36:40", "tool": "Edit", "summary": ".claude/settings.json (codex port)" },
+      { "timestamp": "14:36:45", "tool": "Write", "summary": ".claude/skills/bmad-v6.md" },
+      { "timestamp": "14:36:50", "tool": "Bash", "summary": "npm run typecheck" },
+      { "timestamp": "14:36:55", "tool": "Bash", "summary": "npm test -- --run" },
+      { "timestamp": "14:37:00", "tool": "Bash", "summary": "curl -s localhost:3100/health" },
+      { "timestamp": "14:37:03", "tool": "Bash", "summary": "git diff --stat" }
+    ]
+  }
+}

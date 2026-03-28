@@ -55,7 +55,7 @@ function formatTimestamp(isoString: string): string {
 }
 
 function pulseDisplay(idleSecs: number, status: string): { text: string; className: string } {
-  if (status !== 'active') return { text: '—', className: 'text-muted-foreground' };
+  if (status !== 'active') return { text: '', className: 'text-muted-foreground' };
   const text = idleSecs >= 60 ? `${Math.floor(idleSecs / 60)}m` : `${idleSecs}s`;
   if (idleSecs >= 15) return { text, className: 'text-red-400' };
   if (idleSecs >= 8) return { text, className: 'text-amber-400' };
@@ -252,6 +252,7 @@ export default function ObserverView() {
   const [cursor, setCursor] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [totalCount, setTotalCount] = useState<number | null>(null);
   const idleCounters = useRef<Record<string, number>>({});
   const dragState = useRef<{ startY: number; startHeight: number } | null>(null);
 
@@ -262,7 +263,12 @@ export default function ObserverView() {
       .then(
         (body: {
           status: string;
-          data?: { sessions?: RegistryEntry[]; cursor?: string | null; hasMore?: boolean };
+          data?: {
+            sessions?: RegistryEntry[];
+            cursor?: string | null;
+            hasMore?: boolean;
+            total?: number;
+          };
         }) => {
           const entries: RegistryEntry[] = body.data?.sessions ?? [];
           setSessions(
@@ -274,6 +280,7 @@ export default function ObserverView() {
           );
           setCursor(body.data?.cursor ?? null);
           setHasMore(body.data?.hasMore ?? false);
+          if (body.data?.total !== undefined) setTotalCount(body.data.total);
           // Seed idle counters from server last_active
           entries.forEach((e) => {
             idleCounters.current[e.session_id] = Math.floor(
@@ -534,9 +541,15 @@ export default function ObserverView() {
       .then(
         (body: {
           status: string;
-          data?: { sessions?: RegistryEntry[]; cursor?: string | null; hasMore?: boolean };
+          data?: {
+            sessions?: RegistryEntry[];
+            cursor?: string | null;
+            hasMore?: boolean;
+            total?: number;
+          };
         }) => {
           const entries: RegistryEntry[] = body.data?.sessions ?? [];
+          if (body.data?.total !== undefined) setTotalCount(body.data.total);
           setSessions((prev) => {
             const existingIds = new Set(prev.map((s) => s.entry.session_id));
             const newSessions = entries
@@ -565,6 +578,7 @@ export default function ObserverView() {
 
   const activeSessions = sessions.filter((s) => s.entry.status === 'active');
   const anyActive = activeSessions.length > 0;
+  const junkCount = sessions.filter((s) => s.entry.is_junk === true).length;
   const baseVisible = hideJunk ? sessions.filter((s) => s.entry.is_junk !== true) : sessions;
   const visibleSessions =
     filter === 'starred'
@@ -583,7 +597,9 @@ export default function ObserverView() {
         <h1 className="font-bebas text-3xl tracking-wider text-foreground">Observer</h1>
         <div className="flex items-center gap-3">
           <span className="text-muted-foreground text-sm">
-            {sessions.length} session{sessions.length !== 1 ? 's' : ''}
+            {totalCount !== null && totalCount !== sessions.length
+              ? `${sessions.length} of ${totalCount} sessions`
+              : `${sessions.length} session${sessions.length !== 1 ? 's' : ''}`}
           </span>
           <span
             className={anyActive ? 'text-green-500 text-lg' : 'text-muted-foreground text-lg'}
@@ -609,52 +625,45 @@ export default function ObserverView() {
         <span className="font-bebas tracking-wider text-[#d4c9b8] text-xs w-12 text-right shrink-0 opacity-70">
           PULSE
         </span>
-        {/* All | Starred filter */}
-        <div className="flex items-center gap-1 shrink-0">
-          <button
-            onClick={() => setFilter('all')}
-            className={`text-[10px] font-bebas tracking-wider px-2 py-0.5 rounded cursor-pointer border-none transition-colors ${
-              filter === 'all'
-                ? 'bg-primary/20 text-primary'
-                : 'text-muted-foreground hover:text-primary bg-transparent'
-            }`}
-          >
-            All
-          </button>
-          <button
-            onClick={() => setFilter('starred')}
-            className={`text-[10px] font-bebas tracking-wider px-2 py-0.5 rounded cursor-pointer border-none transition-colors ${
-              filter === 'starred'
-                ? 'bg-amber-500/20 text-amber-400'
-                : 'text-muted-foreground hover:text-amber-400 bg-transparent'
-            }`}
-          >
-            Starred
-          </button>
-          <button
-            onClick={() => setFilter('named')}
-            className={`text-[10px] font-bebas tracking-wider px-2 py-0.5 rounded cursor-pointer border-none transition-colors ${
-              filter === 'named'
-                ? 'bg-sky-500/20 text-sky-400'
-                : 'text-muted-foreground hover:text-sky-400 bg-transparent'
-            }`}
-          >
-            Named
-          </button>
+        {/* Filter segment */}
+        <div className="flex items-center shrink-0 bg-foreground/60 rounded overflow-hidden">
+          {(['all', 'starred', 'named'] as const).map((f) => (
+            <button
+              key={f}
+              onClick={() => setFilter(f)}
+              className={`text-[11px] font-bebas tracking-wider px-3 py-1 cursor-pointer border-none transition-colors capitalize ${
+                filter === f
+                  ? f === 'starred'
+                    ? 'bg-amber-500/25 text-amber-400'
+                    : f === 'named'
+                      ? 'bg-sky-500/25 text-sky-400'
+                      : 'bg-primary/25 text-primary'
+                  : 'text-[#d4c9b8]/70 hover:text-[#d4c9b8]'
+              }`}
+            >
+              {f}
+            </button>
+          ))}
         </div>
+        {/* Auto-sessions toggle */}
         <button
           onClick={() => setHideJunk((v) => !v)}
-          className="text-[10px] text-muted-foreground hover:text-primary cursor-pointer font-bebas tracking-wider shrink-0 bg-transparent border-none p-0"
+          className={`text-[10px] font-bebas tracking-wider px-2.5 py-1 rounded cursor-pointer border-none transition-colors shrink-0 ${
+            hideJunk ? 'text-[#d4c9b8]/50 hover:text-[#d4c9b8]' : 'bg-primary/20 text-primary'
+          }`}
+          title="Toggle auto-generated sessions (agent-*, empty, tmp-only)"
         >
-          {hideJunk ? 'show junk' : 'hide junk'}
+          {hideJunk ? `Auto (${junkCount})` : `Auto ✓`}
         </button>
         <button
           onClick={() => setShowLegend((v) => !v)}
-          className="text-[10px] text-[#d4c9b8]/60 hover:text-[#d4c9b8] font-bebas tracking-wider shrink-0 bg-transparent border-none p-0 cursor-pointer"
+          className={`text-[11px] shrink-0 bg-transparent border-none cursor-pointer transition-colors px-1.5 py-1 rounded ${
+            showLegend ? 'text-primary bg-primary/15' : 'text-[#d4c9b8]/50 hover:text-[#d4c9b8]'
+          }`}
           title="Show session type legend"
           aria-label="Toggle session type legend"
         >
-          ⓘ
+          ?
         </button>
       </div>
 
@@ -688,8 +697,19 @@ export default function ObserverView() {
             No sessions yet — waiting for Claude Code activity.
           </div>
         )}
+        {sessions.length > 0 && visibleSessions.length === 0 && (
+          <div className="flex flex-col items-center justify-center h-32 text-muted-foreground text-sm gap-1">
+            {filter === 'starred' && (
+              <span>No starred sessions yet — click the ☆ on any session to bookmark it.</span>
+            )}
+            {filter === 'named' && (
+              <span>No named sessions — click a session name to add one.</span>
+            )}
+            {filter === 'all' && <span>All sessions are hidden by the current filter.</span>}
+          </div>
+        )}
         {visibleSessions.map((s) => {
-          const dot = statusDot(s.entry.last_active);
+          const dot = statusDot(s.entry.last_active, s.entry.status);
           const lastEvent = s.events.length > 0 ? s.events[s.events.length - 1] : null;
           const isFocused = focusedId === s.entry.session_id;
           const sessionType = s.entry.session_type;
@@ -701,7 +721,7 @@ export default function ObserverView() {
               key={s.entry.session_id}
               onClick={() => handleRowClick(s.entry.session_id)}
               className={[
-                'flex items-start gap-3 px-3 py-2.5 cursor-pointer rounded-md border border-border bg-card shadow-sm hover:shadow-md hover:bg-[#faf8f4] transition-all text-sm',
+                'group flex items-start gap-3 px-3 py-2.5 cursor-pointer rounded-md border border-border bg-card shadow-sm hover:shadow-md hover:bg-surface-hover transition-all text-sm',
                 isFocused
                   ? 'border-l-[3px] border-l-primary'
                   : isNamed
@@ -745,7 +765,7 @@ export default function ObserverView() {
                       </span>
                       {isNamed && (
                         <span className="text-[9px] font-bebas tracking-wider px-1 py-0.5 rounded shrink-0 bg-amber-500/15 text-amber-600 border border-amber-300/40">
-                          ⚑ named
+                          ⚑
                         </span>
                       )}
                     </>
@@ -783,7 +803,7 @@ export default function ObserverView() {
                       void navigator.clipboard.writeText(`claude --resume ${s.entry.session_id}`);
                     }}
                     title="Copy resume command"
-                    className="text-xs text-muted-foreground opacity-40 hover:opacity-100 hover:text-foreground shrink-0 bg-transparent border-none cursor-pointer p-0 leading-none"
+                    className="text-xs text-muted-foreground opacity-0 group-hover:opacity-40 hover:!opacity-100 hover:text-foreground shrink-0 bg-transparent border-none cursor-pointer p-1 leading-none"
                   >
                     ⎘
                   </button>
@@ -793,10 +813,10 @@ export default function ObserverView() {
                       e.stopPropagation();
                       toggleStar(s.entry);
                     }}
-                    className={`text-sm shrink-0 bg-transparent border-none cursor-pointer p-0 leading-none ${
+                    className={`text-sm shrink-0 bg-transparent border-none cursor-pointer p-1 leading-none ${
                       isStarred
                         ? 'text-amber-500'
-                        : 'text-muted-foreground opacity-40 hover:opacity-100'
+                        : 'text-muted-foreground opacity-0 group-hover:opacity-40 hover:!opacity-100'
                     }`}
                     title={isStarred ? 'Remove bookmark' : 'Bookmark session'}
                   >
@@ -846,9 +866,13 @@ export default function ObserverView() {
             <button
               onClick={loadMore}
               disabled={loadingMore}
-              className="text-xs font-bebas tracking-wider px-4 py-1.5 rounded border border-border bg-card hover:bg-[#faf8f4] text-muted-foreground hover:text-foreground transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="text-xs font-bebas tracking-wider px-4 py-1.5 rounded border border-border bg-card hover:bg-surface-hover text-muted-foreground hover:text-foreground transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loadingMore ? 'Loading…' : 'Load more sessions'}
+              {loadingMore
+                ? 'Loading…'
+                : totalCount !== null
+                  ? `Load more (${totalCount - sessions.length} remaining)`
+                  : 'Load more sessions'}
             </button>
           </div>
         )}

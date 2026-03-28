@@ -375,8 +375,8 @@
   <header class="header">
     <span class="header-wordmark">AngelEye</span>
     <div class="header-meta">
-      <span class="pill-active">4 active</span>
-      <span class="header-total">667 total</span>
+      <span class="pill-active" id="active-pill">— active</span>
+      <span class="header-total" id="total-count">— total</span>
     </div>
   </header>
 
@@ -396,10 +396,7 @@
       </div>
       <hr class="sidebar-sep" />
       <div class="sidebar-group-label">Workspaces</div>
-      <div class="sidebar-item">AngelEye Dev</div>
-      <div class="sidebar-item">Tools</div>
-      <div class="sidebar-item">Client Work</div>
-      <div class="sidebar-item">Research</div>
+      <div id="sidebar-workspaces"></div>
       <hr class="sidebar-sep" />
       <div class="sidebar-group-label">Settings</div>
       <div class="sidebar-item">Backfill</div>
@@ -408,190 +405,93 @@
 
     <!-- Main two-panel -->
     <main class="main">
-
-      <!-- LEFT: Inbox panel -->
-      <div class="panel">
-        <div class="panel-heading">
-          <span class="panel-heading-text">Inbox</span>
-          <div class="panel-heading-rule"></div>
-          <span class="panel-heading-count">5 unassigned</span>
-        </div>
-
-        <div class="unassigned-note">Sessions not yet assigned to a workspace</div>
-
-        <!-- lars — active, no name, no workspace -->
-        <div class="session-row">
-          <div class="session-left">
-            <div class="name-project-only">lars</div>
-            <div class="name-secondary">b2d456</div>
-          </div>
-          <div class="session-right">
-            <div class="status-active">active</div>
-            <div class="cell-time">1m ago</div>
-          </div>
-        </div>
-
-        <!-- appystack — ended -->
-        <div class="session-row">
-          <div class="session-left">
-            <div class="name-project-only">appystack</div>
-            <div class="name-secondary">e5a234</div>
-          </div>
-          <div class="session-right">
-            <div class="status-ended">ended</div>
-            <div class="cell-time">5h ago</div>
-          </div>
-        </div>
-
-        <!-- klueless — ended, has name -->
-        <div class="session-row">
-          <div class="session-left">
-            <div class="name-primary">DSL refactor</div>
-            <div class="name-secondary">klueless &middot; f3b678</div>
-          </div>
-          <div class="session-right">
-            <div class="status-ended">ended</div>
-            <div class="cell-time">8h ago</div>
-          </div>
-        </div>
-
-        <!-- thumbrack — ended -->
-        <div class="session-row">
-          <div class="session-left">
-            <div class="name-project-only">thumbrack</div>
-            <div class="name-secondary">071c45</div>
-          </div>
-          <div class="session-right">
-            <div class="status-ended">ended</div>
-            <div class="cell-time">20h ago</div>
-          </div>
-        </div>
-
-        <!-- poem-os — ended -->
-        <div class="session-row">
-          <div class="session-left">
-            <div class="name-project-only">poem-os</div>
-            <div class="name-secondary">182d90</div>
-          </div>
-          <div class="session-right">
-            <div class="status-ended">ended</div>
-            <div class="cell-time">1d ago</div>
-          </div>
-        </div>
-
-      </div><!-- /inbox panel -->
-
-      <!-- RIGHT: Workspaces panel -->
-      <div class="panel">
-        <div class="panel-heading">
-          <span class="panel-heading-text">Workspaces</span>
-          <div class="panel-heading-rule"></div>
-          <span class="panel-heading-count">4 workspaces</span>
-        </div>
-
-        <!-- Workspace: AngelEye Dev -->
-        <div class="workspace-group">
-          <div class="workspace-name">AngelEye Dev</div>
-          <div class="workspace-sessions">
-
-            <div class="session-row">
-              <div class="session-left">
-                <div class="name-primary">Fix write queue</div>
-                <div class="name-secondary">angeleye &middot; 4f2a1b</div>
-                <div class="tags"><span class="tag">wave-6</span></div>
-              </div>
-              <div class="session-right">
-                <div class="status-active">active</div>
-                <div class="cell-time">2s ago</div>
-              </div>
-            </div>
-
-            <div class="session-row">
-              <div class="session-left">
-                <div class="name-primary">Plugin loader</div>
-                <div class="name-secondary">appydave-plugins &middot; a7f891</div>
-                <div class="tags"><span class="tag">plugin</span></div>
-              </div>
-              <div class="session-right">
-                <div class="status-active">active</div>
-                <div class="cell-time">34s ago</div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <hr class="workspace-sep" />
-
-        <!-- Workspace: Tools -->
-        <div class="workspace-group">
-          <div class="workspace-name">Tools</div>
-          <div class="workspace-sessions">
-
-            <div class="session-row">
-              <div class="session-left">
-                <div class="name-project-only">deckhand</div>
-                <div class="name-secondary">9c3e2d</div>
-              </div>
-              <div class="session-right">
-                <div class="status-active">active</div>
-                <div class="cell-time">32s ago</div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <hr class="workspace-sep" />
-
-        <!-- Workspace: Research -->
-        <div class="workspace-group">
-          <div class="workspace-name">Research</div>
-          <div class="workspace-sessions">
-
-            <div class="session-row">
-              <div class="session-left">
-                <div class="name-primary">Brain indexing</div>
-                <div class="name-secondary">brains &middot; c8e123</div>
-                <div class="tags"><span class="tag">research</span></div>
-              </div>
-              <div class="session-right">
-                <div class="status-ended">ended</div>
-                <div class="cell-time">4h ago</div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <hr class="workspace-sep" />
-
-        <!-- Workspace: Client Work -->
-        <div class="workspace-group">
-          <div class="workspace-name">Client Work</div>
-          <div class="workspace-sessions">
-
-            <div class="session-row">
-              <div class="session-left">
-                <div class="name-project-only">signal-studio</div>
-                <div class="name-secondary">d1f789</div>
-                <div class="tags"><span class="tag">client</span></div>
-              </div>
-              <div class="session-right">
-                <div class="status-ended">ended</div>
-                <div class="cell-time">7h ago</div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-      </div><!-- /workspaces panel -->
-
+      <div class="panel" id="inbox-panel">
+        <div style="color:var(--text-muted); padding:40px;">Loading...</div>
+      </div>
+      <div class="panel" id="workspaces-panel">
+        <div style="color:var(--text-muted); padding:40px;">Loading...</div>
+      </div>
     </main>
   </div><!-- /body -->
 </div><!-- /shell -->
 
-<div class="banner">Mochaccino — v5-brief — organiser — 2026-03-15</div>
+<div class="banner">Mochaccino — v5-brief — organiser — API-driven</div>
+
+<script>
+  const API = '';
+
+  function esc(str) {
+    const d = document.createElement('div');
+    d.textContent = str || '';
+    return d.innerHTML;
+  }
+
+  function renderSessionRow(s) {
+    const nameCell = s.userAssignedName
+      ? `<div class="name-primary">${esc(s.userAssignedName)}</div>
+         <div class="name-secondary">${esc(s.projectSlug)} &middot; ${esc(s.sessionId)}</div>`
+      : `<div class="name-project-only">${esc(s.projectSlug)}</div>
+         <div class="name-secondary">${esc(s.sessionId)}</div>`;
+    const tags = s.tags.length
+      ? `<div class="tags">${s.tags.map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div>`
+      : '';
+    const statusHtml = s.status === 'active'
+      ? '<div class="status-active">active</div>'
+      : '<div class="status-ended">ended</div>';
+    return `<div class="session-row">
+      <div class="session-left">${nameCell}${tags}</div>
+      <div class="session-right">${statusHtml}<div class="cell-time">${esc(s.lastActiveRelative)}</div></div>
+    </div>`;
+  }
+
+  async function load() {
+    try {
+      const res = await fetch(`${API}/api/mock-views/organiser`);
+      const json = await res.json();
+      const d = json.data;
+
+      document.getElementById('active-pill').textContent = `${d.activeCount} active`;
+      document.getElementById('total-count').textContent = `${d.totalCount} total`;
+
+      // Inbox
+      let inboxHtml = `
+        <div class="panel-heading">
+          <span class="panel-heading-text">Inbox</span>
+          <div class="panel-heading-rule"></div>
+          <span class="panel-heading-count">${d.inbox.unassignedCount} unassigned</span>
+        </div>
+        <div class="unassigned-note">Sessions not yet assigned to a workspace</div>`;
+      inboxHtml += d.inbox.sessions.map(renderSessionRow).join('');
+      document.getElementById('inbox-panel').innerHTML = inboxHtml;
+
+      // Workspaces panel
+      let wsHtml = `
+        <div class="panel-heading">
+          <span class="panel-heading-text">Workspaces</span>
+          <div class="panel-heading-rule"></div>
+          <span class="panel-heading-count">${d.workspaces.length} workspaces</span>
+        </div>`;
+      d.workspaces.forEach((ws, i) => {
+        if (i > 0) wsHtml += '<hr class="workspace-sep" />';
+        wsHtml += `<div class="workspace-group">
+          <div class="workspace-name">${esc(ws.name)}</div>
+          <div class="workspace-sessions">
+            ${ws.sessions.length ? ws.sessions.map(renderSessionRow).join('') : '<div class="unassigned-note">No sessions</div>'}
+          </div>
+        </div>`;
+      });
+      document.getElementById('workspaces-panel').innerHTML = wsHtml;
+
+      // Sidebar workspaces
+      document.getElementById('sidebar-workspaces').innerHTML =
+        d.workspaces.map(ws => `<div class="sidebar-item">${esc(ws.name)}</div>`).join('');
+    } catch (err) {
+      document.getElementById('inbox-panel').innerHTML =
+        `<div style="color:red; padding:40px;">Failed to load: ${err.message}</div>`;
+    }
+  }
+
+  load();
+</script>
 </body>
 </html>

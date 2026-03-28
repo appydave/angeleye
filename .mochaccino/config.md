@@ -2,6 +2,10 @@
 
 Design mockups for the AngelEye ambient observer UI.
 
+> **API-driven mockups**: All mockups fetch data from `/api/mock-views/*` endpoints
+> with automatic sample data fallback. See [mock-data-fallback.md](mock-data-fallback.md)
+> for the full architecture.
+
 ## Designs
 
 ### Phase 1 — Theme Exploration (2026-03-15)

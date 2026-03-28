@@ -418,7 +418,14 @@ export function extractTriggerArguments(events: AngelEyeEvent[]): string | null 
   const afterCommand = trimmed.replace(/^\/[\w:-]+\s*/, '').trim();
   if (afterCommand.length === 0) return null;
 
-  return afterCommand;
+  // Only capture the first line — multi-line content after the command is
+  // handover context, not trigger arguments. The arguments are compact tokens
+  // like "CS 0.1", "DS 2.4", "wn", "ER", not paragraphs of paste-back text.
+  const firstLine = afterCommand.split('\n')[0]!.trim();
+  if (firstLine.length === 0) return null;
+
+  // Cap at a reasonable length — true trigger args are short (e.g., "VS 2.4")
+  return firstLine.length <= 50 ? firstLine : firstLine.slice(0, 50);
 }
 
 // ── P34: has_skill_created ──────────────────────────────────────────────────

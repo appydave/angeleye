@@ -1,8 +1,8 @@
-import { readFile, readdir } from 'node:fs/promises';
+import { readFile, readdir, access } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
 import type { AngelEyeEvent, RegistryEntry } from '@appystack/shared';
-import { readRegistry, updateRegistry } from './registry.service.js';
+import { readRegistry, updateRegistry, _sessionsDir } from './registry.service.js';
 import { writeEvent } from './sessions.service.js';
 
 // ── Custom Title Extraction ──────────────────────────────────────────────────────
@@ -28,7 +28,27 @@ export interface BackfillResult {
   scanned: number;
   imported: number;
   skipped: number;
+  repaired: number;
   errors: number;
+}
+
+// ── Skill-Expanded Prompt Extraction ────────────────────────────────────────
+// When a user types /bmad-sm VS 2.4, Claude Code expands the skill and the
+// JSONL records the expanded content starting with <command-name>/bmad-sm</command-name>.
+// Extract the original command + args so E01/E02 extractors can find them.
+
+const COMMAND_NAME_RE = /<command-name>\/?([^<]+)<\/command-name>/;
+const COMMAND_ARGS_RE = /<command-args>([^<]*)<\/command-args>/;
+
+function extractSkillPrompt(content: string): string | null {
+  const cmdMatch = content.match(COMMAND_NAME_RE);
+  if (!cmdMatch) return null;
+
+  const command = cmdMatch[1]!.startsWith('/') ? cmdMatch[1]! : `/${cmdMatch[1]!}`;
+  const argsMatch = content.match(COMMAND_ARGS_RE);
+  const args = argsMatch?.[1]?.trim();
+
+  return args ? `${command} ${args}` : command;
 }
 
 function transcriptToEvents(sessionId: string, entries: unknown[]): AngelEyeEvent[] {
@@ -40,16 +60,28 @@ function transcriptToEvents(sessionId: string, entries: unknown[]): AngelEyeEven
 
     if (e.type === 'user' && !e.isMeta) {
       const content = (e.message as Record<string, unknown>)?.content;
-      if (typeof content === 'string' && content.length > 0 && !content.startsWith('<')) {
-        events.push({
-          id: crypto.randomUUID(),
-          session_id: sessionId,
-          ts,
-          source: 'transcript',
-          event: 'user_prompt',
-          cwd,
-          prompt: content,
-        });
+      if (typeof content === 'string' && content.length > 0) {
+        // Skip system-reminder and other meta XML, but extract skill-expanded prompts
+        let prompt: string | null = null;
+        if (content.startsWith('<')) {
+          // Check for skill-expanded content (<command-name>...</command-name>)
+          prompt = extractSkillPrompt(content);
+          // Skip other XML content (system-reminder, etc.)
+        } else {
+          prompt = content;
+        }
+
+        if (prompt) {
+          events.push({
+            id: crypto.randomUUID(),
+            session_id: sessionId,
+            ts,
+            source: 'transcript',
+            event: 'user_prompt',
+            cwd,
+            prompt,
+          });
+        }
       }
     }
 
@@ -79,7 +111,7 @@ function transcriptToEvents(sessionId: string, entries: unknown[]): AngelEyeEven
 export async function backfillTranscripts(
   claudeProjectsDir = join(homedir(), '.claude', 'projects')
 ): Promise<BackfillResult> {
-  const result = { scanned: 0, imported: 0, skipped: 0, errors: 0 };
+  const result = { scanned: 0, imported: 0, skipped: 0, repaired: 0, errors: 0 };
 
   // Read existing registry once
   const registry = await readRegistry();
@@ -105,20 +137,52 @@ export async function backfillTranscripts(
       const sessionId = file.replace('.jsonl', '');
       result.scanned++;
 
-      // Skip already-known sessions — but still backfill name if null
+      // Skip already-known sessions — but still backfill name and missing events
       if (registry[sessionId]) {
+        let needsWork = false;
+
+        // Backfill name if null
         if (registry[sessionId].name === null || registry[sessionId].name === undefined) {
+          needsWork = true;
+        }
+
+        // Check if event file exists — re-extract events if missing
+        const eventFilePath = join(_sessionsDir(), `session-${sessionId}.jsonl`);
+        let hasEventFile = true;
+        try {
+          await access(eventFilePath);
+        } catch {
+          hasEventFile = false;
+          needsWork = true;
+        }
+
+        if (needsWork) {
           try {
             const raw = await readFile(join(projectPath, file), 'utf-8');
             const lines = raw.split('\n').filter((l) => l.trim());
-            const customTitle = extractCustomTitle(lines);
-            if (customTitle) {
-              await updateRegistry(sessionId, { name: customTitle });
+
+            // Backfill name
+            if (registry[sessionId].name === null || registry[sessionId].name === undefined) {
+              const customTitle = extractCustomTitle(lines);
+              if (customTitle) {
+                await updateRegistry(sessionId, { name: customTitle });
+              }
+            }
+
+            // Re-extract events if event file is missing
+            if (!hasEventFile) {
+              const entries = lines.map((l) => JSON.parse(l));
+              const events = transcriptToEvents(sessionId, entries);
+              for (const event of events) {
+                await writeEvent(event);
+              }
+              if (events.length > 0) result.repaired++;
             }
           } catch {
             // non-fatal — skip
           }
         }
+
         result.skipped++;
         continue;
       }

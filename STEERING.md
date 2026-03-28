@@ -28,6 +28,43 @@ _(empty — add items as you work)_
 
 _Current direction, analysis, priorities. Updated by Claude at the start of each session after reading the David section._
 
+### BMAD Enrichment — Full Pipeline Fix (2026-03-27)
+
+**What was done this session:**
+
+- **Fixed skill-expanded prompt extraction** — the backfill's `content.startsWith('<')` filter was discarding all skill-triggered prompts (Claude Code wraps `/bmad-sm wn` as `<command-name>bmad-sm</command-name><command-args>wn</command-args>`). Added `extractSkillPrompt()` to parse command + args from XML tags. This was the root cause — every BMAD session was being silently dropped.
+- **Fixed sync to support force reclassification** (`POST /api/sync?force=true`) — previously skipped sessions that already had `session_type`
+- **Fixed backfill orphan repair** — sessions in registry but missing event files now get re-extracted (286→64 orphaned)
+- **Fixed correlator merge logic** — story_unit groups were being merged with ad_hoc temporal clusters via union-find bridge. Added type guard: only merge groups of the same type. Also excluded story-covered sessions from Signal 2 temporal clustering.
+- **Added 3 legacy overlay mappings** — bmad-help, bmad-sprint-status, bmad-check-implementation-readiness
+
+**Results:**
+
+- **92 BMAD sessions enriched** (was 0 before this session)
+  - Bob (planner): 32 | Nate (reviewer): 14 | Amelia (builder): 13
+  - Observer: 8 | Lisa (advisor): 6 | Taylor (tester): 6 | Shipper: 4
+  - Sally (UX): 2 | Winston (architect): 2 | Utility: 5
+- **8 deterministic story groups**: Stories 0.1, 0.2, 1.5, 1.6, 2.1, 2.2, 2.3, 2.4
+- **8 workflow clusters**: oversight (7), bmad-sm batches (4 clusters), ux-designer (2), sprint-status (5), readiness-check (3)
+- Story 2.2 confirmed as cleanest run (zero backtracks, 5 sessions)
+- Stories 1.1-1.4 not grouped because those sessions didn't include story IDs in trigger_arguments (e.g. `/bmad-dev` without `DS 1.1`)
+
+**Changes made:**
+
+- `server/src/services/backfill.service.ts` — `extractSkillPrompt()` parses `<command-name>/<command-args>` from JSONL; orphan event repair; `repaired` counter
+- `server/src/services/sync.service.ts` — `SyncOptions.force` parameter to reclassify all sessions
+- `server/src/routes/sync.ts` — accepts `?force=true` query parameter
+- `server/src/services/correlator.service.ts` — type-guarded merge (story_unit won't merge with ad_hoc); exclude story sessions from temporal clustering
+- `server/src/config/overlays/bmad-v6.json` — added bmad-help, bmad-sprint-status, bmad-check-implementation-readiness
+
+**What's next:**
+
+1. **Stories 1.1-1.4 grouping** — those sessions used commands like `/bmad-dev` without story args. Options: (a) parse story ID from the session content/first prompt, (b) manually tag them, (c) add a heuristic that infers story from temporal position + agent sequence
+2. **Ship/oversight story assignment** — `/bmad-ship` and `/bmad-oversight` don't carry story IDs. Could infer from temporal proximity to the preceding story chain
+3. **Chain visualization data** — connect affinity groups to the mochaccino mockups (chain-sprint-board, chain-story-pipeline, chain-session-detail)
+
+---
+
 ### BMAD BI Enrichment — Extension Plan + Implementation Sprint (2026-03-27)
 
 **What was done this session:**

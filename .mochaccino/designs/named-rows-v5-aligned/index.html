@@ -219,7 +219,7 @@
 </style>
 </head>
 <body>
-<div class="banner">Mochaccino — named-rows-v5-aligned — 2026-03-25</div>
+<div class="banner">Mochaccino — named-rows-v5-aligned — API-driven</div>
 
 <div class="shell">
   <!-- Sidebar -->
@@ -237,7 +237,7 @@
     <!-- Header -->
     <div class="header">
       <h1>Observer</h1>
-      <div class="session-count">50 sessions <span class="live-dot"></span></div>
+      <div class="session-count" id="session-count">— sessions <span class="live-dot"></span></div>
     </div>
 
     <!-- Filter + column headers -->
@@ -264,240 +264,90 @@
     </div>
 
     <!-- Session list -->
-    <div class="session-list">
-
-      <!-- Named: active, starred -->
-      <div class="row named">
-        <span class="dot active">●</span>
-        <div class="session-cell">
-          <div class="session-top">
-            <span class="label">angeleye-brain-app-architecture</span>
-            <span class="ctx">brains</span>
-            <span class="sid">25d74454</span>
-          </div>
-          <div class="prompt">Now what I want you to do is get back over the history of probably two or three days.</div>
-        </div>
-        <div class="type-cell"><span class="badge build">BUILD</span></div>
-        <span class="when">18m ago</span>
-        <span class="pulse amber">24m</span>
-        <span class="star filled">★</span>
-        <span class="menu-dots">—</span>
-      </div>
-
-      <!-- Unnamed: active -->
-      <div class="row">
-        <span class="dot active">●</span>
-        <div class="session-cell">
-          <div class="session-top">
-            <span class="label">angeleye</span>
-            <span class="sid">08fbfe17</span>
-          </div>
-          <div class="prompt">/ralphy</div>
-        </div>
-        <div class="type-cell"><span class="badge build">BUILD</span></div>
-        <span class="when">11m ago</span>
-        <span class="pulse green">11m</span>
-        <span class="star empty">☆</span>
-        <span class="menu-dots">—</span>
-      </div>
-
-      <!-- Unnamed: active -->
-      <div class="row focused">
-        <span class="dot active">●</span>
-        <div class="session-cell">
-          <div class="session-top">
-            <span class="label">signal-studio</span>
-            <span class="sid">82754c82</span>
-          </div>
-          <div class="prompt">Havned looked at the project in a week or two, I'm about to hit you with some new changes today.</div>
-        </div>
-        <div class="type-cell"><span class="badge build">BUILD</span></div>
-        <span class="when">0s ago</span>
-        <span class="pulse green">1s</span>
-        <span class="star empty">☆</span>
-        <span class="menu-dots">—</span>
-      </div>
-
-      <!-- Unnamed -->
-      <div class="row">
-        <span class="dot recent">●</span>
-        <div class="session-cell">
-          <div class="session-top">
-            <span class="label">flihub</span>
-            <span class="sid">9c3c681e</span>
-          </div>
-          <div class="prompt">[Image #2] Here is a front-end designer and any other UX experts, and tell me your thoughts</div>
-        </div>
-        <div class="type-cell"><span class="badge build">BUILD</span></div>
-        <span class="when">3m ago</span>
-        <span class="pulse green">3m</span>
-        <span class="star empty">☆</span>
-        <span class="menu-dots">—</span>
-      </div>
-
-      <!-- Unnamed -->
-      <div class="row">
-        <span class="dot idle">○</span>
-        <div class="session-cell">
-          <div class="session-top">
-            <span class="label">brains</span>
-            <span class="sid">d26d8019</span>
-          </div>
-          <div class="prompt">what do we know about dynamous community and colemedin, and also upstream repos</div>
-        </div>
-        <div class="type-cell"><span class="badge knowledge">KNOWLEDGE</span></div>
-        <span class="when">18m ago</span>
-        <span class="pulse none">—</span>
-        <span class="star empty">☆</span>
-        <span class="menu-dots">—</span>
-      </div>
-
-      <!-- Unnamed -->
-      <div class="row">
-        <span class="dot idle">○</span>
-        <div class="session-cell">
-          <div class="session-top">
-            <span class="label">brains</span>
-            <span class="sid">35bd69a7</span>
-          </div>
-          <div class="prompt">/refresh-claude-brain</div>
-        </div>
-        <div class="type-cell"><span class="badge build">BUILD</span></div>
-        <span class="when">53m ago</span>
-        <span class="pulse amber">53m</span>
-        <span class="star empty">☆</span>
-        <span class="menu-dots">—</span>
-      </div>
-
-      <!-- Named -->
-      <div class="row named">
-        <span class="dot idle">○</span>
-        <div class="session-cell">
-          <div class="session-top">
-            <span class="label">bmad-oversight-command-setup</span>
-            <span class="ctx">supportsignal</span>
-            <span class="sid">fef74880</span>
-          </div>
-          <div class="prompt">bmad-oversight</div>
-        </div>
-        <div class="type-cell"><span class="badge orientation">ORIENTATION</span></div>
-        <span class="when">7h ago</span>
-        <span class="pulse none">—</span>
-        <span class="star empty">☆</span>
-        <span class="menu-dots">—</span>
-      </div>
-
-      <!-- Unnamed -->
-      <div class="row">
-        <span class="dot idle">○</span>
-        <div class="session-cell">
-          <div class="session-top">
-            <span class="label">app.supportsignal....</span>
-            <span class="sid">3c0ca17d</span>
-          </div>
-          <div class="prompt">/bmad-sm VS 0.1</div>
-        </div>
-        <div class="type-cell"><span class="badge build">BUILD</span></div>
-        <span class="when">8h ago</span>
-        <span class="pulse amber">488m</span>
-        <span class="star empty">☆</span>
-        <span class="menu-dots">—</span>
-      </div>
-
-      <!-- Named -->
-      <div class="row named">
-        <span class="dot idle">○</span>
-        <div class="session-cell">
-          <div class="session-top">
-            <span class="label">bmad-relay</span>
-            <span class="ctx">supportsignal</span>
-            <span class="sid">9ce6fb0e</span>
-          </div>
-          <div class="prompt">Can you read in the BMAD relay design docs please? And then give us a good name for this conversation</div>
-        </div>
-        <div class="type-cell"><span class="badge build">BUILD</span></div>
-        <span class="when">9h ago</span>
-        <span class="pulse amber">548m</span>
-        <span class="star empty">☆</span>
-        <span class="menu-dots">—</span>
-      </div>
-
-      <!-- Unnamed -->
-      <div class="row">
-        <span class="dot idle">○</span>
-        <div class="session-cell">
-          <div class="session-top">
-            <span class="label">app.supportsignal....</span>
-            <span class="sid">c0c3a020</span>
-          </div>
-          <div class="prompt">/bmad-lib CU 2.1</div>
-        </div>
-        <div class="type-cell"><span class="badge build">BUILD</span></div>
-        <span class="when">9h ago</span>
-        <span class="pulse none">—</span>
-        <span class="star empty">☆</span>
-        <span class="menu-dots">—</span>
-      </div>
-
-      <!-- Named -->
-      <div class="row named">
-        <span class="dot idle">○</span>
-        <div class="session-cell">
-          <div class="session-top">
-            <span class="label">lisa-kdd-upgrade-pass1</span>
-            <span class="ctx">supportsignal</span>
-            <span class="sid">9cf1804f</span>
-          </div>
-          <div class="prompt">/bmad-lib</div>
-        </div>
-        <div class="type-cell"><span class="badge build">BUILD</span></div>
-        <span class="when">9h ago</span>
-        <span class="pulse amber">554m</span>
-        <span class="star empty">☆</span>
-        <span class="menu-dots">—</span>
-      </div>
-
-      <!-- Unnamed -->
-      <div class="row">
-        <span class="dot idle">○</span>
-        <div class="session-cell">
-          <div class="session-top">
-            <span class="label">brains</span>
-            <span class="sid">7e55c656</span>
-          </div>
-          <div class="prompt">The quick brown fox jumped over the lazy dog.</div>
-        </div>
-        <div class="type-cell"><span class="badge orientation">ORIENTATION</span></div>
-        <span class="when">1h ago</span>
-        <span class="pulse none">—</span>
-        <span class="star empty">☆</span>
-        <span class="menu-dots">—</span>
-      </div>
-
+    <div class="session-list" id="session-list">
+      <div style="color:var(--muted); padding:20px;">Loading...</div>
     </div>
 
     <!-- Focus panel stub -->
-    <div class="focus-panel">
-      <span class="focus-name">signal-studio</span>
-      <span class="focus-meta">24 tool calls · 1 stop · 1 session event · 1 subagent event</span>
-      <span class="focus-close">✕</span>
+    <div class="focus-panel" id="focus-panel" style="display:none">
+      <span class="focus-name" id="focus-name"></span>
+      <span class="focus-meta" id="focus-meta"></span>
+      <span class="focus-close" onclick="document.getElementById('focus-panel').style.display='none'">✕</span>
     </div>
   </div>
 </div>
 
-<button class="notes-toggle" onclick="document.getElementById('notes').style.display = document.getElementById('notes').style.display === 'none' ? 'block' : 'none'">Design Notes</button>
-<div id="notes" class="notes-overlay" style="display:none">
-  <h2>What this fixes</h2>
-  <ul>
-    <li><strong>Type badges line up vertically.</strong> BUILD, KNOWLEDGE, ORIENTATION are in a fixed column — your eye can scan straight down. This was the main problem with the current Observer.</li>
-    <li><strong>When and Pulse also align.</strong> Time column and pulse column are fixed-width, so they stack cleanly too.</li>
-    <li><strong>Same linen card style.</strong> Rounded borders, shadow-sm, hover shadow-md, same colour tokens, Bebas Neue for badges. This IS the current Observer — just with a grid backbone.</li>
-    <li><strong>Named rows: amber border + bolder name + project context.</strong> That's it. No extra badges, no extra lines, no pennants. The name replaces the project as hero text, project slug appears dimmed after it.</li>
-    <li><strong>Session ID stays visible</strong> (dimmed, after the name/project). Available for copy-click without hover tricks.</li>
-    <li><strong>Full app shell included</strong> — sidebar, header, filters, focus panel — so you can see it in context, not isolated.</li>
-    <li><strong>Column headers</strong> using Bebas Neue match the existing badge style. Lightweight guide for the grid.</li>
-  </ul>
-</div>
+<script>
+  const API = '';
+
+  function esc(str) {
+    const d = document.createElement('div');
+    d.textContent = str || '';
+    return d.innerHTML;
+  }
+
+  function dotClass(s) {
+    if (s.status === 'active' && s.pulseMinutes !== null && s.pulseMinutes < 5) return 'active';
+    if (s.status === 'active') return 'recent';
+    return 'idle';
+  }
+
+  function dotChar(s) { return s.status === 'active' ? '●' : '○'; }
+
+  function pulseHtml(s) {
+    if (s.pulseMinutes === null) return '<span class="pulse none">—</span>';
+    const cls = s.pulseMinutes < 10 ? 'green' : s.pulseMinutes < 60 ? 'amber' : 'red';
+    return `<span class="pulse ${cls}">${s.pulseMinutes}m</span>`;
+  }
+
+  function badgeHtml(type) {
+    if (!type) return '<div class="type-cell"></div>';
+    const cls = type.toLowerCase();
+    return `<div class="type-cell"><span class="badge ${cls}">${esc(type)}</span></div>`;
+  }
+
+  function renderRow(s) {
+    const named = s.isNamed;
+    const rowClass = named ? 'row named' : 'row';
+    const nameHtml = named
+      ? `<span class="label">${esc(s.userAssignedName)}</span>
+         <span class="ctx">${esc(s.projectSlug)}</span>`
+      : `<span class="label">${esc(s.projectSlug)}</span>`;
+
+    return `<div class="${rowClass}">
+      <span class="dot ${dotClass(s)}">${dotChar(s)}</span>
+      <div class="session-cell">
+        <div class="session-top">
+          ${nameHtml}
+          <span class="sid">${esc(s.sessionId)}</span>
+        </div>
+        <div class="prompt">${esc(s.lastPromptSnippet)}</div>
+      </div>
+      ${badgeHtml(s.sessionType)}
+      <span class="when">${esc(s.whenRelative)}</span>
+      ${pulseHtml(s)}
+      <span class="star ${s.isStarred ? 'filled' : 'empty'}">${s.isStarred ? '★' : '☆'}</span>
+      <span class="menu-dots">—</span>
+    </div>`;
+  }
+
+  async function load() {
+    try {
+      const res = await fetch(`${API}/api/mock-views/named-rows`);
+      const json = await res.json();
+      const d = json.data;
+
+      document.getElementById('session-count').innerHTML =
+        `${d.totalCount} sessions <span class="live-dot"></span>`;
+      document.getElementById('session-list').innerHTML = d.sessions.map(renderRow).join('');
+    } catch (err) {
+      document.getElementById('session-list').innerHTML =
+        `<div style="color:red; padding:20px;">Failed to load: ${err.message}</div>`;
+    }
+  }
+
+  load();
+</script>
 
 </body>
 </html>

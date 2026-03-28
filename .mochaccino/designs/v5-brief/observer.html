@@ -329,8 +329,8 @@
   <header class="header">
     <span class="header-wordmark">AngelEye</span>
     <div class="header-meta">
-      <span class="pill-active">4 active</span>
-      <span class="header-total">667 total</span>
+      <span class="pill-active" id="active-pill">— active</span>
+      <span class="header-total" id="total-count">— total</span>
     </div>
   </header>
 
@@ -361,134 +361,74 @@
     </nav>
 
     <!-- Main content -->
-    <main class="main">
-
-      <!-- Column headers -->
-      <div class="col-headers">
-        <div class="col-label">Session / Project</div>
-        <div class="col-label">Status</div>
-        <div class="col-label">Path</div>
-        <div class="col-label" style="text-align:right">Last active</div>
-      </div>
-
-      <!-- Active section -->
-      <div class="section-heading">Active now</div>
-
-      <!-- Active rows -->
-      <div class="session-row">
-        <div class="cell-name">
-          <div class="name-primary">Fix write queue</div>
-          <div class="name-secondary">angeleye &middot; 4f2a1b</div>
-          <div class="tags"><span class="tag">wave-6</span></div>
-        </div>
-        <div class="cell-status"><span class="status-active">active</span></div>
-        <div class="cell-path">~/dev/ad/apps/angeleye</div>
-        <div class="cell-time">2s ago</div>
-      </div>
-
-      <div class="session-row">
-        <div class="cell-name">
-          <div class="name-project-only">deckhand</div>
-          <div class="name-secondary">9c3e2d</div>
-        </div>
-        <div class="cell-status"><span class="status-active">active</span></div>
-        <div class="cell-path">~/dev/ad/apps/deckhand</div>
-        <div class="cell-time">32s ago</div>
-      </div>
-
-      <div class="session-row">
-        <div class="cell-name">
-          <div class="name-primary">Plugin loader</div>
-          <div class="name-secondary">appydave-plugins &middot; a7f891</div>
-          <div class="tags"><span class="tag">plugin</span></div>
-        </div>
-        <div class="cell-status"><span class="status-active">active</span></div>
-        <div class="cell-path">~/dev/ad/appydave-plugins</div>
-        <div class="cell-time">34s ago</div>
-      </div>
-
-      <div class="session-row">
-        <div class="cell-name">
-          <div class="name-project-only">lars</div>
-          <div class="name-secondary">b2d456</div>
-        </div>
-        <div class="cell-status"><span class="status-active">active</span></div>
-        <div class="cell-path">~/dev/ad/lars</div>
-        <div class="cell-time">1m ago</div>
-      </div>
-
-      <!-- Amber divider: active / ended boundary -->
-      <div class="amber-divider"></div>
-
-      <!-- Ended section -->
-      <div class="section-heading">Ended</div>
-
-      <div class="session-row">
-        <div class="cell-name">
-          <div class="name-primary">Brain indexing</div>
-          <div class="name-secondary">brains &middot; c8e123</div>
-          <div class="tags"><span class="tag">research</span></div>
-        </div>
-        <div class="cell-status"><span class="status-ended">ended</span></div>
-        <div class="cell-path">~/dev/ad/brains</div>
-        <div class="cell-time">4h ago</div>
-      </div>
-
-      <div class="session-row">
-        <div class="cell-name">
-          <div class="name-project-only">signal-studio</div>
-          <div class="name-secondary">d1f789</div>
-          <div class="tags"><span class="tag">client</span></div>
-        </div>
-        <div class="cell-status"><span class="status-ended">ended</span></div>
-        <div class="cell-path">~/dev/clients/signal-studio</div>
-        <div class="cell-time">7h ago</div>
-      </div>
-
-      <div class="session-row">
-        <div class="cell-name">
-          <div class="name-project-only">appystack</div>
-          <div class="name-secondary">e5a234</div>
-        </div>
-        <div class="cell-status"><span class="status-ended">ended</span></div>
-        <div class="cell-path">~/dev/ad/apps/appystack</div>
-        <div class="cell-time">5h ago</div>
-      </div>
-
-      <div class="session-row">
-        <div class="cell-name">
-          <div class="name-primary">DSL refactor</div>
-          <div class="name-secondary">klueless &middot; f3b678</div>
-        </div>
-        <div class="cell-status"><span class="status-ended">ended</span></div>
-        <div class="cell-path">~/dev/ad/klueless</div>
-        <div class="cell-time">8h ago</div>
-      </div>
-
-      <div class="session-row">
-        <div class="cell-name">
-          <div class="name-project-only">thumbrack</div>
-          <div class="name-secondary">071c45</div>
-        </div>
-        <div class="cell-status"><span class="status-ended">ended</span></div>
-        <div class="cell-path">~/dev/ad/thumbrack</div>
-        <div class="cell-time">20h ago</div>
-      </div>
-
-      <div class="session-row">
-        <div class="cell-name">
-          <div class="name-project-only">poem-os</div>
-          <div class="name-secondary">182d90</div>
-        </div>
-        <div class="cell-status"><span class="status-ended">ended</span></div>
-        <div class="cell-path">~/dev/ad/poem-os</div>
-        <div class="cell-time">1d ago</div>
-      </div>
-
+    <main class="main" id="main-content">
+      <div style="color:var(--text-muted); padding:40px;">Loading...</div>
     </main>
   </div><!-- /body -->
 </div><!-- /shell -->
 
-<div class="banner">Mochaccino — v5-brief — observer — 2026-03-15</div>
+<div class="banner">Mochaccino — v5-brief — observer — API-driven</div>
+
+<script>
+  const API = '';
+
+  function renderRow(s) {
+    const nameCell = s.userAssignedName
+      ? `<div class="name-primary">${esc(s.userAssignedName)}</div>
+         <div class="name-secondary">${esc(s.projectSlug)} &middot; ${esc(s.sessionId)}</div>`
+      : `<div class="name-project-only">${esc(s.projectSlug)}</div>
+         <div class="name-secondary">${esc(s.sessionId)}</div>`;
+    const tags = s.tags.length
+      ? `<div class="tags">${s.tags.map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div>`
+      : '';
+    const statusHtml = s.status === 'active'
+      ? '<span class="status-active">active</span>'
+      : '<span class="status-ended">ended</span>';
+    return `<div class="session-row">
+      <div class="cell-name">${nameCell}${tags}</div>
+      <div class="cell-status">${statusHtml}</div>
+      <div class="cell-path">${esc(s.path)}</div>
+      <div class="cell-time">${esc(s.lastActiveRelative)}</div>
+    </div>`;
+  }
+
+  function esc(str) {
+    const d = document.createElement('div');
+    d.textContent = str || '';
+    return d.innerHTML;
+  }
+
+  async function load() {
+    try {
+      const res = await fetch(`${API}/api/mock-views/observer`);
+      const json = await res.json();
+      const d = json.data;
+
+      document.getElementById('active-pill').textContent = `${d.activeCount} active`;
+      document.getElementById('total-count').textContent = `${d.totalCount} total`;
+
+      let html = `
+        <div class="col-headers">
+          <div class="col-label">Session / Project</div>
+          <div class="col-label">Status</div>
+          <div class="col-label">Path</div>
+          <div class="col-label" style="text-align:right">Last active</div>
+        </div>
+        <div class="section-heading">Active now</div>`;
+
+      html += d.activeSessions.map(renderRow).join('');
+      html += '<div class="amber-divider"></div>';
+      html += '<div class="section-heading">Ended</div>';
+      html += d.endedSessions.map(renderRow).join('');
+
+      document.getElementById('main-content').innerHTML = html;
+    } catch (err) {
+      document.getElementById('main-content').innerHTML =
+        `<div style="color:red; padding:40px;">Failed to load: ${err.message}<br>Is the server running on port 5051?</div>`;
+    }
+  }
+
+  load();
+</script>
 </body>
 </html>

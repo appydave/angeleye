@@ -20,6 +20,8 @@ export default defineConfig({
   server: {
     port: 5050,
     strictPort: true,
+    host: true,
+    allowedHosts: ['mac-mini-m4'],
     proxy: {
       '/api': {
         target: 'http://localhost:5051',

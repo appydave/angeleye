@@ -8,6 +8,20 @@ export function apiSuccess<T>(res: Response, data: T, statusCode = 200): void {
   });
 }
 
+export function apiSuccessWithSource<T>(
+  res: Response,
+  data: T,
+  source: 'live' | 'sample',
+  statusCode = 200
+): void {
+  res.status(statusCode).json({
+    status: 'ok',
+    source,
+    data,
+    timestamp: new Date().toISOString(),
+  });
+}
+
 export function apiFailure(res: Response, error: string, statusCode = 400): void {
   res.status(statusCode).json({
     status: 'error',

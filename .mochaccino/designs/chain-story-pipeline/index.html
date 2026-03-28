@@ -208,361 +208,153 @@
     <button class="nav-item active">Sprint Board</button>
     <button class="nav-item">Settings</button>
   </div>
-  <div class="main">
-
-    <!-- Breadcrumb -->
-    <div class="breadcrumb">
-      <a>Sprint Board</a>
-      <span class="sep">&#9656;</span>
-      <a>Epic 2</a>
-      <span class="sep">&#9656;</span>
-      <span>Story 2.4</span>
-    </div>
-
-    <div class="page-title">Story 2.4 — Participant Publish Endpoint</div>
-    <div class="page-subtitle">Epic 2: Core NDIS Features &middot; 8 lifecycle steps &middot; Affinity group: story-2.4</div>
-
-    <!-- Primary Pipeline -->
-    <div class="pipeline-section">
-      <div class="pipeline-label">
-        Pipeline
-        <span class="status-pill pill-active">In Progress</span>
-      </div>
-
-      <div class="pipeline-track">
-        <!-- Step 1: Bob WN -->
-        <div class="step-group">
-          <div class="step-node done">
-            <div class="step-status status-done">&#10003;</div>
-            <div class="agent-avatar avatar-blue">B</div>
-            <div class="agent-name">Bob</div>
-            <div class="action-code">WN</div>
-            <div class="step-duration">3m</div>
-            <div class="project-tag">ss-app</div>
-          </div>
-        </div>
-
-        <!-- Connector: solid green -->
-        <div class="connector">
-          <svg width="40" height="12" viewBox="0 0 40 12">
-            <line x1="0" y1="6" x2="30" y2="6" stroke="#5a9a3c" stroke-width="2"/>
-            <polygon points="30,2 38,6 30,10" fill="#5a9a3c"/>
-          </svg>
-        </div>
-
-        <!-- Step 2: Bob CS -->
-        <div class="step-group">
-          <div class="step-node done">
-            <div class="step-status status-done">&#10003;</div>
-            <div class="agent-avatar avatar-blue">B</div>
-            <div class="agent-name">Bob</div>
-            <div class="action-code">CS</div>
-            <div class="step-duration">12m</div>
-            <div class="project-tag">ss-app</div>
-          </div>
-        </div>
-
-        <!-- Connector: solid green -->
-        <div class="connector">
-          <svg width="40" height="12" viewBox="0 0 40 12">
-            <line x1="0" y1="6" x2="30" y2="6" stroke="#5a9a3c" stroke-width="2"/>
-            <polygon points="30,2 38,6 30,10" fill="#5a9a3c"/>
-          </svg>
-        </div>
-
-        <!-- Step 3: Bob VS -->
-        <div class="step-group">
-          <div class="step-node done">
-            <div class="step-status status-done">&#10003;</div>
-            <div class="agent-avatar avatar-blue">B</div>
-            <div class="agent-name">Bob</div>
-            <div class="action-code">VS</div>
-            <div class="step-duration">18m</div>
-            <div class="project-tag">ss-app</div>
-          </div>
-        </div>
-
-        <!-- Connector: dashed (completed to active) -->
-        <div class="connector">
-          <svg width="40" height="12" viewBox="0 0 40 12">
-            <line x1="0" y1="6" x2="30" y2="6" stroke="#5a9a3c" stroke-width="2" stroke-dasharray="4,3"/>
-            <polygon points="30,2 38,6 30,10" fill="#5a9a3c"/>
-          </svg>
-        </div>
-
-        <!-- Step 4: Amelia DS (ACTIVE) -->
-        <div class="step-group oversight-wrapper">
-          <div class="step-node active">
-            <div class="step-status status-active"><div class="pulse-dot"></div></div>
-            <div class="agent-avatar avatar-green">A</div>
-            <div class="agent-name">Amelia</div>
-            <div class="action-code">DS</div>
-            <div class="step-duration">47m</div>
-            <div class="project-tag">ss-app</div>
-          </div>
-          <!-- Oversight annotation -->
-          <div class="oversight-connector"></div>
-          <div class="oversight-note">
-            <div class="oversight-badge">
-              <span class="oversight-icon">&#128065;</span>
-              <span>Overwatch active</span>
-              <div class="oversight-tooltip">Overwatch session active — monitoring DS output</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Connector: dotted (pending) -->
-        <div class="connector">
-          <svg width="40" height="12" viewBox="0 0 40 12">
-            <line x1="0" y1="6" x2="30" y2="6" stroke="#9e9484" stroke-width="1.5" stroke-dasharray="2,4"/>
-            <polygon points="30,3 36,6 30,9" fill="#9e9484"/>
-          </svg>
-        </div>
-
-        <!-- Step 5: Nate DR -->
-        <div class="step-group">
-          <div class="step-node pending">
-            <div class="step-status status-pending"></div>
-            <div class="agent-avatar avatar-orange">N</div>
-            <div class="agent-name">Nate</div>
-            <div class="action-code">DR</div>
-            <div class="step-duration">—</div>
-            <div class="project-tag">ss-app</div>
-          </div>
-        </div>
-
-        <!-- Connector: dotted -->
-        <div class="connector">
-          <svg width="40" height="12" viewBox="0 0 40 12">
-            <line x1="0" y1="6" x2="30" y2="6" stroke="#9e9484" stroke-width="1.5" stroke-dasharray="2,4"/>
-            <polygon points="30,3 36,6 30,9" fill="#9e9484"/>
-          </svg>
-        </div>
-
-        <!-- Step 6: Taylor SAT -->
-        <div class="step-group">
-          <div class="step-node pending">
-            <div class="step-status status-pending"></div>
-            <div class="agent-avatar avatar-purple">T</div>
-            <div class="agent-name">Taylor</div>
-            <div class="action-code">SAT</div>
-            <div class="step-duration">—</div>
-            <div class="project-tag">ss-app</div>
-            <div class="sub-steps">CS + RA</div>
-          </div>
-        </div>
-
-        <!-- Connector: dotted -->
-        <div class="connector">
-          <svg width="40" height="12" viewBox="0 0 40 12">
-            <line x1="0" y1="6" x2="30" y2="6" stroke="#9e9484" stroke-width="1.5" stroke-dasharray="2,4"/>
-            <polygon points="30,3 36,6 30,9" fill="#9e9484"/>
-          </svg>
-        </div>
-
-        <!-- Step 7: Lisa CU -->
-        <div class="step-group">
-          <div class="step-node pending">
-            <div class="step-status status-pending"></div>
-            <div class="agent-avatar avatar-pink">L</div>
-            <div class="agent-name">Lisa</div>
-            <div class="action-code">CU</div>
-            <div class="step-duration">—</div>
-            <div class="project-tag">brains</div>
-          </div>
-        </div>
-
-        <!-- Connector: dotted -->
-        <div class="connector">
-          <svg width="40" height="12" viewBox="0 0 40 12">
-            <line x1="0" y1="6" x2="30" y2="6" stroke="#9e9484" stroke-width="1.5" stroke-dasharray="2,4"/>
-            <polygon points="30,3 36,6 30,9" fill="#9e9484"/>
-          </svg>
-        </div>
-
-        <!-- Step 8: Ship -->
-        <div class="step-group">
-          <div class="step-node pending">
-            <div class="step-status status-pending"></div>
-            <div class="agent-avatar avatar-gray">S</div>
-            <div class="agent-name">Ship</div>
-            <div class="action-code">&#9873;</div>
-            <div class="step-duration">—</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Metadata panel -->
-      <div class="meta-panel">
-        <h3>Chain Metadata</h3>
-        <div class="meta-row"><span class="meta-label">Story</span><span class="meta-value">2.4 — Participant Publish Endpoint</span></div>
-        <div class="meta-row"><span class="meta-label">Epic</span><span class="meta-value">2 — Core NDIS Features</span></div>
-        <div class="meta-row"><span class="meta-label">Status</span><span class="meta-value in-progress">In Progress (step 4 of 8)</span></div>
-        <div class="meta-row"><span class="meta-label">Started</span><span class="meta-value">2026-03-26 10:04</span></div>
-        <div class="meta-row"><span class="meta-label">Duration</span><span class="meta-value">1h 20m</span></div>
-        <div class="meta-row"><span class="meta-label">Backtracks</span><span class="meta-value">0</span></div>
-        <div class="meta-row"><span class="meta-label">Agents involved</span><span class="meta-value">Bob, Amelia (2 more pending)</span></div>
-        <div class="meta-row"><span class="meta-label">Affinity group</span><span class="meta-value" style="font-family: monospace; font-size: 12px;">story-2.4 (deterministic)</span></div>
-      </div>
-    </div>
-
-    <hr class="section-divider">
-
-    <!-- Story 2.3: Backtrack example -->
-    <div class="pipeline-section backtrack-section" style="border-top: none; padding-top: 0;">
-      <div class="pipeline-label">
-        Story 2.3 — Participant Search Query
-        <span class="status-pill pill-backtrack">Backtrack</span>
-      </div>
-
-      <div class="pipeline-track compact-pipeline" style="position: relative;">
-        <!-- Step 1: Bob WN -->
-        <div class="step-group">
-          <div class="step-node done">
-            <div class="step-status status-done" style="width:16px;height:16px;font-size:9px;">&#10003;</div>
-            <div class="agent-avatar avatar-blue">B</div>
-            <div class="agent-name">Bob</div>
-            <div class="action-code">WN</div>
-            <div class="step-duration">4m</div>
-          </div>
-        </div>
-        <div class="connector"><svg width="28" height="12" viewBox="0 0 28 12"><line x1="0" y1="6" x2="20" y2="6" stroke="#5a9a3c" stroke-width="1.5"/><polygon points="20,3 26,6 20,9" fill="#5a9a3c"/></svg></div>
-
-        <!-- Step 2: Bob CS -->
-        <div class="step-group">
-          <div class="step-node done">
-            <div class="step-status status-done" style="width:16px;height:16px;font-size:9px;">&#10003;</div>
-            <div class="agent-avatar avatar-blue">B</div>
-            <div class="agent-name">Bob</div>
-            <div class="action-code">CS</div>
-            <div class="step-duration">8m</div>
-          </div>
-        </div>
-        <div class="connector"><svg width="28" height="12" viewBox="0 0 28 12"><line x1="0" y1="6" x2="20" y2="6" stroke="#5a9a3c" stroke-width="1.5"/><polygon points="20,3 26,6 20,9" fill="#5a9a3c"/></svg></div>
-
-        <!-- Step 3: Bob VS -->
-        <div class="step-group">
-          <div class="step-node done">
-            <div class="step-status status-done" style="width:16px;height:16px;font-size:9px;">&#10003;</div>
-            <div class="agent-avatar avatar-blue">B</div>
-            <div class="agent-name">Bob</div>
-            <div class="action-code">VS</div>
-            <div class="step-duration">15m</div>
-          </div>
-        </div>
-        <div class="connector"><svg width="28" height="12" viewBox="0 0 28 12"><line x1="0" y1="6" x2="20" y2="6" stroke="#5a9a3c" stroke-width="1.5"/><polygon points="20,3 26,6 20,9" fill="#5a9a3c"/></svg></div>
-
-        <!-- Step 4: Amelia DS (patched) — id for backtrack arrow target -->
-        <div class="step-group" id="bt-ds">
-          <div class="step-node done">
-            <div class="step-status status-done" style="width:16px;height:16px;font-size:9px;">&#10003;</div>
-            <div class="agent-avatar avatar-green">A</div>
-            <div class="agent-name">Amelia</div>
-            <div class="action-code">DS</div>
-            <div class="step-duration">22m</div>
-          </div>
-        </div>
-        <div class="connector"><svg width="28" height="12" viewBox="0 0 28 12"><line x1="0" y1="6" x2="20" y2="6" stroke="#5a9a3c" stroke-width="1.5"/><polygon points="20,3 26,6 20,9" fill="#5a9a3c"/></svg></div>
-
-        <!-- Step 5: Nate DR — COND PASS -->
-        <div class="step-group" id="bt-dr1">
-          <div class="step-node cond-pass">
-            <div class="step-status status-cond">!</div>
-            <div class="agent-avatar avatar-orange">N</div>
-            <div class="agent-name">Nate</div>
-            <div class="action-code">DR</div>
-            <div class="step-duration">14m</div>
-            <div style="font-size: 9px; color: var(--amber); font-weight: 600; margin-top: 2px;">COND PASS</div>
-          </div>
-        </div>
-
-        <!-- Backtrack curved arrow -->
-        <div class="connector" style="width: 12px;"></div>
-        <div style="display: flex; flex-direction: column; align-items: center; padding-top: 4px;">
-          <svg width="200" height="52" viewBox="0 0 200 52" style="margin-left: -216px; margin-top: -8px; position: relative; z-index: 2;">
-            <!-- Curved backtrack arrow from DR back to DS -->
-            <defs>
-              <marker id="arrowback" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-                <polygon points="8,3 0,0 0,6" fill="#d4860a"/>
-              </marker>
-            </defs>
-            <path d="M 190,8 C 190,42 10,42 10,8" fill="none" stroke="#d4860a" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrowback)"/>
-            <text x="100" y="48" text-anchor="middle" font-size="9" fill="#d4860a" font-weight="600">3 patches</text>
-          </svg>
-        </div>
-
-        <!-- Connector: to retry -->
-        <div class="connector" style="margin-left: -20px;"><svg width="28" height="12" viewBox="0 0 28 12"><line x1="0" y1="6" x2="20" y2="6" stroke="#5a9a3c" stroke-width="1.5"/><polygon points="20,3 26,6 20,9" fill="#5a9a3c"/></svg></div>
-
-        <!-- Step 4b: Amelia DS (retry) -->
-        <div class="step-group">
-          <div class="step-node done" style="border-color: var(--amber-light);">
-            <div class="step-status status-done" style="width:16px;height:16px;font-size:9px;">&#10003;</div>
-            <div class="agent-avatar avatar-green">A</div>
-            <div class="agent-name">Amelia</div>
-            <div class="action-code">DS</div>
-            <div class="step-duration">8m</div>
-            <div style="font-size: 9px; color: var(--amber); font-weight: 500; margin-top: 1px;">retry</div>
-          </div>
-        </div>
-        <div class="connector"><svg width="28" height="12" viewBox="0 0 28 12"><line x1="0" y1="6" x2="20" y2="6" stroke="#5a9a3c" stroke-width="1.5"/><polygon points="20,3 26,6 20,9" fill="#5a9a3c"/></svg></div>
-
-        <!-- Step 5b: Nate DR (retry) -->
-        <div class="step-group">
-          <div class="step-node done">
-            <div class="step-status status-done" style="width:16px;height:16px;font-size:9px;">&#10003;</div>
-            <div class="agent-avatar avatar-orange">N</div>
-            <div class="agent-name">Nate</div>
-            <div class="action-code">DR</div>
-            <div class="step-duration">10m</div>
-          </div>
-        </div>
-        <div class="connector"><svg width="28" height="12" viewBox="0 0 28 12"><line x1="0" y1="6" x2="20" y2="6" stroke="#9e9484" stroke-width="1.5" stroke-dasharray="2,4"/><polygon points="20,3 26,6 20,9" fill="#9e9484"/></svg></div>
-
-        <!-- Remaining pending steps -->
-        <div class="step-group">
-          <div class="step-node pending">
-            <div class="step-status status-pending" style="width:16px;height:16px;"></div>
-            <div class="agent-avatar avatar-purple">T</div>
-            <div class="agent-name">Taylor</div>
-            <div class="action-code">SAT</div>
-            <div class="step-duration">—</div>
-          </div>
-        </div>
-        <div class="connector"><svg width="28" height="12" viewBox="0 0 28 12"><line x1="0" y1="6" x2="20" y2="6" stroke="#9e9484" stroke-width="1.5" stroke-dasharray="2,4"/><polygon points="20,3 26,6 20,9" fill="#9e9484"/></svg></div>
-
-        <div class="step-group">
-          <div class="step-node pending">
-            <div class="step-status status-pending" style="width:16px;height:16px;"></div>
-            <div class="agent-avatar avatar-pink">L</div>
-            <div class="agent-name">Lisa</div>
-            <div class="action-code">CU</div>
-            <div class="step-duration">—</div>
-          </div>
-        </div>
-        <div class="connector"><svg width="28" height="12" viewBox="0 0 28 12"><line x1="0" y1="6" x2="20" y2="6" stroke="#9e9484" stroke-width="1.5" stroke-dasharray="2,4"/><polygon points="20,3 26,6 20,9" fill="#9e9484"/></svg></div>
-
-        <div class="step-group">
-          <div class="step-node pending">
-            <div class="step-status status-pending" style="width:16px;height:16px;"></div>
-            <div class="agent-avatar avatar-gray">S</div>
-            <div class="agent-name">Ship</div>
-            <div class="action-code">&#9873;</div>
-            <div class="step-duration">—</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Compact metadata for 2.3 -->
-      <div style="font-size: 12px; color: var(--muted); margin-top: 8px; display: flex; gap: 20px;">
-        <span>Started: 2026-03-25 14:12</span>
-        <span>Duration: 1h 21m</span>
-        <span>Backtracks: <strong style="color: var(--amber);">1</strong></span>
-        <span>Agents: Bob, Amelia, Nate (2 more pending)</span>
-      </div>
-    </div>
-
+  <div class="main" id="main-content">
+    <div style="color:var(--muted); padding:24px;">Loading pipeline...</div>
   </div>
 </div>
+
+<script>
+  const API = '';
+
+  function esc(str) {
+    const d = document.createElement('div');
+    d.textContent = str || '';
+    return d.innerHTML;
+  }
+
+  const AVATAR_COLORS = ['avatar-blue', 'avatar-green', 'avatar-orange', 'avatar-purple', 'avatar-pink', 'avatar-gray'];
+
+  function avatarCls(name) {
+    if (!name) return 'avatar-gray';
+    const i = Math.abs(name.charCodeAt(0)) % AVATAR_COLORS.length;
+    return AVATAR_COLORS[i];
+  }
+
+  function connectorSvg(state) {
+    if (state === 'done') return '<svg width="40" height="12" viewBox="0 0 40 12"><line x1="0" y1="6" x2="30" y2="6" stroke="#5a9a3c" stroke-width="2"/><polygon points="30,2 38,6 30,10" fill="#5a9a3c"/></svg>';
+    if (state === 'active') return '<svg width="40" height="12" viewBox="0 0 40 12"><line x1="0" y1="6" x2="30" y2="6" stroke="#5a9a3c" stroke-width="2" stroke-dasharray="4,3"/><polygon points="30,2 38,6 30,10" fill="#5a9a3c"/></svg>';
+    return '<svg width="40" height="12" viewBox="0 0 40 12"><line x1="0" y1="6" x2="30" y2="6" stroke="#9e9484" stroke-width="1.5" stroke-dasharray="2,4"/><polygon points="30,3 36,6 30,9" fill="#9e9484"/></svg>';
+  }
+
+  function renderStep(step) {
+    const nodeCls = step.state === 'active' ? 'step-node active'
+      : step.state === 'done' ? 'step-node done' : 'step-node pending';
+    const statusHtml = step.state === 'done'
+      ? '<div class="step-status status-done">&#10003;</div>'
+      : step.state === 'active'
+        ? '<div class="step-status status-active"><div class="pulse-dot"></div></div>'
+        : '<div class="step-status status-pending"></div>';
+    const initial = (step.agentName || step.role || '?')[0].toUpperCase();
+    const projTag = step.projectSlug ? `<div class="project-tag">${esc(step.projectSlug)}</div>` : '';
+
+    return `<div class="step-group">
+      <div class="${nodeCls}">
+        ${statusHtml}
+        <div class="agent-avatar ${avatarCls(step.agentName || step.role)}">${initial}</div>
+        <div class="agent-name">${esc(step.agentName || step.role)}</div>
+        <div class="action-code">${esc(step.actionCode || step.role.slice(0, 4).toUpperCase())}</div>
+        <div class="step-duration">${step.durationLabel || '—'}</div>
+        ${projTag}
+      </div>
+    </div>`;
+  }
+
+  async function load() {
+    // Get group ID from URL param or fetch sprint board for first group
+    const params = new URLSearchParams(window.location.search);
+    let groupId = params.get('group');
+
+    if (!groupId) {
+      try {
+        const boardRes = await fetch(`${API}/api/mock-views/chain-sprint-board`);
+        const boardJson = await boardRes.json();
+        const firstStory = boardJson.data.epics[0]?.stories[0];
+        groupId = firstStory?.groupId;
+      } catch (e) {
+        document.getElementById('main-content').innerHTML = '<div style="color:red; padding:24px;">Failed to load sprint board: ' + e.message + '</div>';
+        return;
+      }
+    }
+
+    if (!groupId) {
+      document.getElementById('main-content').innerHTML = '<div style="color:red; padding:24px;">No affinity groups found.</div>';
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API}/api/mock-views/chain-story-pipeline/${groupId}`);
+      const json = await res.json();
+      const d = json.data;
+
+      // Build breadcrumb
+      const breadcrumb = `<div class="breadcrumb">
+        <a>Sprint Board</a>
+        <span class="sep">&#9656;</span>
+        <a>Epic ${esc(String(d.epicId || '?'))}</a>
+        <span class="sep">&#9656;</span>
+        <span>${esc(d.label)}</span>
+      </div>`;
+
+      const title = `<div class="page-title">${esc(String(d.storyId))} — ${esc(d.label)}</div>`;
+      const subtitle = `<div class="page-subtitle">${esc(d.domain || 'unknown')} · ${d.totalSteps} lifecycle steps · Affinity group: ${esc(d.groupId.slice(0, 8))}</div>`;
+
+      // Pipeline status
+      const hasActive = d.steps.some(s => s.state === 'active');
+      const pillHtml = hasActive
+        ? '<span class="status-pill pill-active">In Progress</span>'
+        : d.backtracks > 0
+          ? '<span class="status-pill pill-backtrack">Backtrack</span>'
+          : '<span class="status-pill pill-active">Waiting</span>';
+
+      // Build pipeline track
+      let trackHtml = '';
+      d.steps.forEach((step, i) => {
+        trackHtml += renderStep(step);
+        if (i < d.steps.length - 1) {
+          const nextState = step.state === 'done' && d.steps[i + 1].state === 'done' ? 'done'
+            : step.state === 'done' && d.steps[i + 1].state === 'active' ? 'active'
+            : 'pending';
+          trackHtml += `<div class="connector">${connectorSvg(nextState)}</div>`;
+        }
+      });
+
+      // Metadata panel
+      const doneCount = d.steps.filter(s => s.state === 'done').length;
+      const activeStep = d.steps.find(s => s.state === 'active');
+      const statusText = activeStep
+        ? `In Progress (step ${activeStep.position} of ${d.totalSteps})`
+        : `${doneCount} of ${d.totalSteps} complete`;
+
+      const metaHtml = `<div class="meta-panel">
+        <h3>Chain Metadata</h3>
+        <div class="meta-row"><span class="meta-label">Story</span><span class="meta-value">${esc(String(d.storyId))} — ${esc(d.label)}</span></div>
+        <div class="meta-row"><span class="meta-label">Epic</span><span class="meta-value">${esc(String(d.epicId || '—'))}</span></div>
+        <div class="meta-row"><span class="meta-label">Status</span><span class="meta-value${hasActive ? ' in-progress' : ''}">${esc(statusText)}</span></div>
+        <div class="meta-row"><span class="meta-label">Backtracks</span><span class="meta-value">${d.backtracks}</span></div>
+        <div class="meta-row"><span class="meta-label">Agents involved</span><span class="meta-value">${esc(d.agents.join(', ') || '—')}</span></div>
+        <div class="meta-row"><span class="meta-label">Confidence</span><span class="meta-value">${d.confidence}</span></div>
+        <div class="meta-row"><span class="meta-label">Affinity group</span><span class="meta-value" style="font-family:monospace;font-size:12px;">${esc(d.groupId)}</span></div>
+      </div>`;
+
+      document.getElementById('main-content').innerHTML = `
+        ${breadcrumb}
+        ${title}
+        ${subtitle}
+        <div class="pipeline-section">
+          <div class="pipeline-label">Pipeline ${pillHtml}</div>
+          <div class="pipeline-track">${trackHtml}</div>
+          ${metaHtml}
+        </div>`;
+    } catch (err) {
+      document.getElementById('main-content').innerHTML =
+        `<div style="color:red; padding:24px;">Failed to load: ${err.message}</div>`;
+    }
+  }
+
+  load().catch(err => {
+    document.getElementById('main-content').innerHTML =
+      '<div style="color:red; padding:24px;">Unhandled error: ' + err.message + '</div>';
+  });
+</script>
 </body>
 </html>

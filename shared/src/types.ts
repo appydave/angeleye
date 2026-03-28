@@ -22,6 +22,7 @@ export interface ServerInfo {
   port: number;
   clientUrl: string;
   uptime: number;
+  gitSyncPollMs: number;
 }
 
 /** Socket.io events emitted from server to client. */

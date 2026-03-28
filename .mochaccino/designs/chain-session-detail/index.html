@@ -209,7 +209,7 @@
 <body>
 
 <!-- Banner -->
-<div class="banner">Mochaccino &mdash; chain-session-detail &mdash; 2026-03-27</div>
+<div class="banner">Mochaccino &mdash; chain-session-detail &mdash; API-driven</div>
 
 <div class="layout">
 
@@ -226,316 +226,322 @@
   </aside>
 
   <!-- ── Main Content ─────────────────────────── -->
-  <main class="main">
-
-    <!-- Breadcrumb -->
-    <div class="breadcrumb">
-      <a href="#">Sprint Board</a><span class="sep">/</span>
-      <a href="#">Epic 2</a><span class="sep">/</span>
-      <a href="#">Story 2.4</a><span class="sep">/</span>
-      <strong style="color: var(--fg);">Amelia DS</strong>
-    </div>
-
-    <!-- Session Header -->
-    <div class="session-header">
-      <div class="avatar">A</div>
-      <div class="session-header-info">
-        <h1>
-          bmad-dev-story-2.4
-          <span class="status-dot"></span>
-          <span class="status-label">Active</span>
-        </h1>
-        <div class="session-meta">
-          <div class="meta-item"><span class="meta-label">Agent:</span> Amelia</div>
-          <div class="meta-item"><span class="meta-label">Duration:</span> 47m</div>
-          <div class="meta-item"><span class="meta-label">Started:</span> 2026-03-26 10:42</div>
-          <div class="meta-item"><span class="meta-label">Project:</span> app.supportsignal.com.au</div>
-          <div class="meta-item"><span class="session-id">f2d9a07c-&hellip;</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Mini Pipeline -->
-    <div class="mini-pipeline">
-      <div class="mini-pipeline-label">Story 2.4</div>
-      <div class="pipeline-steps">
-        <!-- Step 1: SM -->
-        <div class="pipeline-step">
-          <div class="step-node completed">SM</div>
-          <div class="step-connector completed"></div>
-        </div>
-        <!-- Step 2: PM -->
-        <div class="pipeline-step">
-          <div class="step-node completed">PM</div>
-          <div class="step-connector completed"></div>
-        </div>
-        <!-- Step 3: ARCH -->
-        <div class="pipeline-step">
-          <div class="step-node completed">ARCH</div>
-          <div class="step-connector active"></div>
-        </div>
-        <!-- Step 4: DS (current) -->
-        <div class="pipeline-step">
-          <div class="step-node active">DS</div>
-          <div class="step-connector"></div>
-        </div>
-        <!-- Step 5: DEV -->
-        <div class="pipeline-step">
-          <div class="step-node future">DEV</div>
-          <div class="step-connector"></div>
-        </div>
-        <!-- Step 6: QA -->
-        <div class="pipeline-step">
-          <div class="step-node future">QA</div>
-          <div class="step-connector"></div>
-        </div>
-        <!-- Step 7: DOC -->
-        <div class="pipeline-step">
-          <div class="step-node future">DOC</div>
-          <div class="step-connector"></div>
-        </div>
-        <!-- Step 8: CLOSE -->
-        <div class="pipeline-step">
-          <div class="step-node future">CLO</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Panels Grid -->
-    <div class="panels-grid">
-
-      <!-- Panel 1: Workflow Context -->
-      <div class="panel">
-        <div class="panel-title">Workflow Context</div>
-        <div class="context-grid">
-          <span class="context-label">Domain</span>
-          <span class="context-value">bmad-v6</span>
-
-          <span class="context-label">Role</span>
-          <span class="context-value">builder <span class="context-code">C14</span></span>
-
-          <span class="context-label">Identity</span>
-          <span class="context-value">Amelia <span class="context-code">C15</span></span>
-
-          <span class="context-label">Action</span>
-          <span class="context-value">DS 2.4 <span class="context-code">C16</span></span>
-
-          <span class="context-label">Trigger</span>
-          <span class="context-value">/bmad-dev <span class="context-code">E01</span></span>
-
-          <span class="context-label">Arguments</span>
-          <span class="context-value">DS 2.4 <span class="context-code">E02</span></span>
-
-          <span class="context-label">Chain Pos</span>
-          <span class="context-value"><strong>4</strong> of 8</span>
-
-          <span class="context-label">Affinity</span>
-          <span class="context-value">story-2.4</span>
-        </div>
-      </div>
-
-      <!-- Panel 2: Predicates Fired -->
-      <div class="panel">
-        <div class="panel-title">Predicates Fired</div>
-        <div class="predicate-list">
-          <div class="predicate-row">
-            <div class="predicate-icon false">&mdash;</div>
-            <div>
-              <div class="predicate-name">P05 has_playwright_calls</div>
-            </div>
-          </div>
-          <div class="predicate-row">
-            <div class="predicate-icon false">&mdash;</div>
-            <div>
-              <div class="predicate-name">P09 is_compaction_resume</div>
-            </div>
-          </div>
-          <div class="predicate-row">
-            <div class="predicate-icon false">&mdash;</div>
-            <div>
-              <div class="predicate-name">P12 is_machine_initiated</div>
-            </div>
-          </div>
-          <div class="predicate-row fired">
-            <div class="predicate-icon true">&#10003;</div>
-            <div>
-              <div class="predicate-name">P17 has_handover_context</div>
-              <div class="predicate-note">Session started with handover paste</div>
-            </div>
-          </div>
-          <div class="predicate-row fired">
-            <div class="predicate-icon true">&#10003;</div>
-            <div>
-              <div class="predicate-name">P18 has_cross_project_reads</div>
-              <div class="predicate-note">Read from brains/ directory</div>
-            </div>
-          </div>
-          <div class="predicate-row">
-            <div class="predicate-icon false">&mdash;</div>
-            <div>
-              <div class="predicate-name">P19 has_web_research</div>
-            </div>
-          </div>
-          <div class="predicate-row fired">
-            <div class="predicate-icon true">&#10003;</div>
-            <div>
-              <div class="predicate-name">P20 has_parallel_subagent_bursts</div>
-              <div class="predicate-note">3 Agent bursts detected</div>
-            </div>
-          </div>
-          <div class="predicate-row fired">
-            <div class="predicate-icon true">&#10003;</div>
-            <div>
-              <div class="predicate-name">P21 has_task_orchestration</div>
-            </div>
-          </div>
-          <div class="predicate-row">
-            <div class="predicate-icon false">&mdash;</div>
-            <div>
-              <div class="predicate-name">P22 has_git_outcome</div>
-            </div>
-          </div>
-          <div class="predicate-row">
-            <div class="predicate-icon false">&mdash;</div>
-            <div>
-              <div class="predicate-name">P34 has_skill_created</div>
-            </div>
-          </div>
-          <div class="predicate-row">
-            <div class="predicate-icon false">&mdash;</div>
-            <div>
-              <div class="predicate-name">P35 has_skill_modified</div>
-            </div>
-          </div>
-        </div>
-        <div class="predicate-summary">4 of 11 predicates fired</div>
-      </div>
-
-      <!-- Panel 3: Classification -->
-      <div class="panel">
-        <div class="panel-title">Classification</div>
-        <div class="classification-list">
-          <div class="class-row">
-            <div class="class-label">Session Type <span class="context-code">C01</span></div>
-            <div class="class-value"><span class="pill build">BUILD</span></div>
-          </div>
-          <div class="class-row">
-            <div class="class-label">Session Scale <span class="context-code">C02</span></div>
-            <div class="class-value">
-              <span class="pill heavy">heavy</span>
-              <div class="scale-bar-container">
-                <div class="scale-bar"><div class="scale-bar-fill" style="width: 85%;"></div></div>
-              </div>
-            </div>
-          </div>
-          <div class="class-row">
-            <div class="class-label">Tool Profile <span class="context-code">C05</span></div>
-            <div class="class-value"><span class="pill mixed">mixed</span></div>
-          </div>
-          <div style="margin-top: -2px;">
-            <div class="tool-profile">
-              <div class="tool-segment" style="width: 34%; background: #c8841a;"></div>
-              <div class="tool-segment" style="width: 28%; background: #5b8abf;"></div>
-              <div class="tool-segment" style="width: 18%; background: #8b6bb5;"></div>
-              <div class="tool-segment" style="width: 20%; background: #6aab6a;"></div>
-            </div>
-            <div class="tool-legend">
-              <div class="tool-legend-item"><div class="tool-legend-dot" style="background: #c8841a;"></div>Edit 34%</div>
-              <div class="tool-legend-item"><div class="tool-legend-dot" style="background: #5b8abf;"></div>Bash 28%</div>
-              <div class="tool-legend-item"><div class="tool-legend-dot" style="background: #8b6bb5;"></div>Agent 18%</div>
-              <div class="tool-legend-item"><div class="tool-legend-dot" style="background: #6aab6a;"></div>Read 20%</div>
-            </div>
-          </div>
-          <div class="class-row" style="margin-top: 4px;">
-            <div class="class-label">Opening Style <span class="context-code">C03</span></div>
-            <div class="class-value"><span class="pill slash">slash-command</span></div>
-          </div>
-          <div class="class-row">
-            <div class="class-label">Delegation Style <span class="context-code">C08</span></div>
-            <div class="class-value"><span class="pill orchestrated">orchestrated</span></div>
-          </div>
-          <div class="class-row">
-            <div class="class-label">Session Continuity <span class="context-code">C09</span></div>
-            <div class="class-value"><span class="pill launcher">skill_launcher</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Panel 4: Session Metrics -->
-      <div class="panel">
-        <div class="panel-title">Session Metrics</div>
-        <div class="metrics-grid">
-          <div class="metric-item">
-            <div class="metric-label">Total Entries</div>
-            <div class="metric-value">847</div>
-          </div>
-          <div class="metric-item">
-            <div class="metric-label">Tool Calls</div>
-            <div class="metric-value">142</div>
-          </div>
-          <div class="metric-item">
-            <div class="metric-label">User Prompts</div>
-            <div class="metric-value">23</div>
-          </div>
-          <div class="metric-item">
-            <div class="metric-label">Autonomy Ratio</div>
-            <div class="metric-value highlight">6.2 <span class="metric-sub">delegated</span></div>
-          </div>
-          <div class="metric-item">
-            <div class="metric-label">Context Used</div>
-            <div class="metric-value">~40%</div>
-          </div>
-          <div class="metric-item">
-            <div class="metric-label">Test Count</div>
-            <div class="metric-value" style="color: var(--green);">487 <span class="metric-sub">passing</span></div>
-          </div>
-          <div class="metric-item">
-            <div class="metric-label">Files Modified</div>
-            <div class="metric-value">12</div>
-          </div>
-          <div class="metric-item">
-            <div class="metric-label">Commits</div>
-            <div class="metric-value" style="color: var(--muted-dim);">0 <span class="metric-sub">not yet</span></div>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /panels-grid -->
-
-    <!-- Event Feed -->
-    <div class="event-feed">
-      <div class="event-feed-title">Recent Events (last 5)</div>
-      <div class="event-list">
-        <div class="event-row">
-          <div class="event-time">10:89</div>
-          <div class="event-type edit">Edit</div>
-          <div class="event-detail">src/lib/publish/transform.ts</div>
-        </div>
-        <div class="event-row">
-          <div class="event-time">10:87</div>
-          <div class="event-type bash">Bash</div>
-          <div class="event-detail">npm run test</div>
-        </div>
-        <div class="event-row">
-          <div class="event-time">10:85</div>
-          <div class="event-type read">Read</div>
-          <div class="event-detail">src/lib/publish/validation.ts</div>
-        </div>
-        <div class="event-row">
-          <div class="event-time">10:83</div>
-          <div class="event-type agent">Agent</div>
-          <div class="event-detail quoted">"Validate story schema against DB"</div>
-        </div>
-        <div class="event-row">
-          <div class="event-time">10:81</div>
-          <div class="event-type task">Task</div>
-          <div class="event-detail quoted">"Mark task 3 complete"</div>
-        </div>
-      </div>
-    </div>
-
+  <main class="main" id="main-content">
+    <div style="color:var(--muted); padding:40px;">Loading session detail...</div>
   </main>
 </div>
+
+<script>
+  const API = '';
+
+  function esc(str) {
+    const d = document.createElement('div');
+    d.textContent = str || '';
+    return d.innerHTML;
+  }
+
+  // Tool color palette
+  const TOOL_COLORS = [
+    '#c8841a', '#5b8abf', '#8b6bb5', '#6aab6a', '#cc6666',
+    '#e6a833', '#5599aa', '#aa7744',
+  ];
+
+  // Events to skip in the feed (noise)
+  const SKIP_EVENTS = new Set(['pre_tool_use', 'post_tool_use', 'tool_failure', 'progress', 'cwd_changed']);
+
+  // Event type → CSS class
+  function eventTypeCls(type) {
+    const map = { tool_use: 'edit', bash_command: 'bash', file_read: 'read',
+      agent_spawn: 'agent', task_update: 'task', user_prompt: 'task', stop: 'read' };
+    return map[type] || 'task';
+  }
+  function eventTypeLabel(type) {
+    const map = { tool_use: 'Tool', bash_command: 'Bash', file_read: 'Read',
+      agent_spawn: 'Agent', task_update: 'Task', user_prompt: 'User', stop: 'Response' };
+    return map[type] || type;
+  }
+
+  // Scale mapping
+  function scalePercent(scale) {
+    const map = { trivial: 10, light: 30, moderate: 50, heavy: 75, epic: 95 };
+    return map[scale] || 50;
+  }
+
+  // Pill CSS class
+  function pillCls(val) {
+    if (!val) return '';
+    const v = val.toLowerCase();
+    const map = { build: 'build', research: 'mixed', knowledge: 'slash',
+      orientation: 'heavy', ops: 'orchestrated', test: 'launcher',
+      heavy: 'heavy', epic: 'heavy', moderate: 'mixed', light: 'slash', trivial: 'slash',
+      mixed: 'mixed', 'read-heavy': 'slash', 'edit-heavy': 'build', 'bash-heavy': 'orchestrated',
+      'slash-command': 'slash', 'free-text': 'mixed', 'continuation': 'heavy',
+      orchestrated: 'orchestrated', delegated: 'orchestrated', solo: 'mixed',
+      skill_launcher: 'launcher', compaction_resume: 'heavy', fresh: 'slash',
+    };
+    return map[v] || '';
+  }
+
+  function renderBreadcrumb(d) {
+    const project = esc(d.session.projectSlug);
+    const name = d.session.userAssignedName ? esc(d.session.userAssignedName) : esc(d.session.sessionId);
+    return `<a href="#">Observer</a><span class="sep">/</span>
+      <a href="#">${project}</a><span class="sep">/</span>
+      <strong style="color: var(--fg);">${name}</strong>`;
+  }
+
+  function renderSessionHeader(d) {
+    const s = d.session;
+    const wf = d.workflowContext;
+    const initial = (wf.identity || s.userAssignedName || s.projectSlug || '?')[0].toUpperCase();
+    const isActive = s.status === 'active';
+    const statusDot = isActive ? '<span class="status-dot"></span>' : '';
+    const statusLabel = isActive
+      ? '<span class="status-label">Active</span>'
+      : `<span class="status-label" style="color:var(--muted)">${esc(s.status)}</span>`;
+    const title = s.userAssignedName || s.projectSlug;
+
+    let metaItems = '';
+    if (wf.identity) metaItems += `<div class="meta-item"><span class="meta-label">Agent:</span> ${esc(wf.identity)}</div>`;
+    metaItems += `<div class="meta-item"><span class="meta-label">Started:</span> ${esc(s.startedAt)}</div>`;
+    metaItems += `<div class="meta-item"><span class="meta-label">Project:</span> ${esc(s.projectSlug)}</div>`;
+    metaItems += `<div class="meta-item"><span class="session-id">${esc(s.sessionId)}</span></div>`;
+
+    return `<div class="avatar">${initial}</div>
+      <div class="session-header-info">
+        <h1>${esc(title)} ${statusDot} ${statusLabel}</h1>
+        <div class="session-meta">${metaItems}</div>
+      </div>`;
+  }
+
+  function renderMiniPipeline(d) {
+    // If session belongs to affinity groups, show group chain steps
+    const groups = d.affinityGroups || [];
+    if (groups.length === 0) return '';
+
+    const label = groups[0].label || 'Session';
+    // We don't have full chain data here, so show a simple single-step indicator
+    return `<div class="mini-pipeline">
+      <div class="mini-pipeline-label">${esc(label)}</div>
+      <div class="pipeline-steps">
+        <div class="pipeline-step">
+          <div class="step-node ${d.session.status === 'active' ? 'active' : 'completed'}">
+            ${esc((d.workflowContext.role || '?').slice(0, 3).toUpperCase())}
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function renderWorkflowContext(d) {
+    const wf = d.workflowContext;
+    const groups = d.affinityGroups || [];
+
+    function row(label, value, code) {
+      if (!value) return '';
+      const codeHtml = code ? ` <span class="context-code">${esc(code)}</span>` : '';
+      return `<span class="context-label">${esc(label)}</span>
+        <span class="context-value">${esc(value)}${codeHtml}</span>`;
+    }
+
+    let html = row('Role', wf.role, 'C14');
+    html += row('Identity', wf.identity, 'C15');
+    html += row('Action', wf.action, 'C16');
+    html += row('Trigger', wf.triggerCommand, 'E01');
+    html += row('Arguments', wf.triggerArguments, 'E02');
+
+    if (groups.length > 0) {
+      html += `<span class="context-label">Affinity</span>
+        <span class="context-value">${esc(groups[0].label)} <span class="context-code">${esc(groups[0].groupType)}</span></span>`;
+    }
+
+    if (!html) html = `<span class="context-label">Info</span><span class="context-value">No workflow context detected</span>`;
+
+    return `<div class="panel">
+      <div class="panel-title">Workflow Context</div>
+      <div class="context-grid">${html}</div>
+    </div>`;
+  }
+
+  function renderPredicates(d) {
+    const preds = d.predicates || [];
+    const fired = preds.filter(p => p.fired).length;
+
+    const rows = preds.map(p => {
+      const cls = p.fired ? 'predicate-row fired' : 'predicate-row';
+      const icon = p.fired
+        ? '<div class="predicate-icon true">&#10003;</div>'
+        : '<div class="predicate-icon false">&mdash;</div>';
+      return `<div class="${cls}">${icon}<div>
+        <div class="predicate-name">${esc(p.code)} ${esc(p.name)}</div>
+      </div></div>`;
+    }).join('');
+
+    return `<div class="panel">
+      <div class="panel-title">Predicates Fired</div>
+      <div class="predicate-list">${rows}</div>
+      <div class="predicate-summary">${fired} of ${preds.length} predicates fired</div>
+    </div>`;
+  }
+
+  function renderClassification(d) {
+    const c = d.classification;
+    const tp = d.toolProfile || [];
+
+    let html = '';
+
+    // Session Type
+    if (c.sessionType) {
+      html += `<div class="class-row">
+        <div class="class-label">Session Type <span class="context-code">C01</span></div>
+        <div class="class-value"><span class="pill ${pillCls(c.sessionType)}">${esc(c.sessionType.toUpperCase())}</span></div>
+      </div>`;
+    }
+
+    // Session Scale
+    if (c.sessionScale) {
+      html += `<div class="class-row">
+        <div class="class-label">Session Scale <span class="context-code">C02</span></div>
+        <div class="class-value">
+          <span class="pill ${pillCls(c.sessionScale)}">${esc(c.sessionScale)}</span>
+          <div class="scale-bar-container">
+            <div class="scale-bar"><div class="scale-bar-fill" style="width: ${scalePercent(c.sessionScale)}%;"></div></div>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    // Tool Profile
+    if (c.toolPattern) {
+      html += `<div class="class-row">
+        <div class="class-label">Tool Profile <span class="context-code">C05</span></div>
+        <div class="class-value"><span class="pill ${pillCls(c.toolPattern)}">${esc(c.toolPattern)}</span></div>
+      </div>`;
+    }
+
+    // Tool profile bar
+    if (tp.length > 0) {
+      const segments = tp.map((t, i) =>
+        `<div class="tool-segment" style="width: ${t.percent}%; background: ${TOOL_COLORS[i % TOOL_COLORS.length]};"></div>`
+      ).join('');
+      const legend = tp.map((t, i) =>
+        `<div class="tool-legend-item"><div class="tool-legend-dot" style="background: ${TOOL_COLORS[i % TOOL_COLORS.length]};"></div>${esc(t.tool)} ${t.percent}%</div>`
+      ).join('');
+      html += `<div style="margin-top: -2px;">
+        <div class="tool-profile">${segments}</div>
+        <div class="tool-legend">${legend}</div>
+      </div>`;
+    }
+
+    return `<div class="panel">
+      <div class="panel-title">Classification</div>
+      <div class="classification-list">${html || '<div style="color:var(--muted)">No classification data</div>'}</div>
+    </div>`;
+  }
+
+  function renderMetrics(d) {
+    const m = d.metrics;
+    const ratio = m.autonomyRatio > 0
+      ? `${m.autonomyRatio} <span class="metric-sub">tools/prompt</span>`
+      : `— <span class="metric-sub">n/a</span>`;
+
+    return `<div class="panel">
+      <div class="panel-title">Session Metrics</div>
+      <div class="metrics-grid">
+        <div class="metric-item">
+          <div class="metric-label">Total Events</div>
+          <div class="metric-value">${m.totalEvents}</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-label">Tool Calls</div>
+          <div class="metric-value">${m.toolCalls}</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-label">User Prompts</div>
+          <div class="metric-value">${m.userPrompts}</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-label">Autonomy Ratio</div>
+          <div class="metric-value highlight">${ratio}</div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function renderEventFeed(d) {
+    const events = (d.recentEvents || []).filter(ev => !SKIP_EVENTS.has(ev.eventType));
+    if (events.length === 0) return '';
+
+    const rows = events.map(ev => {
+      const cls = eventTypeCls(ev.eventType);
+      const label = eventTypeLabel(ev.eventType);
+      const isQuoted = ev.eventType === 'agent_spawn' || ev.eventType === 'user_prompt' || ev.eventType === 'task_update';
+      const detailCls = isQuoted ? 'event-detail quoted' : 'event-detail';
+      const detail = isQuoted ? `"${esc(ev.detail)}"` : esc(ev.detail);
+      return `<div class="event-row">
+        <div class="event-time">${esc(ev.timestamp)}</div>
+        <div class="event-type ${cls}">${esc(label)}</div>
+        <div class="${detailCls}">${detail}</div>
+      </div>`;
+    }).join('');
+
+    return `<div class="event-feed">
+      <div class="event-feed-title">Recent Events (last ${events.length})</div>
+      <div class="event-list">${rows}</div>
+    </div>`;
+  }
+
+  function renderAll(d) {
+    return `
+      <div class="breadcrumb">${renderBreadcrumb(d)}</div>
+      <div class="session-header">${renderSessionHeader(d)}</div>
+      ${renderMiniPipeline(d)}
+      <div class="panels-grid">
+        ${renderWorkflowContext(d)}
+        ${renderPredicates(d)}
+        ${renderClassification(d)}
+        ${renderMetrics(d)}
+      </div>
+      ${renderEventFeed(d)}`;
+  }
+
+  async function discoverSessionId() {
+    // Use ?session=<id> if provided
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('session')) return params.get('session');
+
+    // Auto-discover: pick first classified session from named-rows
+    const res = await fetch(`${API}/api/mock-views/named-rows`);
+    const json = await res.json();
+    const sessions = json.data.sessions || [];
+    // Prefer one with a session type
+    const classified = sessions.find(s => s.sessionType);
+    return classified ? classified.fullSessionId : (sessions[0]?.fullSessionId || null);
+  }
+
+  async function load() {
+    const main = document.getElementById('main-content');
+    try {
+      const sessionId = await discoverSessionId();
+      if (!sessionId) {
+        main.innerHTML = '<div style="color:var(--muted); padding:40px;">No sessions found in registry.</div>';
+        return;
+      }
+
+      const res = await fetch(`${API}/api/mock-views/chain-session-detail/${sessionId}`);
+      if (!res.ok) {
+        main.innerHTML = `<div style="color:red; padding:40px;">Session not found (${res.status})</div>`;
+        return;
+      }
+      const json = await res.json();
+      main.innerHTML = renderAll(json.data);
+    } catch (err) {
+      main.innerHTML = `<div style="color:red; padding:40px;">Failed to load: ${err.message}</div>`;
+    }
+  }
+
+  load();
+</script>
 
 </body>
 </html>

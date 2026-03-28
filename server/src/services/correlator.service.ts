@@ -228,6 +228,19 @@ function detectDomainFromEntry(entry: RegistryEntry): string | undefined {
   return undefined;
 }
 
+// ── Action prefix extraction ────────────────────────────────────────────────
+
+/**
+ * Extract the action prefix from trigger_arguments (e.g., "CS 0.1" → "CS", "wn" → "WN").
+ * Used to distinguish pipeline steps: Bob CS and Bob VS are different steps,
+ * but Bob CS appearing twice is a backtrack (retry).
+ */
+function extractActionPrefix(args: string | null | undefined): string {
+  if (!args) return '_none_';
+  const first = args.trim().split(/\s+/)[0] ?? '';
+  return first.toUpperCase() || '_none_';
+}
+
 // ── Chain ordering + backtrack detection ────────────────────────────────────
 
 function addChainMetadata(
@@ -241,7 +254,7 @@ function addChainMetadata(
   sessions.sort((a: RegistryEntry, b: RegistryEntry) => a.started_at.localeCompare(b.started_at));
 
   const chainSteps: string[] = [];
-  const seenRoles = new Set<string>();
+  const seenSteps = new Set<string>();
   const backtracks: string[] = [];
 
   for (let i = 0; i < sessions.length; i++) {
@@ -249,10 +262,16 @@ function addChainMetadata(
     const role = s.workflow_role ?? s.trigger_command ?? 'unknown';
     chainSteps.push(role);
 
-    if (seenRoles.has(role)) {
-      backtracks.push(`${role}@${i + 1}`);
+    // Backtrack = same role + same action repeated (e.g., Nate DR twice = retry).
+    // Same role + different action is a normal pipeline step (e.g., Bob CS then Bob VS
+    // are intentionally run in separate windows with fresh context).
+    const action = extractActionPrefix(s.trigger_arguments ?? s.workflow_action);
+    const stepKey = `${role}:${action}`;
+
+    if (seenSteps.has(stepKey)) {
+      backtracks.push(`${role}:${action}@${i + 1}`);
     }
-    seenRoles.add(role);
+    seenSteps.add(stepKey);
   }
 
   return {
@@ -305,13 +324,22 @@ function mergeCandidates(candidates: CandidateGroup[]): CandidateGroup[] {
     }
   }
 
-  // Merge candidates that share 2+ sessions
+  // Merge candidates that share 2+ sessions — but only within the same group_type.
+  // Story units should never merge with ad_hoc temporal clusters, even if they
+  // share sessions. Without this guard, Signal 2 temporal clusters act as bridges
+  // that incorrectly merge separate story groups together.
   for (const [, indices] of sessionToCandidates) {
     if (indices.length >= 2) {
       for (let i = 1; i < indices.length; i++) {
+        const a = candidates[find(indices[0]!)]!;
+        const b = candidates[find(indices[i]!)]!;
+
+        // Only merge groups of the same type
+        if (a.group_type !== b.group_type) continue;
+
         // Check overlap count
-        const aSet = new Set(candidates[find(indices[0]!)]!.session_ids);
-        const bSessions = candidates[find(indices[i]!)]!.session_ids;
+        const aSet = new Set(a.session_ids);
+        const bSessions = b.session_ids;
         const overlap = bSessions.filter((s) => aSet.has(s)).length;
         if (overlap >= 2) {
           union(indices[0]!, indices[i]!);
@@ -391,9 +419,18 @@ export function correlateAffinityGroups(entries: RegistryEntry[]): CorrelationRe
     return { groups: [], session_group_map: {} };
   }
 
-  // Run all signals
+  // Run all signals — Signal 1 first so we can exclude its sessions from Signal 2
   const signal1 = signalStoryId(workflowEntries);
-  const signal2 = signalTemporalProximity(workflowEntries);
+
+  // Collect session IDs already covered by story groups — exclude from temporal clustering
+  const storySessionIds = new Set<string>();
+  for (const group of signal1) {
+    for (const sid of group.session_ids) {
+      storySessionIds.add(sid);
+    }
+  }
+  const nonStoryEntries = workflowEntries.filter((e) => !storySessionIds.has(e.session_id));
+  const signal2 = signalTemporalProximity(nonStoryEntries);
   const signal3 = signalCrossProjectAccess(workflowEntries);
 
   // Merge overlapping candidates

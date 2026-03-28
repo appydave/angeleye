@@ -1,11 +1,20 @@
 # Project Backlog — AngelEye
 
-**Last updated**: 2026-03-25
-**Total**: 44 | Pending: 4 | In Progress: 0 | Done: 38 | Deferred: 2 | Rejected: 0
+**Last updated**: 2026-03-27
+**Total**: 50 | Pending: 10 | In Progress: 0 | Done: 38 | Deferred: 2 | Rejected: 0
 
 ## Pending
 
 - [ ] B011 — /angeleye:publish skill (Nano Banana / FliDeck integration) | Priority: medium
+
+### Wave 12 — Network Sync + Angel Feedback Pipeline
+
+- [ ] B045 — Git sync: status polling + pull endpoint + header pill + modal | Priority: high
+- [ ] B046 — Git sync: server restart coordination (Overmind-aware) | Priority: high
+- [ ] B047 — Git sync: `GIT_SYNC_POLL_MS` env var configuration | Priority: low
+- [ ] B048 — Angel skill: field-test evaluate + summary + audit + handoff modes | Priority: medium
+- [ ] B049 — Angel feedback: first real feedback cycle end-to-end | Priority: medium
+- [ ] B050 — Extract git-sync + feedback-pipeline as AppyStack recipes | Priority: low
 
 ### Infrastructure
 

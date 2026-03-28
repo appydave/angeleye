@@ -24,3 +24,4 @@ export type {
   AffinityGroupType,
   AffinityConfidence,
 } from './angeleye.js';
+export type { GitSyncState, GitSyncStatus, GitPullResult, CommitSummary } from './git-sync.js';

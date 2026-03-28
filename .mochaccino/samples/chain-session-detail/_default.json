@@ -1,0 +1,73 @@
+{
+  "_sampleMeta": {
+    "description": "Agent Amelia running DS 2.4 — mid-pipeline BUILD session with rich predicates and mixed tools"
+  },
+  "session": {
+    "sessionId": "f2d9a07c",
+    "fullSessionId": "f2d9a07c-3b1e-4a8f-9c2d-1e5f6a7b8c9d",
+    "userAssignedName": "bmad-dev-story-2.4",
+    "status": "active",
+    "projectSlug": "app.supportsignal.com.au",
+    "projectDir": "~/dev/clients/supportsignal/app.supportsignal.com.au",
+    "startedAt": "2026-03-26T10:42:00.000Z",
+    "lastActive": "2026-03-26T11:29:00.000Z",
+    "lastActiveRelative": "47m ago"
+  },
+  "classification": {
+    "sessionType": "build",
+    "sessionScale": "heavy",
+    "toolPattern": "mixed"
+  },
+  "workflowContext": {
+    "role": "builder",
+    "identity": "Amelia",
+    "action": "DS 2.4",
+    "triggerCommand": "/bmad-dev",
+    "triggerArguments": "DS 2.4",
+    "groupIds": ["sample-story-2.4"]
+  },
+  "predicates": [
+    { "code": "P05", "name": "has_playwright_calls", "fired": false },
+    { "code": "P09", "name": "is_compaction_resume", "fired": false },
+    { "code": "P12", "name": "is_machine_initiated", "fired": false },
+    { "code": "P17", "name": "has_handover_context", "fired": true },
+    { "code": "P18", "name": "has_cross_project_reads", "fired": true },
+    { "code": "P19", "name": "has_web_research", "fired": false },
+    { "code": "P20", "name": "has_parallel_subagent_bursts", "fired": true },
+    { "code": "P21", "name": "has_task_orchestration", "fired": true },
+    { "code": "P22", "name": "has_git_outcome", "fired": false },
+    { "code": "P34", "name": "has_skill_created", "fired": false },
+    { "code": "P35", "name": "has_skill_modified", "fired": false }
+  ],
+  "toolProfile": [
+    { "tool": "Edit", "count": 48, "percent": 34 },
+    { "tool": "Bash", "count": 40, "percent": 28 },
+    { "tool": "Agent", "count": 26, "percent": 18 },
+    { "tool": "Read", "count": 28, "percent": 20 }
+  ],
+  "metrics": {
+    "totalEvents": 847,
+    "toolCalls": 142,
+    "userPrompts": 23,
+    "autonomyRatio": 6.2
+  },
+  "affinityGroups": [
+    {
+      "groupId": "sample-story-2.4",
+      "label": "story-2.4",
+      "groupType": "story_unit",
+      "confidence": "deterministic"
+    }
+  ],
+  "recentEvents": [
+    { "timestamp": "10:89", "eventType": "tool_use", "detail": "Edit" },
+    { "timestamp": "10:87", "eventType": "bash_command", "detail": "npm run test" },
+    { "timestamp": "10:85", "eventType": "tool_use", "detail": "Read" },
+    {
+      "timestamp": "10:83",
+      "eventType": "agent_spawn",
+      "detail": "Validate story schema against DB"
+    },
+    { "timestamp": "10:81", "eventType": "task_update", "detail": "Mark task 3 complete" }
+  ]
+}

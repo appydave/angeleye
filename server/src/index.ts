@@ -21,6 +21,9 @@ import backfillRouter from './routes/backfill.js';
 import syncRouter from './routes/sync.js';
 import statsRouter from './routes/stats.js';
 import affinityRouter from './routes/affinity.js';
+import preferencesRouter from './routes/preferences.js';
+import mockViewsRouter from './routes/mock-views.js';
+import { gitSyncRouter } from './routes/git-sync.js';
 import { initAngelEyeDirs } from './services/registry.service.js';
 import { backfillTranscripts } from './services/backfill.service.js';
 import type { ServerToClientEvents, ClientToServerEvents } from '@appystack/shared';
@@ -32,9 +35,11 @@ const __dirname = dirname(__filename);
 const app = express();
 const httpServer = createServer(app);
 
+const corsOrigin = env.isDevelopment ? true : env.CLIENT_URL;
+
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(httpServer, {
   cors: {
-    origin: env.CLIENT_URL,
+    origin: corsOrigin,
     methods: ['GET', 'POST'],
   },
 });
@@ -51,7 +56,7 @@ app.use(
   })
 );
 app.use(compression());
-app.use(cors({ origin: env.CLIENT_URL }));
+app.use(cors({ origin: corsOrigin }));
 app.use(express.json());
 app.use(requestLogger);
 
@@ -69,10 +74,20 @@ app.use('/api', backfillRouter);
 app.use('/api/sync', syncRouter);
 app.use('/api/stats', statsRouter);
 app.use('/api/affinity-groups', affinityRouter);
+app.use(preferencesRouter);
+app.use(mockViewsRouter);
+app.use('/api/git-sync', gitSyncRouter);
 
-// Serve mockup/dashboard HTML files from monorepo root
+// Serve mockup/dashboard HTML files from monorepo root (no CSP — dev design files)
 const monorepoRoot = join(__dirname, '../..');
-app.use('/mockups', express.static(monorepoRoot, { dotfiles: 'allow' }));
+app.use(
+  '/mockups',
+  (_req, res, next) => {
+    res.removeHeader('Content-Security-Policy');
+    next();
+  },
+  express.static(monorepoRoot, { dotfiles: 'allow' })
+);
 
 // Production static file serving — serve the built client app
 if (env.isProduction) {

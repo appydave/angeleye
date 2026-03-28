@@ -1,0 +1,114 @@
+{
+  "_sampleMeta": {
+    "description": "Story 2.4 — Participant Publish Endpoint — 8-step pipeline with Bob, Amelia, Nate, Taylor, Lisa agents"
+  },
+  "groupId": "sample-story-2.4",
+  "label": "story-2.4",
+  "groupType": "story_unit",
+  "confidence": "deterministic",
+  "domain": "bmad-v6",
+  "storyId": "2.4",
+  "epicId": "2",
+  "totalSteps": 8,
+  "agents": ["Bob", "Amelia", "Nate", "Taylor", "Lisa"],
+  "backtracks": 0,
+  "backtrackArrows": [],
+  "steps": [
+    {
+      "position": 1,
+      "role": "planner",
+      "agentName": "Bob",
+      "sessionId": "a1b2c3d4",
+      "fullSessionId": "a1b2c3d4-0001-4000-8000-000000000001",
+      "state": "done",
+      "actionCode": "WN",
+      "durationLabel": "4m",
+      "projectSlug": "app.supportsignal.com.au",
+      "sessionType": "orientation"
+    },
+    {
+      "position": 2,
+      "role": "planner",
+      "agentName": "Amelia",
+      "sessionId": "a1b2c3d4",
+      "fullSessionId": "a1b2c3d4-0002-4000-8000-000000000002",
+      "state": "done",
+      "actionCode": "CS",
+      "durationLabel": "8m",
+      "projectSlug": "app.supportsignal.com.au",
+      "sessionType": "build"
+    },
+    {
+      "position": 3,
+      "role": "builder",
+      "agentName": "Amelia",
+      "sessionId": "a1b2c3d4",
+      "fullSessionId": "a1b2c3d4-0003-4000-8000-000000000003",
+      "state": "done",
+      "actionCode": "DS",
+      "durationLabel": "15m",
+      "projectSlug": "app.supportsignal.com.au",
+      "sessionType": "build"
+    },
+    {
+      "position": 4,
+      "role": "builder",
+      "agentName": "Amelia",
+      "sessionId": "f2d9a07c",
+      "fullSessionId": "f2d9a07c-3b1e-4a8f-9c2d-1e5f6a7b8c9d",
+      "state": "active",
+      "actionCode": "DS",
+      "durationLabel": "22m",
+      "projectSlug": "app.supportsignal.com.au",
+      "sessionType": "build"
+    },
+    {
+      "position": 5,
+      "role": "reviewer",
+      "agentName": "Nate",
+      "sessionId": null,
+      "fullSessionId": null,
+      "state": "pending",
+      "actionCode": "DR",
+      "durationLabel": null,
+      "projectSlug": "app.supportsignal.com.au",
+      "sessionType": null
+    },
+    {
+      "position": 6,
+      "role": "tester",
+      "agentName": "Taylor",
+      "sessionId": null,
+      "fullSessionId": null,
+      "state": "pending",
+      "actionCode": "SAT",
+      "durationLabel": null,
+      "projectSlug": "app.supportsignal.com.au",
+      "sessionType": null
+    },
+    {
+      "position": 7,
+      "role": "advisor",
+      "agentName": "Lisa",
+      "sessionId": null,
+      "fullSessionId": null,
+      "state": "pending",
+      "actionCode": "CU",
+      "durationLabel": null,
+      "projectSlug": "brains",
+      "sessionType": null
+    },
+    {
+      "position": 8,
+      "role": "shipper",
+      "agentName": null,
+      "sessionId": null,
+      "fullSessionId": null,
+      "state": "pending",
+      "actionCode": "SHIP",
+      "durationLabel": null,
+      "projectSlug": null,
+      "sessionType": null
+    }
+  ]
+}

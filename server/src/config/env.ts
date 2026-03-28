@@ -11,6 +11,7 @@ const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.coerce.number().default(5051),
   CLIENT_URL: z.string().default('http://localhost:5050'),
+  GIT_SYNC_POLL_MS: z.coerce.number().default(120_000),
 });
 
 const parsed = envSchema.safeParse(process.env);

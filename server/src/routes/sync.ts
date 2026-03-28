@@ -5,9 +5,10 @@ import { logger } from '../config/logger.js';
 
 const router = Router();
 
-router.post('/', async (_req, res) => {
+router.post('/', async (req, res) => {
   try {
-    const result = await runSync();
+    const force = req.query.force === 'true' || req.query.force === '1';
+    const result = await runSync({ force });
     logger.info(result, 'Sync complete');
     return apiSuccess(res, result);
   } catch (err) {

@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reference Landscape — AngelEye</title>
+<style>
+  /* ── v2-linen design tokens ── */
+  :root {
+    --bg: #e8e0d4;
+    --surface: #ede7dc;
+    --surface-mid: #ddd6cc;
+    --card: #f5f1eb;
+    --border: #d4cdc4;
+    --border-raised: #ccc5bb;
+    --primary: #c8841a;
+    --primary-fg: #fff;
+    --foreground: #2a2018;
+    --muted: #7a6e5e;
+    --accent: #c8841a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--foreground);
+    line-height: 1.5;
+  }
+
+  /* ── Mochaccino banner ── */
+  .mochaccino-banner {
+    background: var(--foreground);
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    padding: 6px 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .mochaccino-banner span { color: var(--primary); font-weight: 600; }
+
+  /* ── Hero header ── */
+  .hero {
+    background: var(--foreground);
+    padding: 32px 40px 28px;
+  }
+  .hero-top {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+  .hero h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--card);
+    letter-spacing: 0.04em;
+  }
+  .hero h1 em {
+    font-style: italic;
+    font-family: 'Georgia', serif;
+    color: var(--primary);
+    font-weight: 400;
+  }
+  .hero .subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+  }
+  .hero .stats {
+    display: flex;
+    gap: 16px;
+    margin-top: 12px;
+  }
+  .hero .stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #8a7a68;
+    letter-spacing: 0.02em;
+  }
+  .hero .stat strong {
+    color: var(--primary);
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  /* ── Context bar ── */
+  .context-bar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 40px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .context-bar strong { color: var(--foreground); }
+
+  /* ── Filter bar ── */
+  .filter-bar {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 40px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .filter-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-right: 4px;
+  }
+  .filter-btn {
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.03em;
+  }
+  .filter-btn:hover { border-color: var(--border-raised); background: var(--surface-mid); }
+  .filter-btn.active { background: var(--foreground); color: var(--card); border-color: var(--foreground); }
+  .filter-btn .count {
+    display: inline-block;
+    background: rgba(0,0,0,0.15);
+    font-size: 10px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    margin-left: 4px;
+  }
+  .filter-btn.active .count { background: rgba(255,255,255,0.2); }
+
+  .filter-sep {
+    width: 1px;
+    height: 20px;
+    background: var(--border);
+    margin: 0 6px;
+  }
+
+  .search-box {
+    margin-left: auto;
+    border: 1px solid var(--border);
+    background: var(--card);
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: var(--foreground);
+    width: 200px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .search-box::placeholder { color: var(--border-raised); }
+  .search-box:focus { border-color: var(--primary); }
+
+  /* ── Main content ── */
+  .content { padding: 28px 40px 40px; }
+
+  /* ── Section header ── */
+  .section {
+    margin-bottom: 36px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+  }
+  .section-header h2 {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+  }
+  .section-tag {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+  .tag-cloned { background: #d4edda; color: #276738; }
+  .tag-watchlist { background: var(--primary); color: white; }
+  .tag-niche { background: var(--surface-mid); color: var(--muted); }
+  .section-desc {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    max-width: 720px;
+  }
+
+  /* ── System cards ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 14px;
+  }
+
+  .system-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+    transition: all 0.15s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .system-card:hover {
+    border-color: var(--border-raised);
+    box-shadow: 0 2px 12px rgba(42, 32, 24, 0.08);
+    transform: translateY(-1px);
+  }
+  .system-card.cloned {
+    border-left: 3px solid #5cb85c;
+  }
+  .system-card.not-cloned {
+    border-left: 3px solid var(--primary);
+    opacity: 0.88;
+  }
+  .system-card.niche-card {
+    border-left: 3px solid var(--border-raised);
+    opacity: 0.8;
+  }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .card-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--foreground);
+    letter-spacing: 0.01em;
+  }
+  .card-author {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+  .card-stars {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .card-stars svg { width: 14px; height: 14px; fill: var(--primary); }
+
+  .card-idea {
+    font-size: 12px;
+    color: var(--foreground);
+    line-height: 1.55;
+    margin-bottom: 8px;
+    flex: 1;
+  }
+
+  .card-relevance {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+    margin-bottom: 10px;
+  }
+  .card-relevance strong { color: var(--foreground); font-weight: 600; }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: auto;
+  }
+  .card-badge {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 7px;
+    border-radius: 3px;
+  }
+  .badge-cloned { background: #d4edda; color: #276738; }
+  .badge-upstream { background: var(--surface-mid); color: var(--muted); font-family: monospace; font-size: 10px; font-weight: 400; letter-spacing: 0; }
+  .badge-category { background: var(--foreground); color: var(--card); }
+
+  .card-link {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--primary);
+    text-decoration: none;
+    padding: 4px 10px;
+    border: 1px solid var(--primary);
+    border-radius: 4px;
+    transition: all 0.15s;
+    letter-spacing: 0.02em;
+  }
+  .card-link:hover { background: var(--primary); color: white; }
+  .card-link svg { width: 12px; height: 12px; }
+
+  /* ── Synthesis section ── */
+  .synthesis {
+    margin-top: 40px;
+    padding-top: 28px;
+    border-top: 3px solid var(--primary);
+  }
+  .synthesis h2 {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    margin-bottom: 4px;
+  }
+  .synthesis .synth-subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .synth-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
+  }
+  .synth-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    border-top: 3px solid var(--primary);
+  }
+  .synth-card h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--foreground);
+    margin-bottom: 4px;
+  }
+  .synth-card .synth-num {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary);
+    opacity: 0.3;
+    float: right;
+    margin-top: -4px;
+  }
+  .synth-card p {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+  .synth-card ul {
+    list-style: none;
+    padding: 0;
+  }
+  .synth-card ul li {
+    font-size: 11px;
+    color: var(--foreground);
+    padding: 3px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .synth-card ul li:last-child { border-bottom: none; }
+  .synth-card ul li::before {
+    content: '→ ';
+    color: var(--primary);
+    font-weight: 600;
+  }
+  .synth-arrow {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-top: 10px;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── Differentiation callout ── */
+  .diff-callout {
+    background: var(--foreground);
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin-top: 28px;
+  }
+  .diff-callout h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 0.04em;
+    margin-bottom: 12px;
+  }
+  .diff-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 8px;
+  }
+  .diff-item {
+    font-size: 12px;
+    color: #b8a992;
+    padding: 6px 0;
+  }
+  .diff-item strong { color: var(--card); }
+
+  /* ── Footer ── */
+  .footer {
+    padding: 20px 40px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--muted);
+    opacity: 0.6;
+    letter-spacing: 0.03em;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 800px) {
+    .hero, .content, .filter-bar, .context-bar, .footer { padding-left: 20px; padding-right: 20px; }
+    .card-grid, .synth-grid, .diff-list { grid-template-columns: 1fr; }
+    .search-box { width: 100%; margin-left: 0; margin-top: 8px; }
+  }
+</style>
+<script>
+  // Simple filter/search logic
+  document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.system-card');
+    const filterBtns = document.querySelectorAll('.filter-btn[data-filter]');
+    const searchBox = document.querySelector('.search-box');
+    let activeFilter = 'all';
+
+    function applyFilters() {
+      const query = (searchBox?.value || '').toLowerCase();
+      cards.forEach(card => {
+        const cat = card.dataset.category || '';
+        const text = card.textContent.toLowerCase();
+        const matchFilter = activeFilter === 'all' || cat === activeFilter;
+        const matchSearch = !query || text.includes(query);
+        card.style.display = (matchFilter && matchSearch) ? '' : 'none';
+      });
+      // Update section visibility
+      document.querySelectorAll('.section[data-section]').forEach(sec => {
+        const visible = sec.querySelectorAll('.system-card:not([style*="display: none"])');
+        sec.style.display = visible.length > 0 ? '' : 'none';
+      });
+    }
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeFilter = btn.dataset.filter;
+        applyFilters();
+      });
+    });
+
+    searchBox?.addEventListener('input', applyFilters);
+  });
+</script>
+</head>
+<body>
+
+<!-- Mochaccino banner -->
+<div class="mochaccino-banner">
+  Mochaccino — <span>reference-landscape</span> — 2026-03-27
+</div>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-top">
+    <h1><em>Angel</em>EYE Reference Landscape</h1>
+    <span class="subtitle">Systems in the Claude Code orchestration / multi-agent / session intelligence space</span>
+  </div>
+  <div class="stats">
+    <div class="stat"><strong>18</strong> cloned &amp; study-ready</div>
+    <div class="stat"><strong>5</strong> watch list</div>
+    <div class="stat"><strong>8</strong> niche / emerging</div>
+    <div class="stat"><strong>3</strong> synthesis patterns</div>
+  </div>
+</div>
+
+<!-- Context bar -->
+<div class="context-bar">
+  <strong>AngelEye sits at Tier 0 — Observability.</strong> Most systems below are orchestration layers (Tier 2+).
+  The overlap is in workflow visualization, session tracking, and ambient intelligence.
+  AngelEye's chain-story and sprint-board mockups push into orchestration territory (Job 5).
+</div>
+
+<!-- Filter bar -->
+<div class="filter-bar">
+  <span class="filter-label">Show</span>
+  <button class="filter-btn active" data-filter="all">All <span class="count">31</span></button>
+  <button class="filter-btn" data-filter="orchestration">Orchestration <span class="count">10</span></button>
+  <button class="filter-btn" data-filter="observability">Observability <span class="count">8</span></button>
+  <div class="filter-sep"></div>
+  <button class="filter-btn" data-filter="watchlist">Watch List <span class="count">5</span></button>
+  <button class="filter-btn" data-filter="niche">Niche <span class="count">8</span></button>
+  <input type="text" class="search-box" placeholder="Search systems…">
+</div>
+
+<!-- Main content -->
+<div class="content">
+
+  <!-- ═══ ORCHESTRATION / MULTI-AGENT (Cloned) ═══ -->
+  <div class="section" data-section="orchestration">
+    <div class="section-header">
+      <h2>Orchestration / Multi-Agent</h2>
+      <span class="section-tag tag-cloned">Cloned &amp; study-ready</span>
+    </div>
+    <div class="section-desc">Enterprise orchestration, plugin architectures, agent swarms, and multi-CLI coordination. These systems manage agents — AngelEye watches them.</div>
+    <div class="card-grid">
+
+      <!-- OpenClaw -->
+      <div class="system-card cloned" data-category="orchestration">
+        <div class="card-top">
+          <div>
+            <div class="card-name">OpenClaw</div>
+            <div class="card-author">openclaw</div>
+          </div>
+          <div class="card-stars">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            247K
+          </div>
+        </div>
+        <div class="card-idea">Personal AI daemon, gateway, skills, heartbeat. The most comprehensive agent OS in the space.</div>
+        <div class="card-relevance"><strong>AngelEye:</strong> Gateway architecture, skill system patterns</div>
+        <div class="card-footer">
+          <span class="card-badge badge-cloned">Cloned</span>
+          <span class="card-badge badge-upstream">openclaw/</span>
+          <a class="card-link" href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- Agents -->
+      <div class="system-card cloned" data-category="orchestration">
+        <div class="card-top">
+          <div>
+            <div class="card-name">Agents</div>
+            <div class="card-author">wshobson</div>
+          </div>
+          <div class="card-stars">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            32K
+          </div>
+        </div>
+        <div class="card-idea">Plugin-based multi-agent with skills, commands, and workflows. Most-starred Claude Code orchestrator.</div>
+        <div class="card-relevance"><strong>AngelEye:</strong> Plugin architecture patterns</div>
+        <div class="card-footer">
+          <span class="card-badge badge-cloned">Cloned</span>
+          <span class="card-badge badge-upstream">agents/</span>
+          <a class="card-link" href="https://github.com/wshobson/agents" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- RuFlo -->
+      <div class="system-card cloned" data-category="orchestration">
+        <div class="card-top">
+          <div>
+            <div class="card-name">RuFlo</div>
+            <div class="card-author">ruvnet</div>
+          </div>
+          <div class="card-stars">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            27K
+          </div>
+        </div>
+        <div class="card-idea">Enterprise orchestration, WASM/Rust kernels, agent swarms, fault-tolerant consensus. Deep-dived.</div>
+        <div class="card-relevance"><strong>AngelEye:</strong> Event sourcing, checkpoint manager, dashboard panel schema, system trend analysis</div>
+        <div class="card-footer">
+          <span class="card-badge badge-cloned">Cloned</span>
+          <span class="card-badge badge-upstream">ruflo/</span>
+          <span class="card-badge" style="background:#fef3e2;color:var(--primary);">Deep-dived</span>
+          <a class="card-link" href="https://github.com/ruvnet/ruflo" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- Paperclip -->
+      <div class="system-card cloned" data-category="orchestration">
+        <div class="card-top">
+          <div>
+            <div class="card-name">Paperclip</div>
+            <div class="card-author">paperclipai</div>
+          </div>
+          <div class="card-stars">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            19.5K
+          </div>
+        </div>
+        <div class="card-idea">Org-chart control plane, heartbeats, budgets, audit logs.</div>
+        <div class="card-relevance"><strong>AngelEye:</strong> Org structure for agents, heartbeat pattern</div>
+        <div class="card-footer">
+          <span class="card-badge badge-cloned">Cloned</span>
+          <span class="card-badge badge-upstream">paperclip/</span>
+          <a class="card-link" href="https://github.com/paperclipai/paperclip" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- AionUI -->
+      <div class="system-card cloned" data-category="orchestration">
+        <div class="card-top">
+          <div>
+            <div class="card-name">AionUI</div>
+            <div class="card-author">iOfficeAI</div>
+          </div>
+          <div class="card-stars">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            18K
+          </div>
+        </div>
+        <div class="card-idea">Electron desktop hub, ACP protocol, 15+ CLI agents.</div>
+        <div class="card-relevance"><strong>AngelEye:</strong> Desktop orchestration UX patterns</div>
+        <div class="card-footer">
+          <span class="card-badge badge-cloned">Cloned</span>
+          <span class="card-badge badge-upstream">aionui/</span>
+          <a class="card-link" href="https://github.com/iOfficeAI/aionui" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- Oh My Claude Code -->
+      <div class="system-card cloned" data-category="orchestration">
+        <div class="card-top">
+          <div>
+            <div class="card-name">Oh My Claude Code</div>
+            <div class="card-author">Yeachan-Heo</div>
+          </div>
+          <div class="card-stars">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            12.8K
+          </div>
+        </div>
+        <div class="card-idea">Teams-first parallel execution. Multiple agents working as a coordinated team.</div>
+        <div class="card-relevance"><strong>AngelEye:</strong> Parallel agent team model</div>
+        <div class="card-footer">
+          <span class="card-badge badge-cloned">Cloned</span>
+          <span class="card-badge badge-upstream">oh-my-claudecode/</span>
+          <a class="card-link" href="https://github.com/Yeachan-Heo/oh-my-claudecode" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- Symphony -->
+      <div class="system-card cloned" data-category="orchestration">
+        <div class="card-top">
+          <div>
+            <div class="card-name">Symphony</div>
+            <div class="card-author">OpenAI</div>
+          </div>
+          <div class="card-stars">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            11.7K
+          </div>
+        </div>
+        <div class="card-idea">Autonomous coding orchestrator, Linear polling, workspace isolation.</div>
+        <div class="card-relevance"><strong>AngelEye:</strong> Issue-driven orchestration patterns</div>
+        <div class="card-footer">
+          <span class="card-badge badge-cloned">Cloned</span>
+          <span class="card-badge badge-upstream">symphony/</span>
+          <a class="card-link" href="https://github.com/OpenAI/symphony" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- Citadel -->
+      <div class="system-card cloned" data-category="orchestration">
+        <div class="card-top">
+          <div>
+            <div class="card-name">Citadel</div>
+            <div class="card-author">SethGammon</div>
+          </div>
+          <div class="card-stars">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            350
+          </div>
+        </div>
+        <div class="card-idea">Campaign persistence, backtrack patterns, circuit breaker. Directly overlaps chain-story pipeline.</div>
+        <div class="card-relevance"><strong>AngelEye:</strong> Campaign schema, HANDOFF blocks, circuit breaker, pre-compact auto-save, feature ledger</div>
+        <div class="card-footer">
+          <span class="card-badge badge-cloned">Cloned</span>
+          <span class="card-badge badge-upstream">citadel/</span>
+          <span class="card-badge" style="background:#fef3e2;color:var(--primary);">Deep-dived</span>
+          <a class="card-link" href="https://github.com/SethGammon/citadel" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- KyberBot -->
+      <div class="system-card cloned" data-category="orchestration">
+        <div class="card-top">
+          <div>
+            <div class="card-name">KyberBot</div>
+            <div class="card-author">KybernesisAI</div>
+          </div>
+          <div class="card-stars">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            —
+          </div>
+        </div>
+        <div class="card-idea">Identity (SOUL.md), memory (ChromaDB), heartbeat, channels.</div>
+        <div class="card-relevance"><strong>AngelEye:</strong> Identity + memory patterns</div>
+        <div class="card-footer">
+          <span class="card-badge badge-cloned">Cloned</span>
+          <span class="card-badge badge-upstream">kyberbot/</span>
+          <a class="card-link" href="https://github.com/KybernesisAI/kyberbot" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- Motus -->
+      <div class="system-card cloned" data-category="orchestration">
+        <div class="card-top">
+          <div>
+            <div class="card-name">Motus</div>
+            <div class="card-author">openmotus</div>
+          </div>
+          <div class="card-stars">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            —
+          </div>
+        </div>
+        <div class="card-idea">"Rails for AI automation" — departments + agents. Convention-over-config scaffolding.</div>
+        <div class="card-relevance"><strong>AngelEye:</strong> Scaffolding / convention patterns</div>
+        <div class="card-footer">
+          <span class="card-badge badge-cloned">Cloned</span>
+          <span class="card-badge badge-upstream">motus/</span>
+          <a class="card-link" href="https://github.com/openmotus/motus" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ OBSERVABILITY / SESSION INTELLIGENCE (Cloned) ═══ -->
+  <div class="section" data-section="observability">
+    <div class="section-header">
+      <h2>Observability / Session Intelligence</h2>
+      <span class="section-tag tag-cloned">Cloned &amp; study-ready</span>
+      <span style="font-size:11px;color:var(--primary);font-weight:600;margin-left:4px;">← AngelEye lives here</span>
+    </div>
+    <div class="section-desc">Systems closest to AngelEye — session watching, transcript parsing, hook-based dashboards. This is the home turf.</div>
+    <div class="card-grid">
+
+      <!-- Kibitz -->
+      <div class="system-card cloned" data-category="observability">
+        <div class="card-top">
+          <div>
+            <div class="card-name">Kibitz</div>
+            <div class="card-author">kibitzsh</div>
+          </div>
+          <div class="card-stars">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            525
+          </div>
+        </div>
+        <div class="card-idea"><strong>Most similar to AngelEye.</strong> Real-time decoded feed of agent actions across sessions. Observability without control.</div>
+        <div class="card-relevance"><strong>AngelEye:</strong> Pre-LLM structured assessment, security detection, drift heuristics, noise title filter, self-exclusion</div>
+        <div class="card-footer">
+          <span class="card-badge badge-cloned">Cloned</span>
+          <span class="card-badge badge-upstream">kibitz/</span>
+          <span class="card-badge" style="background:#fef3e2;color:var(--primary);">Deep-dived</span>
+          <a class="card-link" href="https://github.com/kibitzsh/kibitz" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- claude-code-hooks-observability -->
+      <div class="system-card cloned" data-category="observability">
+        <div class="card-top">
+          <div>
+            <div class="card-name">claude-code-hooks-observability</div>
+            <div class="card-author">disler</div>
+          </div>
+          <div class="card-stars">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            920
+          </div>
+        </div>
+        <div class="card-idea">Hook-based SQLite dashboard for Claude Code events.</div>
+        <div class="card-relevance"><strong>AngelEye:</strong> Hook ingestion pipeline reference</div>
+        <div class="card-footer">
+          <span class="card-badge badge-cloned">Cloned</span>
+          <span class="card-badge badge-upstream">claude-code-hooks-observability/</span>
+          <a class="card-link" href="https://github.com/disler/claude-code-hooks-observability" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- claude-code-transcripts -->
+      <div class="system-card cloned" data-category="observability">
+        <div class="card-top">
+          <div>
+            <div class="card-name">claude-code-transcripts</div>
+            <div class="card-author">simonw</div>
+          </div>
+          <div class="card-stars">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            607
+          </div>
+        </div>
+        <div class="card-idea">JSONL transcript parsing tools by Simon Willison.</div>
+        <div class="card-relevance"><strong>AngelEye:</strong> Session file format reference</div>
+        <div class="card-footer">
+          <span class="card-badge badge-cloned">Cloned</span>
+          <span class="card-badge badge-upstream">claude-code-transcripts/</span>
+          <a class="card-link" href="https://github.com/simonw/claude-code-transcripts" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- Claude Agent Teams UI -->
+      <div class="system-card cloned" data-category="observability">
+        <div class="card-top">
+          <div>
+            <div class="card-name">Claude Agent Teams UI</div>
+            <div class="card-author">777genius</div>
+          </div>
+          <div class="card-stars">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            147
+          </div>
+        </div>
+        <div class="card-idea">Kanban board for agent teams. Dual column ownership (agent vs human driven).</div>
+        <div class="card-relevance"><strong>AngelEye:</strong> Kanban UX — compare with chain-sprint-board. 5-column flow, dependency badges, activity timeline</div>
+        <div class="card-footer">
+          <span class="card-badge badge-cloned">Cloned</span>
+          <span class="card-badge badge-upstream">claude_agent_teams_ui/</span>
+          <span class="card-badge" style="background:#fef3e2;color:var(--primary);">Deep-dived</span>
+          <a class="card-link" href="https://github.com/777genius/claude_agent_teams_ui" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- claude-telemetry -->
+      <div class="system-card cloned" data-category="observability">
+        <div class="card-top">
+          <div>
+            <div class="card-name">claude-telemetry</div>
+            <div class="card-author">TechNickAI</div>
+          </div>
+          <div class="card-stars">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            —
+          </div>
+        </div>
+        <div class="card-idea">OpenTelemetry wrapper for Claude Code.</div>
+        <div class="card-relevance"><strong>AngelEye:</strong> Telemetry patterns</div>
+        <div class="card-footer">
+          <span class="card-badge badge-cloned">Cloned</span>
+          <span class="card-badge badge-upstream">claude-telemetry/</span>
+          <a class="card-link" href="https://github.com/TechNickAI/claude-telemetry" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- claude-replay -->
+      <div class="system-card cloned" data-category="observability">
+        <div class="card-top">
+          <div>
+            <div class="card-name">claude-replay</div>
+            <div class="card-author">es617</div>
+          </div>
+          <div class="card-stars">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            —
+          </div>
+        </div>
+        <div class="card-idea">JSONL to interactive HTML replay.</div>
+        <div class="card-relevance"><strong>AngelEye:</strong> Session replay UX</div>
+        <div class="card-footer">
+          <span class="card-badge badge-cloned">Cloned</span>
+          <span class="card-badge badge-upstream">claude-replay/</span>
+          <a class="card-link" href="https://github.com/es617/claude-replay" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- claude-mem -->
+      <div class="system-card cloned" data-category="observability">
+        <div class="card-top">
+          <div>
+            <div class="card-name">claude-mem</div>
+            <div class="card-author">thedotmack</div>
+          </div>
+          <div class="card-stars">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            —
+          </div>
+        </div>
+        <div class="card-idea">Live transcript watch + context injection. Hybrid capture.</div>
+        <div class="card-relevance"><strong>AngelEye:</strong> Hybrid capture pattern</div>
+        <div class="card-footer">
+          <span class="card-badge badge-cloned">Cloned</span>
+          <span class="card-badge badge-upstream">claude-mem/</span>
+          <a class="card-link" href="https://github.com/thedotmack/claude-mem" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- claude-code-log -->
+      <div class="system-card cloned" data-category="observability">
+        <div class="card-top">
+          <div>
+            <div class="card-name">claude-code-log</div>
+            <div class="card-author">daaain</div>
+          </div>
+          <div class="card-stars">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            —
+          </div>
+        </div>
+        <div class="card-idea">JSONL to HTML conversion.</div>
+        <div class="card-relevance"><strong>AngelEye:</strong> Data structure reference</div>
+        <div class="card-footer">
+          <span class="card-badge badge-cloned">Cloned</span>
+          <span class="card-badge badge-upstream">claude-code-log/</span>
+          <a class="card-link" href="https://github.com/daaain/claude-code-log" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ WATCH LIST (Not Yet Cloned) ═══ -->
+  <div class="section" data-section="watchlist">
+    <div class="section-header">
+      <h2>Watch List — Worth Cloning Next</h2>
+      <span class="section-tag tag-watchlist">Not yet cloned</span>
+    </div>
+    <div class="section-desc">Research surfaced these — clone when needed for deeper study. Sorted by star count.</div>
+    <div class="card-grid">
+
+      <div class="system-card not-cloned" data-category="watchlist">
+        <div class="card-top">
+          <div><div class="card-name">MyClaude</div><div class="card-author">stellarlinkco</div></div>
+          <div class="card-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> 2.5K</div>
+        </div>
+        <div class="card-idea">Cross-agent coordination (Claude + Codex + Gemini). Multi-CLI orchestration.</div>
+        <div class="card-footer">
+          <a class="card-link" href="https://github.com/stellarlinkco/myclaude" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <div class="system-card not-cloned" data-category="watchlist">
+        <div class="card-top">
+          <div><div class="card-name">Claude-Code-Workflow</div><div class="card-author">catlog22</div></div>
+          <div class="card-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> 1.6K</div>
+        </div>
+        <div class="card-idea">JSON-driven cadence-team framework.</div>
+        <div class="card-footer">
+          <a class="card-link" href="https://github.com/catlog22/Claude-Code-Workflow" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <div class="system-card not-cloned" data-category="watchlist">
+        <div class="card-top">
+          <div><div class="card-name">Multi-Agent Shogun</div><div class="card-author">yohey-w</div></div>
+          <div class="card-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> 1.1K</div>
+        </div>
+        <div class="card-idea">Samurai hierarchy, tmux spawning.</div>
+        <div class="card-footer">
+          <a class="card-link" href="https://github.com/yohey-w/multi-agent-shogun" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <div class="system-card not-cloned" data-category="watchlist">
+        <div class="card-top">
+          <div><div class="card-name">Overstory</div><div class="card-author">jayminwest</div></div>
+          <div class="card-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> 1.1K</div>
+        </div>
+        <div class="card-idea">Pluggable runtime adapters.</div>
+        <div class="card-footer">
+          <a class="card-link" href="https://github.com/jayminwest/overstory" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <div class="system-card not-cloned" data-category="watchlist">
+        <div class="card-top">
+          <div><div class="card-name">AgentsMesh</div><div class="card-author">AgentsMesh</div></div>
+          <div class="card-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> 1K</div>
+        </div>
+        <div class="card-idea">Fleet command center dashboard.</div>
+        <div class="card-footer">
+          <a class="card-link" href="https://github.com/AgentsMesh/AgentsMesh" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ NICHE / EMERGING ═══ -->
+  <div class="section" data-section="niche">
+    <div class="section-header">
+      <h2>Niche / Emerging</h2>
+      <span class="section-tag tag-niche">Not yet cloned</span>
+    </div>
+    <div class="section-desc">Smaller or newer projects with interesting single ideas. Clone selectively when a specific pattern is needed.</div>
+    <div class="card-grid">
+
+      <div class="system-card niche-card" data-category="niche">
+        <div class="card-top">
+          <div><div class="card-name">Vibecosystem</div><div class="card-author">vibeeval</div></div>
+          <div class="card-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> 305</div>
+        </div>
+        <div class="card-idea">134 agents, 246 skills, 53 hooks — massive pre-built library.</div>
+        <div class="card-footer">
+          <a class="card-link" href="https://github.com/vibeeval/vibecosystem" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <div class="system-card niche-card" data-category="niche">
+        <div class="card-top">
+          <div><div class="card-name">Genie</div><div class="card-author">automagik-dev</div></div>
+          <div class="card-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> 262</div>
+        </div>
+        <div class="card-idea">"Wishes in, PRs out" — interview, plan, dispatch.</div>
+        <div class="card-footer">
+          <a class="card-link" href="https://github.com/automagik-dev/genie" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <div class="system-card niche-card" data-category="niche">
+        <div class="card-top">
+          <div><div class="card-name">MCO</div><div class="card-author">mco-org</div></div>
+          <div class="card-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> 250</div>
+        </div>
+        <div class="card-idea">Agent-neutral orchestration layer.</div>
+        <div class="card-footer">
+          <a class="card-link" href="https://github.com/mco-org/mco" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <div class="system-card niche-card" data-category="niche">
+        <div class="card-top">
+          <div><div class="card-name">OpenSwarm</div><div class="card-author">Intrect-io</div></div>
+          <div class="card-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> 229</div>
+        </div>
+        <div class="card-idea">Discord control plane + Linear integration.</div>
+        <div class="card-footer">
+          <a class="card-link" href="https://github.com/Intrect-io/OpenSwarm" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <div class="system-card niche-card" data-category="niche">
+        <div class="card-top">
+          <div><div class="card-name">ELF</div><div class="card-author">Spacehunterz</div></div>
+          <div class="card-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> 205</div>
+        </div>
+        <div class="card-idea">Persistent memory + pattern tracking (Emergent Learning Framework).</div>
+        <div class="card-footer">
+          <a class="card-link" href="https://github.com/Spacehunterz/Emergent-Learning-Framework_ELF" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <div class="system-card niche-card" data-category="niche">
+        <div class="card-top">
+          <div><div class="card-name">HCOM</div><div class="card-author">aannoo</div></div>
+          <div class="card-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> 169</div>
+        </div>
+        <div class="card-idea">Inter-agent communication protocol.</div>
+        <div class="card-footer">
+          <a class="card-link" href="https://github.com/aannoo/hcom" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <div class="system-card niche-card" data-category="niche">
+        <div class="card-top">
+          <div><div class="card-name">ccswarm</div><div class="card-author">nwiizo</div></div>
+          <div class="card-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> 128</div>
+        </div>
+        <div class="card-idea">Pioneer of worktree-isolation pattern.</div>
+        <div class="card-footer">
+          <a class="card-link" href="https://github.com/nwiizo/ccswarm" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <div class="system-card niche-card" data-category="niche">
+        <div class="card-top">
+          <div><div class="card-name">AgentPipe</div><div class="card-author">kevinelliott</div></div>
+          <div class="card-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> 103</div>
+        </div>
+        <div class="card-idea">Agent "chat rooms" — multi-CLI conversations.</div>
+        <div class="card-footer">
+          <a class="card-link" href="https://github.com/kevinelliott/agentpipe" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ SYNTHESIS — Three Big Patterns ═══ -->
+  <div class="synthesis">
+    <h2>Synthesis — Three Big Patterns for AngelEye</h2>
+    <div class="synth-subtitle">Consolidated from deep dives into Kibitz, Citadel, Claude Agent Teams UI, and RuFlo (2026-03-27)</div>
+    <div class="synth-grid">
+
+      <div class="synth-card">
+        <span class="synth-num">01</span>
+        <h3>Deterministic Classification Layer</h3>
+        <p>Every system builds this independently. No LLM needed — pure event counting and regex.</p>
+        <ul>
+          <li>Kibitz's event counting + drift heuristics</li>
+          <li>Citadel's circuit breaker thresholds</li>
+          <li>RuFlo's Q-Learning + MoE gating</li>
+          <li>Agent Teams UI's activity timing</li>
+        </ul>
+        <span class="synth-arrow">→ AngelEye Enrichment Tier 1: zero LLM cost, fires on every hook event</span>
+      </div>
+
+      <div class="synth-card">
+        <span class="synth-num">02</span>
+        <h3>Campaign = Chain-Story Data Model</h3>
+        <p>AngelEye's chain-story IS a campaign. The schema is now clear.</p>
+        <ul>
+          <li>Citadel's campaign file schema = data model</li>
+          <li>RuFlo's event sourcing = persistence pattern</li>
+          <li>Agent Teams UI's kanban-state.json = visualization state</li>
+          <li>Kibitz's pre-LLM assessment = automatic metadata</li>
+        </ul>
+        <span class="synth-arrow">→ Combine all four into AngelEye's chain-story schema</span>
+      </div>
+
+      <div class="synth-card">
+        <span class="synth-num">03</span>
+        <h3>Cross-Session Memory Without LLM</h3>
+        <p>Compress each session into a structured brief for cheap cross-session intelligence.</p>
+        <ul>
+          <li>Citadel: HANDOFF blocks (~150 words) + discovery relay (~500 tokens)</li>
+          <li>RuFlo: ReasoningBank retrieval (32% token reduction)</li>
+          <li>Kibitz: nothing (single-session — the gap AngelEye fills)</li>
+        </ul>
+        <span class="synth-arrow">→ Structured briefs for cross-session intelligence at near-zero cost</span>
+      </div>
+
+    </div>
+
+    <!-- Differentiation callout -->
+    <div class="diff-callout">
+      <h3>AngelEye's Differentiation</h3>
+      <div class="diff-list">
+        <div class="diff-item"><strong>Ambient intelligence</strong> — pattern mining, skill suggestion, anomaly detection (not just monitoring)</div>
+        <div class="diff-item"><strong>Cross-session threads</strong> — connecting related sessions into workspace narratives</div>
+        <div class="diff-item"><strong>Enrichment pipeline</strong> — three-tier detection (deterministic / partial / LLM)</div>
+        <div class="diff-item"><strong>BMAD story lifecycle</strong> — chain-story pipeline tracking across agent sessions</div>
+        <div class="diff-item"><strong>No control plane (yet)</strong> — observe and enrich, don't orchestrate. Job 5 is exploratory.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Patterns callout -->
+  <div style="margin-top:28px; background:var(--card); border:1px solid var(--border); border-radius:8px; padding:20px 24px;">
+    <h3 style="font-size:14px; font-weight:700; margin-bottom:10px; color:var(--foreground);">Key Patterns Across the Landscape</h3>
+    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:8px;">
+      <div style="font-size:12px; color:var(--muted); padding:4px 0;"><strong style="color:var(--foreground)">1.</strong> tmux + worktree isolation — dominant coordination pattern</div>
+      <div style="font-size:12px; color:var(--muted); padding:4px 0;"><strong style="color:var(--foreground)">2.</strong> Multi-CLI trending — Claude, Codex, Gemini as interchangeable backends</div>
+      <div style="font-size:12px; color:var(--muted); padding:4px 0;"><strong style="color:var(--foreground)">3.</strong> Space exploded Jan–Mar 2026 — most projects are weeks old</div>
+      <div style="font-size:12px; color:var(--muted); padding:4px 0;"><strong style="color:var(--foreground)">4a.</strong> Native Claude Code camp — skills/hooks (Agents, Citadel, Vibecosystem)</div>
+      <div style="font-size:12px; color:var(--muted); padding:4px 0;"><strong style="color:var(--foreground)">4b.</strong> External spawners — spawn CC processes (Shogun, Genie, ccswarm)</div>
+      <div style="font-size:12px; color:var(--muted); padding:4px 0;"><strong style="color:var(--foreground)">4c.</strong> Agent-neutral layers — runtime-agnostic (MCO, Overstory)</div>
+      <div style="font-size:12px; color:var(--muted); padding:4px 0;"><strong style="color:var(--foreground)">5.</strong> Observability emerging as sub-category — AngelEye is here, with richer ambient intelligence</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  Mochaccino — AngelEye Reference Landscape — 31 systems across 4 categories — Deep dives: 2026-03-27 — Source: ~/dev/ad/brains/angeleye/reference-landscape.md
+</div>
+
+</body>
+</html>

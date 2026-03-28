@@ -504,8 +504,8 @@
       </div>
     </div>
 
-    <div class="sidebar-footer">
-      AngelEye v0.4 &middot; 924 sessions
+    <div class="sidebar-footer" id="sidebar-footer">
+      AngelEye v0.4
     </div>
   </aside>
 
@@ -516,7 +516,7 @@
     <div class="main-header">
       <div class="main-header-left">
         <h2>SPRINT BOARD</h2>
-        <div class="subtitle">SupportSignal v2 &middot; Epic 2 + Epic 0 interleaves</div>
+        <div class="subtitle" id="board-subtitle">Loading...</div>
       </div>
       <div class="main-header-right">
         <button class="btn-correlate">Correlate</button>
@@ -524,243 +524,13 @@
     </div>
 
     <!-- Epic header -->
-    <div class="epic-header">
-      <span class="epic-label">EPIC 2 &mdash; CORE NDIS FEATURES</span>
-      <span class="epic-summary"><strong>5</strong> stories &middot; <strong>3</strong> complete &middot; <strong>1</strong> in progress &middot; <strong>1</strong> blocked</span>
+    <div class="epic-header" id="epic-header">
+      <span class="epic-label">Loading...</span>
     </div>
 
     <!-- Board -->
-    <div class="board">
-
-      <!-- PLAN -->
-      <div class="column">
-        <div class="column-header">
-          <span class="column-title">PLAN</span>
-          <span class="column-codes">WN, CS, VS</span>
-          <span class="column-count">1</span>
-        </div>
-        <div class="column-cards">
-
-          <!-- Story 2.5 -->
-          <div class="card">
-            <div class="card-top">
-              <span class="card-id">2.5</span>
-              <span class="card-title">Audit Log Events</span>
-            </div>
-            <div class="card-mid">
-              <div class="avatar avatar-blue">B</div>
-              <span class="action-code">WN</span>
-              <div class="status-badge status-waiting">
-                <span class="status-icon">&#128336;</span>
-                <span>Pending</span>
-              </div>
-              <span class="duration">&mdash;</span>
-            </div>
-            <div class="card-bottom">
-              <div class="progress-bar">
-                <div class="progress-fill progress-fill-active" style="width: 0%"></div>
-              </div>
-              <span class="progress-label">0/8</span>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- BUILD -->
-      <div class="column">
-        <div class="column-header">
-          <span class="column-title">BUILD</span>
-          <span class="column-codes">DS</span>
-          <span class="column-count">1</span>
-        </div>
-        <div class="column-cards">
-
-          <!-- Story 2.4 -->
-          <div class="card card-active">
-            <div class="card-top">
-              <span class="card-id">2.4</span>
-              <span class="card-title">Participant Publish Endpoint</span>
-            </div>
-            <div class="card-mid">
-              <div class="avatar avatar-green">A</div>
-              <span class="action-code">DS</span>
-              <div class="status-badge status-active">
-                <span class="status-dot status-dot-active"></span>
-                <span>Active</span>
-              </div>
-              <span class="duration">47m</span>
-            </div>
-            <div class="card-bottom">
-              <div class="progress-bar">
-                <div class="progress-fill progress-fill-active" style="width: 50%"></div>
-              </div>
-              <span class="progress-label">4/8</span>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- REVIEW -->
-      <div class="column">
-        <div class="column-header">
-          <span class="column-title">REVIEW</span>
-          <span class="column-codes">DR</span>
-          <span class="column-count">1</span>
-        </div>
-        <div class="column-cards">
-
-          <!-- Story 2.3 -->
-          <div class="card card-blocked">
-            <div class="card-top">
-              <span class="card-id">2.3</span>
-              <span class="card-title">Paginated Support Plans</span>
-            </div>
-            <div class="card-mid">
-              <div class="avatar avatar-orange">N</div>
-              <span class="action-code">DR</span>
-              <div class="status-badge status-blocked">
-                <span class="status-icon">&#9888;</span>
-                <span>Blocked</span>
-              </div>
-              <span class="duration">2h</span>
-            </div>
-            <div class="card-bottom">
-              <div class="progress-bar">
-                <div class="progress-fill progress-fill-blocked" style="width: 50%"></div>
-              </div>
-              <span class="progress-label">4/8</span>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- TEST -->
-      <div class="column">
-        <div class="column-header">
-          <span class="column-title">TEST</span>
-          <span class="column-codes">SAT</span>
-          <span class="column-count">0</span>
-        </div>
-        <div class="column-cards">
-          <div class="column-empty">No stories in test</div>
-        </div>
-      </div>
-
-      <!-- CURATE -->
-      <div class="column">
-        <div class="column-header">
-          <span class="column-title">CURATE</span>
-          <span class="column-codes">CU</span>
-          <span class="column-count">0</span>
-        </div>
-        <div class="column-cards">
-          <div class="column-empty">No stories curating</div>
-        </div>
-      </div>
-
-      <!-- SHIP -->
-      <div class="column">
-        <div class="column-header">
-          <span class="column-title">SHIP</span>
-          <span class="column-codes"></span>
-          <span class="column-count">4</span>
-        </div>
-        <div class="column-cards">
-
-          <!-- Story 2.2 -->
-          <div class="card card-complete">
-            <div class="card-top">
-              <span class="card-id">2.2</span>
-              <span class="card-title">Contact Notification Rules</span>
-            </div>
-            <div class="card-mid">
-              <div class="avatar avatar-green" style="opacity:0.7">A</div>
-              <span class="action-code">SHIP</span>
-              <div class="status-badge status-complete">
-                <span class="status-icon">&#10003;</span>
-                <span>Complete</span>
-              </div>
-            </div>
-            <div class="card-bottom">
-              <div class="progress-bar">
-                <div class="progress-fill progress-fill-complete" style="width: 100%"></div>
-              </div>
-              <span class="progress-label">8/8</span>
-            </div>
-          </div>
-
-          <!-- Story 2.1 -->
-          <div class="card card-complete">
-            <div class="card-top">
-              <span class="card-id">2.1</span>
-              <span class="card-title">Support Plan CRUD</span>
-            </div>
-            <div class="card-mid">
-              <div class="avatar avatar-green" style="opacity:0.7">A</div>
-              <span class="action-code">SHIP</span>
-              <div class="status-badge status-complete">
-                <span class="status-icon">&#10003;</span>
-                <span>Complete</span>
-              </div>
-            </div>
-            <div class="card-bottom">
-              <div class="progress-bar">
-                <div class="progress-fill progress-fill-complete" style="width: 100%"></div>
-              </div>
-              <span class="progress-label">8/8</span>
-            </div>
-          </div>
-
-          <!-- Story 0.2 -->
-          <div class="card card-complete">
-            <div class="card-top">
-              <span class="card-id">0.2</span>
-              <span class="card-title">Environment Config</span>
-            </div>
-            <div class="card-mid">
-              <div class="avatar avatar-purple" style="opacity:0.7">T</div>
-              <span class="action-code">SHIP</span>
-              <div class="status-badge status-complete">
-                <span class="status-icon">&#10003;</span>
-                <span>Complete</span>
-              </div>
-            </div>
-            <div class="card-bottom">
-              <div class="progress-bar">
-                <div class="progress-fill progress-fill-complete" style="width: 100%"></div>
-              </div>
-              <span class="progress-label">4/4</span>
-            </div>
-          </div>
-
-          <!-- Story 0.1 -->
-          <div class="card card-complete">
-            <div class="card-top">
-              <span class="card-id">0.1</span>
-              <span class="card-title">CI Pipeline Fix</span>
-            </div>
-            <div class="card-mid">
-              <div class="avatar avatar-blue" style="opacity:0.7">B</div>
-              <span class="action-code">SHIP</span>
-              <div class="status-badge status-complete">
-                <span class="status-icon">&#10003;</span>
-                <span>Complete</span>
-              </div>
-            </div>
-            <div class="card-bottom">
-              <div class="progress-bar">
-                <div class="progress-fill progress-fill-complete" style="width: 100%"></div>
-              </div>
-              <span class="progress-label">3/3</span>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
+    <div class="board" id="board">
+      <div style="color:var(--muted); padding:24px;">Loading board...</div>
     </div>
     <!-- /board -->
 
@@ -770,5 +540,133 @@
 </div>
 <!-- /app-layout -->
 
+<script>
+  const API = '';
+
+  function esc(str) {
+    const d = document.createElement('div');
+    d.textContent = str || '';
+    return d.innerHTML;
+  }
+
+  const COLUMNS = [
+    { key: 'plan', title: 'PLAN', codes: 'WN, CS, VS' },
+    { key: 'build', title: 'BUILD', codes: 'DS' },
+    { key: 'review', title: 'REVIEW', codes: 'DR' },
+    { key: 'test', title: 'TEST', codes: 'SAT' },
+    { key: 'curate', title: 'CURATE', codes: 'CU' },
+    { key: 'ship', title: 'SHIP', codes: '' },
+  ];
+
+  const STEP_TO_COLUMN = {
+    planner: 'plan', writer: 'plan', spec_writer: 'plan',
+    developer: 'build', builder: 'build',
+    reviewer: 'review', design_reviewer: 'review',
+    tester: 'test', qa: 'test',
+    curator: 'curate', advisor: 'curate',
+    shipper: 'ship', observer: 'ship',
+  };
+
+  // Map role names to BMAD action codes for display
+  const ROLE_TO_CODE = {
+    planner: 'WN', writer: 'CS', spec_writer: 'VS',
+    developer: 'DS', builder: 'DS',
+    reviewer: 'DR', design_reviewer: 'DR',
+    tester: 'SAT', qa: 'SAT',
+    curator: 'CU', advisor: 'CU',
+    shipper: 'SHIP', observer: 'OBS',
+  };
+
+  const AVATAR_COLORS = ['avatar-blue', 'avatar-green', 'avatar-orange', 'avatar-purple', 'avatar-pink'];
+
+  function statusBadgeHtml(status) {
+    if (status === 'active') return '<div class="status-badge status-active"><span class="status-dot status-dot-active"></span><span>Active</span></div>';
+    if (status === 'complete') return '<div class="status-badge status-complete"><span class="status-icon">&#10003;</span><span>Complete</span></div>';
+    return '<div class="status-badge status-waiting"><span class="status-icon">&#128336;</span><span>Pending</span></div>';
+  }
+
+  function renderCard(story) {
+    const cardCls = story.status === 'active' ? 'card card-active'
+      : story.status === 'complete' ? 'card card-complete' : 'card';
+    const progressPct = story.chainSteps.length > 0
+      ? Math.round((story.sessionCount / Math.max(story.chainSteps.length, 1)) * 100) : 0;
+    const fillCls = story.status === 'active' ? 'progress-fill-active'
+      : story.status === 'complete' ? 'progress-fill-complete' : 'progress-fill-active';
+    // Show last agent (most recent in chain), not first
+    const lastAgent = story.agents[story.agents.length - 1] || '?';
+    const agentInitial = lastAgent[0].toUpperCase();
+    const avatarCls = AVATAR_COLORS[Math.abs(agentInitial.charCodeAt(0)) % AVATAR_COLORS.length];
+    const lastStep = story.currentStep || '—';
+    const actionCode = ROLE_TO_CODE[lastStep] || lastStep.slice(0, 4).toUpperCase();
+
+    return `<div class="${cardCls}">
+      <div class="card-top">
+        <span class="card-id">${esc(String(story.storyId))}</span>
+        <span class="card-title">${esc(story.title)}</span>
+      </div>
+      <div class="card-mid">
+        <div class="avatar ${avatarCls}">${agentInitial}</div>
+        <span class="action-code">${esc(actionCode)}</span>
+        ${statusBadgeHtml(story.status)}
+      </div>
+      <div class="card-bottom">
+        <div class="progress-bar">
+          <div class="progress-fill ${fillCls}" style="width: ${Math.min(progressPct, 100)}%"></div>
+        </div>
+        <span class="progress-label">${story.sessionCount}/${story.chainSteps.length}</span>
+      </div>
+    </div>`;
+  }
+
+  async function load() {
+    try {
+      const res = await fetch(`${API}/api/mock-views/chain-sprint-board`);
+      const json = await res.json();
+      const d = json.data;
+
+      document.getElementById('sidebar-footer').textContent = `AngelEye v0.4 · ${d.totalSessions} sessions`;
+      document.getElementById('board-subtitle').textContent = `${d.epics.length} epics · ${d.totalSessions} sessions tracked`;
+
+      // Show first epic in header, or all
+      const allStories = d.epics.flatMap(e => e.stories);
+      const activeCount = allStories.filter(s => s.status === 'active').length;
+      const completeCount = allStories.filter(s => s.status === 'complete').length;
+      document.getElementById('epic-header').innerHTML =
+        `<span class="epic-label">${d.epics.map(e => esc(e.epicTitle)).join(' + ')}</span>
+         <span class="epic-summary"><strong>${allStories.length}</strong> stories · <strong>${completeCount}</strong> complete · <strong>${activeCount}</strong> active</span>`;
+
+      // Bucket stories into columns
+      const buckets = {};
+      COLUMNS.forEach(c => buckets[c.key] = []);
+      for (const story of allStories) {
+        const colKey = STEP_TO_COLUMN[story.currentStep] || 'plan';
+        buckets[colKey].push(story);
+      }
+
+      // Render columns
+      let boardHtml = '';
+      for (const col of COLUMNS) {
+        const cards = buckets[col.key];
+        const cardsHtml = cards.length > 0
+          ? cards.map(renderCard).join('')
+          : `<div class="column-empty">No stories</div>`;
+        boardHtml += `<div class="column">
+          <div class="column-header">
+            <span class="column-title">${col.title}</span>
+            <span class="column-codes">${col.codes}</span>
+            <span class="column-count">${cards.length}</span>
+          </div>
+          <div class="column-cards">${cardsHtml}</div>
+        </div>`;
+      }
+      document.getElementById('board').innerHTML = boardHtml;
+    } catch (err) {
+      document.getElementById('board').innerHTML =
+        `<div style="color:red; padding:24px;">Failed to load: ${err.message}</div>`;
+    }
+  }
+
+  load();
+</script>
 </body>
 </html>

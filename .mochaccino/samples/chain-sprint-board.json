@@ -1,0 +1,124 @@
+{
+  "_sampleMeta": {
+    "description": "Epic 2 (Core NDIS Features) sprint board with 5 stories in mixed kanban states plus Epic 0 ops stories"
+  },
+  "totalSessions": 18,
+  "epics": [
+    {
+      "epicId": "2",
+      "epicTitle": "Core NDIS Features",
+      "storyCount": 5,
+      "stories": [
+        {
+          "storyId": "2.5",
+          "title": "Audit Log Events",
+          "groupId": "sample-story-2.5",
+          "confidence": "deterministic",
+          "sessionCount": 1,
+          "agents": ["Bob"],
+          "chainSteps": ["planner"],
+          "backtracks": 0,
+          "currentStep": "planner",
+          "status": "waiting"
+        },
+        {
+          "storyId": "2.4",
+          "title": "Participant Publish Endpoint",
+          "groupId": "sample-story-2.4",
+          "confidence": "deterministic",
+          "sessionCount": 4,
+          "agents": ["Bob", "Amelia"],
+          "chainSteps": ["planner", "planner", "builder", "builder"],
+          "backtracks": 0,
+          "currentStep": "builder",
+          "status": "active"
+        },
+        {
+          "storyId": "2.3",
+          "title": "Paginated Support Plans",
+          "groupId": "sample-story-2.3",
+          "confidence": "deterministic",
+          "sessionCount": 5,
+          "agents": ["Bob", "Amelia", "Nate"],
+          "chainSteps": ["planner", "planner", "builder", "builder", "reviewer"],
+          "backtracks": 1,
+          "currentStep": "reviewer",
+          "status": "waiting"
+        },
+        {
+          "storyId": "2.2",
+          "title": "Contact Notification Rules",
+          "groupId": "sample-story-2.2",
+          "confidence": "deterministic",
+          "sessionCount": 8,
+          "agents": ["Bob", "Amelia", "Nate", "Taylor", "Lisa"],
+          "chainSteps": [
+            "planner",
+            "planner",
+            "builder",
+            "reviewer",
+            "tester",
+            "advisor",
+            "shipper",
+            "observer"
+          ],
+          "backtracks": 0,
+          "currentStep": "observer",
+          "status": "complete"
+        },
+        {
+          "storyId": "2.1",
+          "title": "Support Plan CRUD",
+          "groupId": "sample-story-2.1",
+          "confidence": "deterministic",
+          "sessionCount": 8,
+          "agents": ["Bob", "Amelia", "Nate", "Taylor", "Lisa"],
+          "chainSteps": [
+            "planner",
+            "planner",
+            "builder",
+            "reviewer",
+            "tester",
+            "advisor",
+            "shipper",
+            "observer"
+          ],
+          "backtracks": 0,
+          "currentStep": "observer",
+          "status": "complete"
+        }
+      ]
+    },
+    {
+      "epicId": "0",
+      "epicTitle": "Foundation & Ops",
+      "storyCount": 2,
+      "stories": [
+        {
+          "storyId": "0.2",
+          "title": "Environment Config",
+          "groupId": "sample-story-0.2",
+          "confidence": "deterministic",
+          "sessionCount": 4,
+          "agents": ["Taylor"],
+          "chainSteps": ["planner", "builder", "tester", "shipper"],
+          "backtracks": 0,
+          "currentStep": "shipper",
+          "status": "complete"
+        },
+        {
+          "storyId": "0.1",
+          "title": "CI Pipeline Fix",
+          "groupId": "sample-story-0.1",
+          "confidence": "deterministic",
+          "sessionCount": 3,
+          "agents": ["Bob"],
+          "chainSteps": ["planner", "builder", "shipper"],
+          "backtracks": 0,
+          "currentStep": "shipper",
+          "status": "complete"
+        }
+      ]
+    }
+  ]
+}

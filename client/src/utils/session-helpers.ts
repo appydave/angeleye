@@ -17,7 +17,11 @@ export function sessionLabel(entry: RegistryEntry): string {
   return entry.session_id?.slice(0, 8) ?? 'unknown';
 }
 
-export function statusDot(isoString: string): { symbol: string; className: string } {
+export function statusDot(
+  isoString: string,
+  status?: string
+): { symbol: string; className: string } {
+  if (status === 'ended') return { symbol: '○', className: 'text-muted-foreground' };
   const secs = Math.floor((Date.now() - new Date(isoString).getTime()) / 1000);
   if (secs < 30) return { symbol: '●', className: 'text-green-500' };
   if (secs < 120) return { symbol: '●', className: 'text-amber-400' };

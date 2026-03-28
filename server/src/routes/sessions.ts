@@ -37,7 +37,7 @@ router.get('/api/sessions', async (req, res, next) => {
     const hasMore = startIndex + limit < allSessions.length;
     const cursor = page.length > 0 ? page[page.length - 1].session_id : null;
 
-    apiSuccess(res, { sessions: page, cursor, hasMore });
+    apiSuccess(res, { sessions: page, cursor, hasMore, total: allSessions.length });
   } catch (err) {
     logger.error({ err }, 'Failed to read sessions registry');
     next(err);

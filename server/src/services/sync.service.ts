@@ -73,7 +73,14 @@ export function countByType(registry: Registry): { counts: TypeCounts; total: nu
   return { counts, total };
 }
 
-export async function runSync(): Promise<SyncResult> {
+export interface SyncOptions {
+  /** When true, reclassify all sessions (not just unclassified ones) */
+  force?: boolean;
+}
+
+export async function runSync(options: SyncOptions = {}): Promise<SyncResult> {
+  const { force = false } = options;
+
   // Snapshot before-counts from registry before any changes
   const registryBefore = await readRegistry();
   const beforeSessionIds = new Set(Object.keys(registryBefore));
@@ -82,7 +89,9 @@ export async function runSync(): Promise<SyncResult> {
   // Step 1: backfill — imports sessions not yet in registry
   const backfillResult = await backfillTranscripts();
 
-  // Step 2: classify only sessions that have no session_type yet
+  // Step 2: classify sessions
+  // Default: only sessions without session_type
+  // force=true: reclassify all sessions (useful when new extractors are added)
   let classified = 0;
   let alreadyUpToDate = 0;
   let errors = 0;
@@ -94,7 +103,7 @@ export async function runSync(): Promise<SyncResult> {
 
   for (const [sessionId, entry] of Object.entries(registry)) {
     try {
-      if (entry.session_type) {
+      if (entry.session_type && !force) {
         alreadyUpToDate++;
         // If this was a new session (not in before-snapshot), record it
         if (!beforeSessionIds.has(sessionId)) {

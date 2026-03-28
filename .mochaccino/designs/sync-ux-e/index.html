@@ -80,51 +80,71 @@
   <div class="main">
     <div class="settings-header">Settings</div>
 
-    <div class="sync-card">
+    <div class="sync-card" id="sync-card">
       <h2>Session Sync</h2>
       <p class="subtitle">Scan and classify all Claude Code sessions in one pass.</p>
       <button class="sync-btn">Sync Sessions</button>
-
-      <!-- ── Result: things changed ── -->
-      <div class="narrative-result">
-        <div class="narrative-headline"><span class="icon">&#10003;</span> Sync complete</div>
-        <div class="narrative-body">
-          Found <span class="accent">12 new sessions</span> and classified <strong>49</strong> previously unclassified ones.
-          Registry grew from <span class="dim">828 → 889</span> sessions.
-          Unclassified dropped from <span class="dim">108 → 59</span>.
-
-          <div class="narrative-projects">
-            <p>
-              <strong>supportsignal</strong> — 5 new BUILD sessions<br>
-              <strong>brains/angeleye</strong> — 3 new KNOWLEDGE sessions<br>
-              <strong>flivideo</strong> — 2 new BUILD sessions<br>
-              <strong>appydave-tools</strong> — 1 new OPS session<br>
-              <strong>angeleye</strong> — 1 new ORIENTATION session
-            </p>
-          </div>
-        </div>
-        <div class="narrative-footer">889 total sessions across 47 projects</div>
-      </div>
-
-      <!-- ── Variant: nothing changed ── -->
-      <div class="variant-label">When nothing changed:</div>
-      <div class="narrative-empty">
-        <p>&#10003; Everything up to date — 889 sessions, no new activity since last sync.</p>
-      </div>
-
-      <!-- ── Variant: only classified (no new imports) ── -->
-      <div class="variant-label">When only classification happened (no new sessions):</div>
-      <div class="narrative-result" style="border-left-color: #3b82b6; background: #ebf1f8;">
-        <div class="narrative-headline"><span class="icon" style="color:#3b82b6;">&#10003;</span> Sync complete</div>
-        <div class="narrative-body">
-          No new sessions found. Classified <span class="accent">49</span> previously unclassified sessions.
-          Unclassified dropped from <span class="dim">108 → 59</span>.
-        </div>
-        <div class="narrative-footer">889 total sessions</div>
-      </div>
-
+      <div id="sync-result" style="color:var(--muted); padding:12px 0;">Loading...</div>
     </div>
   </div>
 </div>
+
+<script>
+  const API = '';
+
+  function esc(str) {
+    const d = document.createElement('div');
+    d.textContent = str || '';
+    return d.innerHTML;
+  }
+
+  async function load() {
+    try {
+      const res = await fetch(`${API}/api/mock-views/sync`);
+      const json = await res.json();
+      const d = json.data;
+
+      const topProjects = d.projectBreakdown.slice(0, 5).map(p =>
+        `<strong>${esc(p.projectSlug)}</strong> — ${p.sessionCount} ${esc(p.dominantType || 'unclassified')} sessions`
+      ).join('<br>');
+
+      let html = '';
+
+      if (d.unclassified > 0) {
+        html += `<div class="narrative-result">
+          <div class="narrative-headline"><span class="icon">&#10003;</span> Sync complete</div>
+          <div class="narrative-body">
+            Registry contains <span class="accent">${d.totalSessions} sessions</span> across <strong>${d.totalProjects}</strong> projects.
+            <span class="dim">${d.classified} classified</span>, <span class="dim">${d.unclassified} unclassified</span>.
+            <div class="narrative-projects"><p>${topProjects}</p></div>
+          </div>
+          <div class="narrative-footer">${d.totalSessions} total sessions across ${d.totalProjects} projects</div>
+        </div>`;
+      } else {
+        html += `<div class="narrative-result">
+          <div class="narrative-headline"><span class="icon">&#10003;</span> Sync complete</div>
+          <div class="narrative-body">
+            All <span class="accent">${d.totalSessions} sessions</span> classified across <strong>${d.totalProjects}</strong> projects.
+            <div class="narrative-projects"><p>${topProjects}</p></div>
+          </div>
+          <div class="narrative-footer">${d.totalSessions} total sessions across ${d.totalProjects} projects</div>
+        </div>`;
+      }
+
+      if (d.lastSync) {
+        html += `<div style="margin-top:12px; font-size:12px; color:var(--muted);">
+          Last sync: ${esc(String(d.lastSync.timestamp))} — imported ${d.lastSync.imported}, classified ${d.lastSync.classified}
+        </div>`;
+      }
+
+      document.getElementById('sync-result').innerHTML = html;
+    } catch (err) {
+      document.getElementById('sync-result').innerHTML =
+        `<div style="color:red;">Failed to load: ${err.message}</div>`;
+    }
+  }
+
+  load();
+</script>
 </body>
 </html>

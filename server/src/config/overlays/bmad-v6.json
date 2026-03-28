@@ -15,6 +15,13 @@
       "identity": "John",
       "actions": ["CP", "VP", "CE", "CC"]
     },
-    "/bmad-code-review": { "role": "reviewer", "identity": "Amelia", "actions": ["CR"] }
+    "/bmad-code-review": { "role": "reviewer", "identity": "Amelia", "actions": ["CR"] },
+    "/bmad-help": { "role": "advisor", "identity": null, "actions": ["help"] },
+    "/bmad-sprint-status": { "role": "observer", "identity": null, "actions": ["status"] },
+    "/bmad-check-implementation-readiness": {
+      "role": "observer",
+      "identity": null,
+      "actions": ["readiness"]
+    }
   }
 }

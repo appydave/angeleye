@@ -11,6 +11,7 @@ router.get('/api/info', (_req, res) => {
     port: env.PORT,
     clientUrl: env.CLIENT_URL,
     uptime: process.uptime(),
+    gitSyncPollMs: env.GIT_SYNC_POLL_MS,
   };
   apiSuccess(res, data);
 });

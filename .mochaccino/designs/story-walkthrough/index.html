@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngelEye — Story Walkthrough</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #e8e0d4; --surface: #ede7dc; --surface-mid: #ddd6cc;
+    --card: #f5f1eb; --border: #d4cdc4; --border-raised: #ccc5bb;
+    --primary: #c8841a; --fg: #2a2018; --muted: #7a6e5e; --muted-dim: #9e9484;
+    --green: #5a9a3c; --green-bg: #eef5ea; --green-light: #d4e8cc;
+    --amber: #d4860a; --amber-bg: #fdf3e0; --amber-light: #f0ddb8;
+    --blue: #4a7fb5; --purple: #8a6ab5; --pink: #b56a8a; --orange: #c07030;
+    --gray-agent: #8a8a8a;
+  }
+  body { background: var(--bg); color: var(--fg); font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.5; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+  /* Banner */
+  .banner { background: var(--border); color: var(--muted); font-size: 11px; padding: 6px 16px; letter-spacing: 0.5px; flex-shrink: 0; }
+
+  /* Shell layout */
+  .shell { display: flex; flex: 1; overflow: hidden; }
+
+  /* Sidebar — from chain-story-pipeline */
+  .sidebar {
+    width: 224px; flex-shrink: 0;
+    border-right: 1px solid var(--border); background: var(--surface);
+    padding: 16px 8px;
+  }
+  .sidebar .brand { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--primary); padding: 0 12px 16px; }
+  .sidebar .nav-group-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted-dim); padding: 12px 12px 4px; }
+  .sidebar .nav-item { display: block; width: 100%; text-align: left; padding: 8px 12px; border-radius: 4px; font-size: 13px; color: var(--fg); background: none; border: none; cursor: pointer; border-left: 2px solid transparent; }
+  .sidebar .nav-item.active { border-left-color: var(--primary); font-weight: 600; background: var(--surface-mid); }
+  .sidebar .nav-item:hover:not(.active) { background: var(--surface-mid); }
+
+  /* Main area */
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+  /* Story selector bar */
+  .story-bar {
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px 32px 12px; background: var(--surface);
+    border-bottom: 1px solid var(--border); flex-shrink: 0;
+  }
+  .story-bar h1 { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--fg); }
+  .story-select {
+    padding: 6px 12px; border: 1px solid var(--border-raised); border-radius: 6px;
+    background: var(--card); font-size: 13px; color: var(--fg); cursor: pointer; min-width: 260px;
+  }
+  .story-meta { font-size: 13px; color: var(--muted); margin-left: auto; }
+
+  /* ========== PIPELINE — exact copy from chain-story-pipeline ========== */
+  .pipeline-section { padding: 0 32px; background: var(--bg); flex-shrink: 0; border-bottom: 1px solid var(--border); }
+  .pipeline-label { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 1.5px; color: var(--fg); padding-top: 16px; display: flex; align-items: center; gap: 8px; }
+  .pipeline-label .status-pill { font-family: system-ui, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; padding: 2px 10px; border-radius: 10px; text-transform: uppercase; }
+  .pill-active { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-light); }
+  .pill-backtrack { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-light); }
+
+  .pipeline-track { display: flex; align-items: flex-start; gap: 0; overflow-x: auto; padding: 16px 0 20px; }
+
+  .step-group { display: flex; flex-direction: column; align-items: center; position: relative; cursor: pointer; }
+  .step-node {
+    width: 112px; background: var(--card); border: 2px solid var(--border);
+    border-radius: 12px; padding: 14px 10px 12px; text-align: center;
+    position: relative; transition: all 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .step-node.done { border-color: var(--green-light); }
+  .step-node.active {
+    border-color: var(--primary); width: 124px;
+    box-shadow: 0 2px 12px rgba(200,132,26,0.18), 0 0 0 3px rgba(200,132,26,0.08);
+    transform: scale(1.04);
+  }
+  .step-node.pending { opacity: 0.45; border-color: var(--border); }
+  .step-node.selected-step { border-color: var(--primary); box-shadow: 0 2px 12px rgba(200,132,26,0.25), 0 0 0 3px rgba(200,132,26,0.12); }
+
+  .agent-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 700; color: white;
+    margin: 0 auto 6px;
+  }
+  .avatar-blue { background: var(--blue); }
+  .avatar-green { background: var(--green); }
+  .avatar-orange { background: var(--orange); }
+  .avatar-purple { background: var(--purple); }
+  .avatar-pink { background: var(--pink); }
+  .avatar-gray { background: var(--gray-agent); }
+
+  .step-node.active .agent-avatar { width: 40px; height: 40px; font-size: 18px; }
+
+  .agent-name { font-size: 11px; color: var(--muted); font-weight: 500; margin-bottom: 2px; }
+  .action-code { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--fg); line-height: 1.1; }
+  .step-node.active .action-code { color: var(--primary); font-size: 24px; }
+  .step-node.pending .action-code { color: var(--muted-dim); }
+
+  .step-duration { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .step-node.active .step-duration { color: var(--primary); font-weight: 600; }
+
+  .project-tag {
+    display: inline-block; font-size: 9px; font-weight: 600;
+    padding: 1px 6px; border-radius: 3px; margin-top: 4px;
+    background: var(--surface-mid); color: var(--muted); letter-spacing: 0.3px;
+  }
+
+  .step-status {
+    position: absolute; top: -6px; right: -6px;
+    width: 20px; height: 20px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+  }
+  .status-done { background: var(--green); color: white; }
+  .status-active { background: var(--primary); }
+  .status-pending { background: var(--surface-mid); border: 1px solid var(--border); }
+
+  .pulse-dot {
+    width: 10px; height: 10px; border-radius: 50%; background: white;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.7); }
+  }
+
+  .connector {
+    display: flex; align-items: center; justify-content: center;
+    width: 40px; flex-shrink: 0; padding-top: 40px;
+  }
+  .connector svg { overflow: visible; }
+
+  /* ========== CHAT PANEL — exact copy from chat-panel-refined ========== */
+  .chat-wrapper { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--surface); }
+
+  /* Chat header */
+  .chat-header {
+    display: flex; align-items: center;
+    padding: 12px 20px; background: var(--card);
+    border-bottom: 1px solid var(--border);
+    gap: 12px; flex-shrink: 0;
+  }
+  .chat-session-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; color: var(--primary);
+    letter-spacing: 0.06em; line-height: 1;
+  }
+  .chat-project { font-size: 12px; color: var(--muted); }
+  .chat-type-badge {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; padding: 2px 8px; border-radius: 3px;
+  }
+  .badge-build { background: #2980b920; color: #2471a3; }
+  .badge-plan { background: #c8841a20; color: #b07518; }
+  .badge-review { background: #8a6ab520; color: #7d3c98; }
+  .badge-test { background: #5a9a3c20; color: #3d7a2a; }
+  .badge-curate { background: #b56a8a20; color: #9a4a6a; }
+  .badge-ship { background: #2a201820; color: #2a2018; }
+  .chat-uuid {
+    font-size: 10px; font-family: 'SF Mono', 'Fira Code', monospace;
+    color: #b0a494; margin-left: auto;
+  }
+  .chat-close {
+    width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+    border-radius: 4px; cursor: pointer; color: var(--muted); font-size: 18px;
+  }
+
+  /* Chat messages area */
+  .chat-messages {
+    flex: 1; overflow-y: auto; padding: 20px;
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .chat-messages::-webkit-scrollbar { width: 6px; }
+  .chat-messages::-webkit-scrollbar-track { background: transparent; }
+  .chat-messages::-webkit-scrollbar-thumb { background: var(--border-raised); border-radius: 3px; }
+
+  .message-row { display: flex; gap: 10px; max-width: 92%; }
+  .message-row.user { align-self: flex-end; flex-direction: row-reverse; }
+  .message-row.claude { align-self: flex-start; }
+
+  .message-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 2px;
+  }
+  .message-avatar.user-avatar { background: var(--primary); color: #fff; }
+  .message-avatar.claude-avatar { background: var(--fg); color: #d4c9b8; }
+
+  .message-content { display: flex; flex-direction: column; gap: 4px; }
+
+  .message-meta { display: flex; align-items: center; gap: 8px; }
+  .message-row.user .message-meta { flex-direction: row-reverse; }
+  .message-sender { font-size: 11px; font-weight: 700; color: var(--fg); }
+  .message-time { font-size: 10px; color: #b0a494; }
+
+  .bubble {
+    padding: 10px 14px; border-radius: 10px;
+    font-size: 13px; line-height: 1.5;
+    box-shadow: 0 1px 3px rgba(42,32,24,0.06);
+  }
+  .bubble.user-bubble {
+    background: var(--card); border: 1px solid var(--border);
+    border-left: 3px solid var(--primary);
+    border-radius: 10px 10px 4px 10px; color: var(--fg);
+  }
+  .bubble.claude-bubble {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 10px 10px 10px 4px; color: var(--fg);
+  }
+  .bubble code {
+    background: var(--surface-mid); padding: 1px 5px; border-radius: 3px;
+    font-size: 12px; font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+  .bubble p { margin-bottom: 8px; }
+  .bubble p:last-child { margin-bottom: 0; }
+
+  /* Tool calls row — from chat-panel-refined */
+  .tool-calls-row { padding: 0 0 0 38px; }
+  .tool-calls-summary {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; color: var(--muted);
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 4px; padding: 4px 10px; cursor: pointer;
+    transition: background 0.12s;
+  }
+  .tool-calls-summary:hover { background: var(--surface-mid); color: #4a3e30; }
+  .tool-calls-arrow { font-size: 9px; transition: transform 0.15s; }
+  .tool-calls-summary.expanded .tool-calls-arrow { transform: rotate(90deg); }
+  .tool-calls-detail {
+    margin-top: 6px; padding: 8px 12px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 4px; font-size: 11px; color: var(--muted);
+    line-height: 1.7; display: none;
+  }
+  .tool-calls-detail.visible { display: block; }
+  .tool-call-entry { display: flex; align-items: center; gap: 6px; }
+  .tool-call-name { font-weight: 600; color: #4a3e30; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 11px; }
+  .tool-call-path { color: #b0a494; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 10px; }
+
+  /* Chat footer — from chat-panel-refined */
+  .chat-footer { border-top: 1px solid var(--border); background: var(--card); flex-shrink: 0; }
+  .chat-note { display: flex; align-items: center; gap: 8px; padding: 10px 20px; border-bottom: 1px solid var(--border); }
+  .note-input { flex: 1; font-size: 12px; color: #b0a494; font-style: italic; }
+  .note-save-btn { font-size: 11px; font-weight: 600; color: #fff; background: var(--primary); border: none; border-radius: 4px; padding: 4px 12px; cursor: pointer; opacity: 0.5; }
+  .chat-metadata { padding: 8px 20px; font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+  .meta-sep { color: var(--border); }
+
+  /* Empty state */
+  .chat-empty { display: flex; align-items: center; justify-content: center; flex: 1; color: var(--muted-dim); font-size: 15px; font-style: italic; }
+</style>
+</head>
+<body>
+<div class="banner">Mochaccino — story-walkthrough — <span id="date"></span></div>
+
+<div class="shell">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="brand">ANGELEYE</div>
+    <div class="nav-group-label">Views</div>
+    <button class="nav-item">Observer</button>
+    <button class="nav-item">Organiser</button>
+    <button class="nav-item">Sprint Board</button>
+    <button class="nav-item active">Walkthrough</button>
+    <div class="nav-group-label">Settings</div>
+    <button class="nav-item">Config</button>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+    <!-- Story selector bar -->
+    <div class="story-bar">
+      <h1 id="story-title">Story Walkthrough</h1>
+      <select class="story-select" id="story-select">
+        <option value="">Loading stories...</option>
+      </select>
+      <div class="story-meta" id="story-meta"></div>
+    </div>
+
+    <!-- Pipeline strip -->
+    <div class="pipeline-section">
+      <div class="pipeline-label">Pipeline <span class="status-pill pill-active" id="pipeline-pill">Loading</span></div>
+      <div class="pipeline-track" id="pipeline-track">
+        <div style="color:var(--muted); padding:16px;">Loading pipeline...</div>
+      </div>
+    </div>
+
+    <!-- Chat wrapper -->
+    <div class="chat-wrapper">
+      <!-- Chat header -->
+      <div class="chat-header" id="chat-header" style="display:none;"></div>
+
+      <!-- Chat messages -->
+      <div class="chat-messages" id="chat-messages">
+        <div class="chat-empty">Select a story to view the agent walkthrough</div>
+      </div>
+
+      <!-- Chat footer -->
+      <div class="chat-footer" id="chat-footer" style="display:none;">
+        <div class="chat-note">
+          <span class="note-input">Note: Add a note...</span>
+          <button class="note-save-btn">Save</button>
+        </div>
+        <div class="chat-metadata" id="chat-metadata"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const API = '';
+  document.getElementById('date').textContent = new Date().toISOString().slice(0, 10);
+
+  const AVATAR_COLORS = ['avatar-blue', 'avatar-green', 'avatar-orange', 'avatar-purple', 'avatar-pink', 'avatar-gray'];
+
+  function avatarCls(name) {
+    if (!name) return 'avatar-gray';
+    return AVATAR_COLORS[Math.abs(name.charCodeAt(0)) % AVATAR_COLORS.length];
+  }
+
+  function esc(str) {
+    const d = document.createElement('div');
+    d.textContent = str || '';
+    return d.innerHTML;
+  }
+
+  // SVG connectors — exact from chain-story-pipeline
+  function connectorSvg(state) {
+    if (state === 'done') return '<svg width="40" height="12" viewBox="0 0 40 12"><line x1="0" y1="6" x2="30" y2="6" stroke="#5a9a3c" stroke-width="2"/><polygon points="30,2 38,6 30,10" fill="#5a9a3c"/></svg>';
+    if (state === 'active') return '<svg width="40" height="12" viewBox="0 0 40 12"><line x1="0" y1="6" x2="30" y2="6" stroke="#5a9a3c" stroke-width="2" stroke-dasharray="4,3"/><polygon points="30,2 38,6 30,10" fill="#5a9a3c"/></svg>';
+    return '<svg width="40" height="12" viewBox="0 0 40 12"><line x1="0" y1="6" x2="30" y2="6" stroke="#9e9484" stroke-width="1.5" stroke-dasharray="2,4"/><polygon points="30,3 36,6 30,9" fill="#9e9484"/></svg>';
+  }
+
+  const ROLE_BADGE_CLS = {
+    planner: 'badge-plan', builder: 'badge-build', reviewer: 'badge-review',
+    tester: 'badge-test', advisor: 'badge-curate', curator: 'badge-curate',
+    shipper: 'badge-ship', observer: 'badge-plan',
+  };
+
+  let allStories = [];
+  let currentStory = null;
+  let selectedStepIdx = 0;
+
+  async function init() {
+    try {
+      const res = await fetch(`${API}/api/mock-views/story-chains`);
+      const json = await res.json();
+      const data = json.data;
+      allStories = data.epics.flatMap(e => e.stories.map(s => ({ ...s, epicTitle: e.epicTitle })));
+
+      const sel = document.getElementById('story-select');
+      sel.innerHTML = '';
+      for (const s of allStories) {
+        const opt = document.createElement('option');
+        opt.value = s.storyId;
+        opt.textContent = `${s.epicTitle} / Story ${s.storyId} — ${s.totalSteps} steps, ${s.backtracks} backtracks`;
+        sel.appendChild(opt);
+      }
+      if (allStories.length > 0) loadStory(allStories[0].storyId);
+    } catch (e) {
+      document.getElementById('pipeline-track').innerHTML = `<div style="color:red;padding:16px;">Failed to load: ${e.message}</div>`;
+    }
+  }
+
+  function loadStory(storyId) {
+    currentStory = allStories.find(s => s.storyId === storyId);
+    if (!currentStory) return;
+
+    document.getElementById('story-title').textContent = `${currentStory.storyId} — ${currentStory.label}`;
+    document.getElementById('story-meta').textContent =
+      `${currentStory.domainOverlay} · ${currentStory.totalSteps} steps · ${currentStory.confidence}`;
+
+    // Pipeline pill
+    const pill = document.getElementById('pipeline-pill');
+    if (currentStory.backtracks > 0) {
+      pill.className = 'status-pill pill-backtrack';
+      pill.textContent = `${currentStory.backtracks} Backtrack`;
+    } else {
+      pill.className = 'status-pill pill-active';
+      pill.textContent = currentStory.status === 'active' ? 'In Progress' : 'Waiting';
+    }
+
+    renderPipeline();
+    selectedStepIdx = 0;
+    selectStep(0);
+  }
+
+  function renderPipeline() {
+    const track = document.getElementById('pipeline-track');
+    if (!currentStory?.chain?.length) {
+      track.innerHTML = '<div style="color:var(--muted); padding:16px;">No chain data</div>';
+      return;
+    }
+
+    let html = '';
+    currentStory.chain.forEach((step, i) => {
+      if (i > 0) {
+        const prev = currentStory.chain[i - 1];
+        const connState = prev.correlation && step.correlation ? 'done'
+          : prev.correlation && !step.correlation ? 'active' : 'pending';
+        html += `<div class="connector">${connectorSvg(connState)}</div>`;
+      }
+
+      const hasSid = !!step.sessionId;
+      const isActive = step.status === 'active' && hasSid;
+      const isDone = hasSid && !isActive;
+      const nodeCls = isActive ? 'step-node active' : isDone ? 'step-node done' : 'step-node pending';
+      const statusHtml = isDone
+        ? '<div class="step-status status-done">&#10003;</div>'
+        : isActive
+          ? '<div class="step-status status-active"><div class="pulse-dot"></div></div>'
+          : '<div class="step-status status-pending"></div>';
+      const initial = (step.agentName || step.role || '?')[0].toUpperCase();
+      const actionLabel = step.action || step.actionLabel || step.role?.slice(0, 4).toUpperCase() || '?';
+
+      html += `<div class="step-group" >
+        <div class="${nodeCls}" id="step-${i}">
+          ${statusHtml}
+          <div class="agent-avatar ${avatarCls(step.agentName || step.role)}">${initial}</div>
+          <div class="agent-name">${esc(step.agentName || step.role)}</div>
+          <div class="action-code">${esc(actionLabel)}</div>
+          <div class="step-duration">${esc(step.lastActiveRelative || '—')}</div>
+          <div class="project-tag">app.supportsignal.com.au</div>
+        </div>
+      </div>`;
+    });
+
+    track.innerHTML = html;
+  }
+
+  async function selectStep(idx) {
+    selectedStepIdx = idx;
+    const step = currentStory.chain[idx];
+    if (!step) return;
+
+    // Highlight selected step
+    document.querySelectorAll('.step-node').forEach((el, i) => {
+      el.classList.toggle('selected-step', i === idx);
+    });
+
+    // Show chat header
+    const header = document.getElementById('chat-header');
+    const initial = (step.agentName || step.role || '?')[0].toUpperCase();
+    const badgeCls = ROLE_BADGE_CLS[step.role] || 'badge-plan';
+    const actionLabel = step.action || step.actionLabel || step.role || '?';
+
+    header.style.display = 'flex';
+    header.innerHTML = `
+      <span class="chat-session-name">${esc((step.agentName || step.role || '').toUpperCase())}</span>
+      <span class="chat-project">app.supportsignal.com.au</span>
+      <span class="chat-type-badge ${badgeCls}">${esc(actionLabel)}</span>
+      <span class="chat-uuid">${esc(step.sessionId || '—')}</span>
+    `;
+
+    const area = document.getElementById('chat-messages');
+    const footer = document.getElementById('chat-footer');
+
+    if (!step.fullSessionId) {
+      area.innerHTML = '<div class="chat-empty">This step hasn\'t been executed yet</div>';
+      footer.style.display = 'none';
+      return;
+    }
+
+    area.innerHTML = '<div class="chat-empty">Loading conversation...</div>';
+
+    try {
+      const res = await fetch(`${API}/api/mock-views/chat-panel?session=${step.fullSessionId}`);
+      const json = await res.json();
+      const session = json.data.selectedSession;
+
+      if (!session) {
+        area.innerHTML = '<div class="chat-empty">No conversation data available</div>';
+        footer.style.display = 'none';
+        return;
+      }
+
+      renderChat(session, step);
+
+      // Footer
+      footer.style.display = 'block';
+      const userMsgCount = (session.messages || []).filter(m => m.role === 'user').length;
+      document.getElementById('chat-metadata').innerHTML =
+        `Started ${esc(step.lastActiveRelative || '—')} <span class="meta-sep">&bull;</span> ` +
+        `${session.toolCalls?.length || 0} tool calls <span class="meta-sep">&bull;</span> ` +
+        `${esc(step.role || '—')} <span class="meta-sep">&bull;</span> ` +
+        `${userMsgCount} prompts`;
+    } catch (e) {
+      area.innerHTML = `<div style="color:red;padding:24px;">Failed to load chat: ${e.message}</div>`;
+      footer.style.display = 'none';
+    }
+  }
+
+  function renderChat(session, step) {
+    const area = document.getElementById('chat-messages');
+    const msgs = session.messages || [];
+    const tools = session.toolCalls || [];
+
+    if (msgs.length === 0 && tools.length === 0) {
+      area.innerHTML = '<div class="chat-empty">No conversation messages found for this session.</div>';
+      return;
+    }
+
+    let html = '';
+    const seenTexts = new Set();
+    let toolIdx = 0;
+
+    for (let i = 0; i < msgs.length; i++) {
+      const msg = msgs[i];
+      // Deduplicate
+      const key = `${msg.role}:${msg.text}:${i}`;
+      if (i > 0 && msgs[i].text === msgs[i - 1].text && msgs[i].role === msgs[i - 1].role) continue;
+
+      if (msg.role === 'user') {
+        // User message — exact chat-panel-refined style
+        html += `<div class="message-row user">
+          <div class="message-avatar user-avatar">You</div>
+          <div class="message-content">
+            <div class="message-meta">
+              <span class="message-sender">You</span>
+              <span class="message-time">${esc(msg.timestamp)}</span>
+            </div>
+            <div class="bubble user-bubble">${esc(msg.text)}</div>
+          </div>
+        </div>`;
+
+        // Generate Claude response
+        const response = generateResponse(msg.text, step);
+        html += `<div class="message-row claude">
+          <div class="message-avatar claude-avatar">C</div>
+          <div class="message-content">
+            <div class="message-meta">
+              <span class="message-sender">Claude</span>
+              <span class="message-time">${esc(msg.timestamp)}</span>
+            </div>
+            <div class="bubble claude-bubble"><p>${response}</p></div>
+          </div>
+        </div>`;
+
+        // Tool calls block — exact chat-panel-refined style
+        const toolsForTurn = Math.min(Math.max(2, Math.floor(tools.length / Math.max(msgs.length, 1))), 8);
+        const turnTools = [];
+        for (let t = 0; t < toolsForTurn && toolIdx < tools.length; t++, toolIdx++) {
+          turnTools.push(tools[toolIdx]);
+        }
+
+        if (turnTools.length > 0) {
+          const summary = summarizeTools(turnTools);
+          const detailId = `tools-${i}`;
+          html += `<div class="tool-calls-row">
+            <div class="tool-calls-summary" data-toggle-tools>
+              <span class="tool-calls-arrow">&#9654;</span>
+              ${turnTools.length} tool calls &mdash; ${summary}
+            </div>
+            <div class="tool-calls-detail" id="${detailId}">
+              ${turnTools.map(t => `<div class="tool-call-entry"><span class="tool-call-name">${esc(t.tool)}</span> <span class="tool-call-path">${esc(t.summary || '')}</span></div>`).join('')}
+            </div>
+          </div>`;
+        }
+      } else {
+        // Assistant message directly from API
+        html += `<div class="message-row claude">
+          <div class="message-avatar claude-avatar">C</div>
+          <div class="message-content">
+            <div class="message-meta">
+              <span class="message-sender">Claude</span>
+              <span class="message-time">${esc(msg.timestamp)}</span>
+            </div>
+            <div class="bubble claude-bubble"><p>${esc(msg.text)}</p></div>
+          </div>
+        </div>`;
+      }
+    }
+
+    area.innerHTML = html;
+    area.scrollTop = 0;
+  }
+
+  function generateResponse(userMsg, step) {
+    const agent = step.agentName || step.role || 'Claude';
+    const story = currentStory?.storyId || '';
+
+    if (userMsg.match(/\/bmad-sm/i)) {
+      const responses = {
+        'WN': `Hey AppyDave! Bob here, your Scrum Master. I'll focus on writing the narrative for Story ${story}. Let me read the existing documentation and project context.`,
+        'CS': `Hey AppyDave! Bob here. I'll jump straight into creating the story context for Story ${story}. Let me load the checklist and find the story file.`,
+        'VS': `Got it, AppyDave — jumping straight to validate Story ${story}. Let me load the checklist and the existing story file for thorough validation.`,
+        'DS': `Starting development for Story ${story}. Let me read the story file and understand the implementation requirements.`,
+        'DR': `Hey David. I've got Story ${story}. Let me check the implementation against the story requirements and run a thorough review.`,
+        'SAT': `Hey David, Taylor here — let me build the SAT for Story ${story}. First, the test gate. Running the full suite now.`,
+        'CU': `Hello AppyDave! Lisa here, ready to curate Story ${story}. Let me gather the templates and check for duplicates.`,
+      };
+      const code = userMsg.match(/\b(WN|CS|VS|DS|DR|SAT|CU)\b/i)?.[1]?.toUpperCase();
+      return responses[code] || `I'll work on Story ${story} now. Let me gather the necessary context and begin.`;
+    }
+    if (userMsg.match(/\/bmad-ship/i)) return `Starting the ship workflow. Let me assess what's changed and prepare for deployment.`;
+    if (userMsg.match(/^yes$/i)) return `Understood. Proceeding with the implementation.`;
+    if (userMsg.match(/\/exit/i)) return `Session complete. All changes have been saved.`;
+    return `I'll proceed with this request for Story ${story}. Let me read the relevant files and context.`;
+  }
+
+  function summarizeTools(tools) {
+    const counts = {};
+    for (const t of tools) counts[t.tool] = (counts[t.tool] || 0) + 1;
+    return Object.entries(counts).map(([k, v]) => `${k}(${v})`).join(', ');
+  }
+
+  // Event delegation for tool toggles (avoids inline onclick blocked by CSP)
+  document.addEventListener('click', (e) => {
+    const toggle = e.target.closest('[data-toggle-tools]');
+    if (toggle) {
+      toggle.classList.toggle('expanded');
+      const detail = toggle.nextElementSibling;
+      if (detail) detail.classList.toggle('visible');
+    }
+  });
+
+  // Event delegation for pipeline step clicks
+  document.getElementById('pipeline-track').addEventListener('click', (e) => {
+    const stepGroup = e.target.closest('.step-group');
+    if (stepGroup) {
+      const idx = Array.from(stepGroup.parentElement.querySelectorAll('.step-group')).indexOf(stepGroup);
+      if (idx >= 0) selectStep(idx);
+    }
+  });
+
+  // Event delegation for story select
+  document.getElementById('story-select').addEventListener('change', (e) => {
+    loadStory(e.target.value);
+  });
+
+  init();
+</script>
+</body>
+</html>

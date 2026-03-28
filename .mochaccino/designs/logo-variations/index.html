@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngelEye Logo Variations — Mochaccino</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600;700;900&family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Outfit:wght@200;300;400;600;700;800&family=Sora:wght@300;400;600;700;800&family=DM+Sans:wght@300;400;500;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #e8e0d4;
+    --surface: #ede7dc;
+    --surface-mid: #ddd6cc;
+    --card: #f5f1eb;
+    --border: #d4cdc4;
+    --border-raised: #ccc5bb;
+    --primary: #c8841a;
+    --primary-hover: #b07018;
+    --fg: #2a2018;
+    --muted: #7a6e5e;
+    --muted-dim: #9e9484;
+    --dark: #1a1512;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    line-height: 1.5;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: var(--dark);
+    padding: 28px 40px 24px;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-title {
+    font-family: 'Bebas Neue', sans-serif;
+    color: var(--primary);
+    font-size: 32px;
+    letter-spacing: 0.08em;
+  }
+  .header-sub {
+    color: #6a5e52;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+  .header-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .back-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 0.03em;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+  }
+  .back-link:hover { opacity: 1; }
+  .header-badge {
+    background: var(--primary);
+    color: var(--dark);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* ── Grid ── */
+  .grid-container {
+    padding: 32px 40px 60px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+    gap: 28px;
+  }
+
+  /* ── Variation Card ── */
+  .var-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .var-card-header {
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+  .var-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--primary);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  .var-label {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--fg);
+  }
+  .var-fonts {
+    font-size: 11px;
+    color: var(--muted-dim);
+    letter-spacing: 0.02em;
+  }
+
+  .logo-row {
+    display: flex;
+    gap: 0;
+  }
+  .logo-cell {
+    flex: 1;
+    padding: 32px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100px;
+  }
+  .logo-cell.dark-bg {
+    background: var(--dark);
+  }
+  .logo-cell.light-bg {
+    background: var(--surface);
+  }
+  .bg-label {
+    position: absolute;
+    top: 6px;
+    left: 10px;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.4;
+  }
+  .logo-cell {
+    position: relative;
+  }
+  .dark-bg .bg-label { color: #6a5e52; }
+  .light-bg .bg-label { color: var(--muted); }
+
+  .var-desc {
+    padding: 12px 20px 16px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ── Logo Treatments ── */
+
+  /* V1: Current / Baseline */
+  .logo-v1 { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 0.08em; }
+  .logo-v1 .angel { color: #f5f1eb; }
+  .logo-v1 .eye { color: var(--primary); }
+  .light-bg .logo-v1 .angel { color: var(--dark); }
+
+  /* V2: Monospace Minimal */
+  .logo-v2 { font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 300; letter-spacing: 0.15em; text-transform: uppercase; }
+  .logo-v2 .angel { color: #a09484; }
+  .logo-v2 .eye { color: var(--primary); font-weight: 700; }
+  .light-bg .logo-v2 .angel { color: var(--muted); }
+
+  /* V3: Serif Contrast */
+  .logo-v3 .angel { font-family: 'Playfair Display', serif; font-size: 34px; font-weight: 400; font-style: italic; color: #d4cdc4; letter-spacing: 0.02em; }
+  .logo-v3 .eye { font-family: 'Inter', sans-serif; font-size: 34px; font-weight: 900; color: var(--primary); letter-spacing: -0.02em; text-transform: uppercase; }
+  .light-bg .logo-v3 .angel { color: var(--muted); }
+
+  /* V4: Weight Gradient */
+  .logo-v4 { font-family: 'Outfit', sans-serif; font-size: 38px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .logo-v4 .angel { font-weight: 200; color: #b0a494; }
+  .logo-v4 .eye { font-weight: 800; color: var(--primary); }
+  .light-bg .logo-v4 .angel { color: var(--muted); }
+
+  /* V5: Glow Accent */
+  .logo-v5 { font-family: 'Space Grotesk', sans-serif; font-size: 30px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; }
+  .logo-v5 .angel { color: #c0b4a4; }
+  .logo-v5 .eye { color: var(--primary); text-shadow: 0 0 12px rgba(200, 132, 26, 0.6), 0 0 30px rgba(200, 132, 26, 0.3); }
+  .light-bg .logo-v5 .angel { color: var(--fg); }
+  .light-bg .logo-v5 .eye { text-shadow: 0 0 10px rgba(200, 132, 26, 0.4), 0 0 24px rgba(200, 132, 26, 0.15); }
+
+  /* V6: Underline Accent */
+  .logo-v6 { font-family: 'Sora', sans-serif; font-size: 28px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+  .logo-v6 .angel { color: #c0b4a4; }
+  .logo-v6 .eye { color: var(--primary); border-bottom: 3px solid var(--primary); padding-bottom: 2px; }
+  .light-bg .logo-v6 .angel { color: var(--fg); }
+
+  /* V7: Badge / Pill EYE */
+  .logo-v7 { font-family: 'DM Sans', sans-serif; font-size: 28px; font-weight: 300; letter-spacing: 0.08em; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+  .logo-v7 .angel { color: #c0b4a4; }
+  .logo-v7 .eye { color: var(--dark); background: var(--primary); padding: 2px 10px; border-radius: 6px; font-weight: 700; font-size: 24px; letter-spacing: 0.04em; }
+  .light-bg .logo-v7 .angel { color: var(--fg); }
+
+  /* V8: Observer Dot */
+  .logo-v8 { font-family: 'Manrope', sans-serif; font-size: 30px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; display: flex; align-items: center; gap: 0; }
+  .logo-v8 .angel { color: #c0b4a4; }
+  .logo-v8 .dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: var(--primary);
+    border-radius: 50%;
+    margin: 0 4px;
+    box-shadow: 0 0 8px rgba(200, 132, 26, 0.5);
+    position: relative;
+    top: -1px;
+  }
+  .logo-v8 .eye { color: var(--primary); font-weight: 800; }
+  .light-bg .logo-v8 .angel { color: var(--fg); }
+
+  /* V9: Split Level */
+  .logo-v9 { display: flex; flex-direction: column; align-items: flex-start; line-height: 1; }
+  .logo-v9 .angel { font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 400; letter-spacing: 0.25em; text-transform: uppercase; color: #7a6e5e; }
+  .logo-v9 .eye { font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: var(--primary); letter-spacing: 0.08em; margin-top: -4px; }
+  .light-bg .logo-v9 .angel { color: var(--muted); }
+
+  /* V10: Outline / Hollow */
+  .logo-v10 { font-family: 'Outfit', sans-serif; font-size: 36px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .logo-v10 .angel { font-weight: 300; color: #8a7e6e; }
+  .logo-v10 .eye {
+    font-weight: 700;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--primary);
+    letter-spacing: 0.08em;
+  }
+  .light-bg .logo-v10 .angel { color: var(--fg); }
+  .light-bg .logo-v10 .eye { -webkit-text-stroke-color: var(--primary); }
+
+  /* ── Radar Pulse Animation (V8) ── */
+  @keyframes pulse-ring {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(2.5); opacity: 0; }
+  }
+  .logo-v8 .dot::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border-radius: 50%;
+    border: 1px solid var(--primary);
+    animation: pulse-ring 2s ease-out infinite;
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-title">ANGELEYE LOGO VARIATIONS</div>
+  <div class="header-sub">10 wordmark explorations</div>
+  <div class="header-right">
+    <span class="header-badge">DESIGN</span>
+    <a href="http://localhost:5050" class="back-link">Back to Gallery</a>
+  </div>
+</div>
+
+<!-- Grid -->
+<div class="grid-container">
+
+  <!-- V1: Current Baseline -->
+  <div class="var-card">
+    <div class="var-card-header">
+      <div><span class="var-number">01</span> <span class="var-label">Current Baseline</span></div>
+      <div class="var-fonts">Bebas Neue</div>
+    </div>
+    <div class="logo-row">
+      <div class="logo-cell dark-bg">
+        <span class="bg-label">dark</span>
+        <div class="logo-v1"><span class="angel">ANGEL</span><span class="eye">EYE</span></div>
+      </div>
+      <div class="logo-cell light-bg">
+        <span class="bg-label">light</span>
+        <div class="logo-v1"><span class="angel">ANGEL</span><span class="eye">EYE</span></div>
+      </div>
+    </div>
+    <div class="var-desc">The existing treatment. Bebas Neue, split word, amber highlight on EYE. Simple and direct but lacks personality.</div>
+  </div>
+
+  <!-- V2: Monospace Minimal -->
+  <div class="var-card">
+    <div class="var-card-header">
+      <div><span class="var-number">02</span> <span class="var-label">Monospace Minimal</span></div>
+      <div class="var-fonts">JetBrains Mono</div>
+    </div>
+    <div class="logo-row">
+      <div class="logo-cell dark-bg">
+        <span class="bg-label">dark</span>
+        <div class="logo-v2"><span class="angel">angel</span><span class="eye">eye</span></div>
+      </div>
+      <div class="logo-cell light-bg">
+        <span class="bg-label">light</span>
+        <div class="logo-v2"><span class="angel">angel</span><span class="eye">eye</span></div>
+      </div>
+    </div>
+    <div class="var-desc">Developer-friendly monospace with wide tracking. Light weight on ANGEL, bold on EYE. Lowercase gives a technical, CLI-native feel.</div>
+  </div>
+
+  <!-- V3: Serif Contrast -->
+  <div class="var-card">
+    <div class="var-card-header">
+      <div><span class="var-number">03</span> <span class="var-label">Serif Contrast</span></div>
+      <div class="var-fonts">Playfair Display + Inter</div>
+    </div>
+    <div class="logo-row">
+      <div class="logo-cell dark-bg">
+        <span class="bg-label">dark</span>
+        <div class="logo-v3"><span class="angel">Angel</span><span class="eye">EYE</span></div>
+      </div>
+      <div class="logo-cell light-bg">
+        <span class="bg-label">light</span>
+        <div class="logo-v3"><span class="angel">Angel</span><span class="eye">EYE</span></div>
+      </div>
+    </div>
+    <div class="var-desc">Elegant italic serif for "Angel" paired with heavy sans-serif EYE. The contrast between organic and mechanical mirrors the watcher/observer concept.</div>
+  </div>
+
+  <!-- V4: Weight Gradient -->
+  <div class="var-card">
+    <div class="var-card-header">
+      <div><span class="var-number">04</span> <span class="var-label">Weight Gradient</span></div>
+      <div class="var-fonts">Outfit</div>
+    </div>
+    <div class="logo-row">
+      <div class="logo-cell dark-bg">
+        <span class="bg-label">dark</span>
+        <div class="logo-v4"><span class="angel">Angel</span><span class="eye">Eye</span></div>
+      </div>
+      <div class="logo-cell light-bg">
+        <span class="bg-label">light</span>
+        <div class="logo-v4"><span class="angel">Angel</span><span class="eye">Eye</span></div>
+      </div>
+    </div>
+    <div class="var-desc">Same font family, extreme weight shift from hairline (200) to black (800). Title Case. The progressive weight draws the eye naturally toward EYE.</div>
+  </div>
+
+  <!-- V5: Glow Accent -->
+  <div class="var-card">
+    <div class="var-card-header">
+      <div><span class="var-number">05</span> <span class="var-label">Glow Accent</span></div>
+      <div class="var-fonts">Space Grotesk</div>
+    </div>
+    <div class="logo-row">
+      <div class="logo-cell dark-bg">
+        <span class="bg-label">dark</span>
+        <div class="logo-v5"><span class="angel">ANGEL</span><span class="eye">EYE</span></div>
+      </div>
+      <div class="logo-cell light-bg">
+        <span class="bg-label">light</span>
+        <div class="logo-v5"><span class="angel">ANGEL</span><span class="eye">EYE</span></div>
+      </div>
+    </div>
+    <div class="var-desc">Ambient glow on EYE using text-shadow, evoking an always-on monitoring presence. Particularly effective on dark backgrounds where the glow radiates.</div>
+  </div>
+
+  <!-- V6: Underline Accent -->
+  <div class="var-card">
+    <div class="var-card-header">
+      <div><span class="var-number">06</span> <span class="var-label">Underline Accent</span></div>
+      <div class="var-fonts">Sora</div>
+    </div>
+    <div class="logo-row">
+      <div class="logo-cell dark-bg">
+        <span class="bg-label">dark</span>
+        <div class="logo-v6"><span class="angel">ANGEL</span><span class="eye">EYE</span></div>
+      </div>
+      <div class="logo-cell light-bg">
+        <span class="bg-label">light</span>
+        <div class="logo-v6"><span class="angel">ANGEL</span><span class="eye">EYE</span></div>
+      </div>
+    </div>
+    <div class="var-desc">Clean geometric sans-serif. EYE highlighted with a thick amber underline instead of color alone. The underline adds a dashboard-indicator feel.</div>
+  </div>
+
+  <!-- V7: Badge / Pill -->
+  <div class="var-card">
+    <div class="var-card-header">
+      <div><span class="var-number">07</span> <span class="var-label">Badge Pill</span></div>
+      <div class="var-fonts">DM Sans</div>
+    </div>
+    <div class="logo-row">
+      <div class="logo-cell dark-bg">
+        <span class="bg-label">dark</span>
+        <div class="logo-v7"><span class="angel">ANGEL</span><span class="eye">EYE</span></div>
+      </div>
+      <div class="logo-cell light-bg">
+        <span class="bg-label">light</span>
+        <div class="logo-v7"><span class="angel">ANGEL</span><span class="eye">EYE</span></div>
+      </div>
+    </div>
+    <div class="var-desc">EYE sits inside an amber pill/badge, making it feel like a status indicator or notification count. Light ANGEL contrasts with the strong contained EYE.</div>
+  </div>
+
+  <!-- V8: Observer Dot -->
+  <div class="var-card">
+    <div class="var-card-header">
+      <div><span class="var-number">08</span> <span class="var-label">Observer Dot</span></div>
+      <div class="var-fonts">Manrope</div>
+    </div>
+    <div class="logo-row">
+      <div class="logo-cell dark-bg">
+        <span class="bg-label">dark</span>
+        <div class="logo-v8"><span class="angel">ANGEL</span><span class="dot"></span><span class="eye">EYE</span></div>
+      </div>
+      <div class="logo-cell light-bg">
+        <span class="bg-label">light</span>
+        <div class="logo-v8"><span class="angel">ANGEL</span><span class="dot"></span><span class="eye">EYE</span></div>
+      </div>
+    </div>
+    <div class="var-desc">A pulsing amber dot separates ANGEL and EYE, evoking a radar blip or active-status indicator. The dot animates with a subtle ring expansion.</div>
+  </div>
+
+  <!-- V9: Split Level -->
+  <div class="var-card">
+    <div class="var-card-header">
+      <div><span class="var-number">09</span> <span class="var-label">Split Level</span></div>
+      <div class="var-fonts">Inter + Bebas Neue</div>
+    </div>
+    <div class="logo-row">
+      <div class="logo-cell dark-bg">
+        <span class="bg-label">dark</span>
+        <div class="logo-v9"><span class="angel">ANGEL</span><span class="eye">EYE</span></div>
+      </div>
+      <div class="logo-cell light-bg">
+        <span class="bg-label">light</span>
+        <div class="logo-v9"><span class="angel">ANGEL</span><span class="eye">EYE</span></div>
+      </div>
+    </div>
+    <div class="var-desc">Stacked layout: small tracked "ANGEL" as a label above a large bold "EYE". Creates a hierarchical read where EYE dominates. Works well at small sizes.</div>
+  </div>
+
+  <!-- V10: Outline / Hollow -->
+  <div class="var-card">
+    <div class="var-card-header">
+      <div><span class="var-number">10</span> <span class="var-label">Outline Hollow</span></div>
+      <div class="var-fonts">Outfit</div>
+    </div>
+    <div class="logo-row">
+      <div class="logo-cell dark-bg">
+        <span class="bg-label">dark</span>
+        <div class="logo-v10"><span class="angel">ANGEL</span><span class="eye">EYE</span></div>
+      </div>
+      <div class="logo-cell light-bg">
+        <span class="bg-label">light</span>
+        <div class="logo-v10"><span class="angel">ANGEL</span><span class="eye">EYE</span></div>
+      </div>
+    </div>
+    <div class="var-desc">EYE rendered as hollow outlined text using text-stroke, giving a blueprint/wireframe aesthetic. The transparency suggests seeing through — an observer's lens.</div>
+  </div>
+
+</div>
+
+</body>
+</html>
