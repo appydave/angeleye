@@ -18,6 +18,9 @@ data/
 *.log
 logs/
 
+# Playwright MCP runtime artifacts
+.playwright-mcp/
+
 # OS
 .DS_Store
 Thumbs.db
