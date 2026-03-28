@@ -28,6 +28,33 @@ _(empty — add items as you work)_
 
 _Current direction, analysis, priorities. Updated by Claude at the start of each session after reading the David section._
 
+### Mochaccino API-Driven Mockups + Sample Data Fallback (2026-03-28)
+
+**What was done this session:**
+
+- **Converted all 9 HTML mockups from hardcoded data to API-driven** — each mockup now fetches from `/api/mock-views/*` endpoints instead of embedding data inline
+- **Built sample data fallback layer** — when real data is thin or missing, curated JSON from `.mochaccino/samples/` is served automatically
+- **New service**: `server/src/services/sample-data.service.ts` — `loadSample()` and `loadParamSample()` read JSON from disk
+- **New helper**: `apiSuccessWithSource()` in `response.ts` — tags every response with `"source": "live"` or `"source": "sample"`
+- **Rewrote mock-views routes** — all 10 endpoints have fallback logic + `?sample=true` override + generic catch-all for future sample-only views
+- **Created 4 priority sample files**: `chain-session-detail/_default.json`, `chain-sprint-board.json`, `chain-story-pipeline/_default.json`, `chat-panel.json`
+- **Fixed cross-machine access** — all HTML mockups use `window.location.hostname` instead of `localhost` for API base URL
+- **Fixed visual parity issues** — action codes (WN/CS/DS/DR), column mapping (`advisor` → CURATE), event noise filtering (skip `pre_tool_use`, `progress`, etc.)
+- **Documented the architecture** — `.mochaccino/mock-data-fallback.md` + updated Mochaccino skill with API-driven section
+
+**Key pattern for future mockups (no server code needed):**
+
+1. Write HTML in `.mochaccino/designs/{name}/index.html`
+2. Drop JSON at `.mochaccino/samples/{name}.json`
+3. HTML fetches from `/api/mock-views/{name}` — the generic catch-all serves it
+
+**Not done (lower priority):**
+
+- 5 remaining sample files (observer, organiser, named-rows, sync, story-chains) — real data exists for these
+- Story 2.3 backtrack visualization (curved SVG arrow, conditional pass nodes)
+
+---
+
 ### BMAD Enrichment — Full Pipeline Fix (2026-03-27)
 
 **What was done this session:**

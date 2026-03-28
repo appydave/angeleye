@@ -12,8 +12,26 @@ description: >
 
 # Angel Sync
 
-Manages the feedback loop between the AngelEye user (daily operator) and David (product owner / developer).
-Four modes. On entry, read state and report what's available before asking David what he wants.
+Manages the feedback loop between two roles — often the same person wearing different hats.
+
+## Entry — Read State, Then Offer Two Modes
+
+Before presenting modes, scan:
+
+- `AngelFeedback.md` — count pending items (numbered, under "Pending Items")
+- `docs/angel-sync/decision-log.md` — last decision date and AE-NNN version
+
+Report what you found, then present:
+
+> Angel has [N] pending items. Last decision session: [date / 'none'].
+>
+> **C — Capture** (user hat)
+> You're the daily operator. Describe features, observations, pain points, ideas — anything you notice while using AngelEye. I'll write them up in AngelFeedback.md.
+>
+> **T — Triage** (product owner hat)
+> You're the decision-maker. Step through pending items one by one — implement, defer, reject, or modify each one. Then optionally generate a handoff doc for implementation.
+>
+> Which mode? (C/T)
 
 ## Domain Context
 
@@ -29,97 +47,59 @@ AngelEye is a session intelligence dashboard for Claude Code. Key concepts the u
 - **Hooks** — Claude Code command hooks that feed live events to AngelEye
 - **Overlays** — domain-specific config (e.g. BMAD agent roles mapped to generic workflow classifiers)
 
-## Entry — Read State First
+---
 
-Before presenting modes, scan:
+## Mode C: Capture
 
-- `AngelFeedback.md` — count pending items (numbered, under "Pending Items")
-- `docs/angel-sync/decision-log.md` — last decision date and AE-NNN version
-- `docs/angel-sync/audit-log.md` — last audit entry date
+The user describes features, pain points, observations, or ideas in plain language. Claude's job:
 
-Report what you found, then offer the 4 modes:
-
-> "Angel has [N] pending items. Last decision session: [date / 'none']. Last AE version: [AE-NNN / 'none'].
->
-> What do you want to do?
->
-> 1. **evaluate** — step through pending items, record your decisions
-> 2. **summary** — plain-language recap of what was captured (user-readable)
-> 3. **audit** — log a change, decision, or rollback to the audit trail
-> 4. **handoff** — generate an implementation-ready requirements doc from approved items"
+1. Listen, clarify if needed, then write each item as a numbered entry under "Pending Items" in `AngelFeedback.md`
+2. Use the user's language — don't over-engineer the description
+3. Flag anything that contradicts a prior decision in `docs/angel-sync/decision-log.md`
+4. Keep going until the user says they're done
+5. Report: "Added [N] items. You now have [total] pending. Run /angel again and pick T when you're ready to triage."
 
 ---
 
-## Mode 1: Evaluate
+## Mode T: Triage
 
-Step through each pending item in `AngelFeedback.md` with David. One item at a time.
+Step through each pending item in `AngelFeedback.md` one at a time.
 
 ### Per item:
 
-1. Read the item — present it in plain language
+1. Present the item in plain language
 2. Check `docs/angel-sync/decision-log.md` — flag any contradiction with a prior decision
 3. State the technical implication in 1-2 sentences (reference AngelEye architecture where relevant)
-4. Ask David: **implement / defer / reject / modify?**
-5. If modify — capture David's amended version
+4. Ask: **implement / defer / reject / modify?**
+5. If modify — capture the amended version
 6. Record the decision immediately to `docs/angel-sync/decision-log.md` (format in `references/formats.md`)
 
 ### Contradiction detection:
 
 Before presenting each item, scan the decision log for related keywords. If a prior decision conflicts:
 
-> "Warning: Item [N] appears to conflict with a prior decision: [what was decided] on [date]. Proceed anyway?"
+> "Warning: This appears to conflict with a prior decision: [what was decided] on [date]. Proceed anyway?"
 
 ### After all items:
 
 - Report: N implemented, N deferred, N rejected, N modified
-- Ask: "Want to do a handoff now, or keep collecting?"
+- Ask: "Want to generate a handoff doc for the approved items?"
 
----
+### Handoff (optional, offered after triage):
 
-## Mode 2: Summary
+Generate a versioned requirements document from approved items.
 
-Generate a plain-language summary of the latest feedback for the user to read.
-
-- No developer terminology — translate AngelEye internals to user-facing language
-- Cover: what was captured, what David has decided (if anything), what's still pending
-- Tone: clear, professional — acknowledge that the observations are valued
-- Output: display in conversation only (don't write to file)
-
----
-
-## Mode 3: Audit
-
-Log a change, decision, rollback, or reasoning note to `docs/angel-sync/audit-log.md`.
-
-This is the knowledge transfer trail — designed so future sessions can understand not just what was built, but why decisions were made and what was tried and reversed.
-
-Ask David:
-
-1. What type of entry? (change / decision / rollback / note)
-2. What's the context — what happened?
-3. Why? (reasoning, constraints, alternatives tried)
-
-Write the entry to `docs/angel-sync/audit-log.md` (format in `references/formats.md`).
-
-**Proactively suggest audit entries** after evaluate mode when David makes a significant decision, reversal, or mentions "we tried X and it didn't work."
-
----
-
-## Mode 4: Handoff
-
-Generate a versioned requirements document from approved items, ready for plan-mode or recipe-based implementation within the AngelEye AppyStack project.
-
-### Steps:
-
-1. Read `docs/angel-sync/decision-log.md` — collect items marked `implement` or `modify` not yet in a prior AE-NNN handoff
+1. Collect items marked `implement` or `modify` not yet in a prior AE-NNN handoff
 2. Determine next version: scan `docs/angel-sync/` for existing `AE-*.md` files, increment (AE-001, AE-002, ...)
 3. Generate `docs/angel-sync/AE-NNN-requirements.md` (format in `references/formats.md`)
 4. Structure for plan-mode consumption — goal, discrete work units, done-when criteria, known constraints
 
-After writing:
-
 > "AE-NNN written to `docs/angel-sync/AE-NNN-requirements.md`.
 > Use plan-mode or the recipe skill to implement — point it at this file."
+
+### Audit (proactive):
+
+After triage, if David made a significant decision, reversal, or mentioned "we tried X and it didn't work" — suggest logging it to `docs/angel-sync/audit-log.md` for the knowledge trail.
 
 ---
 
