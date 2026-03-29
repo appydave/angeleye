@@ -1,7 +1,7 @@
 # Project Backlog — AngelEye
 
 **Last updated**: 2026-03-29
-**Total**: 64 | Pending: 13 | In Progress: 4 | Done: 49 | Deferred: 2 | Rejected: 0
+**Total**: 64 | Pending: 13 | In Progress: 0 | Done: 53 | Deferred: 2 | Rejected: 0
 
 ## Pending
 
@@ -33,12 +33,12 @@
 
 ## In Progress
 
-- [~] B056a — Extract campaign-dashboard.json from static HTML | Campaign: angeleye-workflow-phase2a
-- [~] B056b — Extract campaign-infographic.json from static HTML | Campaign: angeleye-workflow-phase2a
-- [~] B056c — Hybrid campaign dashboard mockup (live/mock overlay) | Campaign: angeleye-workflow-phase2a
-- [~] B056d — Hybrid campaign infographic mockup (live/mock overlay) | Campaign: angeleye-workflow-phase2a
-
 ## Done
+
+- [x] B056a — Extract campaign-dashboard.json from static HTML | Completed: angeleye-workflow-phase2a
+- [x] B056b — Extract campaign-infographic.json from static HTML | Completed: angeleye-workflow-phase2a
+- [x] B056c — Hybrid campaign dashboard mockup (live/mock overlay) | Completed: angeleye-workflow-phase2a
+- [x] B056d — Hybrid campaign infographic mockup (live/mock overlay) | Completed: angeleye-workflow-phase2a
 
 - [x] B051 — Workflow type config loader: read bmad-\*.json from server/src/config/workflows/ | Completed: angeleye-workflow-phase1
 - [x] B052 — Workflow instance CRUD: workflows.json storage with atomic writes | Completed: angeleye-workflow-phase1
