@@ -220,7 +220,7 @@ describe('correlateAffinityGroups', () => {
 
       const group = result.groups[0]!;
       expect(group.metadata?.backtracks).toBe(1);
-      expect(group.metadata?.backtrack_details).toEqual(['reviewer@3']);
+      expect(group.metadata?.backtrack_details).toEqual(['reviewer:DR@3']);
     });
   });
 

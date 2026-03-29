@@ -107,6 +107,7 @@ describe('POST /api/backfill', () => {
       scanned: 0,
       imported: 0,
       skipped: 0,
+      repaired: 0,
       errors: 0,
     });
 
