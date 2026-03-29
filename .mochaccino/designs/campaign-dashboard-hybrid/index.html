@@ -565,35 +565,88 @@ function topN(counts, n) {
   let liveSessions = null;
   let apiReachable = true;
 
-  // Fetch mock data
+  // ── Convert infographic semantic shapes → Chart.js {labels,values} ──
+  function toChartArrays(items, labelKey, valueKey) {
+    return { labels: items.map(i => i[labelKey]), values: items.map(i => i[valueKey]) };
+  }
+
+  function adaptInfographic(raw) {
+    // Session types: [{type, count}] → {labels, values}
+    const sessionTypes = toChartArrays(raw.sessionTypes, 'type', 'count');
+    // Projects: {items: [{name, count}]} → {labels, values} (top 15)
+    const topProjects = toChartArrays(raw.projects.items.slice(0, 15), 'name', 'count');
+    // Classifiers → {labels, values}
+    const delegationStyle = toChartArrays(raw.classifiers.delegationStyle, 'value', 'count');
+    const initiationSource = toChartArrays(raw.classifiers.initiationSource, 'value', 'count');
+    const sessionContinuity = toChartArrays(raw.classifiers.sessionContinuity, 'value', 'count');
+    const outputType = toChartArrays(raw.classifiers.outputType, 'value', 'count');
+    // Derived metrics → {labels, values}
+    const autonomyRatio = toChartArrays(raw.derivedMetrics.autonomyRatio.buckets, 'label', 'sessions');
+    const sessionLiveness = toChartArrays(raw.derivedMetrics.sessionLiveness.buckets, 'label', 'sessions');
+    // Build accuracy: [{scale, accuracy (string like "30-45%")}] → {labels, values}
+    // Parse accuracy strings: "0%" → 0, "~0%" → 0, "0-15%" → 7.5, "30-45%" → 37.5, "50-70%" → 60, "60-70%" → 65
+    function parseAccuracy(s) {
+      const clean = String(s).replace(/[~%]/g, '');
+      if (clean.includes('-')) {
+        const [lo, hi] = clean.split('-').map(Number);
+        return (lo + hi) / 2;
+      }
+      return Number(clean) || 0;
+    }
+    const buildAccuracy = {
+      labels: raw.buildAccuracy.map(b => b.scale),
+      values: raw.buildAccuracy.map(b => parseAccuracy(b.accuracy))
+    };
+    // Key predicates: [{name, truePercent, evaluated}]
+    const keyPredicates = {
+      labels: raw.predicates.map(p => p.name),
+      trueValues: raw.predicates.map(p => Math.round((p.truePercent / 100) * p.evaluated)),
+      totalEvaluated: raw.predicates.map(p => p.evaluated)
+    };
+    // Session scale — not broken out in infographic, use hardcoded from analysis
+    const sessionScale = { labels: ['light','micro','moderate','heavy','marathon','trivial','unknown'], values: [161,150,140,46,7,2,418] };
+    // Machine comparison — infographic only has session counts, not per-type breakdowns
+    const machineComparison = {
+      labels: ['Sessions'],
+      datasets: {
+        m4Mini: [raw.machines.m4Mini.sessions],
+        m4Pro: [raw.machines.m4Pro.sessions]
+      }
+    };
+
+    return {
+      campaignOverview: raw.campaignOverview,
+      sessionTypes, topProjects, delegationStyle, initiationSource,
+      sessionContinuity, outputType, autonomyRatio, sessionLiveness,
+      buildAccuracy, keyPredicates, sessionScale, machineComparison
+    };
+  }
+
+  // Fetch canonical mock data (infographic JSON — single source of truth)
   try {
-    const mockRes = await fetch(`${API_BASE}/api/mock-views/campaign-dashboard`);
+    const mockRes = await fetch(`${API_BASE}/api/mock-views/campaign-infographic`);
     if (!mockRes.ok) throw new Error('Mock fetch failed');
     const mockJson = await mockRes.json();
-    if (mockJson.status === 'ok') {
-      mockData = mockJson.data;
-    } else {
-      mockData = mockJson; // might be raw JSON without wrapper
-    }
+    const raw = mockJson.status === 'ok' ? mockJson.data : mockJson;
+    mockData = adaptInfographic(raw);
   } catch (e) {
-    // Fallback — inline mock data
     mockData = null;
   }
 
-  // If we couldn't get mock data from API, use hardcoded fallback
+  // Hardcoded fallback if API unreachable
   if (!mockData || !mockData.sessionTypes) {
     mockData = {
       campaignOverview: { totalSessions: 924, machines: 2, wavesAndBackwardPass: 14, m4Mini: 807, m4Pro: 116, unknownMachine: 1, schemaV2: 615, noSchemaVersion: 309 },
-      sessionTypes: { labels: ['BUILD','KNOWLEDGE','RESEARCH','ORIENTATION','OPERATIONS','META','SYSOPS','PLANNING','MIXED','SKILL','SETUP','Unknown'], values: [77,80,79,56,53,37,24,23,19,10,9,418] },
+      sessionTypes: { labels: ['BUILD','KNOWLEDGE','RESEARCH','ORIENTATION','OPERATIONS','META','SYSOPS','PLANNING','MIXED','SKILL','SETUP','UNCLASSIFIED','TEST','BRAND','REVIEW','DEBUG'], values: [77,80,79,56,53,37,24,23,19,10,9,418,14,3,1,1] },
       sessionScale: { labels: ['light','micro','moderate','heavy','marathon','trivial','unknown'], values: [161,150,140,46,7,2,418] },
-      delegationStyle: { labels: ['Conversational','Directive','Orchestrated','Autonomous'], values: [417,335,91,58] },
+      delegationStyle: { labels: ['conversational','directive','orchestrated','autonomous','mixed','unknown'], values: [417,335,91,58,15,8] },
       initiationSource: { labels: ['user_typed','voice_dictated','handover_paste','skill_invoked','agent_dispatched'], values: [538,168,131,69,12] },
       sessionContinuity: { labels: ['fresh','handover_paste','compaction','skill_launcher','recall'], values: [587,152,83,63,25] },
-      outputType: { labels: ['Conversation Only','Code Changes','Knowledge Synthesis','Mixed','New Artifacts'], values: [278,233,171,126,114] },
+      outputType: { labels: ['conversation_only','code_changes','knowledge_synthesis','mixed','new_artifacts'], values: [278,233,171,126,114] },
       autonomyRatio: { labels: ['conversational (<=3)','guided (3-8)','delegated (8-15)','autonomous (>15)','unknown'], values: [223,127,86,47,441] },
       sessionLiveness: { labels: ['focused','parked','zombie','intermittent','unknown'], values: [204,84,65,38,533] },
       topProjects: { labels: ['brains','prompt.supportsignal.com.au','signal-studio','app.supportsignal.com.au','appystack','angeleye','flihub','appydave-plugins','prompt.supportsignal','v-appydave','app.supportsignal','joy-juice','flideck','appydave.com','deckhand'], values: [327,112,48,40,38,33,31,28,22,19,19,15,13,11,10] },
-      keyPredicates: { labels: ['P17 handover context','P18 cross-project reads','P19 web research','P20 parallel subagents','P21 task orchestration','P22 git outcome','frustration signals','voice dictation artifacts','multi-phase','cwd incidental','feature construction'], trueValues: [175,74,73,35,158,77,124,193,240,191,87], totalEvaluated: [918,573,910,716,910,822,502,278,502,475,495] },
+      keyPredicates: { labels: ['has_voice_dictation_artifacts','is_multi_phase','is_cwd_incidental','has_cross_session_refs','has_frustration_signals','has_brain_file_writes','has_handover_context','is_feature_construction','has_task_orchestration','has_misunderstood_request','has_cross_project_reads'], trueValues: [193,240,191,87,124,0,175,87,158,0,74], totalEvaluated: [278,502,475,495,502,0,918,495,910,0,573] },
       buildAccuracy: { labels: ['micro','light','moderate','heavy','marathon'], values: [0,12,38,60,65] },
       machineComparison: { labels: ['Sessions','BUILD','KNOWLEDGE','RESEARCH','OPERATIONS','Schema v2'], datasets: { m4Mini: [807,62,68,65,45,520], m4Pro: [116,15,12,14,8,95] } }
     };
@@ -746,11 +799,12 @@ function topN(counts, n) {
   // ── 4. Delegation Style (MOCK) ──
   {
     applyCardStyling('delegation', 'mock');
+    const dColors = PALETTE_MUTED.slice(0, mockData.delegationStyle.labels.length);
     new Chart(document.getElementById('delegationChart'), {
       type: 'doughnut',
       data: {
         labels: mockData.delegationStyle.labels,
-        datasets: [{ data: mockData.delegationStyle.values, backgroundColor: ['#c8841a', '#2E91FC', '#f59e0b', '#8b5cf6'], borderColor: 'rgba(245,241,235,0.8)', borderWidth: 1 }]
+        datasets: [{ data: mockData.delegationStyle.values, backgroundColor: dColors, borderColor: 'rgba(245,241,235,0.8)', borderWidth: 1 }]
       },
       options: doughnutOpts()
     });
@@ -789,7 +843,7 @@ function topN(counts, n) {
       type: 'doughnut',
       data: {
         labels: mockData.outputType.labels,
-        datasets: [{ data: mockData.outputType.values, backgroundColor: ['#c8841a', '#2E91FC', '#22c55e', '#8b5cf6', '#f59e0b'], borderColor: 'rgba(245,241,235,0.8)', borderWidth: 1 }]
+        datasets: [{ data: mockData.outputType.values, backgroundColor: PALETTE_MUTED.slice(0, mockData.outputType.labels.length), borderColor: 'rgba(245,241,235,0.8)', borderWidth: 1 }]
       },
       options: doughnutOpts()
     });

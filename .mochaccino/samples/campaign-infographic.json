@@ -1,51 +1,114 @@
 {
   "_meta": {
-    "source": "campaign-infographic.html",
+    "source": "campaign-infographic.html + campaign-dashboard.html (merged)",
     "extracted": "2026-03-29",
     "campaign": "angeleye-analysis-1",
     "totalSessions": 924,
     "generatedDate": "2026-03-23",
-    "description": "AngelEye — 924 Session Data Reference"
+    "description": "AngelEye \u2014 924 Session Data Reference (canonical)"
   },
   "heroStats": [
-    { "value": "924", "label": "Sessions" },
-    { "value": "2", "label": "Machines" },
-    { "value": "15+1", "label": "Waves + backward" },
-    { "value": "478", "label": "Unique Subtypes" },
-    { "value": "45", "label": "Tools Observed" },
-    { "value": "76+", "label": "Projects" }
+    {
+      "value": "924",
+      "label": "Sessions"
+    },
+    {
+      "value": "2",
+      "label": "Machines"
+    },
+    {
+      "value": "15+1",
+      "label": "Waves + backward"
+    },
+    {
+      "value": "478",
+      "label": "Unique Subtypes"
+    },
+    {
+      "value": "45",
+      "label": "Tools Observed"
+    },
+    {
+      "value": "76+",
+      "label": "Projects"
+    }
   ],
   "schema": {
     "topLevel": [
-      { "field": "session_id", "type": "UUID" },
-      { "field": "machine", "type": "m4-mini | m4-pro" },
+      {
+        "field": "session_id",
+        "type": "UUID"
+      },
+      {
+        "field": "machine",
+        "type": "m4-mini | m4-pro"
+      },
       {
         "field": "project",
         "type": "string",
         "description": "last CWD segment (e.g. \"brains\", \"angeleye\")"
       },
-      { "field": "project_dir", "type": "path", "description": "full path" },
-      { "field": "schema_version", "type": "2" },
+      {
+        "field": "project_dir",
+        "type": "path",
+        "description": "full path"
+      },
+      {
+        "field": "schema_version",
+        "type": "2"
+      },
       {
         "field": "disposition",
         "type": "enum",
         "description": "active | junk | ended | complete | ..."
       },
-      { "field": "interest_level", "type": "enum", "description": "high | medium | low" },
+      {
+        "field": "interest_level",
+        "type": "enum",
+        "description": "high | medium | low"
+      },
       {
         "field": "registry_type",
         "type": "enum",
         "description": "BUILD | KNOWLEDGE | ORIENTATION | ..."
       },
-      { "field": "notes", "type": "text", "description": "free text summary" }
+      {
+        "field": "notes",
+        "type": "text",
+        "description": "free text summary"
+      }
     ],
     "shape": [
-      { "field": "event_count", "type": "int", "description": "total events in session" },
-      { "field": "tool_use_count", "type": "int", "description": "tool invocations" },
-      { "field": "user_prompt_count", "type": "int", "description": "real user prompts" },
-      { "field": "duration_minutes", "type": "float", "description": "wall clock" },
-      { "field": "active_minutes", "type": "float", "description": "time with activity" },
-      { "field": "context_compactions", "type": "int", "description": "number of compactions" }
+      {
+        "field": "event_count",
+        "type": "int",
+        "description": "total events in session"
+      },
+      {
+        "field": "tool_use_count",
+        "type": "int",
+        "description": "tool invocations"
+      },
+      {
+        "field": "user_prompt_count",
+        "type": "int",
+        "description": "real user prompts"
+      },
+      {
+        "field": "duration_minutes",
+        "type": "float",
+        "description": "wall clock"
+      },
+      {
+        "field": "active_minutes",
+        "type": "float",
+        "description": "time with activity"
+      },
+      {
+        "field": "context_compactions",
+        "type": "int",
+        "description": "number of compactions"
+      }
     ],
     "predicates": [
       {
@@ -58,8 +121,16 @@
         "type": "bool",
         "description": "Did the user show frustration?"
       },
-      { "field": "P03 is_multi_phase", "type": "bool", "description": "Multiple work phases?" },
-      { "field": "P04-P16", "type": "bool", "description": "...through P16..." },
+      {
+        "field": "P03 is_multi_phase",
+        "type": "bool",
+        "description": "Multiple work phases?"
+      },
+      {
+        "field": "P04-P16",
+        "type": "bool",
+        "description": "...through P16..."
+      },
       {
         "field": "P17 has_handover_context",
         "type": "bool",
@@ -160,11 +231,26 @@
       }
     ],
     "observations": [
-      { "field": "frustration_analysis", "type": "text" },
-      { "field": "phase_breakdown", "type": "text" },
-      { "field": "session_chain", "type": "text" },
-      { "field": "skill_gap", "type": "text" },
-      { "field": "cwd_mismatch", "type": "text" },
+      {
+        "field": "frustration_analysis",
+        "type": "text"
+      },
+      {
+        "field": "phase_breakdown",
+        "type": "text"
+      },
+      {
+        "field": "session_chain",
+        "type": "text"
+      },
+      {
+        "field": "skill_gap",
+        "type": "text"
+      },
+      {
+        "field": "cwd_mismatch",
+        "type": "text"
+      },
       {
         "field": "O06 autonomy_profile",
         "type": "text",
@@ -195,7 +281,11 @@
       {
         "field": "session_liveness",
         "subfields": [
-          { "field": "value", "type": "float", "description": "active_minutes / duration_minutes" },
+          {
+            "field": "value",
+            "type": "float",
+            "description": "active_minutes / duration_minutes"
+          },
           {
             "field": "bucket",
             "type": "enum",
@@ -206,21 +296,96 @@
     ]
   },
   "sessionTypes": [
-    { "type": "BUILD", "count": 77, "sharePercent": 18.4, "badgeClass": "badge-build" },
-    { "type": "KNOWLEDGE", "count": 80, "sharePercent": 19.1, "badgeClass": "badge-knowledge" },
-    { "type": "RESEARCH", "count": 79, "sharePercent": 18.9, "badgeClass": "badge-research" },
-    { "type": "ORIENTATION", "count": 56, "sharePercent": 13.4, "badgeClass": "badge-orientation" },
-    { "type": "OPERATIONS", "count": 53, "sharePercent": 12.7, "badgeClass": "badge-operations" },
-    { "type": "META", "count": 37, "sharePercent": 8.9, "badgeClass": "badge-meta" },
-    { "type": "SYSOPS", "count": 24, "sharePercent": 5.7, "badgeClass": "badge-sysops" },
-    { "type": "PLANNING", "count": 23, "sharePercent": 5.5, "badgeClass": "badge-planning" },
-    { "type": "MIXED", "count": 19, "sharePercent": 4.5, "badgeClass": "badge-mixed" },
-    { "type": "SKILL", "count": 10, "sharePercent": 2.4, "badgeClass": "badge-skill" },
-    { "type": "SETUP", "count": 9, "sharePercent": 2.2, "badgeClass": "badge-setup" },
-    { "type": "TEST", "count": 8, "sharePercent": 1.9, "badgeClass": "badge-test" },
-    { "type": "REVIEW", "count": 8, "sharePercent": 1.9, "badgeClass": "badge-review" },
-    { "type": "DEBUG", "count": 8, "sharePercent": 1.9, "badgeClass": "badge-debug" },
-    { "type": "BRAND", "count": 3, "sharePercent": 0.7, "badgeClass": "badge-brand" },
+    {
+      "type": "BUILD",
+      "count": 77,
+      "sharePercent": 18.4,
+      "badgeClass": "badge-build"
+    },
+    {
+      "type": "KNOWLEDGE",
+      "count": 80,
+      "sharePercent": 19.1,
+      "badgeClass": "badge-knowledge"
+    },
+    {
+      "type": "RESEARCH",
+      "count": 79,
+      "sharePercent": 18.9,
+      "badgeClass": "badge-research"
+    },
+    {
+      "type": "ORIENTATION",
+      "count": 56,
+      "sharePercent": 13.4,
+      "badgeClass": "badge-orientation"
+    },
+    {
+      "type": "OPERATIONS",
+      "count": 53,
+      "sharePercent": 12.7,
+      "badgeClass": "badge-operations"
+    },
+    {
+      "type": "META",
+      "count": 37,
+      "sharePercent": 8.9,
+      "badgeClass": "badge-meta"
+    },
+    {
+      "type": "SYSOPS",
+      "count": 24,
+      "sharePercent": 5.7,
+      "badgeClass": "badge-sysops"
+    },
+    {
+      "type": "PLANNING",
+      "count": 23,
+      "sharePercent": 5.5,
+      "badgeClass": "badge-planning"
+    },
+    {
+      "type": "MIXED",
+      "count": 19,
+      "sharePercent": 4.5,
+      "badgeClass": "badge-mixed"
+    },
+    {
+      "type": "SKILL",
+      "count": 10,
+      "sharePercent": 2.4,
+      "badgeClass": "badge-skill"
+    },
+    {
+      "type": "SETUP",
+      "count": 9,
+      "sharePercent": 2.2,
+      "badgeClass": "badge-setup"
+    },
+    {
+      "type": "TEST",
+      "count": 8,
+      "sharePercent": 1.9,
+      "badgeClass": "badge-test"
+    },
+    {
+      "type": "REVIEW",
+      "count": 8,
+      "sharePercent": 1.9,
+      "badgeClass": "badge-review"
+    },
+    {
+      "type": "DEBUG",
+      "count": 8,
+      "sharePercent": 1.9,
+      "badgeClass": "badge-debug"
+    },
+    {
+      "type": "BRAND",
+      "count": 3,
+      "sharePercent": 0.7,
+      "badgeClass": "badge-brand"
+    },
     {
       "type": "UNCLASSIFIED",
       "count": 418,
@@ -229,219 +394,855 @@
     }
   ],
   "subtypes": {
-    "_note": "478 unique subtypes total — showing N>=3 only",
+    "_note": "478 unique subtypes total \u2014 showing N>=3 only",
     "items": [
-      { "name": "meta.accidental", "count": 32 },
-      { "name": "build.campaign", "count": 28 },
-      { "name": "orientation.artifact_retrieval", "count": 28 },
-      { "name": "research.quick_answer", "count": 25 },
-      { "name": "knowledge.brain_update", "count": 21 },
-      { "name": "operations.poem_execution", "count": 14 },
-      { "name": "knowledge.brain_creation", "count": 13 },
-      { "name": "knowledge.methodology_design", "count": 12 },
-      { "name": "build.iterative_design", "count": 11 },
-      { "name": "meta.ghost_session", "count": 10 },
-      { "name": "research.exploration", "count": 9 },
-      { "name": "build.feature", "count": 8 },
-      { "name": "orientation.exploration", "count": 8 },
-      { "name": "meta.smoke_test", "count": 8 },
-      { "name": "knowledge.general", "count": 8 },
-      { "name": "operations.maintenance", "count": 8 },
-      { "name": "research.codebase_exploration", "count": 8 },
-      { "name": "knowledge.research", "count": 7 },
-      { "name": "operations.system_task", "count": 6 },
-      { "name": "planning.general", "count": 6 },
-      { "name": "orientation.codebase_exploration", "count": 5 },
-      { "name": "orientation.requirements", "count": 5 },
-      { "name": "skill.creation", "count": 5 },
-      { "name": "build.campaign_continuation", "count": 5 },
-      { "name": "orientation.cold_start", "count": 5 },
-      { "name": "research.tool_evaluation", "count": 5 },
-      { "name": "knowledge.advisory", "count": 4 },
-      { "name": "build.multi_phase", "count": 4 },
-      { "name": "orientation.bookend", "count": 4 },
-      { "name": "meta.compaction_flush", "count": 4 },
-      { "name": "artifact_retrieval", "count": 4 },
-      { "name": "build.general", "count": 4 },
-      { "name": "orientation.quick_check", "count": 4 },
-      { "name": "orientation.abandoned", "count": 4 },
-      { "name": "orientation.quick_lookup", "count": 4 },
-      { "name": "build.greenfield_app", "count": 4 },
-      { "name": "research.personal_advisory", "count": 4 },
-      { "name": "meta.empty_session", "count": 4 },
-      { "name": "meta.abandoned", "count": 4 },
-      { "name": "build.orchestrated_campaign", "count": 3 }
+      {
+        "name": "meta.accidental",
+        "count": 32
+      },
+      {
+        "name": "build.campaign",
+        "count": 28
+      },
+      {
+        "name": "orientation.artifact_retrieval",
+        "count": 28
+      },
+      {
+        "name": "research.quick_answer",
+        "count": 25
+      },
+      {
+        "name": "knowledge.brain_update",
+        "count": 21
+      },
+      {
+        "name": "operations.poem_execution",
+        "count": 14
+      },
+      {
+        "name": "knowledge.brain_creation",
+        "count": 13
+      },
+      {
+        "name": "knowledge.methodology_design",
+        "count": 12
+      },
+      {
+        "name": "build.iterative_design",
+        "count": 11
+      },
+      {
+        "name": "meta.ghost_session",
+        "count": 10
+      },
+      {
+        "name": "research.exploration",
+        "count": 9
+      },
+      {
+        "name": "build.feature",
+        "count": 8
+      },
+      {
+        "name": "orientation.exploration",
+        "count": 8
+      },
+      {
+        "name": "meta.smoke_test",
+        "count": 8
+      },
+      {
+        "name": "knowledge.general",
+        "count": 8
+      },
+      {
+        "name": "operations.maintenance",
+        "count": 8
+      },
+      {
+        "name": "research.codebase_exploration",
+        "count": 8
+      },
+      {
+        "name": "knowledge.research",
+        "count": 7
+      },
+      {
+        "name": "operations.system_task",
+        "count": 6
+      },
+      {
+        "name": "planning.general",
+        "count": 6
+      },
+      {
+        "name": "orientation.codebase_exploration",
+        "count": 5
+      },
+      {
+        "name": "orientation.requirements",
+        "count": 5
+      },
+      {
+        "name": "skill.creation",
+        "count": 5
+      },
+      {
+        "name": "build.campaign_continuation",
+        "count": 5
+      },
+      {
+        "name": "orientation.cold_start",
+        "count": 5
+      },
+      {
+        "name": "research.tool_evaluation",
+        "count": 5
+      },
+      {
+        "name": "knowledge.advisory",
+        "count": 4
+      },
+      {
+        "name": "build.multi_phase",
+        "count": 4
+      },
+      {
+        "name": "orientation.bookend",
+        "count": 4
+      },
+      {
+        "name": "meta.compaction_flush",
+        "count": 4
+      },
+      {
+        "name": "artifact_retrieval",
+        "count": 4
+      },
+      {
+        "name": "build.general",
+        "count": 4
+      },
+      {
+        "name": "orientation.quick_check",
+        "count": 4
+      },
+      {
+        "name": "orientation.abandoned",
+        "count": 4
+      },
+      {
+        "name": "orientation.quick_lookup",
+        "count": 4
+      },
+      {
+        "name": "build.greenfield_app",
+        "count": 4
+      },
+      {
+        "name": "research.personal_advisory",
+        "count": 4
+      },
+      {
+        "name": "meta.empty_session",
+        "count": 4
+      },
+      {
+        "name": "meta.abandoned",
+        "count": 4
+      },
+      {
+        "name": "build.orchestrated_campaign",
+        "count": 3
+      }
     ],
     "totalUniqueSubtypes": 478
   },
   "projects": {
     "_note": "+ 35 projects with 1 session each",
     "items": [
-      { "name": "brains", "count": 327 },
-      { "name": "prompt.supportsignal.com.au", "count": 112 },
-      { "name": "signal-studio", "count": 48 },
-      { "name": "app.supportsignal.com.au", "count": 40 },
-      { "name": "appystack", "count": 38 },
-      { "name": "angeleye", "count": 33 },
-      { "name": "flihub", "count": 31 },
-      { "name": "appydave-plugins", "count": 28 },
-      { "name": "prompt.supportsignal", "count": 22 },
-      { "name": "v-appydave", "count": 19 },
-      { "name": "app.supportsignal", "count": 19 },
-      { "name": "joy-juice", "count": 15 },
-      { "name": "flideck", "count": 13 },
-      { "name": "appydave.com", "count": 11 },
-      { "name": "deckhand", "count": 10 },
-      { "name": "davidcruwys", "count": 9 },
-      { "name": "brain-dynamous", "count": 9 },
-      { "name": "ad", "count": 8 },
-      { "name": "agent-os", "count": 8 },
-      { "name": "supportsignal", "count": 7 },
-      { "name": "beauty-and-joy", "count": 7 },
-      { "name": "lars", "count": 6 },
-      { "name": "ansible", "count": 5 },
-      { "name": "apps", "count": 5 },
-      { "name": "voz", "count": 5 },
-      { "name": "digital-stage-summit-2026", "count": 4 },
-      { "name": "dev", "count": 4 },
-      { "name": "appydave-tools", "count": 4 },
-      { "name": "thumbrack", "count": 3 },
-      { "name": "v-voz", "count": 3 },
-      { "name": "supportsignal-v2-planning", "count": 3 },
-      { "name": "poem", "count": 3 },
-      { "name": "fligen", "count": 3 },
-      { "name": "repo-audit", "count": 3 },
-      { "name": "kgems", "count": 2 },
-      { "name": "custom", "count": 2 },
-      { "name": "multi-repo", "count": 2 },
-      { "name": "dtv", "count": 2 },
-      { "name": "agentic-os", "count": 2 }
+      {
+        "name": "brains",
+        "count": 327
+      },
+      {
+        "name": "prompt.supportsignal.com.au",
+        "count": 112
+      },
+      {
+        "name": "signal-studio",
+        "count": 48
+      },
+      {
+        "name": "app.supportsignal.com.au",
+        "count": 40
+      },
+      {
+        "name": "appystack",
+        "count": 38
+      },
+      {
+        "name": "angeleye",
+        "count": 33
+      },
+      {
+        "name": "flihub",
+        "count": 31
+      },
+      {
+        "name": "appydave-plugins",
+        "count": 28
+      },
+      {
+        "name": "prompt.supportsignal",
+        "count": 22
+      },
+      {
+        "name": "v-appydave",
+        "count": 19
+      },
+      {
+        "name": "app.supportsignal",
+        "count": 19
+      },
+      {
+        "name": "joy-juice",
+        "count": 15
+      },
+      {
+        "name": "flideck",
+        "count": 13
+      },
+      {
+        "name": "appydave.com",
+        "count": 11
+      },
+      {
+        "name": "deckhand",
+        "count": 10
+      },
+      {
+        "name": "davidcruwys",
+        "count": 9
+      },
+      {
+        "name": "brain-dynamous",
+        "count": 9
+      },
+      {
+        "name": "ad",
+        "count": 8
+      },
+      {
+        "name": "agent-os",
+        "count": 8
+      },
+      {
+        "name": "supportsignal",
+        "count": 7
+      },
+      {
+        "name": "beauty-and-joy",
+        "count": 7
+      },
+      {
+        "name": "lars",
+        "count": 6
+      },
+      {
+        "name": "ansible",
+        "count": 5
+      },
+      {
+        "name": "apps",
+        "count": 5
+      },
+      {
+        "name": "voz",
+        "count": 5
+      },
+      {
+        "name": "digital-stage-summit-2026",
+        "count": 4
+      },
+      {
+        "name": "dev",
+        "count": 4
+      },
+      {
+        "name": "appydave-tools",
+        "count": 4
+      },
+      {
+        "name": "thumbrack",
+        "count": 3
+      },
+      {
+        "name": "v-voz",
+        "count": 3
+      },
+      {
+        "name": "supportsignal-v2-planning",
+        "count": 3
+      },
+      {
+        "name": "poem",
+        "count": 3
+      },
+      {
+        "name": "fligen",
+        "count": 3
+      },
+      {
+        "name": "repo-audit",
+        "count": 3
+      },
+      {
+        "name": "kgems",
+        "count": 2
+      },
+      {
+        "name": "custom",
+        "count": 2
+      },
+      {
+        "name": "multi-repo",
+        "count": 2
+      },
+      {
+        "name": "dtv",
+        "count": 2
+      },
+      {
+        "name": "agentic-os",
+        "count": 2
+      }
     ],
     "additionalSingleSessionProjects": 35
   },
   "tools": [
-    { "rank": 1, "name": "Read", "sessions": 376, "prevalencePercent": 100 },
-    { "rank": 2, "name": "Bash", "sessions": 353, "prevalencePercent": 93.9 },
-    { "rank": 3, "name": "Edit", "sessions": 275, "prevalencePercent": 73.1 },
-    { "rank": 4, "name": "Write", "sessions": 232, "prevalencePercent": 61.7 },
-    { "rank": 5, "name": "Glob", "sessions": 225, "prevalencePercent": 59.8 },
-    { "rank": 6, "name": "Grep", "sessions": 146, "prevalencePercent": 38.8 },
-    { "rank": 7, "name": "Skill", "sessions": 146, "prevalencePercent": 38.8 },
-    { "rank": 8, "name": "Agent", "sessions": 111, "prevalencePercent": 29.5 },
-    { "rank": 9, "name": "ToolSearch", "sessions": 92, "prevalencePercent": 24.5 },
-    { "rank": 10, "name": "Task", "sessions": 77, "prevalencePercent": 20.5 },
-    { "rank": 11, "name": "browser_navigate", "sessions": 46, "prevalencePercent": 12.2 },
-    { "rank": 12, "name": "TaskCreate", "sessions": 45, "prevalencePercent": 12.0 },
-    { "rank": 13, "name": "TaskUpdate", "sessions": 44, "prevalencePercent": 11.7 },
-    { "rank": 14, "name": "TaskOutput", "sessions": 29, "prevalencePercent": 7.7 },
-    { "rank": 15, "name": "browser_click", "sessions": 28, "prevalencePercent": 7.4 },
-    { "rank": 16, "name": "browser_take_screenshot", "sessions": 27, "prevalencePercent": 7.2 },
-    { "rank": 17, "name": "brave_web_search", "sessions": 26, "prevalencePercent": 6.9 },
-    { "rank": 18, "name": "WebFetch", "sessions": 21, "prevalencePercent": 5.6 },
-    { "rank": 19, "name": "browser_snapshot", "sessions": 19, "prevalencePercent": 5.1 },
-    { "rank": 20, "name": "AskUserQuestion", "sessions": 11, "prevalencePercent": 2.9 },
-    { "rank": 21, "name": "TaskList", "sessions": 9, "prevalencePercent": 2.4 },
-    { "rank": 22, "name": "browser_fill_form", "sessions": 7, "prevalencePercent": 1.9 },
-    { "rank": 23, "name": "browser_evaluate", "sessions": 7, "prevalencePercent": 1.9 },
-    { "rank": 24, "name": "WebSearch", "sessions": 7, "prevalencePercent": 1.9 },
-    { "rank": 25, "name": "browser_type", "sessions": 7, "prevalencePercent": 1.9 },
-    { "rank": 26, "name": "browser_wait_for", "sessions": 7, "prevalencePercent": 1.9 },
-    { "rank": 27, "name": "EnterPlanMode", "sessions": 6, "prevalencePercent": 1.6 },
-    { "rank": 28, "name": "ExitPlanMode", "sessions": 6, "prevalencePercent": 1.6 },
-    { "rank": 29, "name": "browser_install", "sessions": 6, "prevalencePercent": 1.6 },
-    { "rank": 30, "name": "TaskStop", "sessions": 6, "prevalencePercent": 1.6 },
-    { "rank": 31, "name": "CronCreate", "sessions": 5, "prevalencePercent": 1.3 },
-    { "rank": 32, "name": "browser_press_key", "sessions": 5, "prevalencePercent": 1.3 },
-    { "rank": 33, "name": "browser_resize", "sessions": 4, "prevalencePercent": 1.1 },
-    { "rank": 34, "name": "browser_run_code", "sessions": 4, "prevalencePercent": 1.1 },
-    { "rank": 35, "name": "CronDelete", "sessions": 4, "prevalencePercent": 1.1 },
-    { "rank": 36, "name": "EnterWorktree", "sessions": 3, "prevalencePercent": 0.8 },
-    { "rank": 37, "name": "browser_tabs", "sessions": 3, "prevalencePercent": 0.8 },
-    { "rank": 38, "name": "browser_console_messages", "sessions": 2, "prevalencePercent": 0.5 },
-    { "rank": 39, "name": "browser_close", "sessions": 2, "prevalencePercent": 0.5 },
-    { "rank": 40, "name": "browser_file_upload", "sessions": 1, "prevalencePercent": 0.3 },
-    { "rank": 41, "name": "CronList", "sessions": 1, "prevalencePercent": 0.3 },
-    { "rank": 42, "name": "browser_network_requests", "sessions": 1, "prevalencePercent": 0.3 },
-    { "rank": 43, "name": "TaskGet", "sessions": 1, "prevalencePercent": 0.3 },
-    { "rank": 44, "name": "TodoWrite", "sessions": 1, "prevalencePercent": 0.3 },
-    { "rank": 45, "name": "browser_triple_click", "sessions": 1, "prevalencePercent": 0.3 }
+    {
+      "rank": 1,
+      "name": "Read",
+      "sessions": 376,
+      "prevalencePercent": 100
+    },
+    {
+      "rank": 2,
+      "name": "Bash",
+      "sessions": 353,
+      "prevalencePercent": 93.9
+    },
+    {
+      "rank": 3,
+      "name": "Edit",
+      "sessions": 275,
+      "prevalencePercent": 73.1
+    },
+    {
+      "rank": 4,
+      "name": "Write",
+      "sessions": 232,
+      "prevalencePercent": 61.7
+    },
+    {
+      "rank": 5,
+      "name": "Glob",
+      "sessions": 225,
+      "prevalencePercent": 59.8
+    },
+    {
+      "rank": 6,
+      "name": "Grep",
+      "sessions": 146,
+      "prevalencePercent": 38.8
+    },
+    {
+      "rank": 7,
+      "name": "Skill",
+      "sessions": 146,
+      "prevalencePercent": 38.8
+    },
+    {
+      "rank": 8,
+      "name": "Agent",
+      "sessions": 111,
+      "prevalencePercent": 29.5
+    },
+    {
+      "rank": 9,
+      "name": "ToolSearch",
+      "sessions": 92,
+      "prevalencePercent": 24.5
+    },
+    {
+      "rank": 10,
+      "name": "Task",
+      "sessions": 77,
+      "prevalencePercent": 20.5
+    },
+    {
+      "rank": 11,
+      "name": "browser_navigate",
+      "sessions": 46,
+      "prevalencePercent": 12.2
+    },
+    {
+      "rank": 12,
+      "name": "TaskCreate",
+      "sessions": 45,
+      "prevalencePercent": 12.0
+    },
+    {
+      "rank": 13,
+      "name": "TaskUpdate",
+      "sessions": 44,
+      "prevalencePercent": 11.7
+    },
+    {
+      "rank": 14,
+      "name": "TaskOutput",
+      "sessions": 29,
+      "prevalencePercent": 7.7
+    },
+    {
+      "rank": 15,
+      "name": "browser_click",
+      "sessions": 28,
+      "prevalencePercent": 7.4
+    },
+    {
+      "rank": 16,
+      "name": "browser_take_screenshot",
+      "sessions": 27,
+      "prevalencePercent": 7.2
+    },
+    {
+      "rank": 17,
+      "name": "brave_web_search",
+      "sessions": 26,
+      "prevalencePercent": 6.9
+    },
+    {
+      "rank": 18,
+      "name": "WebFetch",
+      "sessions": 21,
+      "prevalencePercent": 5.6
+    },
+    {
+      "rank": 19,
+      "name": "browser_snapshot",
+      "sessions": 19,
+      "prevalencePercent": 5.1
+    },
+    {
+      "rank": 20,
+      "name": "AskUserQuestion",
+      "sessions": 11,
+      "prevalencePercent": 2.9
+    },
+    {
+      "rank": 21,
+      "name": "TaskList",
+      "sessions": 9,
+      "prevalencePercent": 2.4
+    },
+    {
+      "rank": 22,
+      "name": "browser_fill_form",
+      "sessions": 7,
+      "prevalencePercent": 1.9
+    },
+    {
+      "rank": 23,
+      "name": "browser_evaluate",
+      "sessions": 7,
+      "prevalencePercent": 1.9
+    },
+    {
+      "rank": 24,
+      "name": "WebSearch",
+      "sessions": 7,
+      "prevalencePercent": 1.9
+    },
+    {
+      "rank": 25,
+      "name": "browser_type",
+      "sessions": 7,
+      "prevalencePercent": 1.9
+    },
+    {
+      "rank": 26,
+      "name": "browser_wait_for",
+      "sessions": 7,
+      "prevalencePercent": 1.9
+    },
+    {
+      "rank": 27,
+      "name": "EnterPlanMode",
+      "sessions": 6,
+      "prevalencePercent": 1.6
+    },
+    {
+      "rank": 28,
+      "name": "ExitPlanMode",
+      "sessions": 6,
+      "prevalencePercent": 1.6
+    },
+    {
+      "rank": 29,
+      "name": "browser_install",
+      "sessions": 6,
+      "prevalencePercent": 1.6
+    },
+    {
+      "rank": 30,
+      "name": "TaskStop",
+      "sessions": 6,
+      "prevalencePercent": 1.6
+    },
+    {
+      "rank": 31,
+      "name": "CronCreate",
+      "sessions": 5,
+      "prevalencePercent": 1.3
+    },
+    {
+      "rank": 32,
+      "name": "browser_press_key",
+      "sessions": 5,
+      "prevalencePercent": 1.3
+    },
+    {
+      "rank": 33,
+      "name": "browser_resize",
+      "sessions": 4,
+      "prevalencePercent": 1.1
+    },
+    {
+      "rank": 34,
+      "name": "browser_run_code",
+      "sessions": 4,
+      "prevalencePercent": 1.1
+    },
+    {
+      "rank": 35,
+      "name": "CronDelete",
+      "sessions": 4,
+      "prevalencePercent": 1.1
+    },
+    {
+      "rank": 36,
+      "name": "EnterWorktree",
+      "sessions": 3,
+      "prevalencePercent": 0.8
+    },
+    {
+      "rank": 37,
+      "name": "browser_tabs",
+      "sessions": 3,
+      "prevalencePercent": 0.8
+    },
+    {
+      "rank": 38,
+      "name": "browser_console_messages",
+      "sessions": 2,
+      "prevalencePercent": 0.5
+    },
+    {
+      "rank": 39,
+      "name": "browser_close",
+      "sessions": 2,
+      "prevalencePercent": 0.5
+    },
+    {
+      "rank": 40,
+      "name": "browser_file_upload",
+      "sessions": 1,
+      "prevalencePercent": 0.3
+    },
+    {
+      "rank": 41,
+      "name": "CronList",
+      "sessions": 1,
+      "prevalencePercent": 0.3
+    },
+    {
+      "rank": 42,
+      "name": "browser_network_requests",
+      "sessions": 1,
+      "prevalencePercent": 0.3
+    },
+    {
+      "rank": 43,
+      "name": "TaskGet",
+      "sessions": 1,
+      "prevalencePercent": 0.3
+    },
+    {
+      "rank": 44,
+      "name": "TodoWrite",
+      "sessions": 1,
+      "prevalencePercent": 0.3
+    },
+    {
+      "rank": 45,
+      "name": "browser_triple_click",
+      "sessions": 1,
+      "prevalencePercent": 0.3
+    }
   ],
   "classifiers": {
     "delegationStyle": [
-      { "value": "conversational", "count": 417, "percent": 45 },
-      { "value": "directive", "count": 335, "percent": 36 },
-      { "value": "orchestrated", "count": 91, "percent": 10 },
-      { "value": "autonomous", "count": 58, "percent": 6 },
-      { "value": "unknown", "count": 14, "percent": null },
-      { "value": "delegated", "count": 9, "percent": null }
+      {
+        "value": "conversational",
+        "count": 417,
+        "percent": 45
+      },
+      {
+        "value": "directive",
+        "count": 335,
+        "percent": 36
+      },
+      {
+        "value": "orchestrated",
+        "count": 91,
+        "percent": 10
+      },
+      {
+        "value": "autonomous",
+        "count": 58,
+        "percent": 6
+      },
+      {
+        "value": "unknown",
+        "count": 14,
+        "percent": null
+      },
+      {
+        "value": "delegated",
+        "count": 9,
+        "percent": null
+      }
     ],
     "sessionContinuity": [
-      { "value": "fresh", "count": 587, "percent": 64 },
-      { "value": "handover_paste", "count": 152, "percent": 16 },
-      { "value": "compaction", "count": 83, "percent": 9 },
-      { "value": "skill_launcher", "count": 63, "percent": 7 },
-      { "value": "recall", "count": 25, "percent": 3 }
+      {
+        "value": "fresh",
+        "count": 587,
+        "percent": 64
+      },
+      {
+        "value": "handover_paste",
+        "count": 152,
+        "percent": 16
+      },
+      {
+        "value": "compaction",
+        "count": 83,
+        "percent": 9
+      },
+      {
+        "value": "skill_launcher",
+        "count": 63,
+        "percent": 7
+      },
+      {
+        "value": "recall",
+        "count": 25,
+        "percent": 3
+      }
     ],
     "outputType": [
-      { "value": "conversation_only", "count": 278, "percent": 30 },
-      { "value": "code_changes", "count": 233, "percent": 25 },
-      { "value": "knowledge_synthesis", "count": 171, "percent": 19 },
-      { "value": "mixed", "count": 126, "percent": 14 },
-      { "value": "new_artifacts", "count": 114, "percent": 12 }
+      {
+        "value": "conversation_only",
+        "count": 278,
+        "percent": 30
+      },
+      {
+        "value": "code_changes",
+        "count": 233,
+        "percent": 25
+      },
+      {
+        "value": "knowledge_synthesis",
+        "count": 171,
+        "percent": 19
+      },
+      {
+        "value": "mixed",
+        "count": 126,
+        "percent": 14
+      },
+      {
+        "value": "new_artifacts",
+        "count": 114,
+        "percent": 12
+      }
     ],
     "initiationSource": [
-      { "value": "user_typed", "count": 538, "percent": 58 },
-      { "value": "voice_dictated", "count": 168, "percent": 18 },
-      { "value": "handover_paste", "count": 131, "percent": 14 },
-      { "value": "skill_invoked", "count": 69, "percent": 7 },
-      { "value": "agent_dispatched", "count": 12, "percent": 1 }
+      {
+        "value": "user_typed",
+        "count": 538,
+        "percent": 58
+      },
+      {
+        "value": "voice_dictated",
+        "count": 168,
+        "percent": 18
+      },
+      {
+        "value": "handover_paste",
+        "count": 131,
+        "percent": 14
+      },
+      {
+        "value": "skill_invoked",
+        "count": 69,
+        "percent": 7
+      },
+      {
+        "value": "agent_dispatched",
+        "count": 12,
+        "percent": 1
+      }
     ],
     "openingStyle": {
-      "_note": "62 unique values total — showing top 10",
+      "_note": "62 unique values total \u2014 showing top 10",
       "totalUniqueValues": 62,
       "items": [
-        { "value": "voice_dictation", "count": 134 },
-        { "value": "conceptual_question", "count": 75 },
-        { "value": "paste_handover", "count": 42 },
-        { "value": "skill_invocation", "count": 42 },
-        { "value": "context_loading_paste", "count": 22 },
-        { "value": "bare_task_ref", "count": 17 },
-        { "value": "keyword_orientation", "count": 17 },
-        { "value": "question", "count": 15 },
-        { "value": "none", "count": 13 },
-        { "value": "context_paste", "count": 11 }
+        {
+          "value": "voice_dictation",
+          "count": 134
+        },
+        {
+          "value": "conceptual_question",
+          "count": 75
+        },
+        {
+          "value": "paste_handover",
+          "count": 42
+        },
+        {
+          "value": "skill_invocation",
+          "count": 42
+        },
+        {
+          "value": "context_loading_paste",
+          "count": 22
+        },
+        {
+          "value": "bare_task_ref",
+          "count": 17
+        },
+        {
+          "value": "keyword_orientation",
+          "count": 17
+        },
+        {
+          "value": "question",
+          "count": 15
+        },
+        {
+          "value": "none",
+          "count": 13
+        },
+        {
+          "value": "context_paste",
+          "count": 11
+        }
       ]
     },
     "closingStyle": {
-      "_note": "77 unique values total — showing top 10",
+      "_note": "77 unique values total \u2014 showing top 10",
       "totalUniqueValues": 77,
       "items": [
-        { "value": "abrupt_abandon", "count": 219 },
-        { "value": "commit_and_push", "count": 56 },
-        { "value": "bookend_close", "count": 21 },
-        { "value": "memory_write", "count": 12 },
-        { "value": "commit_then_gap", "count": 9 },
-        { "value": "unresolved_cleanup", "count": 9 },
-        { "value": "context_capture", "count": 8 },
-        { "value": "answer_delivered", "count": 7 },
-        { "value": "abandoned", "count": 6 },
-        { "value": "commit_and_close", "count": 5 }
+        {
+          "value": "abrupt_abandon",
+          "count": 219
+        },
+        {
+          "value": "commit_and_push",
+          "count": 56
+        },
+        {
+          "value": "bookend_close",
+          "count": 21
+        },
+        {
+          "value": "memory_write",
+          "count": 12
+        },
+        {
+          "value": "commit_then_gap",
+          "count": 9
+        },
+        {
+          "value": "unresolved_cleanup",
+          "count": 9
+        },
+        {
+          "value": "context_capture",
+          "count": 8
+        },
+        {
+          "value": "answer_delivered",
+          "count": 7
+        },
+        {
+          "value": "abandoned",
+          "count": 6
+        },
+        {
+          "value": "commit_and_close",
+          "count": 5
+        }
       ]
     },
     "toolProfile": {
-      "_note": "60 unique values total — showing top 10",
+      "_note": "60 unique values total \u2014 showing top 10",
       "totalUniqueValues": 60,
       "items": [
-        { "value": "build_focused", "count": 64 },
-        { "value": "conversational", "count": 61 },
-        { "value": "synthesis", "count": 60 },
-        { "value": "read_only", "count": 51 },
-        { "value": "operational_scripting", "count": 50 },
-        { "value": "search_heavy", "count": 44 },
-        { "value": "mixed", "count": 21 },
-        { "value": "bash_heavy", "count": 21 },
-        { "value": "agent_orchestration", "count": 17 },
-        { "value": "edit_heavy", "count": 14 }
+        {
+          "value": "build_focused",
+          "count": 64
+        },
+        {
+          "value": "conversational",
+          "count": 61
+        },
+        {
+          "value": "synthesis",
+          "count": 60
+        },
+        {
+          "value": "read_only",
+          "count": 51
+        },
+        {
+          "value": "operational_scripting",
+          "count": 50
+        },
+        {
+          "value": "search_heavy",
+          "count": 44
+        },
+        {
+          "value": "mixed",
+          "count": 21
+        },
+        {
+          "value": "bash_heavy",
+          "count": 21
+        },
+        {
+          "value": "agent_orchestration",
+          "count": 17
+        },
+        {
+          "value": "edit_heavy",
+          "count": 14
+        }
       ]
     }
   },
@@ -452,40 +1253,164 @@
       "evaluatedCount": 278,
       "percent": 69
     },
-    { "name": "is_multi_phase", "trueCount": 240, "evaluatedCount": 502, "percent": 48 },
-    { "name": "is_cwd_incidental", "trueCount": 191, "evaluatedCount": 475, "percent": 40 },
-    { "name": "has_cross_session_refs", "trueCount": 148, "evaluatedCount": 437, "percent": 34 },
-    { "name": "has_frustration_signals", "trueCount": 124, "evaluatedCount": 502, "percent": 25 },
-    { "name": "has_brain_file_writes", "trueCount": 100, "evaluatedCount": 428, "percent": 23 },
-    { "name": "has_handover_context", "trueCount": 175, "evaluatedCount": 918, "percent": 19 },
-    { "name": "is_feature_construction", "trueCount": 87, "evaluatedCount": 495, "percent": 18 },
-    { "name": "has_task_orchestration", "trueCount": 158, "evaluatedCount": 910, "percent": 17 },
-    { "name": "has_misunderstood_request", "trueCount": 32, "evaluatedCount": 214, "percent": 15 },
-    { "name": "has_cross_project_reads", "trueCount": 74, "evaluatedCount": 573, "percent": 13 },
-    { "name": "has_playwright_calls", "trueCount": 48, "evaluatedCount": 502, "percent": 10 },
-    { "name": "is_compaction_resume", "trueCount": 45, "evaluatedCount": 453, "percent": 10 },
-    { "name": "has_wrong_approach", "trueCount": 22, "evaluatedCount": 214, "percent": 10 },
-    { "name": "has_buggy_output", "trueCount": 21, "evaluatedCount": 214, "percent": 10 },
-    { "name": "has_git_outcome", "trueCount": 77, "evaluatedCount": 822, "percent": 9 },
-    { "name": "has_web_research", "trueCount": 73, "evaluatedCount": 910, "percent": 8 },
-    { "name": "has_skill_gap_signal", "trueCount": 32, "evaluatedCount": 430, "percent": 7 },
+    {
+      "name": "is_multi_phase",
+      "trueCount": 240,
+      "evaluatedCount": 502,
+      "percent": 48
+    },
+    {
+      "name": "is_cwd_incidental",
+      "trueCount": 191,
+      "evaluatedCount": 475,
+      "percent": 40
+    },
+    {
+      "name": "has_cross_session_refs",
+      "trueCount": 148,
+      "evaluatedCount": 437,
+      "percent": 34
+    },
+    {
+      "name": "has_frustration_signals",
+      "trueCount": 124,
+      "evaluatedCount": 502,
+      "percent": 25
+    },
+    {
+      "name": "has_brain_file_writes",
+      "trueCount": 100,
+      "evaluatedCount": 428,
+      "percent": 23
+    },
+    {
+      "name": "has_handover_context",
+      "trueCount": 175,
+      "evaluatedCount": 918,
+      "percent": 19
+    },
+    {
+      "name": "is_feature_construction",
+      "trueCount": 87,
+      "evaluatedCount": 495,
+      "percent": 18
+    },
+    {
+      "name": "has_task_orchestration",
+      "trueCount": 158,
+      "evaluatedCount": 910,
+      "percent": 17
+    },
+    {
+      "name": "has_misunderstood_request",
+      "trueCount": 32,
+      "evaluatedCount": 214,
+      "percent": 15
+    },
+    {
+      "name": "has_cross_project_reads",
+      "trueCount": 74,
+      "evaluatedCount": 573,
+      "percent": 13
+    },
+    {
+      "name": "has_playwright_calls",
+      "trueCount": 48,
+      "evaluatedCount": 502,
+      "percent": 10
+    },
+    {
+      "name": "is_compaction_resume",
+      "trueCount": 45,
+      "evaluatedCount": 453,
+      "percent": 10
+    },
+    {
+      "name": "has_wrong_approach",
+      "trueCount": 22,
+      "evaluatedCount": 214,
+      "percent": 10
+    },
+    {
+      "name": "has_buggy_output",
+      "trueCount": 21,
+      "evaluatedCount": 214,
+      "percent": 10
+    },
+    {
+      "name": "has_git_outcome",
+      "trueCount": 77,
+      "evaluatedCount": 822,
+      "percent": 9
+    },
+    {
+      "name": "has_web_research",
+      "trueCount": 73,
+      "evaluatedCount": 910,
+      "percent": 8
+    },
+    {
+      "name": "has_skill_gap_signal",
+      "trueCount": 32,
+      "evaluatedCount": 430,
+      "percent": 7
+    },
     {
       "name": "has_parallel_subagent_bursts",
       "trueCount": 35,
       "evaluatedCount": 716,
       "percent": 5
     },
-    { "name": "has_unauthorized_edits", "trueCount": 13, "evaluatedCount": 434, "percent": 3 },
-    { "name": "has_excessive_changes", "trueCount": 3, "evaluatedCount": 217, "percent": 1 },
-    { "name": "is_machine_initiated", "trueCount": 4, "evaluatedCount": 286, "percent": 1 }
+    {
+      "name": "has_unauthorized_edits",
+      "trueCount": 13,
+      "evaluatedCount": 434,
+      "percent": 3
+    },
+    {
+      "name": "has_excessive_changes",
+      "trueCount": 3,
+      "evaluatedCount": 217,
+      "percent": 1
+    },
+    {
+      "name": "is_machine_initiated",
+      "trueCount": 4,
+      "evaluatedCount": 286,
+      "percent": 1
+    }
   ],
   "buildAccuracy": [
-    { "scale": "micro", "accuracy": "0%", "evidence": "150 sessions" },
-    { "scale": "trivial", "accuracy": "~0%", "evidence": "2 sessions" },
-    { "scale": "light", "accuracy": "0-15%", "evidence": "161 sessions" },
-    { "scale": "moderate", "accuracy": "30-45%", "evidence": "140 sessions" },
-    { "scale": "heavy", "accuracy": "50-70%", "evidence": "46 sessions" },
-    { "scale": "marathon", "accuracy": "60-70%", "evidence": "7 sessions" }
+    {
+      "scale": "micro",
+      "accuracy": "0%",
+      "evidence": "150 sessions"
+    },
+    {
+      "scale": "trivial",
+      "accuracy": "~0%",
+      "evidence": "2 sessions"
+    },
+    {
+      "scale": "light",
+      "accuracy": "0-15%",
+      "evidence": "161 sessions"
+    },
+    {
+      "scale": "moderate",
+      "accuracy": "30-45%",
+      "evidence": "140 sessions"
+    },
+    {
+      "scale": "heavy",
+      "accuracy": "50-70%",
+      "evidence": "46 sessions"
+    },
+    {
+      "scale": "marathon",
+      "accuracy": "60-70%",
+      "evidence": "7 sessions"
+    }
   ],
   "buildAccuracyRules": [
     "*run NNN as first prompt -> always operations.poem_execution",
@@ -516,7 +1441,7 @@
         "More personal/business topics"
       ]
     },
-    "overlap": "299 sessions exist on both machines (same session IDs, different event UUIDs — independently generated by each machine's hooks)."
+    "overlap": "299 sessions exist on both machines (same session IDs, different event UUIDs \u2014 independently generated by each machine's hooks)."
   },
   "derivedMetrics": {
     "autonomyRatio": {
@@ -546,53 +1471,163 @@
           "sessions": 47,
           "meaning": "AI runs independently"
         },
-        { "bucket": "unknown", "range": null, "sessions": 441, "meaning": "No shape data" }
+        {
+          "bucket": "unknown",
+          "range": null,
+          "sessions": 441,
+          "meaning": "No shape data"
+        }
       ]
     },
     "sessionLiveness": {
       "formula": "active_minutes / duration_minutes",
       "buckets": [
-        { "bucket": "focused", "range": ">0.7", "sessions": 204, "meaning": "Continuous work" },
+        {
+          "bucket": "focused",
+          "range": ">0.7",
+          "sessions": 204,
+          "meaning": "Continuous work"
+        },
         {
           "bucket": "intermittent",
           "range": "0.3-0.7",
           "sessions": 38,
           "meaning": "Stop-start pattern"
         },
-        { "bucket": "parked", "range": "0.1-0.3", "sessions": 84, "meaning": "Mostly idle" },
-        { "bucket": "zombie", "range": "<0.1", "sessions": 65, "meaning": "Opened and abandoned" },
-        { "bucket": "unknown", "range": null, "sessions": 533, "meaning": "No shape data" }
+        {
+          "bucket": "parked",
+          "range": "0.1-0.3",
+          "sessions": 84,
+          "meaning": "Mostly idle"
+        },
+        {
+          "bucket": "zombie",
+          "range": "<0.1",
+          "sessions": 65,
+          "meaning": "Opened and abandoned"
+        },
+        {
+          "bucket": "unknown",
+          "range": null,
+          "sessions": 533,
+          "meaning": "No shape data"
+        }
       ]
     }
   },
   "skills": {
-    "_note": "Some entries are misclassified path segments or tool names — skill extraction is imperfect.",
+    "_note": "Some entries are misclassified path segments or tool names \u2014 skill extraction is imperfect.",
     "items": [
-      { "name": "/focus", "count": 17 },
-      { "name": "/ralphy", "count": 13 },
-      { "name": "/commit", "count": 12 },
-      { "name": "ralphy", "count": 8 },
-      { "name": "commit", "count": 6 },
-      { "name": "rename", "count": 5 },
-      { "name": "capture-context", "count": 3 },
-      { "name": "create-appystack", "count": 3 },
-      { "name": "/bmad-oversight", "count": 3 },
-      { "name": "/skill-creator", "count": 3 },
-      { "name": "/capture-context", "count": 3 },
-      { "name": "/radar", "count": 3 },
-      { "name": "/who-am-i", "count": 3 },
-      { "name": "/omi-fetch", "count": 3 },
-      { "name": "recipe", "count": 2 },
-      { "name": "mochaccino", "count": 2 },
-      { "name": "/bmad-help", "count": 2 },
-      { "name": "/bmad-sprint-planning", "count": 2 },
-      { "name": "/bmad-dev", "count": 2 },
-      { "name": "skill-creator", "count": 2 },
-      { "name": "loop", "count": 2 },
-      { "name": "push", "count": 2 },
-      { "name": "handover", "count": 2 },
-      { "name": "poem-executor", "count": 2 },
-      { "name": "code-quality", "count": 2 }
+      {
+        "name": "/focus",
+        "count": 17
+      },
+      {
+        "name": "/ralphy",
+        "count": 13
+      },
+      {
+        "name": "/commit",
+        "count": 12
+      },
+      {
+        "name": "ralphy",
+        "count": 8
+      },
+      {
+        "name": "commit",
+        "count": 6
+      },
+      {
+        "name": "rename",
+        "count": 5
+      },
+      {
+        "name": "capture-context",
+        "count": 3
+      },
+      {
+        "name": "create-appystack",
+        "count": 3
+      },
+      {
+        "name": "/bmad-oversight",
+        "count": 3
+      },
+      {
+        "name": "/skill-creator",
+        "count": 3
+      },
+      {
+        "name": "/capture-context",
+        "count": 3
+      },
+      {
+        "name": "/radar",
+        "count": 3
+      },
+      {
+        "name": "/who-am-i",
+        "count": 3
+      },
+      {
+        "name": "/omi-fetch",
+        "count": 3
+      },
+      {
+        "name": "recipe",
+        "count": 2
+      },
+      {
+        "name": "mochaccino",
+        "count": 2
+      },
+      {
+        "name": "/bmad-help",
+        "count": 2
+      },
+      {
+        "name": "/bmad-sprint-planning",
+        "count": 2
+      },
+      {
+        "name": "/bmad-dev",
+        "count": 2
+      },
+      {
+        "name": "skill-creator",
+        "count": 2
+      },
+      {
+        "name": "loop",
+        "count": 2
+      },
+      {
+        "name": "push",
+        "count": 2
+      },
+      {
+        "name": "handover",
+        "count": 2
+      },
+      {
+        "name": "poem-executor",
+        "count": 2
+      },
+      {
+        "name": "code-quality",
+        "count": 2
+      }
     ]
+  },
+  "campaignOverview": {
+    "totalSessions": 924,
+    "machines": 2,
+    "wavesAndBackwardPass": 14,
+    "m4Mini": 807,
+    "m4Pro": 116,
+    "unknownMachine": 1,
+    "schemaV2": 615,
+    "noSchemaVersion": 309
   }
 }
