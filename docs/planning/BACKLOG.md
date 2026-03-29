@@ -1,7 +1,7 @@
 # Project Backlog — AngelEye
 
 **Last updated**: 2026-03-29
-**Total**: 64 | Pending: 10 | In Progress: 0 | Done: 56 | Deferred: 2 | Rejected: 0
+**Total**: 64 | Pending: 7 | In Progress: 3 | Done: 56 | Deferred: 2 | Rejected: 0
 
 ## Pending
 
@@ -20,15 +20,17 @@
 
 ### Phase 2c — Deterministic Classifier Extensions
 
-- [ ] B060 — Deterministic classifier extensions (~8 new fields: delegation_style, initiation_source, session_continuity, opening_style, closing_style, autonomy_ratio, session_liveness, output_type) | Priority: high
-- [ ] B061 — Top-20 session subtype rules (~60% coverage) | Priority: high
-- [ ] B062 — Re-enrich button in Settings (re-run classifier on last N sessions) | Priority: medium
+(Moved to In Progress — campaign: angeleye-phase2c-classifier)
 
 ### Phase 4 — LLM Enrichment
 
 - [ ] B064 — Tier 3 LLM batch enrichment runner (see docs/planning/tier3-batch-enrichment-brief.md) | Priority: low
 
 ## In Progress
+
+- [~] B060 — Deterministic classifier extensions (~8 new fields) | Campaign: angeleye-phase2c-classifier
+- [~] B061 — Top-20 session subtype rules (~60% coverage) | Campaign: angeleye-phase2c-classifier
+- [~] B062 — Re-enrich button in Settings (full reclassification) | Campaign: angeleye-phase2c-classifier
 
 ## Done
 

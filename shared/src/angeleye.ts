@@ -110,6 +110,57 @@ export type ToolPattern =
 
 export type SessionScale = 'micro' | 'light' | 'moderate' | 'heavy' | 'marathon';
 
+// ── Phase 2c classifier types (B060) ───────────────────────────────────────
+
+export type DelegationStyle = 'conversational' | 'directive' | 'orchestrated' | 'autonomous';
+
+export type InitiationSource =
+  | 'user_typed'
+  | 'voice_dictated'
+  | 'handover_paste'
+  | 'skill_invoked'
+  | 'agent_dispatched';
+
+export type SessionContinuity =
+  | 'fresh'
+  | 'handover_paste'
+  | 'compaction'
+  | 'skill_launcher'
+  | 'recall';
+
+export type OpeningStyle =
+  | 'typed_question' // short typed prompt, conversational
+  | 'typed_instruction' // typed directive ("fix this", "add that")
+  | 'voice_dictation' // long run-on, STT artifacts
+  | 'skill_invocation' // starts with /command
+  | 'paste_handover' // large paste (>2000 chars) or handover markers
+  | 'code_paste' // medium paste with code markers (```, indentation)
+  | 'continuation' // "continuing from...", cross-session refs
+  | 'greeting' // "hello", "hi", "hey"
+  | 'context_dump' // large structured context (JSON, markdown)
+  | 'agent_initiated' // machine-initiated (no user prompt first)
+  | 'unknown'; // fallback
+
+export type ClosingStyle =
+  | 'commit_push' // git commit + push in tail
+  | 'commit_only' // git commit without push
+  | 'summary_close' // assistant says "all done", "shipped", etc.
+  | 'abrupt_abandon' // no closing ceremony, just stops
+  | 'task_handoff' // mentions next session, saves context
+  | 'question_answer' // ends on a Q&A exchange, no artifacts
+  | 'error_bail' // last events are failures/errors
+  | 'natural_completion' // work completed, no explicit ceremony
+  | 'unknown'; // fallback
+
+export type OutputType =
+  | 'conversation_only'
+  | 'code_changes'
+  | 'knowledge_synthesis'
+  | 'mixed'
+  | 'new_artifacts';
+
+export type SessionLiveness = 'high' | 'medium' | 'low';
+
 export interface RegistryEntry {
   session_id: string;
   project: string;
@@ -157,6 +208,15 @@ export interface RegistryEntry {
   workflow_role?: string | null;
   workflow_identity?: string | null;
   workflow_action?: string | null;
+  // Phase 2c classifiers (B060)
+  delegation_style?: DelegationStyle;
+  initiation_source?: InitiationSource;
+  session_continuity?: SessionContinuity;
+  opening_style?: OpeningStyle;
+  closing_style?: ClosingStyle;
+  autonomy_ratio?: number; // 0.0-1.0
+  session_liveness?: SessionLiveness;
+  output_type?: OutputType;
   // Affinity group references
   group_ids?: string[];
 }

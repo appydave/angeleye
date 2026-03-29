@@ -1,6 +1,13 @@
 import path from 'node:path';
 import type {
   AngelEyeEvent,
+  ClosingStyle,
+  DelegationStyle,
+  InitiationSource,
+  OpeningStyle,
+  OutputType,
+  SessionContinuity,
+  SessionLiveness,
   SessionScale,
   SessionSubtype,
   SessionType,
@@ -40,6 +47,15 @@ export interface ClassificationResult {
   workflow_role?: string | null;
   workflow_identity?: string | null;
   workflow_action?: string | null;
+  // Phase 2c classifiers (B060)
+  delegation_style?: DelegationStyle;
+  initiation_source?: InitiationSource;
+  session_continuity?: SessionContinuity;
+  opening_style?: OpeningStyle;
+  closing_style?: ClosingStyle;
+  autonomy_ratio?: number;
+  session_liveness?: SessionLiveness;
+  output_type?: OutputType;
 }
 
 // ── is_junk detection ─────────────────────────────────────────────────────────
@@ -595,6 +611,105 @@ export function detectHasClosingCeremony(events: AngelEyeEvent[]): boolean {
   return false;
 }
 
+// ── C08: delegation_style ──────────────────────────────────────────────────
+
+export function detectDelegationStyle(events: AngelEyeEvent[]): DelegationStyle {
+  const hasTaskOrch = detectHasTaskOrchestration(events);
+  const hasSubagentBursts = detectHasParallelSubagentBursts(events);
+
+  // Check for agent-heavy tool pattern
+  const toolEvents = events.filter((e) => e.event === 'tool_use');
+  const agentCount = toolEvents.filter((e) => e.tool === 'Agent').length;
+  const isAgentHeavy = toolEvents.length >= 3 && agentCount / toolEvents.length > 0.2;
+
+  if (hasTaskOrch || hasSubagentBursts || isAgentHeavy) return 'orchestrated';
+
+  const isMachine = detectIsMachineInitiated(events);
+  const scale = detectSessionScale(events);
+  if (isMachine && scale !== 'micro' && scale !== 'light') return 'autonomous';
+
+  // Directive: first prompt is short imperative (<50 chars, no question mark)
+  const firstPrompt = events.find((e) => e.event === 'user_prompt');
+  if (firstPrompt?.prompt) {
+    const p = firstPrompt.prompt.trim();
+    if (p.length < 50 && !p.includes('?')) return 'directive';
+  }
+
+  return 'conversational';
+}
+
+// ── C09: initiation_source ────────────────────────────────────────────────
+
+export function detectInitiationSource(events: AngelEyeEvent[]): InitiationSource {
+  if (detectIsMachineInitiated(events)) return 'agent_dispatched';
+
+  const triggerCmd = extractTriggerCommand(events);
+  if (triggerCmd) return 'skill_invoked';
+
+  if (detectHasVoiceDictationArtifacts(events)) return 'voice_dictated';
+  if (detectHasHandoverContext(events)) return 'handover_paste';
+
+  return 'user_typed';
+}
+
+// ── C10: session_continuity ───────────────────────────────────────────────
+
+export function detectSessionContinuity(events: AngelEyeEvent[]): SessionContinuity {
+  if (detectIsCompactionResume(events)) return 'compaction';
+  if (detectHasHandoverContext(events)) return 'handover_paste';
+
+  const triggerCmd = extractTriggerCommand(events);
+  if (triggerCmd) {
+    // skill_launcher: trigger_command is non-null AND first prompt is the skill invocation only
+    const firstPrompt = events.find((e) => e.event === 'user_prompt');
+    if (firstPrompt?.prompt) {
+      const trimmed = firstPrompt.prompt.trim();
+      // If the prompt is just the slash command (possibly with short args), it's a launcher
+      if (trimmed.startsWith('/') && trimmed.split('\n').length <= 1) return 'skill_launcher';
+    }
+  }
+
+  if (detectHasCrossSessionRefs(events)) return 'recall';
+
+  return 'fresh';
+}
+
+// ── C11: output_type ──────────────────────────────────────────────────────
+
+export function detectOutputType(events: AngelEyeEvent[]): OutputType {
+  const writeTools = new Set(['Edit', 'Write', 'MultiEdit']);
+  const writeEvents = events.filter((e) => e.event === 'tool_use' && writeTools.has(e.tool ?? ''));
+
+  if (writeEvents.length === 0) return 'conversation_only';
+
+  let hasCodeChanges = false;
+  let hasKnowledge = false;
+  let hasNewArtifactsOnly = true;
+
+  for (const e of writeEvents) {
+    const file = typeof e.tool_summary?.['file'] === 'string' ? e.tool_summary['file'] : '';
+    const isMarkdown = file.endsWith('.md');
+    const isBrains = file.includes('/brains/');
+
+    if (isMarkdown || isBrains) {
+      hasKnowledge = true;
+    } else {
+      hasCodeChanges = true;
+    }
+
+    if (e.tool === 'Edit' || e.tool === 'MultiEdit') {
+      hasNewArtifactsOnly = false;
+    }
+  }
+
+  if (hasCodeChanges && hasKnowledge) return 'mixed';
+  if (hasCodeChanges) return 'code_changes';
+  if (hasKnowledge) return 'knowledge_synthesis';
+  if (hasNewArtifactsOnly) return 'new_artifacts';
+
+  return 'conversation_only';
+}
+
 // ── classifySession (main entry point) ───────────────────────────────────────
 
 export function classifySession(
@@ -640,6 +755,16 @@ export function classifySession(
   const workflow_identity = overlayResult?.identity ?? null;
   const workflow_action = overlayResult?.action ?? null;
 
+  // Phase 2c classifiers (B060)
+  const delegation_style = detectDelegationStyle(events);
+  const initiation_source = detectInitiationSource(events);
+  const session_continuity = detectSessionContinuity(events);
+  const opening_style = detectOpeningStyle(events);
+  const closing_style = detectClosingStyle(events);
+  const autonomy_ratio = detectAutonomyRatio(events);
+  const session_liveness = detectSessionLiveness(events);
+  const output_type = detectOutputType(events);
+
   return {
     is_junk: false,
     tool_pattern,
@@ -669,5 +794,187 @@ export function classifySession(
     workflow_role,
     workflow_identity,
     workflow_action,
+    delegation_style,
+    initiation_source,
+    session_continuity,
+    opening_style,
+    closing_style,
+    autonomy_ratio,
+    session_liveness,
+    output_type,
   };
+}
+
+// ── C12: opening_style ──────────────────────────────────────────────────────
+
+const GREETING_PATTERN = /^(hello|hi|hey|good morning)/i;
+const CONTINUATION_PATTERN =
+  /\b(?:continuing|continued|last time|last session|prior session|pick up where)\b/i;
+const STRUCTURED_MARKERS = /[{}[\]]|^#{1,3}\s/m;
+
+export function detectOpeningStyle(events: AngelEyeEvent[]): OpeningStyle {
+  if (events.length === 0) return 'unknown';
+
+  // agent_initiated: first event is not user_prompt
+  if (events[0]!.event !== 'user_prompt') return 'agent_initiated';
+
+  const firstPrompt = events.find((e) => e.event === 'user_prompt');
+  if (!firstPrompt?.prompt) return 'unknown';
+
+  const prompt = firstPrompt.prompt.trim();
+  const len = prompt.length;
+
+  // skill_invocation: starts with /
+  if (prompt.startsWith('/')) return 'skill_invocation';
+
+  // paste_handover: >2000 chars or handover markers
+  if (
+    len > 2000 ||
+    prompt.startsWith('This session is being continued') ||
+    prompt.includes('<task-notification')
+  ) {
+    return 'paste_handover';
+  }
+
+  // voice_dictation: long run-on without punctuation breaks
+  const segments = prompt.split(/[.!?]+/);
+  const hasRunOn = segments.some((seg) => {
+    const words = seg
+      .trim()
+      .split(/\s+/)
+      .filter((w) => w.length > 0);
+    return words.length > 100;
+  });
+  if (hasRunOn && len > 100) return 'voice_dictation';
+
+  // code_paste: contains code markers, 200-2000 chars
+  if (len >= 200 && len <= 2000 && (prompt.includes('```') || /^ {4}\S/m.test(prompt))) {
+    return 'code_paste';
+  }
+
+  // context_dump: >500 chars with structured markers (JSON, markdown headers)
+  if (len > 500 && STRUCTURED_MARKERS.test(prompt)) return 'context_dump';
+
+  // greeting: short greeting
+  if (GREETING_PATTERN.test(prompt) && len < 20) return 'greeting';
+
+  // continuation: references prior session
+  if (CONTINUATION_PATTERN.test(prompt)) return 'continuation';
+
+  // typed_instruction: imperative, <200 chars, no question mark
+  if (len < 200 && !prompt.includes('?')) return 'typed_instruction';
+
+  // typed_question: ends with ? or is short conversational
+  if (prompt.endsWith('?') || len < 100) return 'typed_question';
+
+  return 'unknown';
+}
+
+// ── C13: closing_style ──────────────────────────────────────────────────────
+
+const CLOSING_LANGUAGE =
+  /\b(?:all done|that's it|shipped|deployed|committed|pushed|merged|complete|finished|wrapped up)\b/i;
+const HANDOFF_LANGUAGE =
+  /\b(?:next session|pick up later|save context|hand off|continue later|next time)\b/i;
+
+export function detectClosingStyle(events: AngelEyeEvent[]): ClosingStyle {
+  if (events.length === 0) return 'unknown';
+
+  const tail = events.slice(-10);
+  const last3 = events.slice(-3);
+
+  // error_bail: last 3 events contain tool_failure or stop_failure
+  if (last3.some((e) => e.event === 'tool_failure' || e.event === 'stop_failure')) {
+    return 'error_bail';
+  }
+
+  // Check for git commit/push in Bash tool events in the tail
+  const tailBashCommands = tail
+    .filter((e) => e.event === 'tool_use' && e.tool === 'Bash')
+    .map((e) => (typeof e.tool_summary?.['command'] === 'string' ? e.tool_summary['command'] : ''));
+
+  const hasCommit = tailBashCommands.some((cmd) => /git\s+commit/.test(cmd));
+  const hasPush = tailBashCommands.some((cmd) => /git\s+push/.test(cmd));
+
+  if (hasCommit && hasPush) return 'commit_push';
+  if (hasCommit) return 'commit_only';
+
+  // Find last stop event in tail for summary/handoff checks
+  const lastStop = [...tail].reverse().find((e) => e.event === 'stop');
+  const lastMessage = lastStop?.last_message ?? '';
+
+  // task_handoff: mentions next session, save context
+  if (HANDOFF_LANGUAGE.test(lastMessage)) return 'task_handoff';
+
+  // summary_close: closing language in last stop message
+  if (CLOSING_LANGUAGE.test(lastMessage)) return 'summary_close';
+
+  // question_answer: last events are user_prompt + stop with no tool_use between
+  const lastEvents = events.slice(-4);
+  let lastPromptIdx = -1;
+  let lastStopIdx = -1;
+  for (let i = lastEvents.length - 1; i >= 0; i--) {
+    if (lastPromptIdx === -1 && lastEvents[i]!.event === 'user_prompt') lastPromptIdx = i;
+    if (lastStopIdx === -1 && lastEvents[i]!.event === 'stop') lastStopIdx = i;
+  }
+  if (
+    lastPromptIdx >= 0 &&
+    lastStopIdx > lastPromptIdx &&
+    !lastEvents.slice(lastPromptIdx, lastStopIdx).some((e) => e.event === 'tool_use')
+  ) {
+    return 'question_answer';
+  }
+
+  // natural_completion: has closing ceremony but not commit/push (already checked)
+  if (lastStop && lastMessage.length > 0) return 'natural_completion';
+
+  // abrupt_abandon: no closing ceremony, no summary
+  return 'abrupt_abandon';
+}
+
+// ── C15: autonomy_ratio ─────────────────────────────────────────────────────
+
+export function detectAutonomyRatio(events: AngelEyeEvent[]): number {
+  const toolEvents = events.filter((e) => e.event === 'tool_use').length;
+  const promptEvents = events.filter((e) => e.event === 'user_prompt').length;
+  const total = toolEvents + promptEvents;
+
+  if (total === 0) return 0;
+
+  return Math.round((toolEvents / total) * 100) / 100;
+}
+
+// ── C16: session_liveness ───────────────────────────────────────────────────
+
+export function detectSessionLiveness(events: AngelEyeEvent[]): SessionLiveness {
+  if (events.length === 0) return 'low';
+
+  const totalEvents = events.length;
+
+  // Calculate session duration in minutes
+  const timestamps = events.map((e) => new Date(e.ts).getTime()).filter((t) => !isNaN(t));
+
+  if (timestamps.length < 2) {
+    // Can't compute duration — use event count heuristic
+    if (totalEvents > 10) return 'high';
+    if (totalEvents >= 3) return 'medium';
+    return 'low';
+  }
+
+  const firstTs = Math.min(...timestamps);
+  const lastTs = Math.max(...timestamps);
+  const durationMinutes = (lastTs - firstTs) / 60_000;
+
+  if (durationMinutes < 1) {
+    // Very short session — use event count
+    if (totalEvents > 10) return 'high';
+    if (totalEvents >= 3) return 'medium';
+    return 'low';
+  }
+
+  const eventsPerMinute = totalEvents / durationMinutes;
+
+  if (eventsPerMinute > 5) return 'high';
+  if (eventsPerMinute >= 1) return 'medium';
+  return 'low';
 }

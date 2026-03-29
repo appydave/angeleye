@@ -23,6 +23,13 @@ export type {
   AffinityGroup,
   AffinityGroupType,
   AffinityConfidence,
+  DelegationStyle,
+  InitiationSource,
+  SessionContinuity,
+  OpeningStyle,
+  ClosingStyle,
+  OutputType,
+  SessionLiveness,
 } from './angeleye.js';
 export type { GitSyncState, GitSyncStatus, GitPullResult, CommitSummary } from './git-sync.js';
 export type {
