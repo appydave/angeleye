@@ -190,6 +190,9 @@ export default function SettingsView() {
   const [syncError, setSyncError] = useState<string | null>(null);
   const [lastSync, setLastSync] = useState<LastSyncRecord | null | undefined>(undefined);
   const [stats, setStats] = useState<StatsResult | null>(null);
+  const [enriching, setEnriching] = useState(false);
+  const [enrichResult, setEnrichResult] = useState<SyncResult | null>(null);
+  const [enrichError, setEnrichError] = useState<string | null>(null);
 
   useEffect(() => {
     fetch('/api/sync/status')
@@ -206,6 +209,8 @@ export default function SettingsView() {
         /* non-fatal */
       });
   }, []);
+
+  const busy = syncing || enriching;
 
   function runSync() {
     setSyncing(true);
@@ -236,6 +241,30 @@ export default function SettingsView() {
       });
   }
 
+  function runEnrich() {
+    setEnriching(true);
+    setEnrichResult(null);
+    setEnrichError(null);
+    fetch('/api/sync?force=true', { method: 'POST' })
+      .then((r) => r.json())
+      .then((d) => {
+        const result = d.data as SyncResult;
+        setEnrichResult(result);
+        void fetch('/api/stats')
+          .then((r) => r.json())
+          .then((d) => setStats(d.data as StatsResult))
+          .catch(() => {
+            /* non-fatal */
+          });
+      })
+      .catch(() => {
+        setEnrichError('Re-enrich request failed.');
+      })
+      .finally(() => {
+        setEnriching(false);
+      });
+  }
+
   return (
     <div className="p-6 flex flex-col gap-4">
       <div className="flex items-center justify-between px-0 py-2 border-b border-border">
@@ -262,7 +291,7 @@ export default function SettingsView() {
 
         <button
           onClick={runSync}
-          disabled={syncing}
+          disabled={busy}
           className="px-4 py-1.5 text-sm font-medium border border-border rounded hover:border-primary hover:text-primary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           {syncing ? 'Syncing…' : 'Sync Sessions'}
@@ -295,6 +324,25 @@ export default function SettingsView() {
             </div>
           </div>
         )}
+      </div>
+
+      <div className="bg-card border border-border rounded-md shadow-sm p-5 max-w-[600px]">
+        <h2 className="font-bebas text-lg tracking-wider text-primary mb-1">Session Enrichment</h2>
+        <p className="text-muted-foreground text-sm mb-4">
+          Re-run all classification rules on every session. Use after updating classifier logic.
+        </p>
+
+        <button
+          onClick={runEnrich}
+          disabled={busy}
+          className="px-4 py-1.5 text-sm font-medium border border-border rounded hover:border-primary hover:text-primary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        >
+          {enriching ? 'Re-enriching…' : 'Re-enrich All Sessions'}
+        </button>
+
+        {enrichResult && <DiffTable result={enrichResult} />}
+
+        {enrichError && <p className="mt-4 text-sm text-destructive">{enrichError}</p>}
       </div>
     </div>
   );

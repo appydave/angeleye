@@ -765,11 +765,20 @@ export function classifySession(
   const session_liveness = detectSessionLiveness(events);
   const output_type = detectOutputType(events);
 
+  // Session subtype (B061) — depends on session_type, tool_pattern, session_scale
+  const session_subtype = detectSessionSubtype(events, session_type, tool_pattern, session_scale, {
+    has_brain_file_writes,
+    has_git_outcome,
+    first_real_prompt,
+    is_machine_initiated,
+  });
+
   return {
     is_junk: false,
     tool_pattern,
     session_scale,
     session_type,
+    ...(session_subtype !== undefined && { session_subtype }),
     ...(first_edited_dir !== undefined && { first_edited_dir }),
     ...(first_real_prompt !== undefined && { first_real_prompt }),
     ...(pii_flags.length > 0 && { pii_flags }),
@@ -803,6 +812,116 @@ export function classifySession(
     session_liveness,
     output_type,
   };
+}
+
+// ── session_subtype detection (B061) ────────────────────────────────────────
+
+export function detectSessionSubtype(
+  events: AngelEyeEvent[],
+  sessionType: SessionType,
+  toolPattern: ToolPattern,
+  sessionScale: SessionScale,
+  options: {
+    has_brain_file_writes?: boolean;
+    has_git_outcome?: boolean;
+    first_real_prompt?: string;
+    is_machine_initiated?: boolean;
+  }
+): SessionSubtype | undefined {
+  const prompt = options.first_real_prompt ?? '';
+
+  // ── BUILD subtypes ──────────────────────────────────────────────────────
+  if (sessionType === 'BUILD') {
+    if (
+      toolPattern === 'edit-heavy' &&
+      (sessionScale === 'moderate' || sessionScale === 'heavy' || sessionScale === 'marathon') &&
+      options.has_git_outcome
+    ) {
+      return 'feature_implementation';
+    }
+    if (/fix|bug|broken|error/i.test(prompt)) return 'bug_fix_round';
+    if (/refactor|rename|extract|clean/i.test(prompt)) return 'refactoring';
+    if (/test|spec|coverage/i.test(prompt)) return 'test_writing';
+    // Check edit targets for test files
+    const editEvents = events.filter(
+      (e) =>
+        e.event === 'tool_use' &&
+        (e.tool === 'Edit' || e.tool === 'Write' || e.tool === 'MultiEdit')
+    );
+    const testFileEdits = editEvents.filter((e) => {
+      const file = typeof e.tool_summary?.['file'] === 'string' ? e.tool_summary['file'] : '';
+      return file.endsWith('.test.ts') || file.endsWith('.test.tsx') || file.endsWith('.spec.ts');
+    });
+    if (testFileEdits.length > 0 && testFileEdits.length >= editEvents.length * 0.5) {
+      return 'test_writing';
+    }
+    if (/ci|pipeline|deploy|release/i.test(prompt) && toolPattern === 'bash-heavy') {
+      return 'ci_pipeline';
+    }
+    return undefined;
+  }
+
+  // ── ORIENTATION subtypes ────────────────────────────────────────────────
+  if (sessionType === 'ORIENTATION') {
+    if ((sessionScale === 'micro' || sessionScale === 'light') && events.length > 0) {
+      const firstTool = events.find((e) => e.event === 'tool_use');
+      if (firstTool && (firstTool.tool === 'Read' || firstTool.tool === 'Glob')) {
+        return 'file_retrieval';
+      }
+    }
+    if (/find|where|locate|show me/i.test(prompt)) return 'artifact_lookup';
+    if (toolPattern === 'read-heavy') return 'codebase_exploration';
+    return undefined;
+  }
+
+  // ── KNOWLEDGE subtypes ──────────────────────────────────────────────────
+  if (sessionType === 'KNOWLEDGE') {
+    if (options.has_brain_file_writes && /capture|save|store|remember/i.test(prompt)) {
+      return 'brain_capture';
+    }
+    if (options.has_brain_file_writes) return 'brain_maintenance';
+    // advisory_refinement: edit-heavy targeting .md files (not brains/)
+    if (toolPattern === 'edit-heavy') {
+      const editEvents = events.filter(
+        (e) =>
+          e.event === 'tool_use' &&
+          (e.tool === 'Edit' || e.tool === 'Write' || e.tool === 'MultiEdit')
+      );
+      const mdEdits = editEvents.filter((e) => {
+        const file = typeof e.tool_summary?.['file'] === 'string' ? e.tool_summary['file'] : '';
+        return file.endsWith('.md') && !file.includes('/brains/');
+      });
+      if (mdEdits.length > 0) return 'advisory_refinement';
+    }
+    return undefined;
+  }
+
+  // ── RESEARCH subtypes ──────────────────────────────────────────────────
+  if (sessionType === 'RESEARCH') {
+    if (toolPattern === 'websearch-heavy') return 'technology_survey';
+    if (/setup|install|config|hardware/i.test(prompt)) return 'hardware_setup_troubleshooting';
+    if (/release|version|changelog|update/i.test(prompt)) return 'release_exploration';
+    return undefined;
+  }
+
+  // ── OPS subtypes ────────────────────────────────────────────────────────
+  if (sessionType === 'OPS') {
+    if (detectIsPaperclipAgent(events)) return 'paperclip_agent';
+    if (/^\*?run\s+\d+/i.test(prompt)) return 'poem_execution';
+    if (toolPattern === 'bash-heavy' && /clean|delete|remove|organize/i.test(prompt)) {
+      return 'directory_cleanup';
+    }
+    return undefined;
+  }
+
+  // ── TEST subtypes ──────────────────────────────────────────────────────
+  if (sessionType === 'TEST') {
+    if (toolPattern === 'playwright-heavy') return 'playwright_e2e';
+    if (/debug|fail|broken|fix/i.test(prompt)) return 'test_debugging';
+    return undefined;
+  }
+
+  return undefined;
 }
 
 // ── C12: opening_style ──────────────────────────────────────────────────────
