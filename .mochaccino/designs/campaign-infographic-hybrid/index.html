@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngelEye — Hybrid Campaign Infographic</title>
+<style>
+  /* ─── RESET & BASE ─── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 15px; scroll-behavior: smooth; }
+  body {
+    background: #e8e0d4;
+    color: #2a2018;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+    line-height: 1.6;
+    padding: 2rem 1rem 4rem;
+  }
+  a { color: #2E91FC; }
+
+  /* ─── LAYOUT ─── */
+  .container { max-width: 1200px; margin: 0 auto; }
+  .header { text-align: center; margin-bottom: 1.5rem; padding: 2rem 0 1rem; border-bottom: 1px solid #d4cdc4; }
+  .header h1 { font-size: 2.2rem; font-weight: 700; letter-spacing: 0.02em; color: #342d2d; }
+  .header .subtitle { font-size: 0.95rem; color: #7a6e5e; margin-top: 0.4rem; font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace; }
+
+  /* ─── SUMMARY BAR ─── */
+  .summary-bar {
+    background: #1a1512;
+    color: #e8e0d4;
+    border-radius: 10px;
+    padding: 1.2rem 1.6rem;
+    margin-bottom: 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: center;
+    font-size: 0.88rem;
+  }
+  .summary-stat {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .summary-stat .num {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #c8841a;
+  }
+  .summary-stat .lbl {
+    color: #9e9484;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .summary-coverage {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .coverage-bar-bg {
+    width: 120px;
+    height: 10px;
+    background: #342d2d;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .coverage-bar-fill {
+    height: 100%;
+    background: #c8841a;
+    border-radius: 5px;
+    transition: width 0.5s;
+  }
+  .coverage-pct {
+    font-weight: 700;
+    color: #c8841a;
+    font-size: 1.1rem;
+  }
+
+  /* ─── API STATUS BANNER ─── */
+  .api-banner {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+    border-radius: 8px;
+    padding: 0.8rem 1.2rem;
+    margin-bottom: 2rem;
+    font-size: 0.85rem;
+    display: none;
+  }
+  .api-banner.visible { display: block; }
+
+  /* ─── SECTIONS ─── */
+  section { margin-bottom: 3rem; }
+  section > h2 {
+    font-size: 1.15rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #342d2d;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  /* ─── DATA SOURCE BADGES ─── */
+  .source-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    vertical-align: middle;
+  }
+  .source-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .source-live .source-dot { background: #22c55e; }
+  .source-live { background: #dcfce7; color: #166534; }
+  .source-partial .source-dot { background: #f59e0b; }
+  .source-partial { background: #fef3c7; color: #92400e; }
+  .source-mock .source-dot { background: #ef4444; }
+  .source-mock { background: #fee2e2; color: #991b1b; }
+
+  /* ─── SECTION BORDER TREATMENT ─── */
+  .section-content { padding: 1.4rem; border-radius: 10px; }
+  .section-content.live-section {
+    border-left: 4px solid #c8841a;
+    background: #f5f1eb;
+    border: 1px solid #d4cdc4;
+    border-left: 4px solid #c8841a;
+  }
+  .section-content.partial-section {
+    border-left: 4px solid #f59e0b;
+    background: #f5f1eb;
+    border: 1px solid #d4cdc4;
+    border-left: 4px solid #f59e0b;
+  }
+  .section-content.mock-section {
+    border-left: 4px dashed #d4cdc4;
+    background: #f5f1eb;
+    border: 1px solid #d4cdc4;
+    border-left: 4px dashed #d4cdc4;
+    opacity: 0.65;
+  }
+
+  /* ─── CARDS ─── */
+  .card {
+    background: #f5f1eb;
+    border-radius: 10px;
+    padding: 1.4rem;
+    border: 1px solid #d4cdc4;
+  }
+  .card h3 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #7a6e5e;
+    margin-bottom: 0.8rem;
+  }
+
+  /* ─── HERO STATS ─── */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+  .hero-stat {
+    background: #f5f1eb;
+    border: 1px solid #d4cdc4;
+    border-radius: 10px;
+    padding: 1.4rem 1rem;
+    text-align: center;
+    position: relative;
+  }
+  .hero-stat .number {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: #c8841a;
+    line-height: 1.1;
+  }
+  .hero-stat .label {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #7a6e5e;
+    margin-top: 0.3rem;
+  }
+  .hero-stat .live-overlay {
+    font-size: 0.7rem;
+    color: #166534;
+    font-weight: 600;
+    margin-top: 0.3rem;
+  }
+  .hero-stat .source-indicator {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  /* ─── TABLES ─── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+  .data-table thead { position: sticky; top: 0; z-index: 2; }
+  .data-table th {
+    background: #ede7dc;
+    color: #7a6e5e;
+    text-align: left;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid #d4cdc4;
+  }
+  .data-table td {
+    padding: 0.45rem 0.8rem;
+    border-bottom: 1px solid #ddd6cc;
+  }
+  .data-table tr:nth-child(even) td { background: #ede7dc; }
+  .data-table tr:nth-child(odd) td { background: #f5f1eb; }
+  .data-table tr:hover td { background: #ddd6cc; }
+  .data-table .delta-positive { color: #166534; font-weight: 600; }
+  .data-table .delta-negative { color: #991b1b; font-weight: 600; }
+  .data-table .delta-zero { color: #7a6e5e; }
+  .data-table .highlight-diff td { background: rgba(245, 158, 11, 0.1) !important; }
+
+  .scrollable { max-height: 500px; overflow-y: auto; border-radius: 10px; border: 1px solid #d4cdc4; }
+  .scrollable-sm { max-height: 360px; }
+
+  /* ─── BADGES ─── */
+  .badge {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .badge-build       { background: #dbeafe; color: #1e40af; }
+  .badge-knowledge    { background: #ede9fe; color: #6b21a8; }
+  .badge-research     { background: #dcfce7; color: #166534; }
+  .badge-orientation  { background: #fef3c7; color: #92400e; }
+  .badge-operations   { background: #ffedd5; color: #9a3412; }
+  .badge-meta         { background: #e5e7eb; color: #4b5563; }
+  .badge-sysops       { background: #ccfbf1; color: #115e59; }
+  .badge-planning     { background: #fce7f3; color: #9d174d; }
+  .badge-mixed        { background: #fef9c3; color: #854d0e; }
+  .badge-skill        { background: #d1fae5; color: #065f46; }
+  .badge-setup        { background: #fef3c7; color: #78350f; }
+  .badge-test         { background: #e0e7ff; color: #3730a3; }
+  .badge-review       { background: #ffe4e6; color: #9f1239; }
+  .badge-debug        { background: #fee2e2; color: #991b1b; }
+  .badge-brand        { background: #f5f1eb; color: #342d2d; border: 1px solid #ccba9d; }
+  .badge-unclassified { background: #e5e7eb; color: #6b7280; }
+
+  .count { font-weight: 700; color: #2a2018; font-variant-numeric: tabular-nums; }
+
+  /* ─── PROGRESS BARS ─── */
+  .progress-row { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.45rem; flex-wrap: wrap; }
+  .progress-label { flex: 0 0 280px; font-size: 0.82rem; color: #2a2018; }
+  .progress-bar-bg {
+    flex: 1; min-width: 100px; height: 18px;
+    background: #ddd6cc; border-radius: 4px; overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%; border-radius: 4px; background: #c8841a; transition: width 0.3s;
+  }
+  .progress-stats { flex: 0 0 140px; font-size: 0.78rem; color: #7a6e5e; text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* ─── MULTI-COL LISTS ─── */
+  .two-col-list {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0 2rem; font-size: 0.85rem;
+  }
+  .list-item {
+    display: flex; justify-content: space-between;
+    padding: 0.3rem 0; border-bottom: 1px solid #ddd6cc;
+  }
+  .list-item .name { color: #2a2018; }
+  .list-item .val { color: #c8841a; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  /* ─── SIDE BY SIDE ─── */
+  .side-by-side { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+
+  /* ─── CLASSIFIER SECTIONS ─── */
+  .classifier-section { margin-bottom: 1.6rem; }
+  .classifier-section h4 {
+    font-size: 0.82rem; color: #342d2d;
+    text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;
+  }
+  .classifier-bar-row {
+    display: flex; align-items: center; margin-bottom: 0.3rem; font-size: 0.82rem;
+  }
+  .classifier-bar-label { flex: 0 0 180px; color: #2a2018; }
+  .classifier-bar-bg {
+    flex: 1; min-width: 80px; height: 14px;
+    background: #ddd6cc; border-radius: 3px; overflow: hidden; margin: 0 0.5rem;
+  }
+  .classifier-bar-fill { height: 100%; border-radius: 3px; }
+  .classifier-bar-stats { flex: 0 0 100px; color: #7a6e5e; font-size: 0.78rem; text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* ─── MACHINE CARDS ─── */
+  .machine-card h4 { color: #342d2d; font-size: 1rem; margin-bottom: 0.6rem; }
+  .machine-card ul { list-style: none; padding: 0; }
+  .machine-card li {
+    padding: 0.25rem 0; font-size: 0.88rem; color: #2a2018;
+    padding-left: 1rem; position: relative;
+  }
+  .machine-card li::before { content: '\2022'; position: absolute; left: 0; color: #c8841a; }
+  .machine-overlap {
+    margin-top: 1rem; padding: 0.8rem 1rem;
+    background: #ede7dc; border-radius: 6px;
+    font-size: 0.85rem; color: #7a6e5e; border-left: 3px solid #c8841a;
+  }
+
+  /* ─── RULES BOX ─── */
+  .rules-box {
+    margin-top: 1rem; padding: 1rem 1.2rem;
+    background: #ede7dc; border: 1px solid #ccc5bb; border-radius: 8px;
+  }
+  .rules-box h4 { color: #c0392b; font-size: 0.85rem; margin-bottom: 0.5rem; }
+  .rules-box ol { padding-left: 1.2rem; font-size: 0.85rem; color: #2a2018; }
+  .rules-box li { margin-bottom: 0.3rem; }
+  .rules-box code { background: #ddd6cc; padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.8rem; color: #c8841a; }
+
+  /* ─── SKILL LIST ─── */
+  .skill-list { font-size: 0.85rem; }
+  .skill-item {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    margin: 0.2rem 0.4rem 0.2rem 0; padding: 0.2rem 0.6rem;
+    background: #ede7dc; border-radius: 4px; border: 1px solid #d4cdc4;
+  }
+  .skill-item .sname { color: #2E91FC; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.8rem; }
+  .skill-item .scount { color: #7a6e5e; font-size: 0.75rem; }
+
+  /* ─── SCHEMA BLOCK ─── */
+  .schema-block {
+    background: #ede7dc; border: 1px solid #d4cdc4; border-radius: 10px;
+    padding: 1.6rem;
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+    font-size: 0.82rem; line-height: 1.7; overflow-x: auto; white-space: pre; color: #2a2018;
+  }
+  .schema-block .sk { color: #2E91FC; }
+  .schema-block .st { color: #c8841a; }
+  .schema-block .sc { color: #7a6e5e; }
+  .schema-block .sh { color: #8b5cf6; }
+
+  /* ─── NOTE BOXES ─── */
+  .note {
+    font-size: 0.8rem; color: #7a6e5e; font-style: italic;
+    margin-top: 0.6rem; padding-left: 0.5rem; border-left: 2px solid #d4cdc4;
+  }
+
+  /* ─── GAP ANALYSIS TABLE ─── */
+  .gap-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  .gap-table th {
+    background: #1a1512; color: #e8e0d4;
+    text-align: left; padding: 0.6rem 0.8rem;
+    font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .gap-table td {
+    padding: 0.5rem 0.8rem; border-bottom: 1px solid #ddd6cc;
+  }
+  .gap-table tr:nth-child(even) td { background: #ede7dc; }
+  .gap-table tr:nth-child(odd) td { background: #f5f1eb; }
+  .gap-table .status-live { color: #166534; font-weight: 600; }
+  .gap-table .status-partial { color: #92400e; font-weight: 600; }
+  .gap-table .status-mock { color: #991b1b; font-weight: 600; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    .hero-grid { grid-template-columns: repeat(3, 1fr); }
+    .side-by-side { grid-template-columns: 1fr; }
+    .two-col-list { grid-template-columns: 1fr; }
+    .progress-label { flex: 0 0 200px; }
+    .progress-stats { flex: 0 0 100px; }
+    .classifier-bar-label { flex: 0 0 140px; }
+    .schema-block { font-size: 0.72rem; }
+    .summary-bar { flex-direction: column; gap: 0.8rem; }
+  }
+  @media (max-width: 480px) {
+    .hero-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero-stat .number { font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ═══ HEADER ═══ -->
+  <header class="header">
+    <h1>AngelEye &mdash; Hybrid Campaign Infographic</h1>
+    <div class="subtitle">Mock (angeleye-analysis-1) &bull; overlaid with Live registry data &bull; 2026-03-29</div>
+  </header>
+
+  <!-- ═══ API STATUS BANNER ═══ -->
+  <div id="api-banner" class="api-banner">
+    <strong>API Unreachable</strong> &mdash; Could not connect to AngelEye server. All data shown below is from the analysis campaign mock. Start the server to see live overlay.
+  </div>
+
+  <!-- ═══ SUMMARY BAR ═══ -->
+  <div id="summary-bar" class="summary-bar">
+    <div class="summary-stat">
+      <span class="num" id="sum-sections-live">0</span>
+      <span class="lbl">of 12 sections with live data</span>
+    </div>
+    <div class="summary-stat">
+      <span class="num" id="sum-fields-live">0</span>
+      <span class="lbl">live fields</span>
+    </div>
+    <div class="summary-stat">
+      <span class="num" id="sum-fields-mock">0</span>
+      <span class="lbl">mock fields</span>
+    </div>
+    <div class="summary-coverage">
+      <div class="coverage-bar-bg"><div class="coverage-bar-fill" id="coverage-fill" style="width:0%"></div></div>
+      <span class="coverage-pct" id="coverage-pct">0%</span>
+    </div>
+  </div>
+
+  <!-- ═══ 1. CAMPAIGN AT A GLANCE ═══ -->
+  <section>
+    <h2>1. Campaign at a Glance <span class="source-badge source-partial"><span class="source-dot"></span>PARTIAL</span></h2>
+    <div class="section-content partial-section">
+      <div class="hero-grid" id="hero-grid">
+        <!-- populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 2. THE SCHEMA ═══ -->
+  <section>
+    <h2>2. The Schema &mdash; v3 Session Index Entry <span class="source-badge source-mock"><span class="source-dot"></span>MOCK</span></h2>
+    <div class="section-content mock-section" id="schema-section">
+      <!-- populated by JS -->
+    </div>
+  </section>
+
+  <!-- ═══ 3. SESSION TYPES ═══ -->
+  <section>
+    <h2>3. Session Types <span class="source-badge source-live"><span class="source-dot"></span>LIVE</span></h2>
+    <div class="section-content live-section">
+      <div class="scrollable" id="session-types-table">
+        <!-- populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 4. SUBTYPES ═══ -->
+  <section>
+    <h2>4. Session Subtypes <span class="source-badge source-mock"><span class="source-dot"></span>MOCK</span></h2>
+    <div class="section-content mock-section" id="subtypes-section">
+      <!-- populated by JS -->
+    </div>
+  </section>
+
+  <!-- ═══ 5. PROJECTS ═══ -->
+  <section>
+    <h2>5. Projects <span class="source-badge source-live"><span class="source-dot"></span>LIVE</span></h2>
+    <div class="section-content live-section">
+      <div class="scrollable" id="projects-table">
+        <!-- populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 6. TOOLS ═══ -->
+  <section>
+    <h2>6. Tools Observed <span class="source-badge source-partial"><span class="source-dot"></span>PARTIAL</span></h2>
+    <div class="section-content partial-section" id="tools-section">
+      <!-- populated by JS -->
+    </div>
+  </section>
+
+  <!-- ═══ 7. CLASSIFIERS ═══ -->
+  <section>
+    <h2>7. Classifiers (C08&ndash;C11, Opening/Closing/Tool Profile) <span class="source-badge source-mock"><span class="source-dot"></span>MOCK</span></h2>
+    <div class="section-content mock-section" id="classifiers-section">
+      <!-- populated by JS -->
+    </div>
+  </section>
+
+  <!-- ═══ 8. PREDICATES ═══ -->
+  <section>
+    <h2>8. Predicates (P01&ndash;P22) <span class="source-badge source-partial"><span class="source-dot"></span>PARTIAL</span></h2>
+    <div class="section-content partial-section" id="predicates-section">
+      <!-- populated by JS -->
+    </div>
+  </section>
+
+  <!-- ═══ 9. BUILD ACCURACY ═══ -->
+  <section>
+    <h2>9. BUILD Accuracy by Scale <span class="source-badge source-mock"><span class="source-dot"></span>MOCK</span></h2>
+    <div class="section-content mock-section" id="build-accuracy-section">
+      <!-- populated by JS -->
+    </div>
+  </section>
+
+  <!-- ═══ 10. MACHINES ═══ -->
+  <section>
+    <h2>10. Machine Comparison <span class="source-badge source-mock"><span class="source-dot"></span>MOCK</span></h2>
+    <div class="section-content mock-section" id="machines-section">
+      <!-- populated by JS -->
+    </div>
+  </section>
+
+  <!-- ═══ 11. DERIVED METRICS ═══ -->
+  <section>
+    <h2>11. Derived Metrics <span class="source-badge source-mock"><span class="source-dot"></span>MOCK</span></h2>
+    <div class="section-content mock-section" id="derived-section">
+      <!-- populated by JS -->
+    </div>
+  </section>
+
+  <!-- ═══ 12. SKILLS ═══ -->
+  <section>
+    <h2>12. Skills Invoked <span class="source-badge source-partial"><span class="source-dot"></span>PARTIAL</span></h2>
+    <div class="section-content partial-section" id="skills-section">
+      <!-- populated by JS -->
+    </div>
+  </section>
+
+  <!-- ═══ 13. GAP ANALYSIS ═══ -->
+  <section>
+    <h2>13. Gap Analysis &mdash; Mock vs Live Coverage</h2>
+    <div class="section-content" style="border-left: 4px solid #1a1512; background: #f5f1eb; border: 1px solid #d4cdc4; border-left: 4px solid #1a1512;">
+      <div class="scrollable" id="gap-analysis-table">
+        <!-- populated by JS -->
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  const API_BASE = `http://${window.location.hostname}:5051`;
+  const MOCK_URL = `${API_BASE}/api/mock-views/campaign-infographic`;
+  const STATS_URL = `${API_BASE}/api/stats`;
+  const SESSIONS_URL = `${API_BASE}/api/sessions?limit=2000`;
+
+  // ─── Data holders ───
+  let mockData = null;
+  let liveStats = null;
+  let liveSessions = null;
+  let apiReachable = false;
+
+  // ─── Fetch helpers ───
+  async function fetchJSON(url) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  }
+
+  async function loadAll() {
+    // Fetch mock data first (required)
+    try {
+      const mockRes = await fetchJSON(MOCK_URL);
+      mockData = mockRes.status === 'ok' ? mockRes.data : mockRes;
+    } catch (e) {
+      console.error('Failed to load mock data:', e);
+      document.getElementById('api-banner').textContent =
+        'Failed to load mock data from API. Ensure the AngelEye server is running.';
+      document.getElementById('api-banner').classList.add('visible');
+      return;
+    }
+
+    // Fetch live data (optional)
+    try {
+      const [statsRes, sessionsRes] = await Promise.all([
+        fetchJSON(STATS_URL),
+        fetchJSON(SESSIONS_URL),
+      ]);
+      if (statsRes.status === 'ok') liveStats = statsRes.data;
+      if (sessionsRes.status === 'ok') liveSessions = sessionsRes.data.sessions || sessionsRes.data;
+      apiReachable = true;
+    } catch (e) {
+      console.warn('Live API not available — showing all as mock:', e);
+      document.getElementById('api-banner').classList.add('visible');
+    }
+
+    render();
+  }
+
+  // ─── Aggregation helpers ───
+  function aggregateField(sessions, field) {
+    const counts = {};
+    sessions.forEach(s => {
+      const val = s[field];
+      if (val != null && val !== '') {
+        counts[val] = (counts[val] || 0) + 1;
+      }
+    });
+    return counts;
+  }
+
+  function countPredicate(sessions, field) {
+    let trueCount = 0;
+    let evaluated = 0;
+    sessions.forEach(s => {
+      if (s[field] !== undefined && s[field] !== null) {
+        evaluated++;
+        if (s[field] === true) trueCount++;
+      }
+    });
+    return { trueCount, evaluated };
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function deltaStr(live, mock) {
+    const diff = live - mock;
+    if (diff === 0) return '<span class="delta-zero">=</span>';
+    if (diff > 0) return `<span class="delta-positive">+${diff}</span>`;
+    return `<span class="delta-negative">${diff}</span>`;
+  }
+
+  // ─── Badge class lookup ───
+  function badgeClass(type) {
+    const map = {
+      BUILD: 'badge-build', KNOWLEDGE: 'badge-knowledge', RESEARCH: 'badge-research',
+      ORIENTATION: 'badge-orientation', OPERATIONS: 'badge-operations', OPS: 'badge-operations',
+      META: 'badge-meta', SYSOPS: 'badge-sysops', PLANNING: 'badge-planning',
+      MIXED: 'badge-mixed', SKILL: 'badge-skill', SETUP: 'badge-setup',
+      TEST: 'badge-test', REVIEW: 'badge-review', DEBUG: 'badge-debug',
+      BRAND: 'badge-brand', UNCLASSIFIED: 'badge-unclassified',
+      unclassified: 'badge-unclassified',
+    };
+    return map[type] || 'badge-unclassified';
+  }
+
+  // ─── Summary tracking ───
+  let sectionsLive = 0;
+  let fieldsLive = 0;
+  let fieldsMock = 0;
+
+  function markLive(n) { fieldsLive += n; }
+  function markMock(n) { fieldsMock += n; }
+
+  // ─── RENDER ───
+  function render() {
+    renderHeroStats();
+    renderSchema();
+    renderSessionTypes();
+    renderSubtypes();
+    renderProjects();
+    renderTools();
+    renderClassifiers();
+    renderPredicates();
+    renderBuildAccuracy();
+    renderMachines();
+    renderDerived();
+    renderSkills();
+    renderGapAnalysis();
+    updateSummary();
+  }
+
+  // ─── 1. Hero Stats ───
+  function renderHeroStats() {
+    const grid = document.getElementById('hero-grid');
+    const stats = mockData.heroStats;
+    const liveTotal = liveStats ? liveStats.total : null;
+    const liveProjects = liveSessions ? Object.keys(aggregateField(liveSessions, 'project')).length : null;
+
+    let html = '';
+    stats.forEach(s => {
+      let liveVal = null;
+      let isLive = false;
+      if (s.label === 'Sessions' && liveTotal !== null) { liveVal = liveTotal; isLive = true; }
+      if (s.label === 'Projects' && liveProjects !== null) { liveVal = liveProjects + '+'; isLive = true; }
+
+      const dotColor = isLive ? '#22c55e' : '#ef4444';
+      html += `<div class="hero-stat">
+        <span class="source-indicator" style="background:${dotColor}"></span>
+        <div class="number">${isLive ? liveVal : escapeHtml(s.value)}</div>
+        <div class="label">${escapeHtml(s.label)}</div>
+        ${isLive ? `<div class="live-overlay">Mock: ${escapeHtml(s.value)}</div>` : ''}
+      </div>`;
+      if (isLive) markLive(1); else markMock(1);
+    });
+    grid.innerHTML = html;
+    if (liveTotal !== null) sectionsLive++;
+  }
+
+  // ─── 2. Schema ───
+  function renderSchema() {
+    const sec = document.getElementById('schema-section');
+    const schema = mockData.schema;
+    let lines = [];
+
+    lines.push('<span class="sh">-- Top-Level Fields --</span>');
+    schema.topLevel.forEach(f => {
+      lines.push(`<span class="sk">${f.field.padEnd(22)}</span> <span class="st">${f.type}</span>${f.description ? '  <span class="sc">' + escapeHtml(f.description) + '</span>' : ''}`);
+    });
+
+    lines.push('');
+    lines.push('<span class="sh">-- Shape --</span>');
+    schema.shape.forEach(f => {
+      lines.push(`  <span class="sk">${f.field.padEnd(22)}</span> <span class="st">${f.type.padEnd(8)}</span> <span class="sc">${escapeHtml(f.description || '')}</span>`);
+    });
+
+    lines.push('');
+    lines.push('<span class="sh">-- Predicates (P01-P22) --</span>');
+    schema.predicates.forEach(f => {
+      const stats = f.stats ? `  <span class="sc">${f.stats}</span>` : '';
+      lines.push(`  <span class="sk">${f.field.padEnd(36)}</span> <span class="st">${f.type}</span>   <span class="sc">${escapeHtml(f.description || '')}</span>${stats}`);
+    });
+
+    lines.push('');
+    lines.push('<span class="sh">-- Classifiers --</span>');
+    schema.classifiers.forEach(f => {
+      lines.push(`  <span class="sk">${f.field.padEnd(28)}</span> <span class="st">${f.type.padEnd(8)}</span> <span class="sc">${escapeHtml(f.description || '')}</span>`);
+    });
+
+    sec.innerHTML = `<div class="schema-block">${lines.join('\n')}</div>`;
+    markMock(4); // 4 schema groups, all informational
+  }
+
+  // ─── 3. Session Types ───
+  function renderSessionTypes() {
+    const container = document.getElementById('session-types-table');
+    const mockTypes = mockData.sessionTypes;
+
+    // Build live type map (map OPS -> OPERATIONS)
+    let liveTypeMap = {};
+    if (liveStats && liveStats.byType) {
+      Object.entries(liveStats.byType).forEach(([k, v]) => {
+        const key = k === 'OPS' ? 'OPERATIONS' : k.toUpperCase();
+        liveTypeMap[key] = v;
+      });
+      sectionsLive++;
+    }
+
+    // Collect all types (union of mock and live)
+    const allTypes = new Set();
+    mockTypes.forEach(t => allTypes.add(t.type));
+    Object.keys(liveTypeMap).forEach(t => allTypes.add(t));
+
+    let html = '<table class="data-table"><thead><tr>';
+    html += '<th>Type</th><th>Analysis (Mock)</th><th>Live</th><th>Delta</th>';
+    html += '</tr></thead><tbody>';
+
+    const sortedTypes = Array.from(allTypes).sort((a, b) => {
+      const ma = mockTypes.find(t => t.type === a);
+      const mb = mockTypes.find(t => t.type === b);
+      return (mb ? mb.count : 0) - (ma ? ma.count : 0);
+    });
+
+    sortedTypes.forEach(type => {
+      const mock = mockTypes.find(t => t.type === type);
+      const mockCount = mock ? mock.count : 0;
+      const liveCount = liveTypeMap[type] !== undefined ? liveTypeMap[type] : null;
+      const hasDiff = liveCount !== null && liveCount !== mockCount;
+      const rowClass = hasDiff ? ' class="highlight-diff"' : '';
+
+      html += `<tr${rowClass}>`;
+      html += `<td><span class="badge ${badgeClass(type)}">${escapeHtml(type)}</span></td>`;
+      html += `<td class="count">${mockCount}</td>`;
+      html += `<td class="count">${liveCount !== null ? liveCount : '<span style="color:#7a6e5e">—</span>'}</td>`;
+      html += `<td>${liveCount !== null ? deltaStr(liveCount, mockCount) : '<span style="color:#7a6e5e">—</span>'}</td>`;
+      html += '</tr>';
+      if (liveCount !== null) markLive(1); else markMock(1);
+    });
+
+    html += '</tbody></table>';
+    container.innerHTML = html;
+  }
+
+  // ─── 4. Subtypes ───
+  function renderSubtypes() {
+    const sec = document.getElementById('subtypes-section');
+    const subs = mockData.subtypes;
+
+    let html = `<p class="note" style="margin-bottom:1rem">${subs.totalUniqueSubtypes} unique subtypes total — showing those with N>=3. Not computed in live registry.</p>`;
+    html += '<div class="scrollable scrollable-sm"><table class="data-table"><thead><tr>';
+    html += '<th>Subtype</th><th>Count</th>';
+    html += '</tr></thead><tbody>';
+
+    subs.items.forEach(s => {
+      html += `<tr><td>${escapeHtml(s.name)}</td><td class="count">${s.count}</td></tr>`;
+    });
+
+    html += '</tbody></table></div>';
+    sec.innerHTML = html;
+    markMock(subs.items.length);
+  }
+
+  // ─── 5. Projects ───
+  function renderProjects() {
+    const container = document.getElementById('projects-table');
+    const mockProjects = mockData.projects.items;
+
+    let liveProjectMap = {};
+    if (liveSessions) {
+      liveProjectMap = aggregateField(liveSessions, 'project');
+      sectionsLive++;
+    }
+
+    const allProjects = new Set();
+    mockProjects.forEach(p => allProjects.add(p.name));
+    Object.keys(liveProjectMap).forEach(p => allProjects.add(p));
+
+    // Sort by max of mock or live count
+    const sorted = Array.from(allProjects).sort((a, b) => {
+      const ma = mockProjects.find(p => p.name === a);
+      const mb = mockProjects.find(p => p.name === b);
+      const va = Math.max(ma ? ma.count : 0, liveProjectMap[a] || 0);
+      const vb = Math.max(mb ? mb.count : 0, liveProjectMap[b] || 0);
+      return vb - va;
+    });
+
+    let html = '<table class="data-table"><thead><tr>';
+    html += '<th>Project</th><th>Analysis (Mock)</th><th>Live</th><th>Delta</th>';
+    html += '</tr></thead><tbody>';
+
+    sorted.forEach(name => {
+      const mock = mockProjects.find(p => p.name === name);
+      const mockCount = mock ? mock.count : 0;
+      const liveCount = liveProjectMap[name] !== undefined ? liveProjectMap[name] : null;
+      const hasDiff = liveCount !== null && liveCount !== mockCount;
+      const rowClass = hasDiff ? ' class="highlight-diff"' : '';
+
+      html += `<tr${rowClass}>`;
+      html += `<td><code style="font-size:0.82rem">${escapeHtml(name)}</code></td>`;
+      html += `<td class="count">${mockCount || '<span style="color:#7a6e5e">—</span>'}</td>`;
+      html += `<td class="count">${liveCount !== null ? liveCount : '<span style="color:#7a6e5e">—</span>'}</td>`;
+      html += `<td>${liveCount !== null ? deltaStr(liveCount, mockCount) : '<span style="color:#7a6e5e">—</span>'}</td>`;
+      html += '</tr>';
+      if (liveCount !== null) markLive(1); else markMock(1);
+    });
+
+    html += '</tbody></table>';
+    container.innerHTML = html;
+  }
+
+  // ─── 6. Tools ───
+  function renderTools() {
+    const sec = document.getElementById('tools-section');
+    const mockTools = mockData.tools;
+
+    // Live: aggregate tool_pattern from sessions
+    let liveToolPatterns = {};
+    if (liveSessions) {
+      liveToolPatterns = aggregateField(liveSessions, 'tool_pattern');
+    }
+
+    let html = '';
+
+    // Tool patterns (live)
+    if (Object.keys(liveToolPatterns).length > 0) {
+      html += '<h3 style="margin-bottom:0.6rem">Tool Patterns <span class="source-badge source-live"><span class="source-dot"></span>LIVE</span></h3>';
+      html += '<div style="margin-bottom:1.4rem">';
+      const patternsSorted = Object.entries(liveToolPatterns).sort((a, b) => b[1] - a[1]);
+      patternsSorted.forEach(([pattern, count]) => {
+        const pct = liveSessions ? ((count / liveSessions.length) * 100).toFixed(1) : 0;
+        html += `<div class="progress-row">
+          <span class="progress-label">${escapeHtml(pattern)}</span>
+          <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+          <span class="progress-stats">${count} (${pct}%)</span>
+        </div>`;
+        markLive(1);
+      });
+      html += '</div>';
+      sectionsLive++;
+    }
+
+    // Individual tool counts (mock)
+    html += '<h3 style="margin-bottom:0.6rem">Individual Tool Usage <span class="source-badge source-mock"><span class="source-dot"></span>MOCK</span></h3>';
+    html += '<div class="scrollable scrollable-sm"><table class="data-table"><thead><tr>';
+    html += '<th>#</th><th>Tool</th><th>Sessions</th><th>Prevalence</th>';
+    html += '</tr></thead><tbody>';
+
+    mockTools.forEach(t => {
+      html += `<tr>
+        <td style="color:#7a6e5e">${t.rank}</td>
+        <td><code style="font-size:0.82rem">${escapeHtml(t.name)}</code></td>
+        <td class="count">${t.sessions}</td>
+        <td>
+          <div style="display:flex;align-items:center;gap:0.4rem">
+            <div style="flex:1;height:10px;background:#ddd6cc;border-radius:3px;overflow:hidden;min-width:60px">
+              <div style="height:100%;background:#c8841a;border-radius:3px;width:${t.prevalencePercent}%"></div>
+            </div>
+            <span style="font-size:0.78rem;color:#7a6e5e;width:40px;text-align:right">${t.prevalencePercent}%</span>
+          </div>
+        </td>
+      </tr>`;
+      markMock(1);
+    });
+
+    html += '</tbody></table></div>';
+    sec.innerHTML = html;
+  }
+
+  // ─── 7. Classifiers ───
+  function renderClassifiers() {
+    const sec = document.getElementById('classifiers-section');
+    const cls = mockData.classifiers;
+    let html = '';
+
+    // C08: Delegation Style
+    html += renderClassifierGroup('C08 Delegation Style', cls.delegationStyle, '#3b82f6');
+    // C09: Session Continuity
+    html += renderClassifierGroup('C09 Session Continuity', cls.sessionContinuity, '#8b5cf6');
+    // C10: Output Type
+    html += renderClassifierGroup('C10 Output Type', cls.outputType, '#22c55e');
+    // C11: Initiation Source
+    html += renderClassifierGroup('C11 Initiation Source', cls.initiationSource, '#f59e0b');
+
+    // Opening Style
+    html += renderClassifierTopN('Opening Style', cls.openingStyle, '#ef4444');
+    // Closing Style
+    html += renderClassifierTopN('Closing Style', cls.closingStyle, '#6366f1');
+    // Tool Profile
+    html += renderClassifierTopN('Tool Profile', cls.toolProfile, '#c8841a');
+
+    sec.innerHTML = html;
+    markMock(7); // 7 classifier groups
+  }
+
+  function renderClassifierGroup(title, items, color) {
+    const maxCount = Math.max(...items.map(i => i.count));
+    let html = `<div class="classifier-section"><h4>${title}</h4>`;
+    items.forEach(i => {
+      const pct = maxCount > 0 ? ((i.count / maxCount) * 100).toFixed(1) : 0;
+      html += `<div class="classifier-bar-row">
+        <span class="classifier-bar-label">${escapeHtml(i.value)}</span>
+        <div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:${pct}%;background:${color}"></div></div>
+        <span class="classifier-bar-stats">${i.count}${i.percent != null ? ' (' + i.percent + '%)' : ''}</span>
+      </div>`;
+    });
+    html += '</div>';
+    return html;
+  }
+
+  function renderClassifierTopN(title, data, color) {
+    const items = data.items;
+    const maxCount = Math.max(...items.map(i => i.count));
+    let html = `<div class="classifier-section"><h4>${title} <span style="font-size:0.72rem;color:#7a6e5e;text-transform:none;font-weight:400">(${data.totalUniqueValues} unique — top 10)</span></h4>`;
+    items.forEach(i => {
+      const pct = maxCount > 0 ? ((i.count / maxCount) * 100).toFixed(1) : 0;
+      html += `<div class="classifier-bar-row">
+        <span class="classifier-bar-label">${escapeHtml(i.value)}</span>
+        <div class="classifier-bar-bg"><div class="classifier-bar-fill" style="width:${pct}%;background:${color}"></div></div>
+        <span class="classifier-bar-stats">${i.count}</span>
+      </div>`;
+    });
+    html += '</div>';
+    return html;
+  }
+
+  // ─── 8. Predicates ───
+  function renderPredicates() {
+    const sec = document.getElementById('predicates-section');
+    const mockPreds = mockData.predicates;
+
+    // Live predicates — these exist in the live registry
+    const livePredicateNames = [
+      'has_playwright_calls', 'is_compaction_resume', 'is_machine_initiated',
+      'has_web_research', 'has_parallel_subagent_bursts', 'has_task_orchestration',
+      'has_git_outcome', 'has_brain_file_writes', 'has_cross_session_refs',
+      'has_unauthorized_edits', 'has_handover_context', 'has_cross_project_reads',
+      'has_closing_ceremony', 'has_voice_dictation_artifacts', 'is_cwd_incidental',
+    ];
+
+    // Mock-only predicates
+    const mockOnlyPredicates = [
+      'is_feature_construction', 'has_frustration_signals', 'is_multi_phase',
+      'has_misunderstood_request', 'has_wrong_approach', 'has_buggy_output',
+      'has_excessive_changes', 'has_skill_gap_signal',
+    ];
+
+    let html = '<table class="data-table"><thead><tr>';
+    html += '<th>Predicate</th><th>Source</th><th>Analysis True/Eval</th><th>Analysis %</th>';
+    if (liveSessions) {
+      html += '<th>Live True/Eval</th><th>Live %</th>';
+      sectionsLive++;
+    }
+    html += '</tr></thead><tbody>';
+
+    mockPreds.forEach(p => {
+      const isLivePred = livePredicateNames.includes(p.name);
+      const sourceLabel = isLivePred
+        ? '<span class="source-badge source-live"><span class="source-dot"></span>LIVE</span>'
+        : '<span class="source-badge source-mock"><span class="source-dot"></span>MOCK</span>';
+
+      let liveHtml = '';
+      if (liveSessions && isLivePred) {
+        const lc = countPredicate(liveSessions, p.name);
+        const livePct = lc.evaluated > 0 ? Math.round((lc.trueCount / lc.evaluated) * 100) : 0;
+        liveHtml = `<td class="count">${lc.trueCount} / ${lc.evaluated}</td><td>${livePct}%</td>`;
+        markLive(1);
+      } else if (liveSessions) {
+        liveHtml = '<td style="color:#7a6e5e">—</td><td style="color:#7a6e5e">—</td>';
+        markMock(1);
+      } else {
+        markMock(1);
+      }
+
+      html += `<tr>`;
+      html += `<td><code style="font-size:0.8rem">${escapeHtml(p.name)}</code></td>`;
+      html += `<td>${sourceLabel}</td>`;
+      html += `<td class="count">${p.trueCount} / ${p.evaluatedCount}</td>`;
+      html += `<td>`;
+      html += `<div style="display:flex;align-items:center;gap:0.4rem">`;
+      html += `<div style="flex:1;height:10px;background:#ddd6cc;border-radius:3px;overflow:hidden;min-width:60px">`;
+      html += `<div style="height:100%;background:#c8841a;border-radius:3px;width:${p.percent}%"></div>`;
+      html += `</div>`;
+      html += `<span style="font-size:0.78rem;color:#7a6e5e;width:30px;text-align:right">${p.percent}%</span>`;
+      html += `</div></td>`;
+      html += liveHtml;
+      html += '</tr>';
+    });
+
+    html += '</tbody></table>';
+    sec.innerHTML = html;
+  }
+
+  // ─── 9. BUILD Accuracy ───
+  function renderBuildAccuracy() {
+    const sec = document.getElementById('build-accuracy-section');
+    const ba = mockData.buildAccuracy;
+    const rules = mockData.buildAccuracyRules;
+
+    let html = '<table class="data-table"><thead><tr>';
+    html += '<th>Scale</th><th>BUILD Accuracy</th><th>Evidence</th>';
+    html += '</tr></thead><tbody>';
+
+    ba.forEach(b => {
+      html += `<tr>
+        <td><span class="badge" style="background:#ede7dc;color:#342d2d">${escapeHtml(b.scale)}</span></td>
+        <td class="count">${escapeHtml(b.accuracy)}</td>
+        <td style="color:#7a6e5e">${escapeHtml(b.evidence)}</td>
+      </tr>`;
+    });
+    html += '</tbody></table>';
+
+    html += '<div class="rules-box"><h4>Iron-Clad Rules</h4><ol>';
+    rules.forEach(r => {
+      html += `<li>${escapeHtml(r)}</li>`;
+    });
+    html += '</ol></div>';
+
+    sec.innerHTML = html;
+    markMock(ba.length + rules.length);
+  }
+
+  // ─── 10. Machines ───
+  function renderMachines() {
+    const sec = document.getElementById('machines-section');
+    const m = mockData.machines;
+
+    let html = '<div class="side-by-side">';
+
+    // M4 Mini
+    html += '<div class="card machine-card">';
+    html += `<h4>${escapeHtml(m.m4Mini.name)} &mdash; ${escapeHtml(m.m4Mini.role)}</h4>`;
+    html += `<div style="font-size:1.6rem;font-weight:800;color:#c8841a;margin-bottom:0.5rem">${m.m4Mini.sessions} sessions</div>`;
+    html += `<div style="font-size:0.82rem;color:#7a6e5e;margin-bottom:0.6rem">Waves ${escapeHtml(m.m4Mini.waves)}</div>`;
+    html += '<ul>';
+    m.m4Mini.characteristics.forEach(c => { html += `<li>${escapeHtml(c)}</li>`; });
+    html += '</ul></div>';
+
+    // M4 Pro
+    html += '<div class="card machine-card">';
+    html += `<h4>${escapeHtml(m.m4Pro.name)} &mdash; ${escapeHtml(m.m4Pro.role)}</h4>`;
+    html += `<div style="font-size:1.6rem;font-weight:800;color:#c8841a;margin-bottom:0.5rem">${m.m4Pro.sessions} sessions</div>`;
+    html += `<div style="font-size:0.82rem;color:#7a6e5e;margin-bottom:0.6rem">Waves ${escapeHtml(m.m4Pro.waves)}</div>`;
+    html += '<ul>';
+    m.m4Pro.characteristics.forEach(c => { html += `<li>${escapeHtml(c)}</li>`; });
+    html += '</ul></div>';
+
+    html += '</div>';
+
+    html += `<div class="machine-overlap">${escapeHtml(m.overlap)}</div>`;
+
+    sec.innerHTML = html;
+    markMock(2);
+  }
+
+  // ─── 11. Derived Metrics ───
+  function renderDerived() {
+    const sec = document.getElementById('derived-section');
+    const dm = mockData.derivedMetrics;
+
+    let html = '<div class="side-by-side">';
+
+    // Autonomy Ratio
+    html += '<div class="card"><h3>Autonomy Ratio</h3>';
+    html += `<p style="font-size:0.8rem;color:#7a6e5e;margin-bottom:0.8rem">Formula: ${escapeHtml(dm.autonomyRatio.formula)}</p>`;
+    const arMax = Math.max(...dm.autonomyRatio.buckets.map(b => b.sessions));
+    dm.autonomyRatio.buckets.forEach(b => {
+      const pct = arMax > 0 ? ((b.sessions / arMax) * 100).toFixed(1) : 0;
+      html += `<div class="progress-row">
+        <span class="progress-label">${escapeHtml(b.bucket)} ${b.range ? '(' + b.range + ')' : ''}</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+        <span class="progress-stats">${b.sessions} — ${escapeHtml(b.meaning)}</span>
+      </div>`;
+    });
+    html += '</div>';
+
+    // Session Liveness
+    html += '<div class="card"><h3>Session Liveness</h3>';
+    html += `<p style="font-size:0.8rem;color:#7a6e5e;margin-bottom:0.8rem">Formula: ${escapeHtml(dm.sessionLiveness.formula)}</p>`;
+    const slMax = Math.max(...dm.sessionLiveness.buckets.map(b => b.sessions));
+    dm.sessionLiveness.buckets.forEach(b => {
+      const pct = slMax > 0 ? ((b.sessions / slMax) * 100).toFixed(1) : 0;
+      html += `<div class="progress-row">
+        <span class="progress-label">${escapeHtml(b.bucket)} ${b.range ? '(' + b.range + ')' : ''}</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+        <span class="progress-stats">${b.sessions} — ${escapeHtml(b.meaning)}</span>
+      </div>`;
+    });
+    html += '</div>';
+
+    html += '</div>';
+    sec.innerHTML = html;
+    markMock(dm.autonomyRatio.buckets.length + dm.sessionLiveness.buckets.length);
+  }
+
+  // ─── 12. Skills ───
+  function renderSkills() {
+    const sec = document.getElementById('skills-section');
+    const mockSkills = mockData.skills.items;
+
+    // Live: aggregate trigger_command from sessions
+    let liveTriggers = {};
+    if (liveSessions) {
+      liveTriggers = aggregateField(liveSessions, 'trigger_command');
+      sectionsLive++;
+    }
+
+    let html = '';
+
+    // Live triggers
+    if (Object.keys(liveTriggers).length > 0) {
+      html += '<h3 style="margin-bottom:0.6rem">Live Trigger Commands <span class="source-badge source-live"><span class="source-dot"></span>LIVE</span></h3>';
+      html += '<div class="skill-list" style="margin-bottom:1.4rem">';
+      const sorted = Object.entries(liveTriggers).sort((a, b) => b[1] - a[1]);
+      sorted.forEach(([cmd, count]) => {
+        html += `<span class="skill-item"><span class="sname">${escapeHtml(cmd)}</span> <span class="scount">&times;${count}</span></span>`;
+        markLive(1);
+      });
+      html += '</div>';
+    }
+
+    // Mock skills
+    html += '<h3 style="margin-bottom:0.6rem">Analysis Campaign Skills <span class="source-badge source-mock"><span class="source-dot"></span>MOCK</span></h3>';
+    html += `<p class="note" style="margin-bottom:0.6rem">${escapeHtml(mockData.skills._note)}</p>`;
+    html += '<div class="skill-list">';
+    mockSkills.forEach(s => {
+      html += `<span class="skill-item"><span class="sname">${escapeHtml(s.name)}</span> <span class="scount">&times;${s.count}</span></span>`;
+      markMock(1);
+    });
+    html += '</div>';
+
+    sec.innerHTML = html;
+  }
+
+  // ─── 13. Gap Analysis ───
+  function renderGapAnalysis() {
+    const container = document.getElementById('gap-analysis-table');
+
+    const gaps = [
+      { dimension: 'Total Sessions', analysis: '924 (2 machines, 15+1 waves)', live: liveStats ? `${liveStats.total} (this machine)` : '—', status: liveStats ? 'LIVE' : 'MOCK', notes: 'Live is single-machine; analysis was cross-machine' },
+      { dimension: 'Session Types (6 core)', analysis: '16 types classified', live: liveStats ? `${Object.keys(liveStats.byType).length} types in registry` : '—', status: liveStats ? 'LIVE' : 'MOCK', notes: 'Live uses OPS, analysis uses OPERATIONS. Live has unclassified bucket.' },
+      { dimension: 'Session Subtypes', analysis: '478 unique subtypes', live: '—', status: 'MOCK', notes: 'LLM-computed during analysis. Not derived live.' },
+      { dimension: 'Session Scale', analysis: 'micro/light/moderate/heavy/marathon', live: liveSessions ? 'Field exists but not all populated' : '—', status: liveSessions ? 'PARTIAL' : 'MOCK', notes: 'Scale requires shape data (event_count, duration_minutes)' },
+      { dimension: 'Projects', analysis: `${mockData.projects.items.length} projects + ${mockData.projects.additionalSingleSessionProjects} singletons`, live: liveSessions ? `${Object.keys(aggregateField(liveSessions, 'project')).length} projects from registry` : '—', status: liveSessions ? 'LIVE' : 'MOCK', notes: 'project field in RegistryEntry' },
+      { dimension: 'Tool Usage (45 tools)', analysis: 'Per-session tool prevalence', live: '—', status: 'MOCK', notes: 'Individual tool counts require JSONL parsing, not in registry' },
+      { dimension: 'Tool Pattern', analysis: 'Not a separate metric in analysis', live: liveSessions ? `${Object.keys(aggregateField(liveSessions, 'tool_pattern')).length} patterns` : '—', status: liveSessions ? 'LIVE' : 'MOCK', notes: 'Classifier from hook enrichment' },
+      { dimension: 'C08 Delegation Style', analysis: '6 values (conversational dominant)', live: '—', status: 'MOCK', notes: 'LLM-classified. Not in live registry.' },
+      { dimension: 'C09 Session Continuity', analysis: '5 values (fresh dominant)', live: '—', status: 'MOCK', notes: 'LLM-classified. Not in live registry.' },
+      { dimension: 'C10 Output Type', analysis: '5 values', live: '—', status: 'MOCK', notes: 'LLM-classified. Not in live registry.' },
+      { dimension: 'C11 Initiation Source', analysis: '5 values', live: '—', status: 'MOCK', notes: 'LLM-classified. Not in live registry.' },
+      { dimension: 'Opening/Closing/Tool Profile', analysis: '62/77/60 unique values', live: '—', status: 'MOCK', notes: 'LLM-classified. Not in live registry.' },
+      { dimension: 'Predicates (Tier 1)', analysis: '~10 predicates with true counts', live: liveSessions ? 'Fields exist in registry' : '—', status: liveSessions ? 'LIVE' : 'MOCK', notes: 'has_playwright_calls, is_compaction_resume, has_web_research, etc.' },
+      { dimension: 'Predicates (Tier 2)', analysis: '~12 predicates', live: liveSessions ? 'Some fields exist' : '—', status: liveSessions ? 'PARTIAL' : 'MOCK', notes: 'has_brain_file_writes, has_unauthorized_edits, etc.' },
+      { dimension: 'Predicates (Analysis-only)', analysis: 'P01-P03, frustration, wrong approach, etc.', live: '—', status: 'MOCK', notes: 'LLM-evaluated during analysis campaign. Not in live hooks.' },
+      { dimension: 'BUILD Accuracy by Scale', analysis: '6 scale levels with accuracy ranges', live: '—', status: 'MOCK', notes: 'Requires cross-referencing type vs scale + ground truth' },
+      { dimension: 'Machine Comparison', analysis: 'M4 Mini (807) vs M4 Pro (116)', live: '—', status: 'MOCK', notes: 'Single-machine registry. Analysis had 2 machines.' },
+      { dimension: 'Autonomy Ratio', analysis: '4 buckets + unknown', live: '—', status: 'MOCK', notes: 'Derived from tool_use_count / user_prompt_count. Raw data exists but buckets not computed.' },
+      { dimension: 'Session Liveness', analysis: '4 buckets + unknown', live: '—', status: 'MOCK', notes: 'Derived from active_minutes / duration_minutes. Raw data exists but buckets not computed.' },
+      { dimension: 'Skills / Trigger Commands', analysis: '25 skills with counts', live: liveSessions ? `trigger_command field aggregatable` : '—', status: liveSessions ? 'PARTIAL' : 'MOCK', notes: 'trigger_command exists but not same as skill taxonomy' },
+    ];
+
+    let html = '<table class="gap-table"><thead><tr>';
+    html += '<th>Dimension</th><th>Analysis Value</th><th>Live Equivalent</th><th>Status</th><th>Notes</th>';
+    html += '</tr></thead><tbody>';
+
+    gaps.forEach(g => {
+      const statusClass = g.status === 'LIVE' ? 'status-live' : g.status === 'PARTIAL' ? 'status-partial' : 'status-mock';
+      html += `<tr>
+        <td><strong>${escapeHtml(g.dimension)}</strong></td>
+        <td style="font-size:0.82rem">${escapeHtml(g.analysis)}</td>
+        <td style="font-size:0.82rem">${g.live}</td>
+        <td class="${statusClass}">${g.status}</td>
+        <td style="font-size:0.78rem;color:#7a6e5e">${escapeHtml(g.notes)}</td>
+      </tr>`;
+    });
+
+    html += '</tbody></table>';
+    container.innerHTML = html;
+  }
+
+  // ─── Update Summary Bar ───
+  function updateSummary() {
+    // Cap sectionsLive to avoid double-counting
+    const actualSectionsLive = Math.min(sectionsLive, 5); // max 5 sections have live potential: hero, types, projects, tools/patterns, predicates, skills
+    document.getElementById('sum-sections-live').textContent = actualSectionsLive;
+    document.getElementById('sum-fields-live').textContent = fieldsLive;
+    document.getElementById('sum-fields-mock').textContent = fieldsMock;
+
+    const total = fieldsLive + fieldsMock;
+    const coverage = total > 0 ? Math.round((fieldsLive / total) * 100) : 0;
+    document.getElementById('coverage-pct').textContent = coverage + '%';
+    document.getElementById('coverage-fill').style.width = coverage + '%';
+  }
+
+  // ─── Boot ───
+  loadAll();
+})();
+</script>
+
+</body>
+</html>

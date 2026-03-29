@@ -34,9 +34,24 @@ interface Phase {
 
 const phases: Phase[] = [
   {
-    title: 'Phase 5 — Wave Visualization',
+    title: 'Phase 6 — Campaign Analysis Hybrid',
     tag: 'Latest',
     tagType: 'new',
+    dates: '2026-03-29',
+    desc: 'Hybrid campaign views overlaying live registry data on top of analysis campaign mock data. Visual delineation shows which dimensions are live (green), partial (amber), or mock-only (red).',
+    type: 'feature',
+    items: [
+      {
+        name: 'campaign-infographic-hybrid',
+        desc: 'Hybrid infographic — 12 data sections with live/mock overlay, gap analysis, and coverage summary',
+        path: `${MOCKUP_BASE}/campaign-infographic-hybrid/index.html`,
+        featured: true,
+      },
+    ] as FeatureMockup[],
+  },
+  {
+    title: 'Phase 5 — Wave Visualization',
+    tag: '7 designs',
     dates: '2026-03-28',
     desc: 'Wave-based agent workflow visualization. The complete design system for viewing BMAD story lifecycles as horizontal waves with three-panel drill-down, audit intelligence, handover controls, and sub-agent tree views.',
     type: 'feature',
