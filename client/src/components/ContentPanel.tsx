@@ -4,11 +4,13 @@ import OrganiserView from '../views/OrganiserView.js';
 import SettingsView from '../views/SettingsView.js';
 import MockupsView from '../views/MockupsView.js';
 import WorkflowsView from '../views/WorkflowsView.js';
+import InspectorView from '../views/InspectorView.js';
 
 const viewMap: Record<string, React.ComponentType> = {
   observer: ObserverView,
   organiser: OrganiserView,
   workflows: WorkflowsView,
+  inspector: InspectorView,
   settings: SettingsView,
   mockups: MockupsView,
 };
