@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AngelEye — Signal Lab — v7</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --canvas:        #1a1512;
+      --surface:       #221e1a;
+      --surface-2:     #2a2520;
+      --surface-3:     #302a24;
+      --border:        #3a342e;
+      --border-light:  #2a2420;
+      --text:          #e8e0d4;
+      --text-muted:    #7a6e62;
+      --text-dim:      #4a4038;
+      --amber:         #c8841a;
+      --amber-bg:      rgba(200,132,26,0.10);
+      --amber-border:  rgba(200,132,26,0.30);
+      --green:         #4caf6e;
+      --green-bg:      rgba(76,175,110,0.08);
+      --sky:           #60a5c8;
+      --sky-bg:        rgba(96,165,200,0.08);
+      --red:           #c84a3a;
+      --red-bg:        rgba(200,74,58,0.10);
+      --red-border:    rgba(200,74,58,0.30);
+      --purple:        #a060c8;
+      --purple-bg:     rgba(160,96,200,0.08);
+      --orange:        #c87820;
+      --orange-bg:     rgba(200,120,32,0.08);
+      --mono: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+      --sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+
+    html, body { height: 100%; font-family: var(--sans); background: var(--canvas); color: var(--text); font-size: 13px; line-height: 1.5; }
+
+    .shell { display: flex; flex-direction: column; height: 100vh; }
+
+    /* ── Top bar ── */
+    .topbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      height: 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px; flex-shrink: 0;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 20px; }
+    .topbar-brand { font-size: 15px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--amber); }
+    .topbar-page { font-size: 12px; color: var(--text-muted); letter-spacing: 0.04em; }
+    .topbar-right { display: flex; align-items: center; gap: 10px; }
+    .tb-btn {
+      font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 5px;
+      cursor: pointer; border: none; letter-spacing: 0.03em; text-transform: uppercase;
+    }
+    .tb-btn-ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
+    .tb-btn-warn { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+
+    /* ── Three-column body ── */
+    .body { display: flex; flex: 1; overflow: hidden; }
+
+    /* ── Left col: Hook catalogue ── */
+    .hook-catalogue {
+      width: 220px; flex-shrink: 0;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      overflow-y: auto; display: flex; flex-direction: column;
+    }
+    .hc-header {
+      padding: 10px 14px 8px;
+      font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--text-muted); border-bottom: 1px solid var(--border-light); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .hc-count { font-family: var(--mono); font-size: 11px; color: var(--text-dim); }
+    .hc-group-label {
+      padding: 10px 14px 4px;
+      font-size: 9px; letter-spacing: 0.10em; text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .hook-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 14px; cursor: pointer;
+      border-left: 2px solid transparent;
+      transition: background 0.1s;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .hook-item:hover { background: rgba(200,132,26,0.04); }
+    .hook-item.active { border-left-color: var(--amber); background: var(--amber-bg); }
+    .hi-status { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .hi-status.captured { background: var(--green); }
+    .hi-status.planned { background: var(--orange); border: 1.5px solid var(--orange); background: transparent; }
+    .hi-status.uncaptured { background: transparent; border: 1.5px solid var(--text-dim); }
+    .hi-status.new { background: var(--sky); }
+    .hi-name { font-size: 12px; font-family: var(--mono); color: var(--text); flex: 1; }
+    .hook-item.active .hi-name { color: var(--amber); font-weight: 600; }
+    .hi-version { font-size: 10px; color: var(--text-dim); font-family: var(--mono); }
+
+    /* Legend */
+    .hc-legend {
+      padding: 10px 14px; border-top: 1px solid var(--border-light);
+      margin-top: auto;
+    }
+    .legend-row { display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--text-muted); margin-bottom: 4px; }
+    .lr-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .lr-dot.captured { background: var(--green); }
+    .lr-dot.planned { background: transparent; border: 1.5px solid var(--orange); }
+    .lr-dot.new { background: var(--sky); }
+    .lr-dot.uncaptured { background: transparent; border: 1.5px solid var(--text-dim); }
+
+    /* ── Middle col: Payload inspector ── */
+    .payload-inspector {
+      width: 380px; flex-shrink: 0;
+      border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    .pi-header {
+      padding: 10px 16px 10px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0; display: flex; align-items: center; gap: 10px;
+    }
+    .pi-event-name { font-size: 14px; font-weight: 700; font-family: var(--mono); color: var(--sky); }
+    .pi-version { font-size: 11px; font-family: var(--mono); color: var(--text-muted); }
+    .pi-desc { padding: 10px 16px; font-size: 12px; color: var(--text-muted); border-bottom: 1px solid var(--border-light); flex-shrink: 0; line-height: 1.5; }
+    .pi-body { flex: 1; overflow-y: auto; padding: 12px 16px; display: flex; flex-direction: column; gap: 12px; }
+
+    /* Field groups */
+    .field-group-label {
+      font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--text-dim); margin-bottom: 6px;
+    }
+    .field-row {
+      display: flex; align-items: flex-start; gap: 0;
+      padding: 6px 0; border-bottom: 1px solid var(--border-light);
+      font-family: var(--mono); font-size: 12px;
+    }
+    .field-row:last-child { border-bottom: none; }
+    .fr-status { width: 20px; flex-shrink: 0; padding-top: 1px; }
+    .fr-dot { width: 7px; height: 7px; border-radius: 50%; }
+    .fr-dot.stored { background: var(--green); }
+    .fr-dot.dropped { background: var(--red); }
+    .fr-dot.partial { background: var(--orange); }
+    .fr-name { width: 180px; flex-shrink: 0; color: var(--sky); }
+    .fr-type { width: 70px; flex-shrink: 0; color: var(--text-dim); font-size: 11px; margin-top: 1px; }
+    .fr-note { flex: 1; color: var(--text-muted); font-size: 11px; font-family: var(--sans); line-height: 1.4; }
+    .fr-sample { color: var(--amber); font-size: 11px; margin-top: 2px; }
+    .fr-badge {
+      font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 3px;
+      letter-spacing: 0.04em; text-transform: uppercase; flex-shrink: 0; margin-left: 6px;
+    }
+    .fb-stored { background: var(--green-bg); color: var(--green); border: 1px solid rgba(76,175,110,0.3); }
+    .fb-dropped { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+    .fb-partial { background: var(--orange-bg); color: var(--orange); border: 1px solid rgba(200,120,32,0.3); }
+    .fb-new { background: var(--sky-bg); color: var(--sky); border: 1px solid rgba(96,165,200,0.3); }
+
+    .field-section { background: var(--surface-2); border: 1px solid var(--border-light); border-radius: 6px; padding: 10px 12px; }
+
+    /* ── Right col: Live event stream ── */
+    .event-stream {
+      flex: 1; display: flex; flex-direction: column; overflow: hidden;
+    }
+    .es-header {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0; display: flex; align-items: center; gap: 12px;
+    }
+    .es-title { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); }
+    .es-live { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 100px; background: var(--green-bg); color: var(--green); border: 1px solid rgba(76,175,110,0.3); }
+    .es-spacer { flex: 1; }
+    .es-filter { font-size: 11px; color: var(--text-muted); cursor: pointer; padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border); background: transparent; }
+    .es-body { flex: 1; overflow-y: auto; padding: 0; }
+
+    .stream-event {
+      padding: 8px 16px;
+      border-bottom: 1px solid var(--border-light);
+      cursor: pointer; transition: background 0.1s;
+      display: flex; flex-direction: column; gap: 3px;
+    }
+    .stream-event:hover { background: var(--surface-2); }
+    .stream-event.selected { background: var(--amber-bg); border-left: 2px solid var(--amber); }
+
+    .se-top { display: flex; align-items: center; gap: 8px; }
+    .se-ts { font-family: var(--mono); font-size: 11px; color: var(--text-muted); flex-shrink: 0; }
+    .se-badge {
+      font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 3px;
+      letter-spacing: 0.04em; text-transform: uppercase; flex-shrink: 0; font-family: var(--mono);
+    }
+    .sb-session_start { background: var(--green-bg); color: var(--green); border: 1px solid rgba(76,175,110,0.3); }
+    .sb-user_prompt { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+    .sb-tool_use { background: var(--sky-bg); color: var(--sky); border: 1px solid rgba(96,165,200,0.3); }
+    .sb-stop { background: var(--surface-3); color: var(--text-muted); border: 1px solid var(--border); }
+    .sb-stop_failure { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+    .sb-subagent_start { background: var(--purple-bg); color: var(--purple); border: 1px solid rgba(160,96,200,0.3); }
+    .sb-session_end { background: var(--surface-2); color: var(--text-dim); border: 1px solid var(--border-light); }
+
+    .se-session { font-size: 11px; color: var(--text-muted); font-family: var(--mono); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+    .se-detail { font-size: 12px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-left: 2px; }
+
+    /* Raw JSON panel (bottom of right col) */
+    .raw-panel {
+      border-top: 1px solid var(--border);
+      flex-shrink: 0; height: 220px;
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    .rp-header { padding: 6px 16px; border-bottom: 1px solid var(--border-light); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); display: flex; align-items: center; gap: 8px; }
+    .rp-title { color: var(--text-muted); }
+    .rp-event { color: var(--amber); font-family: var(--mono); font-size: 11px; }
+    .rp-body { flex: 1; overflow-y: auto; padding: 10px 16px; }
+    .raw-json { font-family: var(--mono); font-size: 11px; line-height: 1.7; white-space: pre; }
+    .rj-key { color: var(--sky); }
+    .rj-str { color: var(--green); }
+    .rj-num { color: var(--orange); }
+    .rj-bool { color: var(--purple); }
+    .rj-null { color: var(--text-dim); }
+    .rj-stored { background: rgba(76,175,110,0.08); border-radius: 2px; }
+    .rj-dropped { background: rgba(200,74,58,0.10); border-radius: 2px; text-decoration: line-through; color: var(--text-dim); }
+
+    /* Annotation */
+    .annotation {
+      background: rgba(200,132,26,0.06); border: 1px dashed var(--amber-border);
+      border-radius: 6px; padding: 8px 12px; margin: 10px 16px;
+      font-size: 11px; color: var(--amber); line-height: 1.5; flex-shrink: 0;
+    }
+    .annotation strong { font-weight: 700; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <span class="topbar-brand">👁 AngelEye</span>
+      <span class="topbar-page">Signal Lab — hook explorer &amp; payload inspector</span>
+    </div>
+    <div class="topbar-right">
+      <button class="tb-btn tb-btn-ghost">← Observer</button>
+      <button class="tb-btn tb-btn-warn">⚠ 1 new uncaptured field</button>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- Left: Hook catalogue -->
+    <div class="hook-catalogue">
+      <div class="hc-header">
+        <span>All Hooks</span>
+        <span class="hc-count">22 total</span>
+      </div>
+
+      <div class="hc-group-label">Core — subscribed</div>
+
+      <div class="hook-item active">
+        <span class="hi-status captured"></span>
+        <span class="hi-name">Stop</span>
+      </div>
+      <div class="hook-item">
+        <span class="hi-status captured"></span>
+        <span class="hi-name">UserPromptSubmit</span>
+      </div>
+      <div class="hook-item">
+        <span class="hi-status captured"></span>
+        <span class="hi-name">PostToolUse</span>
+      </div>
+      <div class="hook-item">
+        <span class="hi-status captured"></span>
+        <span class="hi-name">SessionStart</span>
+      </div>
+      <div class="hook-item">
+        <span class="hi-status captured"></span>
+        <span class="hi-name">SessionEnd</span>
+      </div>
+      <div class="hook-item">
+        <span class="hi-status captured"></span>
+        <span class="hi-name">SubagentStart</span>
+      </div>
+      <div class="hook-item">
+        <span class="hi-status captured"></span>
+        <span class="hi-name">SubagentStop</span>
+      </div>
+
+      <div class="hc-group-label">v2 — planned</div>
+
+      <div class="hook-item">
+        <span class="hi-status planned"></span>
+        <span class="hi-name">TeammateIdle</span>
+        <span class="hi-version">v2.1.33</span>
+      </div>
+      <div class="hook-item">
+        <span class="hi-status planned"></span>
+        <span class="hi-name">TaskCompleted</span>
+        <span class="hi-version">v2.1.33</span>
+      </div>
+      <div class="hook-item">
+        <span class="hi-status planned"></span>
+        <span class="hi-name">PreCompact</span>
+      </div>
+      <div class="hook-item">
+        <span class="hi-status planned"></span>
+        <span class="hi-name">PostCompact</span>
+        <span class="hi-version">v2.1.76</span>
+      </div>
+
+      <div class="hc-group-label">New — worth evaluating</div>
+
+      <div class="hook-item">
+        <span class="hi-status new"></span>
+        <span class="hi-name">StopFailure</span>
+        <span class="hi-version">v2.1.78</span>
+      </div>
+      <div class="hook-item">
+        <span class="hi-status new"></span>
+        <span class="hi-name">PermissionRequest</span>
+        <span class="hi-version">v2.0.45</span>
+      </div>
+      <div class="hook-item">
+        <span class="hi-status new"></span>
+        <span class="hi-name">InstructionsLoaded</span>
+        <span class="hi-version">v2.1.69</span>
+      </div>
+
+      <div class="hc-group-label">Not capturing</div>
+
+      <div class="hook-item">
+        <span class="hi-status uncaptured"></span>
+        <span class="hi-name">PreToolUse</span>
+      </div>
+      <div class="hook-item">
+        <span class="hi-status uncaptured"></span>
+        <span class="hi-name">Notification</span>
+      </div>
+      <div class="hook-item">
+        <span class="hi-status uncaptured"></span>
+        <span class="hi-name">Setup</span>
+        <span class="hi-version">v2.1.10</span>
+      </div>
+      <div class="hook-item">
+        <span class="hi-status uncaptured"></span>
+        <span class="hi-name">ConfigChange</span>
+        <span class="hi-version">v2.1.49</span>
+      </div>
+      <div class="hook-item">
+        <span class="hi-status uncaptured"></span>
+        <span class="hi-name">WorktreeCreate</span>
+        <span class="hi-version">v2.1.50</span>
+      </div>
+      <div class="hook-item">
+        <span class="hi-status uncaptured"></span>
+        <span class="hi-name">WorktreeRemove</span>
+        <span class="hi-version">v2.1.50</span>
+      </div>
+      <div class="hook-item">
+        <span class="hi-status uncaptured"></span>
+        <span class="hi-name">Elicitation</span>
+        <span class="hi-version">v2.1.76</span>
+      </div>
+      <div class="hook-item">
+        <span class="hi-status uncaptured"></span>
+        <span class="hi-name">ElicitationResult</span>
+        <span class="hi-version">v2.1.76</span>
+      </div>
+
+      <div class="hc-legend">
+        <div class="legend-row"><span class="lr-dot captured"></span> Subscribed &amp; capturing</div>
+        <div class="legend-row"><span class="lr-dot planned"></span> Planned for v2</div>
+        <div class="legend-row"><span class="lr-dot new"></span> New — evaluate now</div>
+        <div class="legend-row"><span class="lr-dot uncaptured"></span> Not capturing</div>
+      </div>
+    </div>
+
+    <!-- Middle: Payload inspector for "Stop" hook -->
+    <div class="payload-inspector">
+      <div class="pi-header">
+        <span class="pi-event-name">Stop</span>
+        <span class="pi-version">Core · always available</span>
+      </div>
+      <div class="pi-desc">
+        Fires when the main agent finishes a turn. Contains Claude's final response text for that turn via <code>last_assistant_message</code>. This is the chapter boundary signal.
+      </div>
+
+      <div class="pi-body">
+
+        <div class="annotation">
+          <strong>⚠ Gap found:</strong> <code>last_assistant_message</code> arrives in every Stop payload but is currently stored in the hot file and <strong>never rendered in the UI</strong>. This is Martin's observation — the field is there, it's just not being shown.
+        </div>
+
+        <div class="field-section">
+          <div class="field-group-label">Common fields (all events)</div>
+
+          <div class="field-row">
+            <span class="fr-status"><span class="fr-dot stored"></span></span>
+            <span class="fr-name">session_id</span>
+            <span class="fr-type">string</span>
+            <span class="fr-note">Session UUID
+              <div class="fr-sample">"a1b2c3d4e5f6..."</div>
+            </span>
+            <span class="fr-badge fb-stored">stored</span>
+          </div>
+          <div class="field-row">
+            <span class="fr-status"><span class="fr-dot stored"></span></span>
+            <span class="fr-name">hook_event_name</span>
+            <span class="fr-type">string</span>
+            <span class="fr-note">Always "Stop"
+              <div class="fr-sample">"Stop"</div>
+            </span>
+            <span class="fr-badge fb-stored">stored</span>
+          </div>
+          <div class="field-row">
+            <span class="fr-status"><span class="fr-dot stored"></span></span>
+            <span class="fr-name">cwd</span>
+            <span class="fr-type">string</span>
+            <span class="fr-note">Working directory at time of hook
+              <div class="fr-sample">"/dev/clients/supportsignal/..."</div>
+            </span>
+            <span class="fr-badge fb-stored">stored</span>
+          </div>
+          <div class="field-row">
+            <span class="fr-status"><span class="fr-dot stored"></span></span>
+            <span class="fr-name">transcript_path</span>
+            <span class="fr-type">string</span>
+            <span class="fr-note">Path to JSONL session transcript
+              <div class="fr-sample">"~/.claude/projects/.../session.jsonl"</div>
+            </span>
+            <span class="fr-badge fb-dropped">dropped</span>
+          </div>
+          <div class="field-row">
+            <span class="fr-status"><span class="fr-dot dropped"></span></span>
+            <span class="fr-name">agent_id</span>
+            <span class="fr-type">string?</span>
+            <span class="fr-note">Agent UUID (subagents only)</span>
+            <span class="fr-badge fb-dropped">dropped</span>
+          </div>
+          <div class="field-row">
+            <span class="fr-status"><span class="fr-dot dropped"></span></span>
+            <span class="fr-name">agent_type</span>
+            <span class="fr-type">string?</span>
+            <span class="fr-note">Agent type string (subagents only)
+              <div class="fr-sample">"explore", "plan", "custom-name"</div>
+            </span>
+            <span class="fr-badge fb-dropped">dropped</span>
+          </div>
+        </div>
+
+        <div class="field-section">
+          <div class="field-group-label">Stop-specific fields</div>
+
+          <div class="field-row">
+            <span class="fr-status"><span class="fr-dot stored"></span></span>
+            <span class="fr-name">reason</span>
+            <span class="fr-type">string</span>
+            <span class="fr-note">Why Claude stopped
+              <div class="fr-sample">"end_turn" | "max_tokens" | "tool_use"</div>
+            </span>
+            <span class="fr-badge fb-stored">stored</span>
+          </div>
+          <div class="field-row">
+            <span class="fr-status"><span class="fr-dot stored"></span></span>
+            <span class="fr-name" style="color: var(--amber); font-weight: 700;">last_assistant_message</span>
+            <span class="fr-type">string</span>
+            <span class="fr-note" style="color: var(--text);">Claude's full response text for this turn. <strong style="color: var(--amber);">Stored as event.last_message but never displayed in UI.</strong>
+              <div class="fr-sample" style="color: var(--amber);">"Done. I created auth.ts with JWT validation..."</div>
+            </span>
+            <span class="fr-badge fb-partial">not shown</span>
+          </div>
+          <div class="field-row">
+            <span class="fr-status"><span class="fr-dot dropped"></span></span>
+            <span class="fr-name">stop_hook_active</span>
+            <span class="fr-type">boolean</span>
+            <span class="fr-note">Guard flag — exit immediately if true. Prevents infinite hook loops.</span>
+            <span class="fr-badge fb-dropped">guard only</span>
+          </div>
+        </div>
+
+        <div class="field-section">
+          <div class="field-group-label">Fields NOT in hook payload (available via JSONL transcript)</div>
+
+          <div class="field-row">
+            <span class="fr-status"><span class="fr-dot dropped"></span></span>
+            <span class="fr-name">input_tokens</span>
+            <span class="fr-type">number</span>
+            <span class="fr-note">Token count for this turn's input. In JSONL only.</span>
+            <span class="fr-badge fb-new">jsonl only</span>
+          </div>
+          <div class="field-row">
+            <span class="fr-status"><span class="fr-dot dropped"></span></span>
+            <span class="fr-name">output_tokens</span>
+            <span class="fr-type">number</span>
+            <span class="fr-note">Token count for this turn's output. In JSONL only.</span>
+            <span class="fr-badge fb-new">jsonl only</span>
+          </div>
+          <div class="field-row">
+            <span class="fr-status"><span class="fr-dot dropped"></span></span>
+            <span class="fr-name">model</span>
+            <span class="fr-type">string</span>
+            <span class="fr-note">Model used for this turn. In JSONL only.
+              <div class="fr-sample">"claude-sonnet-4-6-20260418"</div>
+            </span>
+            <span class="fr-badge fb-new">jsonl only</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Right: Live stream + raw JSON -->
+    <div class="event-stream">
+
+      <div class="es-header">
+        <span class="es-title">Live event stream</span>
+        <span class="es-live">● recording</span>
+        <span class="es-spacer"></span>
+        <select class="es-filter">
+          <option>All sessions</option>
+          <option>ss-app only</option>
+          <option>angeleye only</option>
+        </select>
+      </div>
+
+      <div class="es-body">
+
+        <div class="stream-event selected">
+          <div class="se-top">
+            <span class="se-ts">11:24:31</span>
+            <span class="se-badge sb-stop">Stop</span>
+            <span class="se-session">ss-app · a1b2c3</span>
+          </div>
+          <div class="se-detail">end_turn · "Done. I created auth.ts with JWT validation..."</div>
+        </div>
+
+        <div class="stream-event">
+          <div class="se-top">
+            <span class="se-ts">11:24:28</span>
+            <span class="se-badge sb-tool_use">PostToolUse</span>
+            <span class="se-session">ss-app · a1b2c3</span>
+          </div>
+          <div class="se-detail">Bash · npm test -- auth.spec.ts</div>
+        </div>
+
+        <div class="stream-event">
+          <div class="se-top">
+            <span class="se-ts">11:24:22</span>
+            <span class="se-badge sb-tool_use">PostToolUse</span>
+            <span class="se-session">ss-app · a1b2c3</span>
+          </div>
+          <div class="se-detail">Write · server/middleware/auth.ts · 47 lines</div>
+        </div>
+
+        <div class="stream-event">
+          <div class="se-top">
+            <span class="se-ts">11:24:12</span>
+            <span class="se-badge sb-user_prompt">UserPromptSubmit</span>
+            <span class="se-session">ss-app · a1b2c3</span>
+          </div>
+          <div class="se-detail">"Add auth middleware to the login route..."</div>
+        </div>
+
+        <div class="stream-event">
+          <div class="se-top">
+            <span class="se-ts">11:23:58</span>
+            <span class="se-badge sb-stop">Stop</span>
+            <span class="se-session">brains · d4e5f6</span>
+          </div>
+          <div class="se-detail">end_turn · "Updated hooks-reference.md — StopFailure now 22nd event..."</div>
+        </div>
+
+        <div class="stream-event">
+          <div class="se-top">
+            <span class="se-ts">11:23:44</span>
+            <span class="se-badge sb-stop_failure">StopFailure</span>
+            <span class="se-session">flivideo · b2c3d4 <span style="color: var(--red)">⚠ not yet captured</span></span>
+          </div>
+          <div class="se-detail">rate_limit · turn interrupted</div>
+        </div>
+
+        <div class="stream-event">
+          <div class="se-top">
+            <span class="se-ts">11:23:31</span>
+            <span class="se-badge sb-subagent_start">SubagentStart</span>
+            <span class="se-session">ss-app · a1b2c3</span>
+          </div>
+          <div class="se-detail">explore (Haiku) · codebase orientation</div>
+        </div>
+
+        <div class="stream-event">
+          <div class="se-top">
+            <span class="se-ts">11:22:04</span>
+            <span class="se-badge sb-session_start">SessionStart</span>
+            <span class="se-session">angeleye · c3d4e5</span>
+          </div>
+          <div class="se-detail">~/dev/ad/apps/angeleye</div>
+        </div>
+
+        <div class="stream-event">
+          <div class="se-top">
+            <span class="se-ts">11:19:48</span>
+            <span class="se-badge sb-session_end">SessionEnd</span>
+            <span class="se-session">old-session · 000001</span>
+          </div>
+          <div class="se-detail">reason: exit · archived</div>
+        </div>
+
+      </div>
+
+      <!-- Raw JSON panel for selected event -->
+      <div class="raw-panel">
+        <div class="rp-header">
+          <span class="rp-title">Raw payload —</span>
+          <span class="rp-event">Stop</span>
+          <span style="color: var(--text-dim); font-size: 10px; margin-left: auto; font-family: var(--mono);">ss-app · 11:24:31</span>
+        </div>
+        <div class="rp-body">
+          <div class="raw-json"><span class="rj-key">"session_id"</span>: <span class="rj-str rj-stored">"a1b2c3d4e5f6g7h8i9j0"</span>,
+<span class="rj-key">"hook_event_name"</span>: <span class="rj-str rj-stored">"Stop"</span>,
+<span class="rj-key">"cwd"</span>: <span class="rj-str rj-stored">"/Users/david/dev/clients/supportsignal/app"</span>,
+<span class="rj-key">"transcript_path"</span>: <span class="rj-str rj-dropped">"~/.claude/projects/.../session.jsonl"</span>,
+<span class="rj-key">"reason"</span>: <span class="rj-str rj-stored">"end_turn"</span>,
+<span class="rj-key rj-stored" style="color: var(--amber); font-weight: 700;">"last_assistant_message"</span>: <span class="rj-str" style="color: var(--amber);">"Done. I created server/middleware/auth.ts with JWT validation using your JWT_SECRET env var. The middleware rejects requests missing a valid token with 401. All 12 existing auth tests pass."</span>,
+<span class="rj-key">"stop_hook_active"</span>: <span class="rj-bool">false</span>,
+<span class="rj-key rj-dropped">"agent_id"</span>: <span class="rj-null">null</span>,
+<span class="rj-key rj-dropped">"agent_type"</span>: <span class="rj-null">null</span></div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AngelEye — Observer — v6-dialogue</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --canvas:        #1a1512;
+      --surface:       #221e1a;
+      --surface-2:     #2a2520;
+      --border:        #3a342e;
+      --border-light:  #2e2822;
+      --text:          #e8e0d4;
+      --text-muted:    #7a6e62;
+      --text-dim:      #4a4038;
+      --amber:         #c8841a;
+      --amber-bg:      rgba(200,132,26,0.10);
+      --amber-border:  rgba(200,132,26,0.30);
+      --green:         #4caf6e;
+      --green-bg:      rgba(76,175,110,0.10);
+      --sky:           #60a5c8;
+      --sky-bg:        rgba(96,165,200,0.10);
+      --red:           #c84a3a;
+      --red-bg:        rgba(200,74,58,0.10);
+      --red-border:    rgba(200,74,58,0.30);
+      --purple:        #a060c8;
+      --purple-bg:     rgba(160,96,200,0.10);
+      --mono: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+      --sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+
+    html, body { height: 100%; font-family: var(--sans); background: var(--canvas); color: var(--text); font-size: 13px; line-height: 1.5; }
+
+    /* ── Shell ── */
+    .shell { display: flex; flex-direction: column; height: 100vh; }
+
+    /* ── Top bar ── */
+    .topbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      height: 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px; flex-shrink: 0;
+    }
+    .topbar-brand { font-size: 15px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--amber); }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .live-pill { background: var(--green-bg); border: 1px solid rgba(76,175,110,0.4); color: var(--green); font-size: 11px; font-weight: 600; padding: 2px 9px; border-radius: 100px; letter-spacing: 0.03em; }
+    .topbar-stat { font-size: 12px; color: var(--text-muted); font-family: var(--mono); }
+
+    /* ── Body row ── */
+    .body { display: flex; flex: 1; overflow: hidden; }
+
+    /* ── Session list ── */
+    .session-list {
+      width: 240px; flex-shrink: 0;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      display: flex; flex-direction: column;
+    }
+    .sl-header {
+      padding: 12px 16px 8px;
+      font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--text-muted); border-bottom: 1px solid var(--border-light); flex-shrink: 0;
+    }
+    .sl-item {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border-light);
+      cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: background 0.1s;
+    }
+    .sl-item:hover { background: rgba(200,132,26,0.04); }
+    .sl-item.active { border-left-color: var(--amber); background: var(--amber-bg); }
+    .sl-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; display: flex; align-items: center; gap: 6px; }
+    .sl-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .sl-dot.active { background: var(--green); }
+    .sl-dot.idle { background: var(--text-muted); }
+    .sl-meta { font-size: 11px; color: var(--text-muted); font-family: var(--mono); }
+    .sl-badge { font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 3px; letter-spacing: 0.04em; text-transform: uppercase; flex-shrink: 0; }
+    .badge-build { background: rgba(232,224,212,0.15); color: var(--text); }
+    .badge-research { background: var(--purple-bg); color: var(--purple); }
+    .badge-knowledge { background: var(--green-bg); color: var(--green); }
+
+    /* ── Main area ── */
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+    /* ── Session header strip ── */
+    .session-strip {
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 24px;
+      display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+    }
+    .session-strip-name { font-size: 14px; font-weight: 700; color: var(--text); }
+    .session-strip-dir { font-size: 11px; color: var(--text-muted); font-family: var(--mono); }
+    .session-strip-spacer { flex: 1; }
+    .strip-btn {
+      font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 5px; cursor: pointer; border: none;
+      letter-spacing: 0.03em; text-transform: uppercase;
+    }
+    .strip-btn-ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
+    .strip-btn-primary { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+
+    /* ── Conversation thread ── */
+    .thread { flex: 1; overflow-y: auto; padding: 24px 32px 40px; display: flex; flex-direction: column; gap: 0; }
+
+    /* ── Turn = prompt + tools + response ── */
+    .turn { margin-bottom: 28px; }
+
+    /* Prompt row */
+    .prompt-row {
+      display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px;
+    }
+    .prompt-badge {
+      font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px;
+      letter-spacing: 0.06em; text-transform: uppercase; flex-shrink: 0; margin-top: 1px;
+      background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border);
+    }
+    .prompt-ts { font-size: 11px; color: var(--text-muted); font-family: var(--mono); flex-shrink: 0; margin-top: 2px; }
+    .prompt-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+    .prompt-text.expanded { white-space: pre-wrap; }
+
+    /* Tool group */
+    .tool-group {
+      margin-left: 34px; margin-bottom: 10px;
+      border-left: 2px solid var(--border);
+      padding-left: 12px;
+    }
+    .tool-group-summary {
+      font-size: 11px; color: var(--text-muted); cursor: pointer;
+      display: flex; align-items: center; gap: 6px; padding: 4px 0;
+      user-select: none;
+    }
+    .tool-group-summary:hover { color: var(--text); }
+    .tg-arrow { display: inline-block; transition: transform 0.15s; color: var(--text-dim); }
+    .tg-arrow.open { transform: rotate(90deg); }
+    .tool-items { display: none; padding-top: 4px; }
+    .tool-items.open { display: flex; flex-direction: column; gap: 3px; }
+    .tool-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 3px 8px; border-radius: 4px; font-size: 11px; font-family: var(--mono);
+    }
+    .tool-item:hover { background: var(--surface-2); }
+    .tool-icon { font-size: 10px; width: 16px; text-align: center; flex-shrink: 0; }
+    .tool-name { font-weight: 600; color: var(--sky); flex-shrink: 0; }
+    .tool-detail { color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+    .tool-result-ok { color: var(--green); flex-shrink: 0; font-size: 10px; }
+    .tool-result-err { color: var(--red); flex-shrink: 0; font-size: 10px; }
+
+    /* Response block — THE NEW THING */
+    .response-block {
+      margin-left: 34px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--sky);
+      border-radius: 0 6px 6px 0;
+      padding: 10px 14px;
+    }
+    .response-header {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+    }
+    .response-badge {
+      font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 4px;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      background: var(--sky-bg); color: var(--sky); border: 1px solid rgba(96,165,200,0.3);
+    }
+    .response-ts { font-size: 11px; color: var(--text-muted); font-family: var(--mono); }
+    .response-text { font-size: 13px; color: var(--text); line-height: 1.6; }
+    .response-text.truncated { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+    .response-expand {
+      margin-top: 6px; font-size: 11px; color: var(--text-muted); cursor: pointer;
+      display: inline-flex; align-items: center; gap: 4px;
+    }
+    .response-expand:hover { color: var(--sky); }
+
+    /* Stop failure block — NEW */
+    .stop-failure {
+      margin-left: 34px; margin-bottom: 10px;
+      background: var(--red-bg);
+      border: 1px solid var(--red-border);
+      border-radius: 6px;
+      padding: 8px 12px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .sf-icon { font-size: 14px; flex-shrink: 0; }
+    .sf-badge {
+      font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 4px;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); flex-shrink: 0;
+    }
+    .sf-text { font-size: 12px; color: var(--red); flex: 1; font-family: var(--mono); }
+    .sf-ts { font-size: 11px; color: var(--text-muted); font-family: var(--mono); flex-shrink: 0; }
+
+    /* Subagent handoff */
+    .handoff-row {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 12px; margin-bottom: 10px;
+      background: var(--purple-bg);
+      border: 1px solid rgba(160,96,200,0.2);
+      border-radius: 6px; font-size: 12px;
+    }
+    .handoff-icon { color: var(--purple); font-size: 13px; flex-shrink: 0; }
+    .handoff-label { color: var(--purple); font-weight: 600; flex-shrink: 0; }
+    .handoff-detail { color: var(--text-muted); flex: 1; }
+    .handoff-ts { font-size: 11px; color: var(--text-muted); font-family: var(--mono); }
+
+    /* Timeline divider */
+    .timeline-divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 20px 0 20px 34px; color: var(--text-dim); font-size: 11px; font-family: var(--mono);
+    }
+    .timeline-divider::before, .timeline-divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--border-light);
+    }
+
+    /* Annotation strip */
+    .annotation {
+      background: rgba(200,132,26,0.06); border: 1px dashed var(--amber-border);
+      border-radius: 6px; padding: 8px 12px; margin-bottom: 16px;
+      font-size: 11px; color: var(--amber); line-height: 1.5;
+    }
+    .annotation strong { font-weight: 700; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <span class="topbar-brand">👁 AngelEye</span>
+    <div class="topbar-right">
+      <span class="live-pill">● LIVE</span>
+      <span class="topbar-stat">6 sessions · idle 4s ↑</span>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- Session list -->
+    <div class="session-list">
+      <div class="sl-header">Sessions</div>
+
+      <div class="sl-item active">
+        <div class="sl-name"><span class="sl-dot active"></span> ss-app <span class="sl-badge badge-build">Build</span></div>
+        <div class="sl-meta">supportsignal · 2s ago</div>
+      </div>
+      <div class="sl-item">
+        <div class="sl-name"><span class="sl-dot active"></span> brains <span class="sl-badge badge-knowledge">Know</span></div>
+        <div class="sl-meta">brains · 14s ago</div>
+      </div>
+      <div class="sl-item">
+        <div class="sl-name"><span class="sl-dot active"></span> angeleye <span class="sl-badge badge-build">Build</span></div>
+        <div class="sl-meta">angeleye · 31s ago</div>
+      </div>
+      <div class="sl-item">
+        <div class="sl-name"><span class="sl-dot idle"></span> flivideo <span class="sl-badge badge-research">Research</span></div>
+        <div class="sl-meta">flivideo · 5m ago</div>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+      <!-- Session strip -->
+      <div class="session-strip">
+        <span class="session-strip-name">ss-app</span>
+        <span class="session-strip-dir">~/dev/clients/supportsignal/app.supportsignal.com.au</span>
+        <span class="session-strip-spacer"></span>
+        <button class="strip-btn strip-btn-ghost">Archive</button>
+        <button class="strip-btn strip-btn-primary">🎨 Publish</button>
+      </div>
+
+      <!-- Conversation thread -->
+      <div class="thread">
+
+        <!-- Annotation explaining what's new -->
+        <div class="annotation">
+          <strong>v6 concept: Dialogue view.</strong>
+          Claude's response is now a first-class element after each turn's tool calls. Stop events are no longer buried in a collapsed group — they appear as readable responses. StopFailure events are visually distinct warnings. The thread reads as a conversation, not a tool log.
+        </div>
+
+        <!-- TURN 3 (most recent) -->
+        <div class="turn">
+          <div class="prompt-row">
+            <span class="prompt-ts">11:24:12</span>
+            <span class="prompt-badge">You</span>
+            <span class="prompt-text">Now add rate limiting — 100 req per 15 min per IP. Should apply to the auth endpoints only.</span>
+          </div>
+
+          <div class="tool-group">
+            <div class="tool-group-summary" onclick="toggleGroup(this)">
+              <span class="tg-arrow">›</span>
+              <span>3 tool calls</span>
+            </div>
+            <div class="tool-items">
+              <div class="tool-item"><span class="tool-icon">📖</span><span class="tool-name">Read</span><span class="tool-detail">server/middleware/auth.ts</span></div>
+              <div class="tool-item"><span class="tool-icon">✏️</span><span class="tool-name">Edit</span><span class="tool-detail">server/app.ts</span><span class="tool-result-ok">✓ 6 lines</span></div>
+              <div class="tool-item"><span class="tool-icon">💻</span><span class="tool-name">Bash</span><span class="tool-detail">npm install express-rate-limit</span><span class="tool-result-ok">✓ added</span></div>
+            </div>
+          </div>
+
+          <!-- ★ THE NEW THING: Claude's response -->
+          <div class="response-block">
+            <div class="response-header">
+              <span class="response-badge">Claude</span>
+              <span class="response-ts">11:24:31 · end_turn</span>
+            </div>
+            <div class="response-text truncated" id="r3">
+              Added rate limiting via <code>express-rate-limit</code>. I've applied it only to the <code>/auth/*</code> route group in <code>app.ts</code> — the limit is 100 requests per 15 minutes per IP with a <code>429 Too Many Requests</code> response and a <code>Retry-After</code> header.
+
+              The public routes and API are unaffected. Let me know if you want a stricter limit for the login endpoint specifically (brute-force protection typically uses 5–10 attempts).
+            </div>
+            <span class="response-expand" onclick="toggleExpand('r3', this)">↕ expand</span>
+          </div>
+        </div>
+
+        <!-- TURN 2 -->
+        <div class="turn">
+          <div class="prompt-row">
+            <span class="prompt-ts">11:21:07</span>
+            <span class="prompt-badge">You</span>
+            <span class="prompt-text">Add auth middleware to the login route. JWT validation, reject with 401 on fail.</span>
+          </div>
+
+          <div class="tool-group">
+            <div class="tool-group-summary" onclick="toggleGroup(this)">
+              <span class="tg-arrow open">›</span>
+              <span>5 tool calls</span>
+            </div>
+            <div class="tool-items open">
+              <div class="tool-item"><span class="tool-icon">📖</span><span class="tool-name">Read</span><span class="tool-detail">server/app.ts</span></div>
+              <div class="tool-item"><span class="tool-icon">📖</span><span class="tool-name">Read</span><span class="tool-detail">server/routes/auth.ts</span></div>
+              <div class="tool-item"><span class="tool-icon">📖</span><span class="tool-name">Read</span><span class="tool-detail">server/middleware/</span></div>
+              <div class="tool-item"><span class="tool-icon">✏️</span><span class="tool-name">Write</span><span class="tool-detail">server/middleware/auth.ts</span><span class="tool-result-ok">✓ 47 lines</span></div>
+              <div class="tool-item"><span class="tool-icon">💻</span><span class="tool-name">Bash</span><span class="tool-detail">npm test -- auth.spec.ts</span><span class="tool-result-ok">✓ 12 passed</span></div>
+            </div>
+          </div>
+
+          <div class="response-block">
+            <div class="response-header">
+              <span class="response-badge">Claude</span>
+              <span class="response-ts">11:21:20 · end_turn</span>
+            </div>
+            <div class="response-text">
+              Done. I created <code>server/middleware/auth.ts</code> with JWT validation using your existing <code>JWT_SECRET</code> env var. The middleware rejects requests missing a valid token with <code>401 Unauthorized</code>. All 12 existing auth tests pass.
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-divider">session start · 11:20:44</div>
+
+        <!-- TURN 1 — first prompt of session -->
+        <div class="turn">
+          <div class="prompt-row">
+            <span class="prompt-ts">11:20:47</span>
+            <span class="prompt-badge">You</span>
+            <span class="prompt-text">Read the CLAUDE.md and get oriented to this project. I want to add auth to the login route.</span>
+          </div>
+
+          <div class="tool-group">
+            <div class="tool-group-summary" onclick="toggleGroup(this)">
+              <span class="tg-arrow">›</span>
+              <span>4 tool calls</span>
+            </div>
+            <div class="tool-items">
+              <div class="tool-item"><span class="tool-icon">📖</span><span class="tool-name">Read</span><span class="tool-detail">CLAUDE.md</span></div>
+              <div class="tool-item"><span class="tool-icon">🔍</span><span class="tool-name">Glob</span><span class="tool-detail">server/routes/**/*.ts</span></div>
+              <div class="tool-item"><span class="tool-icon">📖</span><span class="tool-name">Read</span><span class="tool-detail">server/routes/auth.ts</span></div>
+              <div class="tool-item"><span class="tool-icon">📖</span><span class="tool-name">Read</span><span class="tool-detail">package.json</span></div>
+            </div>
+          </div>
+
+          <div class="response-block">
+            <div class="response-header">
+              <span class="response-badge">Claude</span>
+              <span class="response-ts">11:20:58 · end_turn</span>
+            </div>
+            <div class="response-text truncated" id="r1">
+              Got it. This is a Next.js + Convex app. The login route is at <code>server/routes/auth.ts</code> — currently it handles POST /auth/login and /auth/logout with no middleware. There's no existing auth middleware directory.
+
+              Ready to add JWT validation. My plan: create <code>server/middleware/auth.ts</code>, export a <code>requireAuth</code> function, and apply it to the login route. I'll use the <code>jsonwebtoken</code> package — already in your dependencies. Shall I proceed?
+            </div>
+            <span class="response-expand" onclick="toggleExpand('r1', this)">↕ expand</span>
+          </div>
+        </div>
+
+        <!-- StopFailure example — what a rate limit looks like -->
+        <div class="turn">
+          <div class="prompt-row">
+            <span class="prompt-ts">11:18:02</span>
+            <span class="prompt-badge">You</span>
+            <span class="prompt-text">Can you also review the database schema and suggest any index improvements?</span>
+          </div>
+
+          <div class="tool-group">
+            <div class="tool-group-summary" onclick="toggleGroup(this)">
+              <span class="tg-arrow">›</span>
+              <span>2 tool calls</span>
+            </div>
+            <div class="tool-items">
+              <div class="tool-item"><span class="tool-icon">📖</span><span class="tool-name">Read</span><span class="tool-detail">convex/schema.ts</span></div>
+              <div class="tool-item"><span class="tool-icon">📖</span><span class="tool-name">Read</span><span class="tool-detail">convex/functions/users.ts</span></div>
+            </div>
+          </div>
+
+          <!-- ★ StopFailure: rate limit hit, no response rendered -->
+          <div class="stop-failure">
+            <span class="sf-icon">⚠</span>
+            <span class="sf-badge">API Error</span>
+            <span class="sf-text">rate_limit — turn interrupted, no response generated</span>
+            <span class="sf-ts">11:18:19</span>
+          </div>
+        </div>
+
+        <!-- Subagent handoff example -->
+        <div class="handoff-row">
+          <span class="handoff-icon">⇢</span>
+          <span class="handoff-label">Subagent stopped</span>
+          <span class="handoff-detail">explore (Haiku) · codebase orientation complete</span>
+          <span class="handoff-ts">11:17:55</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleGroup(el) {
+    const arrow = el.querySelector('.tg-arrow');
+    const items = el.nextElementSibling;
+    arrow.classList.toggle('open');
+    items.classList.toggle('open');
+  }
+
+  function toggleExpand(id, btn) {
+    const el = document.getElementById(id);
+    el.classList.toggle('truncated');
+    btn.textContent = el.classList.contains('truncated') ? '↕ expand' : '↕ collapse';
+  }
+</script>
+</body>
+</html>
