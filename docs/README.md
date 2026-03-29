@@ -17,6 +17,8 @@ Built on AppyStack (RVETS: React 19 + Vite 7 + Express 5 + TypeScript + Socket.i
 | [Backlog](planning/BACKLOG.md)                                             | 44 items (31 done, 11 pending, 2 deferred)                                  |
 | [Campaign Assessment](planning/angeleye-analysis-1/assessment.md)          | Full 924-session analysis results                                           |
 | [Campaign Dashboard](planning/angeleye-analysis-1/campaign-dashboard.html) | Interactive data visualization (Chart.js)                                   |
+| [Workflow Requirements](planning/workflow-feature-requirements.md)         | Workflows view — stations, schema, session router, backtracking, dev tools  |
+| [Workflow Automation Harness](planning/workflow-automation-harness.md)     | Maps 7 Claude Code harness capabilities to workflow automation phases       |
 
 ## What's Built
 

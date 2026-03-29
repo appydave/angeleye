@@ -1,0 +1,65 @@
+{
+  "id": "epic_zero",
+  "name": "Epic Zero (Maintenance)",
+  "domain": "bmad-v6",
+  "ceremony_level": "minimal",
+  "stations": [
+    {
+      "position": 0,
+      "action_code": "WN",
+      "role": "planner",
+      "identity": "Bob",
+      "requires_fresh_session": true,
+      "can_spawn_subagents": false,
+      "backtrack_target": false
+    },
+    {
+      "position": 1,
+      "action_code": "CS",
+      "role": "planner",
+      "identity": "Bob",
+      "requires_fresh_session": true,
+      "can_spawn_subagents": false,
+      "backtrack_target": true
+    },
+    {
+      "position": 2,
+      "action_code": "DS",
+      "role": "builder",
+      "identity": "Amelia",
+      "requires_fresh_session": true,
+      "can_spawn_subagents": true,
+      "backtrack_target": true
+    },
+    {
+      "position": 3,
+      "action_code": "CU",
+      "role": "advisor",
+      "identity": "Lisa",
+      "requires_fresh_session": true,
+      "can_spawn_subagents": false,
+      "backtrack_target": false
+    },
+    {
+      "position": 4,
+      "action_code": "SHIP",
+      "role": "shipper",
+      "identity": null,
+      "requires_fresh_session": true,
+      "can_spawn_subagents": false,
+      "backtrack_target": false
+    }
+  ],
+  "skip_rules": [
+    {
+      "station_action": "VS",
+      "condition": "Story scope is small and well-defined (e.g., rename + extract)"
+    },
+    {
+      "station_action": "DR",
+      "condition": "Changes are mechanical — lighter review pass may substitute"
+    },
+    { "station_action": "SAT-CS", "condition": "Pure refactor with zero new user-facing behavior" },
+    { "station_action": "SAT-RA", "condition": "Existing tests prove equivalence" }
+  ]
+}

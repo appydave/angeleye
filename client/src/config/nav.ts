@@ -20,6 +20,7 @@ export const navConfig: NavConfig = [
     items: [
       { key: 'observer', label: 'Observer', tier: 'primary' },
       { key: 'organiser', label: 'Organiser', tier: 'primary' },
+      { key: 'workflows', label: 'Workflows', tier: 'primary' },
     ],
   },
   {

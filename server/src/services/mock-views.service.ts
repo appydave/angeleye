@@ -11,6 +11,8 @@ import type { RegistryEntry, AffinityGroup, WorkspaceEntry } from '@appystack/sh
 import { readRegistry, getDataDir } from './registry.service.js';
 import { readWorkspaces } from './workspace.service.js';
 import { getSessionEvents } from './sessions.service.js';
+import { readWorkflows } from './workflow.service.js';
+import { getWorkflowTypes } from './workflow-type.service.js';
 // logger available via '../config/logger.js' if needed
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -798,5 +800,53 @@ export async function getStoryChainsView() {
     totalStories: stories.length,
     totalEpics: epics.length,
     epics,
+  };
+}
+
+// ── Workflows View ──────────────────────────────────────────────────────────
+
+export async function getWorkflowsView() {
+  const workflows = await readWorkflows();
+  const types = await getWorkflowTypes();
+
+  // Build a type lookup for enrichment
+  const typeMap = new Map(types.map((t) => [t.id, t]));
+
+  const instances = workflows.map((w) => {
+    const type = typeMap.get(w.workflow_type_id);
+    const completedCount = w.stations.filter((s) => s.state === 'completed').length;
+    const totalCount = w.stations.length;
+    const currentStation =
+      w.stations.find((s) => s.state === 'in_progress') ??
+      w.stations.find((s) => s.state === 'not_started');
+
+    return {
+      instanceId: w.instance_id,
+      workItemId: w.work_item_id,
+      workItemLabel: w.work_item_label,
+      workflowType: type?.name ?? w.workflow_type_id,
+      status: w.status,
+      progress: `${completedCount}/${totalCount}`,
+      currentStation: currentStation
+        ? {
+            actionCode: currentStation.action_code,
+            role:
+              type?.stations.find((s) => s.position === currentStation.position)?.role ?? 'unknown',
+            identity:
+              type?.stations.find((s) => s.position === currentStation.position)?.identity ?? null,
+          }
+        : null,
+      sessionCount: w.stations.reduce((sum, s) => sum + s.session_ids.length, 0),
+      backtrackCount: w.backtracks.length,
+      createdAt: w.created_at,
+      updatedAt: w.updated_at,
+    };
+  });
+
+  return {
+    totalCount: instances.length,
+    activeCount: instances.filter((i) => i.status === 'in_progress').length,
+    types: types.map((t) => ({ id: t.id, name: t.name, stationCount: t.stations.length })),
+    instances,
   };
 }

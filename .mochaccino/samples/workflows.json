@@ -1,0 +1,40 @@
+{
+  "totalCount": 2,
+  "activeCount": 1,
+  "types": [
+    { "id": "regular_story", "name": "Regular Story", "stationCount": 9 },
+    { "id": "lightweight_story", "name": "Lightweight Story", "stationCount": 6 }
+  ],
+  "instances": [
+    {
+      "instanceId": "sample-wf-001",
+      "workItemId": "2.5",
+      "workItemLabel": "Real-time notification preferences",
+      "workflowType": "Regular Story",
+      "status": "in_progress",
+      "progress": "4/9",
+      "currentStation": {
+        "actionCode": "DR",
+        "role": "reviewer",
+        "identity": "Nate"
+      },
+      "sessionCount": 6,
+      "backtrackCount": 1,
+      "createdAt": "2026-03-25T09:00:00.000Z",
+      "updatedAt": "2026-03-29T14:30:00.000Z"
+    },
+    {
+      "instanceId": "sample-wf-002",
+      "workItemId": "2.4",
+      "workItemLabel": "Session bookmark export",
+      "workflowType": "Regular Story",
+      "status": "closed",
+      "progress": "9/9",
+      "currentStation": null,
+      "sessionCount": 11,
+      "backtrackCount": 0,
+      "createdAt": "2026-03-20T08:00:00.000Z",
+      "updatedAt": "2026-03-24T16:45:00.000Z"
+    }
+  ]
+}

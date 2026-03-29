@@ -21,6 +21,7 @@ import {
   getChainStoryPipelineView,
   getChainSessionDetailView,
   getStoryChainsView,
+  getWorkflowsView,
 } from '../services/mock-views.service.js';
 
 const router = Router();
@@ -179,6 +180,21 @@ router.get('/api/mock-views/story-chains/:storyId', async (req, res, next) => {
     return apiFailure(res, 'Story chain not found', 404);
   } catch (err) {
     logger.error({ err }, 'mock-views: story-chains/:storyId failed');
+    next(err);
+  }
+});
+
+router.get('/api/mock-views/workflows', async (req, res, next) => {
+  try {
+    if (!wantsSample(req)) {
+      const data = await getWorkflowsView();
+      if (data.totalCount > 0) return apiSuccessWithSource(res, data, 'live');
+    }
+    const sample = await loadSample('workflows');
+    if (sample) return apiSuccessWithSource(res, sample, 'sample');
+    apiSuccessWithSource(res, await getWorkflowsView(), 'live');
+  } catch (err) {
+    logger.error({ err }, 'mock-views: workflows failed');
     next(err);
   }
 });

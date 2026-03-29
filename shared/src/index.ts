@@ -25,3 +25,14 @@ export type {
   AffinityConfidence,
 } from './angeleye.js';
 export type { GitSyncState, GitSyncStatus, GitPullResult, CommitSummary } from './git-sync.js';
+export type {
+  CeremonyLevel,
+  StationState,
+  WorkflowStatus,
+  SkipRule,
+  StationConfig,
+  WorkflowType,
+  StationInstance,
+  BacktrackRecord,
+  WorkflowInstance,
+} from './angeleye.js';

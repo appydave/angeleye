@@ -1,0 +1,90 @@
+{
+  "id": "regular_story",
+  "name": "Regular Story",
+  "domain": "bmad-v6",
+  "ceremony_level": "full",
+  "stations": [
+    {
+      "position": 0,
+      "action_code": "WN",
+      "role": "planner",
+      "identity": "Bob",
+      "requires_fresh_session": true,
+      "can_spawn_subagents": false,
+      "backtrack_target": false
+    },
+    {
+      "position": 1,
+      "action_code": "CS",
+      "role": "planner",
+      "identity": "Bob",
+      "requires_fresh_session": true,
+      "can_spawn_subagents": false,
+      "backtrack_target": true
+    },
+    {
+      "position": 2,
+      "action_code": "VS",
+      "role": "planner",
+      "identity": "Bob",
+      "requires_fresh_session": true,
+      "can_spawn_subagents": false,
+      "backtrack_target": false
+    },
+    {
+      "position": 3,
+      "action_code": "DS",
+      "role": "builder",
+      "identity": "Amelia",
+      "requires_fresh_session": true,
+      "can_spawn_subagents": true,
+      "backtrack_target": true
+    },
+    {
+      "position": 4,
+      "action_code": "DR",
+      "role": "reviewer",
+      "identity": "Nate",
+      "requires_fresh_session": true,
+      "can_spawn_subagents": true,
+      "backtrack_target": false
+    },
+    {
+      "position": 5,
+      "action_code": "SAT-CS",
+      "role": "tester",
+      "identity": "Taylor",
+      "requires_fresh_session": false,
+      "can_spawn_subagents": false,
+      "backtrack_target": false
+    },
+    {
+      "position": 6,
+      "action_code": "SAT-RA",
+      "role": "tester",
+      "identity": "Taylor",
+      "requires_fresh_session": false,
+      "can_spawn_subagents": false,
+      "backtrack_target": false
+    },
+    {
+      "position": 7,
+      "action_code": "CU",
+      "role": "advisor",
+      "identity": "Lisa",
+      "requires_fresh_session": true,
+      "can_spawn_subagents": false,
+      "backtrack_target": false
+    },
+    {
+      "position": 8,
+      "action_code": "SHIP",
+      "role": "shipper",
+      "identity": null,
+      "requires_fresh_session": true,
+      "can_spawn_subagents": false,
+      "backtrack_target": false
+    }
+  ],
+  "skip_rules": []
+}

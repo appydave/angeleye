@@ -206,3 +206,71 @@ export interface AffinityGroup {
   created_at: string;
   metadata?: Record<string, unknown>;
 }
+
+// ── Workflow Types ──────────────────────────────────────────────────────────
+// Factory workflow model: workflow types (configs), stations, and runtime instances.
+// See brains/angeleye/workflow-model.md for conceptual docs.
+
+export type CeremonyLevel = 'full' | 'reduced' | 'minimal';
+
+export type StationState = 'not_started' | 'in_progress' | 'completed' | 'skipped' | 'backtracked';
+
+export type WorkflowStatus = 'not_started' | 'in_progress' | 'closed';
+
+export interface SkipRule {
+  station_action: string;
+  condition: string;
+}
+
+export interface StationConfig {
+  position: number;
+  action_code: string;
+  role: string;
+  identity: string | null;
+  requires_fresh_session: boolean;
+  can_spawn_subagents: boolean;
+  backtrack_target: boolean;
+}
+
+export interface WorkflowType {
+  id: string;
+  name: string;
+  domain: string;
+  stations: StationConfig[];
+  ceremony_level: CeremonyLevel;
+  skip_rules: SkipRule[];
+}
+
+export interface StationInstance {
+  position: number;
+  action_code: string;
+  state: StationState;
+  session_ids: string[];
+  started_at: string | null;
+  completed_at: string | null;
+  duration_ms: number | null;
+  context_used_pct: number | null;
+  subagent_count: number;
+  verdict: string | null;
+}
+
+export interface BacktrackRecord {
+  from_station: number;
+  to_station: number;
+  reason: string;
+  timestamp: string;
+}
+
+export interface WorkflowInstance {
+  instance_id: string;
+  workflow_type_id: string;
+  work_item_id: string;
+  work_item_label: string;
+  status: WorkflowStatus;
+  current_station: number;
+  created_at: string;
+  updated_at: string;
+  stations: StationInstance[];
+  backtracks: BacktrackRecord[];
+  metadata: Record<string, unknown>;
+}
