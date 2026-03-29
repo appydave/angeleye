@@ -299,11 +299,17 @@ const phases: Phase[] = [
   },
   {
     title: 'Analysis Dashboards',
-    tag: '2 designs',
-    dates: '2026-03-23',
-    desc: 'Early campaign analysis views — infographic and dashboard explorations for understanding session patterns at scale.',
+    tag: '3 designs',
+    dates: '2026-03-23 to 2026-03-29',
+    desc: 'Campaign analysis views — static dashboards, infographics, and hybrid overlays that compare live registry data against analysis campaign mock data.',
     type: 'feature',
     items: [
+      {
+        name: 'campaign-dashboard-hybrid',
+        desc: 'Hybrid dashboard — live registry data overlaid on mock data with LIVE/MOCK/PARTIAL badges and coverage summary',
+        path: `${MOCKUP_BASE}/campaign-dashboard-hybrid/index.html`,
+        featured: true,
+      },
       {
         name: 'campaign-dashboard',
         desc: 'Campaign analysis dashboard — session metrics and patterns',
@@ -723,7 +729,7 @@ export default function MockupsView() {
         <div className="ml-auto flex items-center gap-3">
           <FilterBar filter={filter} onFilter={setFilter} counts={counts} />
           <span className="text-[11px] tracking-wide" style={{ color: '#6a5e52' }}>
-            Mar 15 — Mar 28, 2026
+            Mar 15 — Mar 29, 2026
           </span>
           <span className="bg-primary text-foreground text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
             {totalMockups} mockups

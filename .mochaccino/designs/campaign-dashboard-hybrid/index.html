@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngelEye Campaign Dashboard — Hybrid View</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  :root {
+    --bg-page: #e8e0d4;
+    --bg-surface: #ede7dc;
+    --bg-card: #f5f1eb;
+    --bg-hover: #ddd6cc;
+    --border: #d4cdc4;
+    --border-raised: #ccc5bb;
+    --text-primary: #2a2018;
+    --text-secondary: #7a6e5e;
+    --text-muted: #9ca3af;
+    --accent-amber: #c8841a;
+    --accent-amber-fg: #fff;
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --destructive: #c0392b;
+    --info: #3b82f6;
+    --purple: #8b5cf6;
+    --brand-brown: #342d2d;
+    --brand-gold: #ccba9d;
+    --brand-yellow: #ffde59;
+    --brand-blue: #2E91FC;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-page);
+    color: var(--text-primary);
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.5;
+    padding: 24px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 12px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  header h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+  }
+
+  header p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+
+  /* ── Summary bar ── */
+  .summary-bar {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 24px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .summary-bar .coverage-text {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .summary-bar .coverage-text .count {
+    color: var(--accent-amber);
+    font-weight: 700;
+  }
+
+  .summary-bar .legend {
+    display: flex;
+    gap: 18px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+  }
+
+  .summary-bar .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .summary-bar .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .summary-bar .legend-dot.live { background: var(--success); }
+  .summary-bar .legend-dot.partial { background: var(--warning); }
+  .summary-bar .legend-dot.mock { background: var(--destructive); }
+
+  /* ── API error banner ── */
+  .api-error-banner {
+    background: #c0392b18;
+    border: 1px solid var(--destructive);
+    border-radius: 8px;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    color: var(--destructive);
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-align: center;
+    display: none;
+  }
+
+  /* ── Grid ── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 20px;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  /* ── Card ── */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(42, 32, 24, 0.06);
+    transition: background 0.15s, box-shadow 0.15s;
+    position: relative;
+  }
+
+  .card:hover {
+    background: var(--bg-surface);
+    box-shadow: 0 2px 6px rgba(42, 32, 24, 0.1);
+  }
+
+  .card h2 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    padding-right: 70px; /* room for badge */
+  }
+
+  .card.wide { grid-column: span 2; }
+  .card.full { grid-column: 1 / -1; }
+
+  /* ── Data source styling ── */
+  .card.source-live {
+    border-left: 4px solid var(--accent-amber);
+  }
+
+  .card.source-mock {
+    border-left: 4px dashed #d4cdc4;
+  }
+
+  .card.source-partial {
+    border-left: 4px solid var(--accent-amber);
+  }
+
+  .card.source-mock .chart-wrap,
+  .card.source-mock .overview-grid {
+    opacity: 0.6;
+  }
+
+  /* ── Badge ── */
+  .source-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+  }
+
+  .source-badge .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+  }
+
+  .source-badge .dot.live { background: var(--success); }
+  .source-badge .dot.partial { background: var(--warning); }
+  .source-badge .dot.mock { background: var(--destructive); }
+
+  /* ── Overview card ── */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+  }
+
+  .stat-box {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+    position: relative;
+  }
+
+  .stat-box .value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-amber);
+  }
+
+  .stat-box .label {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-top: 2px;
+  }
+
+  .stat-box.teal .value { color: var(--success); }
+  .stat-box.amber .value { color: var(--warning); }
+  .stat-box.rose .value { color: var(--destructive); }
+  .stat-box.purple .value { color: var(--purple); }
+  .stat-box.green .value { color: var(--success); }
+
+  .stat-box .source-indicator {
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .stat-box .source-indicator.live { background: var(--success); }
+  .stat-box .source-indicator.mock { background: var(--destructive); }
+
+  .chart-wrap {
+    position: relative;
+    width: 100%;
+  }
+
+  .chart-wrap.doughnut {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .note {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    margin-top: 10px;
+    font-style: italic;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+  }
+
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr; }
+    .card.wide, .card.full { grid-column: span 1; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>AngelEye Campaign Dashboard — Hybrid View</h1>
+  <p>Live registry data overlaid on angeleye-analysis-1 mock data</p>
+</header>
+
+<div id="api-error-banner" class="api-error-banner">
+  API unreachable — showing mock data only
+</div>
+
+<div id="summary-bar" class="summary-bar">
+  <div class="coverage-text">Loading coverage data...</div>
+  <div class="legend">
+    <span class="legend-item"><span class="legend-dot live"></span> LIVE</span>
+    <span class="legend-item"><span class="legend-dot partial"></span> PARTIAL</span>
+    <span class="legend-item"><span class="legend-dot mock"></span> MOCK</span>
+  </div>
+</div>
+
+<div class="grid">
+
+  <!-- 1. Campaign Overview -->
+  <div class="card full" id="card-overview">
+    <h2>Campaign Overview</h2>
+    <span class="source-badge"><span class="dot partial"></span> PARTIAL</span>
+    <div class="overview-grid" id="overview-grid"></div>
+  </div>
+
+  <!-- 2. Session Type Distribution -->
+  <div class="card" id="card-session-types">
+    <h2>Session Type Distribution</h2>
+    <span class="source-badge"><span class="dot live"></span> LIVE</span>
+    <div class="chart-wrap doughnut"><canvas id="sessionTypeChart"></canvas></div>
+    <p class="note" id="session-type-note"></p>
+  </div>
+
+  <!-- 3. Session Scale -->
+  <div class="card" id="card-session-scale">
+    <h2>Session Scale</h2>
+    <span class="source-badge"><span class="dot live"></span> LIVE</span>
+    <div class="chart-wrap"><canvas id="sessionScaleChart"></canvas></div>
+  </div>
+
+  <!-- 4. Delegation Style (C08) -->
+  <div class="card" id="card-delegation">
+    <h2>Delegation Style (C08)</h2>
+    <span class="source-badge"><span class="dot mock"></span> MOCK</span>
+    <div class="chart-wrap doughnut"><canvas id="delegationChart"></canvas></div>
+  </div>
+
+  <!-- 5. Initiation Source (C11) -->
+  <div class="card" id="card-initiation">
+    <h2>Initiation Source (C11)</h2>
+    <span class="source-badge"><span class="dot mock"></span> MOCK</span>
+    <div class="chart-wrap"><canvas id="initiationChart"></canvas></div>
+  </div>
+
+  <!-- 6. Session Continuity (C09) -->
+  <div class="card" id="card-continuity">
+    <h2>Session Continuity (C09)</h2>
+    <span class="source-badge"><span class="dot mock"></span> MOCK</span>
+    <div class="chart-wrap"><canvas id="continuityChart"></canvas></div>
+  </div>
+
+  <!-- 7. Output Type (C10) -->
+  <div class="card" id="card-output-type">
+    <h2>Output Type (C10)</h2>
+    <span class="source-badge"><span class="dot mock"></span> MOCK</span>
+    <div class="chart-wrap doughnut"><canvas id="outputTypeChart"></canvas></div>
+  </div>
+
+  <!-- 8. Autonomy Ratio -->
+  <div class="card" id="card-autonomy">
+    <h2>Autonomy Ratio</h2>
+    <span class="source-badge"><span class="dot mock"></span> MOCK</span>
+    <div class="chart-wrap"><canvas id="autonomyChart"></canvas></div>
+  </div>
+
+  <!-- 9. Session Liveness -->
+  <div class="card" id="card-liveness">
+    <h2>Session Liveness</h2>
+    <span class="source-badge"><span class="dot mock"></span> MOCK</span>
+    <div class="chart-wrap"><canvas id="livenessChart"></canvas></div>
+  </div>
+
+  <!-- 10. Top 15 Projects -->
+  <div class="card wide" id="card-top-projects">
+    <h2>Top 15 Projects</h2>
+    <span class="source-badge"><span class="dot live"></span> LIVE</span>
+    <div class="chart-wrap"><canvas id="projectsChart"></canvas></div>
+  </div>
+
+  <!-- 11. Key Predicates -->
+  <div class="card wide" id="card-predicates">
+    <h2>Key Predicates</h2>
+    <span class="source-badge"><span class="dot partial"></span> PARTIAL</span>
+    <div class="chart-wrap"><canvas id="predicatesChart"></canvas></div>
+    <p class="note" id="predicates-note"></p>
+  </div>
+
+  <!-- 12. BUILD Accuracy by Scale -->
+  <div class="card" id="card-build-accuracy">
+    <h2>BUILD Accuracy by Scale</h2>
+    <span class="source-badge"><span class="dot mock"></span> MOCK</span>
+    <div class="chart-wrap"><canvas id="accuracyChart"></canvas></div>
+  </div>
+
+  <!-- 13. Machine Comparison -->
+  <div class="card" id="card-machine">
+    <h2>Machine Comparison</h2>
+    <span class="source-badge"><span class="dot mock"></span> MOCK</span>
+    <div class="chart-wrap"><canvas id="machineChart"></canvas></div>
+  </div>
+
+</div>
+
+<footer>
+  AngelEye — Ambient Intelligence for Claude Code — Hybrid dashboard (live + mock) — 2026-03-29
+</footer>
+
+<script>
+// ── Chart.js defaults (v2-linen theme) ──
+Chart.defaults.color = '#7a6e5e';
+Chart.defaults.borderColor = 'rgba(212, 205, 196, 0.5)';
+Chart.defaults.font.family = "'Segoe UI', -apple-system, sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.plugins.legend.labels.boxWidth = 12;
+Chart.defaults.plugins.legend.labels.padding = 10;
+
+const PALETTE = [
+  '#c8841a', '#342d2d', '#2E91FC', '#c0392b', '#8b5cf6',
+  '#22c55e', '#ccba9d', '#f59e0b', '#3b82f6', '#7a6e5e',
+  '#d4cdc4', '#ffde59'
+];
+
+const PALETTE_MUTED = [
+  'rgba(200,132,26,0.75)', 'rgba(52,45,45,0.75)', 'rgba(46,145,252,0.75)',
+  'rgba(192,57,43,0.75)', 'rgba(139,92,246,0.75)', 'rgba(34,197,94,0.75)',
+  'rgba(204,186,157,0.75)', 'rgba(245,158,11,0.75)', 'rgba(59,130,246,0.75)',
+  'rgba(122,110,94,0.75)', 'rgba(212,205,196,0.75)', 'rgba(255,222,89,0.75)'
+];
+
+const gridColor = 'rgba(212, 205, 196, 0.4)';
+
+function barOpts(horizontal = false) {
+  return {
+    indexAxis: horizontal ? 'y' : 'x',
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { color: gridColor } },
+      y: { grid: { color: gridColor } }
+    }
+  };
+}
+
+function doughnutOpts() {
+  return {
+    responsive: true,
+    maintainAspectRatio: true,
+    cutout: '55%',
+    plugins: {
+      legend: { position: 'bottom', labels: { font: { size: 10 } } }
+    }
+  };
+}
+
+// ── API base URL ──
+const API_BASE = `${window.location.protocol}//${window.location.hostname}:5051`;
+
+// ── Section source tracking ──
+// Each section: { id, source: 'live'|'mock'|'partial' }
+const sections = [
+  { id: 'overview', label: 'Campaign Overview', source: 'partial' },
+  { id: 'session-types', label: 'Session Types', source: 'live' },
+  { id: 'session-scale', label: 'Session Scale', source: 'live' },
+  { id: 'top-projects', label: 'Top Projects', source: 'live' },
+  { id: 'predicates', label: 'Key Predicates', source: 'partial' },
+  { id: 'delegation', label: 'Delegation Style', source: 'mock' },
+  { id: 'initiation', label: 'Initiation Source', source: 'mock' },
+  { id: 'continuity', label: 'Session Continuity', source: 'mock' },
+  { id: 'output-type', label: 'Output Type', source: 'mock' },
+  { id: 'autonomy', label: 'Autonomy Ratio', source: 'mock' },
+  { id: 'liveness', label: 'Session Liveness', source: 'mock' },
+  { id: 'build-accuracy', label: 'BUILD Accuracy', source: 'mock' },
+  { id: 'machine', label: 'Machine Comparison', source: 'mock' },
+];
+
+function updateSummaryBar() {
+  const live = sections.filter(s => s.source === 'live').length;
+  const partial = sections.filter(s => s.source === 'partial').length;
+  const mock = sections.filter(s => s.source === 'mock').length;
+  const total = sections.length;
+  const populated = live + partial;
+  const pct = Math.round((populated / total) * 100);
+
+  const bar = document.getElementById('summary-bar');
+  bar.querySelector('.coverage-text').innerHTML =
+    `<span class="count">${populated}</span> of <span class="count">${total}</span> dimensions populated from live data (<span class="count">${pct}%</span> coverage) &mdash; ${live} live, ${partial} partial, ${mock} mock`;
+}
+
+function setAllMock() {
+  sections.forEach(s => s.source = 'mock');
+  document.querySelectorAll('.card').forEach(card => {
+    card.classList.remove('source-live', 'source-partial');
+    card.classList.add('source-mock');
+    const badge = card.querySelector('.source-badge');
+    if (badge) {
+      badge.innerHTML = '<span class="dot mock"></span> MOCK';
+    }
+  });
+  updateSummaryBar();
+}
+
+function applyCardStyling(cardId, source) {
+  const card = document.getElementById('card-' + cardId);
+  if (!card) return;
+  card.classList.remove('source-live', 'source-mock', 'source-partial');
+  card.classList.add('source-' + source);
+  const badge = card.querySelector('.source-badge');
+  if (badge) {
+    badge.innerHTML = `<span class="dot ${source}"></span> ${source.toUpperCase()}`;
+  }
+}
+
+// ── Fetch helpers ──
+async function fetchJSON(url) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const json = await res.json();
+  if (json.status !== 'ok') throw new Error('API status not ok');
+  return json.data;
+}
+
+// ── Aggregate helpers ──
+function countField(sessions, field) {
+  const counts = {};
+  for (const s of sessions) {
+    const val = s[field] || 'unclassified';
+    counts[val] = (counts[val] || 0) + 1;
+  }
+  return counts;
+}
+
+function countBoolField(sessions, field) {
+  let trueCount = 0;
+  let total = 0;
+  for (const s of sessions) {
+    if (s[field] !== undefined && s[field] !== null) {
+      total++;
+      if (s[field]) trueCount++;
+    }
+  }
+  return { trueCount, total };
+}
+
+function topN(counts, n) {
+  return Object.entries(counts)
+    .filter(([k]) => k && k !== 'unclassified' && k !== 'undefined' && k !== 'null')
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, n);
+}
+
+// ── Main ──
+(async function main() {
+  let mockData = null;
+  let liveStats = null;
+  let liveSessions = null;
+  let apiReachable = true;
+
+  // Fetch mock data
+  try {
+    const mockRes = await fetch(`${API_BASE}/api/mock-views/campaign-dashboard`);
+    if (!mockRes.ok) throw new Error('Mock fetch failed');
+    const mockJson = await mockRes.json();
+    if (mockJson.status === 'ok') {
+      mockData = mockJson.data;
+    } else {
+      mockData = mockJson; // might be raw JSON without wrapper
+    }
+  } catch (e) {
+    // Fallback — inline mock data
+    mockData = null;
+  }
+
+  // If we couldn't get mock data from API, use hardcoded fallback
+  if (!mockData || !mockData.sessionTypes) {
+    mockData = {
+      campaignOverview: { totalSessions: 924, machines: 2, wavesAndBackwardPass: 14, m4Mini: 807, m4Pro: 116, unknownMachine: 1, schemaV2: 615, noSchemaVersion: 309 },
+      sessionTypes: { labels: ['BUILD','KNOWLEDGE','RESEARCH','ORIENTATION','OPERATIONS','META','SYSOPS','PLANNING','MIXED','SKILL','SETUP','Unknown'], values: [77,80,79,56,53,37,24,23,19,10,9,418] },
+      sessionScale: { labels: ['light','micro','moderate','heavy','marathon','trivial','unknown'], values: [161,150,140,46,7,2,418] },
+      delegationStyle: { labels: ['Conversational','Directive','Orchestrated','Autonomous'], values: [417,335,91,58] },
+      initiationSource: { labels: ['user_typed','voice_dictated','handover_paste','skill_invoked','agent_dispatched'], values: [538,168,131,69,12] },
+      sessionContinuity: { labels: ['fresh','handover_paste','compaction','skill_launcher','recall'], values: [587,152,83,63,25] },
+      outputType: { labels: ['Conversation Only','Code Changes','Knowledge Synthesis','Mixed','New Artifacts'], values: [278,233,171,126,114] },
+      autonomyRatio: { labels: ['conversational (<=3)','guided (3-8)','delegated (8-15)','autonomous (>15)','unknown'], values: [223,127,86,47,441] },
+      sessionLiveness: { labels: ['focused','parked','zombie','intermittent','unknown'], values: [204,84,65,38,533] },
+      topProjects: { labels: ['brains','prompt.supportsignal.com.au','signal-studio','app.supportsignal.com.au','appystack','angeleye','flihub','appydave-plugins','prompt.supportsignal','v-appydave','app.supportsignal','joy-juice','flideck','appydave.com','deckhand'], values: [327,112,48,40,38,33,31,28,22,19,19,15,13,11,10] },
+      keyPredicates: { labels: ['P17 handover context','P18 cross-project reads','P19 web research','P20 parallel subagents','P21 task orchestration','P22 git outcome','frustration signals','voice dictation artifacts','multi-phase','cwd incidental','feature construction'], trueValues: [175,74,73,35,158,77,124,193,240,191,87], totalEvaluated: [918,573,910,716,910,822,502,278,502,475,495] },
+      buildAccuracy: { labels: ['micro','light','moderate','heavy','marathon'], values: [0,12,38,60,65] },
+      machineComparison: { labels: ['Sessions','BUILD','KNOWLEDGE','RESEARCH','OPERATIONS','Schema v2'], datasets: { m4Mini: [807,62,68,65,45,520], m4Pro: [116,15,12,14,8,95] } }
+    };
+  }
+
+  // Fetch live data
+  try {
+    const [statsData, sessionsData] = await Promise.all([
+      fetchJSON(`${API_BASE}/api/stats`),
+      fetchJSON(`${API_BASE}/api/sessions?limit=2000`)
+    ]);
+    liveStats = statsData;
+    liveSessions = sessionsData.sessions || [];
+  } catch (e) {
+    apiReachable = false;
+    document.getElementById('api-error-banner').style.display = 'block';
+    setAllMock();
+  }
+
+  // ── Build each chart ──
+
+  // Helper: get live or mock data for a section
+  function useLive(sectionId) {
+    return apiReachable && (
+      sectionId === 'session-types' ||
+      sectionId === 'session-scale' ||
+      sectionId === 'top-projects'
+    );
+  }
+
+  // ── 1. Campaign Overview (PARTIAL) ──
+  {
+    const overview = mockData.campaignOverview;
+    const liveTotal = apiReachable && liveStats ? liveStats.total : null;
+
+    const statBoxes = [
+      { value: liveTotal !== null ? liveTotal : overview.totalSessions, label: 'Total Sessions', cls: '', live: liveTotal !== null },
+      { value: overview.machines, label: 'Machines', cls: 'teal', live: false },
+      { value: overview.wavesAndBackwardPass, label: 'Waves + Backward Pass', cls: 'amber', live: false },
+      { value: overview.m4Mini, label: 'M4 Mini', cls: 'purple', live: false },
+      { value: overview.m4Pro, label: 'M4 Pro', cls: 'rose', live: false },
+      { value: overview.unknownMachine, label: 'Unknown Machine', cls: '', live: false },
+      { value: overview.schemaV2, label: 'Schema v2', cls: 'green', live: false },
+      { value: overview.noSchemaVersion, label: 'No Schema Version', cls: '', live: false },
+    ];
+
+    const grid = document.getElementById('overview-grid');
+    grid.innerHTML = statBoxes.map(sb => `
+      <div class="stat-box ${sb.cls}">
+        <span class="source-indicator ${sb.live ? 'live' : 'mock'}"></span>
+        <div class="value">${sb.value}</div>
+        <div class="label">${sb.label}</div>
+      </div>
+    `).join('');
+
+    applyCardStyling('overview', 'partial');
+  }
+
+  // ── 2. Session Type Distribution (LIVE) ──
+  {
+    let labels, values, noteText;
+
+    if (apiReachable && liveStats) {
+      // Map OPS -> OPERATIONS for display consistency
+      const typeMap = { ...liveStats.byType };
+      if (typeMap.OPS) {
+        typeMap.OPERATIONS = typeMap.OPS;
+        delete typeMap.OPS;
+      }
+      // Sort by value descending, put unclassified last
+      const entries = Object.entries(typeMap).sort((a, b) => {
+        if (a[0] === 'unclassified') return 1;
+        if (b[0] === 'unclassified') return -1;
+        return b[1] - a[1];
+      });
+      labels = entries.map(e => e[0]);
+      values = entries.map(e => e[1]);
+      const unclassified = typeMap.unclassified || 0;
+      noteText = `Live data from registry. ${unclassified} "unclassified" are sessions without classification.`;
+      applyCardStyling('session-types', 'live');
+    } else {
+      labels = mockData.sessionTypes.labels;
+      values = mockData.sessionTypes.values;
+      noteText = '418 "unknown" are mostly micro/trivial sessions without classification (mock data)';
+      applyCardStyling('session-types', 'mock');
+      const s = sections.find(s => s.id === 'session-types');
+      if (s) s.source = 'mock';
+    }
+
+    document.getElementById('session-type-note').textContent = noteText;
+
+    const bgColors = [...PALETTE_MUTED.slice(0, labels.length - 1), 'rgba(212,205,196,0.5)'];
+    if (bgColors.length < labels.length) {
+      while (bgColors.length < labels.length) bgColors.push('rgba(212,205,196,0.5)');
+    }
+
+    new Chart(document.getElementById('sessionTypeChart'), {
+      type: 'doughnut',
+      data: {
+        labels: labels,
+        datasets: [{ data: values, backgroundColor: bgColors, borderColor: 'rgba(245,241,235,0.8)', borderWidth: 1 }]
+      },
+      options: doughnutOpts()
+    });
+  }
+
+  // ── 3. Session Scale (LIVE) ──
+  {
+    let labels, values;
+
+    if (apiReachable && liveSessions) {
+      const counts = countField(liveSessions, 'session_scale');
+      const scaleOrder = ['light', 'micro', 'moderate', 'heavy', 'marathon', 'trivial', 'unclassified'];
+      labels = [];
+      values = [];
+      for (const s of scaleOrder) {
+        if (counts[s]) {
+          labels.push(s === 'unclassified' ? 'unknown' : s);
+          values.push(counts[s]);
+        }
+      }
+      // Add any others not in order
+      for (const [k, v] of Object.entries(counts)) {
+        if (!scaleOrder.includes(k)) {
+          labels.push(k);
+          values.push(v);
+        }
+      }
+      applyCardStyling('session-scale', 'live');
+    } else {
+      labels = mockData.sessionScale.labels;
+      values = mockData.sessionScale.values;
+      applyCardStyling('session-scale', 'mock');
+      const s = sections.find(s => s.id === 'session-scale');
+      if (s) s.source = 'mock';
+    }
+
+    const scaleColors = ['#c8841a', '#2E91FC', '#f59e0b', '#c0392b', '#8b5cf6', '#ccba9d', 'rgba(212,205,196,0.5)'];
+    while (scaleColors.length < labels.length) scaleColors.push('rgba(212,205,196,0.5)');
+
+    new Chart(document.getElementById('sessionScaleChart'), {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{ data: values, backgroundColor: scaleColors.slice(0, labels.length), borderRadius: 4 }]
+      },
+      options: barOpts(true)
+    });
+  }
+
+  // ── 4. Delegation Style (MOCK) ──
+  {
+    applyCardStyling('delegation', 'mock');
+    new Chart(document.getElementById('delegationChart'), {
+      type: 'doughnut',
+      data: {
+        labels: mockData.delegationStyle.labels,
+        datasets: [{ data: mockData.delegationStyle.values, backgroundColor: ['#c8841a', '#2E91FC', '#f59e0b', '#8b5cf6'], borderColor: 'rgba(245,241,235,0.8)', borderWidth: 1 }]
+      },
+      options: doughnutOpts()
+    });
+  }
+
+  // ── 5. Initiation Source (MOCK) ──
+  {
+    applyCardStyling('initiation', 'mock');
+    new Chart(document.getElementById('initiationChart'), {
+      type: 'bar',
+      data: {
+        labels: mockData.initiationSource.labels,
+        datasets: [{ data: mockData.initiationSource.values, backgroundColor: ['#c8841a', '#22c55e', '#f59e0b', '#8b5cf6', '#c0392b'], borderRadius: 4 }]
+      },
+      options: barOpts(true)
+    });
+  }
+
+  // ── 6. Session Continuity (MOCK) ──
+  {
+    applyCardStyling('continuity', 'mock');
+    new Chart(document.getElementById('continuityChart'), {
+      type: 'bar',
+      data: {
+        labels: mockData.sessionContinuity.labels,
+        datasets: [{ data: mockData.sessionContinuity.values, backgroundColor: ['#c8841a', '#22c55e', '#f59e0b', '#8b5cf6', '#c0392b'], borderRadius: 4 }]
+      },
+      options: barOpts(false)
+    });
+  }
+
+  // ── 7. Output Type (MOCK) ──
+  {
+    applyCardStyling('output-type', 'mock');
+    new Chart(document.getElementById('outputTypeChart'), {
+      type: 'doughnut',
+      data: {
+        labels: mockData.outputType.labels,
+        datasets: [{ data: mockData.outputType.values, backgroundColor: ['#c8841a', '#2E91FC', '#22c55e', '#8b5cf6', '#f59e0b'], borderColor: 'rgba(245,241,235,0.8)', borderWidth: 1 }]
+      },
+      options: doughnutOpts()
+    });
+  }
+
+  // ── 8. Autonomy Ratio (MOCK) ──
+  {
+    applyCardStyling('autonomy', 'mock');
+    new Chart(document.getElementById('autonomyChart'), {
+      type: 'bar',
+      data: {
+        labels: ['conversational\n(<=3)', 'guided\n(3-8)', 'delegated\n(8-15)', 'autonomous\n(>15)', 'unknown'],
+        datasets: [{ data: mockData.autonomyRatio.values, backgroundColor: ['#22c55e', '#c8841a', '#f59e0b', '#c0392b', 'rgba(212,205,196,0.5)'], borderRadius: 4 }]
+      },
+      options: barOpts(false)
+    });
+  }
+
+  // ── 9. Session Liveness (MOCK) ──
+  {
+    applyCardStyling('liveness', 'mock');
+    new Chart(document.getElementById('livenessChart'), {
+      type: 'bar',
+      data: {
+        labels: mockData.sessionLiveness.labels,
+        datasets: [{ data: mockData.sessionLiveness.values, backgroundColor: ['#22c55e', '#2E91FC', '#c0392b', '#f59e0b', 'rgba(212,205,196,0.5)'], borderRadius: 4 }]
+      },
+      options: barOpts(false)
+    });
+  }
+
+  // ── 10. Top 15 Projects (LIVE) ──
+  {
+    let labels, values;
+
+    if (apiReachable && liveSessions) {
+      const counts = countField(liveSessions, 'project');
+      const top = topN(counts, 15);
+      labels = top.map(e => e[0]);
+      values = top.map(e => e[1]);
+      applyCardStyling('top-projects', 'live');
+    } else {
+      labels = mockData.topProjects.labels;
+      values = mockData.topProjects.values;
+      applyCardStyling('top-projects', 'mock');
+      const s = sections.find(s => s.id === 'top-projects');
+      if (s) s.source = 'mock';
+    }
+
+    const projColors = PALETTE_MUTED.slice(0, 15).concat(PALETTE_MUTED.slice(0, 3));
+
+    new Chart(document.getElementById('projectsChart'), {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{ data: values, backgroundColor: projColors.slice(0, labels.length), borderRadius: 4 }]
+      },
+      options: { ...barOpts(true), maintainAspectRatio: false }
+    });
+    document.getElementById('projectsChart').parentElement.style.height = '420px';
+  }
+
+  // ── 11. Key Predicates (PARTIAL) ──
+  {
+    // Predicates that can come from live data (tier 1 + tier 2 booleans)
+    const livePredicateMap = {
+      'has_handover_context': 'P17 handover\ncontext',
+      'has_cross_project_reads': 'P18 cross-project\nreads',
+      'has_web_research': 'P19 web\nresearch',
+      'has_parallel_subagent_bursts': 'P20 parallel\nsubagents',
+      'has_task_orchestration': 'P21 task\norchestration',
+      'has_git_outcome': 'P22 git\noutcome',
+      'has_voice_dictation_artifacts': 'voice dictation\nartifacts',
+      'has_brain_file_writes': 'brain file\nwrites',
+      'has_cross_session_refs': 'cross session\nrefs',
+      'has_unauthorized_edits': 'unauthorized\nedits',
+      'has_closing_ceremony': 'closing\nceremony',
+      'is_compaction_resume': 'compaction\nresume',
+      'is_machine_initiated': 'machine\ninitiated',
+      'has_playwright_calls': 'playwright\ncalls',
+    };
+
+    // Mock predicates that have no live equivalent
+    const mockOnlyLabels = ['frustration\nsignals', 'multi-phase', 'cwd\nincidental', 'feature\nconstruction'];
+
+    let chartLabels = [];
+    let trueValues = [];
+    let totalValues = [];
+    let noteText = '';
+
+    if (apiReachable && liveSessions && liveSessions.length > 0) {
+      // Live predicates first
+      for (const [field, label] of Object.entries(livePredicateMap)) {
+        const { trueCount, total } = countBoolField(liveSessions, field);
+        if (total > 0) {
+          chartLabels.push(label);
+          trueValues.push(trueCount);
+          totalValues.push(total);
+        }
+      }
+      noteText = `${chartLabels.length} predicates from live data. Mock predicates (frustration signals, multi-phase, etc.) not shown — not computed in registry.`;
+      applyCardStyling('predicates', 'partial');
+    } else {
+      // Full mock
+      chartLabels = mockData.keyPredicates.labels.map(l => l.replace(/ /g, '\n'));
+      trueValues = mockData.keyPredicates.trueValues;
+      totalValues = mockData.keyPredicates.totalEvaluated;
+      noteText = 'All predicate data from mock (analysis campaign)';
+      applyCardStyling('predicates', 'mock');
+      const s = sections.find(s => s.id === 'predicates');
+      if (s) s.source = 'mock';
+    }
+
+    document.getElementById('predicates-note').textContent = noteText;
+
+    new Chart(document.getElementById('predicatesChart'), {
+      type: 'bar',
+      data: {
+        labels: chartLabels,
+        datasets: [
+          { label: 'True', data: trueValues, backgroundColor: 'rgba(200,132,26,0.8)', borderRadius: 4 },
+          { label: 'Total Evaluated', data: totalValues, backgroundColor: 'rgba(212,205,196,0.5)', borderRadius: 4 }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'top' },
+          tooltip: {
+            callbacks: {
+              afterBody: function(context) {
+                if (context[0].datasetIndex === 0) {
+                  const idx = context[0].dataIndex;
+                  const total = totalValues[idx];
+                  if (total > 0) {
+                    const pct = ((context[0].raw / total) * 100).toFixed(1);
+                    return `${pct}% of evaluated`;
+                  }
+                }
+                return '';
+              }
+            }
+          }
+        },
+        scales: {
+          x: { grid: { color: gridColor } },
+          y: { grid: { color: gridColor } }
+        }
+      }
+    });
+    document.getElementById('predicatesChart').parentElement.style.height = '350px';
+  }
+
+  // ── 12. BUILD Accuracy by Scale (MOCK) ──
+  {
+    applyCardStyling('build-accuracy', 'mock');
+    new Chart(document.getElementById('accuracyChart'), {
+      type: 'line',
+      data: {
+        labels: mockData.buildAccuracy.labels,
+        datasets: [{
+          label: 'Accuracy %',
+          data: mockData.buildAccuracy.values,
+          borderColor: '#c8841a',
+          backgroundColor: 'rgba(200,132,26,0.12)',
+          fill: true,
+          tension: 0.35,
+          pointBackgroundColor: '#c8841a',
+          pointBorderColor: '#f5f1eb',
+          pointBorderWidth: 2,
+          pointRadius: 5
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => `Accuracy: ${ctx.raw}%` } }
+        },
+        scales: {
+          y: { min: 0, max: 100, ticks: { callback: v => v + '%' }, grid: { color: gridColor } },
+          x: { grid: { color: gridColor } }
+        }
+      }
+    });
+  }
+
+  // ── 13. Machine Comparison (MOCK) ──
+  {
+    applyCardStyling('machine', 'mock');
+    new Chart(document.getElementById('machineChart'), {
+      type: 'bar',
+      data: {
+        labels: mockData.machineComparison.labels,
+        datasets: [
+          { label: 'M4 Mini', data: mockData.machineComparison.datasets.m4Mini, backgroundColor: 'rgba(200,132,26,0.7)', borderRadius: 4 },
+          { label: 'M4 Pro', data: mockData.machineComparison.datasets.m4Pro, backgroundColor: 'rgba(46,145,252,0.7)', borderRadius: 4 }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'top' } },
+        scales: {
+          x: { grid: { color: gridColor } },
+          y: { grid: { color: gridColor } }
+        }
+      }
+    });
+  }
+
+  // ── Update summary bar ──
+  updateSummaryBar();
+
+})();
+</script>
+
+</body>
+</html>
