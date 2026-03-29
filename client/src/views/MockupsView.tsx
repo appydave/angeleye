@@ -34,22 +34,6 @@ interface Phase {
 
 const phases: Phase[] = [
   {
-    title: 'Phase 6 — Campaign Analysis Hybrid',
-    tag: 'Latest',
-    tagType: 'new',
-    dates: '2026-03-29',
-    desc: 'Hybrid campaign views overlaying live registry data on top of analysis campaign mock data. Visual delineation shows which dimensions are live (green), partial (amber), or mock-only (red).',
-    type: 'feature',
-    items: [
-      {
-        name: 'campaign-infographic-hybrid',
-        desc: 'Hybrid infographic — 12 data sections with live/mock overlay, gap analysis, and coverage summary',
-        path: `${MOCKUP_BASE}/campaign-infographic-hybrid/index.html`,
-        featured: true,
-      },
-    ] as FeatureMockup[],
-  },
-  {
     title: 'Phase 5 — Wave Visualization',
     tag: '7 designs',
     dates: '2026-03-28',
@@ -314,11 +298,18 @@ const phases: Phase[] = [
   },
   {
     title: 'Analysis Dashboards',
-    tag: '3 designs',
+    tag: '4 designs',
+    tagType: 'new',
     dates: '2026-03-23 to 2026-03-29',
     desc: 'Campaign analysis views — static dashboards, infographics, and hybrid overlays that compare live registry data against analysis campaign mock data.',
     type: 'feature',
     items: [
+      {
+        name: 'campaign-infographic-hybrid',
+        desc: 'Hybrid infographic — 12 data sections with live/mock overlay, gap analysis, and coverage summary',
+        path: `${MOCKUP_BASE}/campaign-infographic-hybrid/index.html`,
+        featured: true,
+      },
       {
         name: 'campaign-dashboard-hybrid',
         desc: 'Hybrid dashboard — live registry data overlaid on mock data with LIVE/MOCK/PARTIAL badges and coverage summary',
