@@ -21,6 +21,8 @@ export const navConfig: NavConfig = [
       { key: 'observer', label: 'Observer', tier: 'primary' },
       { key: 'organiser', label: 'Organiser', tier: 'primary' },
       { key: 'workflows', label: 'Workflows', tier: 'primary' },
+      { key: 'dashboard', label: 'Dashboard', tier: 'primary' },
+      { key: 'infographic', label: 'Infographic', tier: 'primary' },
     ],
   },
   {

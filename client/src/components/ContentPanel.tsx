@@ -5,6 +5,8 @@ import SettingsView from '../views/SettingsView.js';
 import MockupsView from '../views/MockupsView.js';
 import WorkflowsView from '../views/WorkflowsView.js';
 import InspectorView from '../views/InspectorView.js';
+import CampaignDashboardView from '../views/CampaignDashboardView.js';
+import CampaignInfographicView from '../views/CampaignInfographicView.js';
 
 const viewMap: Record<string, React.ComponentType> = {
   observer: ObserverView,
@@ -13,6 +15,8 @@ const viewMap: Record<string, React.ComponentType> = {
   inspector: InspectorView,
   settings: SettingsView,
   mockups: MockupsView,
+  dashboard: CampaignDashboardView,
+  infographic: CampaignInfographicView,
 };
 
 export default function ContentPanel() {
