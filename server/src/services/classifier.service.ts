@@ -688,6 +688,7 @@ export function detectOutputType(events: AngelEyeEvent[]): OutputType {
 
   for (const e of writeEvents) {
     const file = typeof e.tool_summary?.['file'] === 'string' ? e.tool_summary['file'] : '';
+    if (!file) continue;
     const isMarkdown = file.endsWith('.md');
     const isBrains = file.includes('/brains/');
 
@@ -839,9 +840,9 @@ export function detectSessionSubtype(
     ) {
       return 'feature_implementation';
     }
-    if (/fix|bug|broken|error/i.test(prompt)) return 'bug_fix_round';
-    if (/refactor|rename|extract|clean/i.test(prompt)) return 'refactoring';
-    if (/test|spec|coverage/i.test(prompt)) return 'test_writing';
+    if (/\b(?:fix|bug|broken|error)s?\b/i.test(prompt)) return 'bug_fix_round';
+    if (/\b(?:refactor|rename|extract|clean)\b/i.test(prompt)) return 'refactoring';
+    if (/\b(?:test|spec|coverage)s?\b/i.test(prompt)) return 'test_writing';
     // Check edit targets for test files
     const editEvents = events.filter(
       (e) =>
@@ -855,7 +856,7 @@ export function detectSessionSubtype(
     if (testFileEdits.length > 0 && testFileEdits.length >= editEvents.length * 0.5) {
       return 'test_writing';
     }
-    if (/ci|pipeline|deploy|release/i.test(prompt) && toolPattern === 'bash-heavy') {
+    if (/\b(?:ci|pipeline|deploy|release)s?\b/i.test(prompt) && toolPattern === 'bash-heavy') {
       return 'ci_pipeline';
     }
     return undefined;
@@ -869,7 +870,7 @@ export function detectSessionSubtype(
         return 'file_retrieval';
       }
     }
-    if (/find|where|locate|show me/i.test(prompt)) return 'artifact_lookup';
+    if (/\b(?:find|where|locate|show me)\b/i.test(prompt)) return 'artifact_lookup';
     if (toolPattern === 'read-heavy') return 'codebase_exploration';
     return undefined;
   }
@@ -899,8 +900,9 @@ export function detectSessionSubtype(
   // ── RESEARCH subtypes ──────────────────────────────────────────────────
   if (sessionType === 'RESEARCH') {
     if (toolPattern === 'websearch-heavy') return 'technology_survey';
-    if (/setup|install|config|hardware/i.test(prompt)) return 'hardware_setup_troubleshooting';
-    if (/release|version|changelog|update/i.test(prompt)) return 'release_exploration';
+    if (/\b(?:setup|install|config|hardware)\b/i.test(prompt))
+      return 'hardware_setup_troubleshooting';
+    if (/\b(?:release|version|changelog)s?\b/i.test(prompt)) return 'release_exploration';
     return undefined;
   }
 
@@ -908,7 +910,7 @@ export function detectSessionSubtype(
   if (sessionType === 'OPS') {
     if (detectIsPaperclipAgent(events)) return 'paperclip_agent';
     if (/^\*?run\s+\d+/i.test(prompt)) return 'poem_execution';
-    if (toolPattern === 'bash-heavy' && /clean|delete|remove|organize/i.test(prompt)) {
+    if (toolPattern === 'bash-heavy' && /\b(?:clean|delete|remove|organize)\b/i.test(prompt)) {
       return 'directory_cleanup';
     }
     return undefined;
@@ -917,7 +919,7 @@ export function detectSessionSubtype(
   // ── TEST subtypes ──────────────────────────────────────────────────────
   if (sessionType === 'TEST') {
     if (toolPattern === 'playwright-heavy') return 'playwright_e2e';
-    if (/debug|fail|broken|fix/i.test(prompt)) return 'test_debugging';
+    if (/\b(?:debug|fail|broken|fix)\w*\b/i.test(prompt)) return 'test_debugging';
     return undefined;
   }
 
@@ -1080,8 +1082,8 @@ export function detectSessionLiveness(events: AngelEyeEvent[]): SessionLiveness 
     return 'low';
   }
 
-  const firstTs = Math.min(...timestamps);
-  const lastTs = Math.max(...timestamps);
+  const firstTs = timestamps.reduce((a, b) => Math.min(a, b));
+  const lastTs = timestamps.reduce((a, b) => Math.max(a, b));
   const durationMinutes = (lastTs - firstTs) / 60_000;
 
   if (durationMinutes < 1) {

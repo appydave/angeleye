@@ -7,19 +7,21 @@
 
 ## Summary
 
-- Total: 4 | Complete: 0 | In Progress: 0 | Pending: 4 | Failed: 0
+- Total: 4 | Complete: 4 | In Progress: 0 | Pending: 0 | Failed: 0
 
 ## Pending
 
 ## In Progress
 
-- [~] WU01 — **New types + classifiers A** (B060): Add 8 new type literals + RegistryEntry fields to `shared/src/angeleye.ts`. Implement 4 detector functions in `classifier.service.ts`: `detectDelegationStyle`, `detectInitiationSource`, `detectSessionContinuity`, `detectOutputType`. Add all 8 new fields to `ClassificationResult`. Wire these 4 into `classifySession()`. Tests for all 4 detectors.
+## Complete
 
-- [~] WU02 — **Classifiers B** (B060): Implement 4 standalone detector functions in `classifier.service.ts`: `detectOpeningStyle`, `detectClosingStyle`, `detectAutonomyRatio`, `detectSessionLiveness`. DO NOT modify `classifySession()` or `ClassificationResult` — WU01 owns those. Tests for all 4 detectors.
+- [x] WU01 — **New types + classifiers A** (B060): 7 new types, 8 RegistryEntry fields, ClassificationResult updated, 4 detectors (delegation_style, initiation_source, session_continuity, output_type) implemented + wired. Also wired WU02's 4 detectors into classifySession(). 35 tests. Commit 5cbe796f.
 
-- [ ] WU03 — **Subtype rules + wiring** (B061 + B060): Implement `detectSessionSubtype()` with top-20 rules. Wire WU02's 4 detectors into `classifySession()` (they were left unwired in Wave 1). Wire subtype into `classifySession()`. Tests for subtype detection.
+- [x] WU02 — **Classifiers B** (B060): 4 standalone detector functions (opening_style, closing_style, autonomy_ratio, session_liveness). 30 tests. Merged with WU01 in commit 5cbe796f.
 
-- [ ] WU04 — **Re-enrich UI** (B062): Add "Re-enrich All" button to `SettingsView.tsx` that calls `POST /api/sync?force=true`. Show syncing state + results using existing `DiffTable`. Tests.
+- [x] WU03 — **Subtype rules + wiring** (B061): detectSessionSubtype() with 19 rules across 6 parent types. Wired into classifySession(). 25 tests. Committed with WU04 in 190649bd.
+
+- [x] WU04 — **Re-enrich UI** (B062): "Session Enrichment" card in SettingsView with Re-enrich All button (POST /api/sync?force=true). Both buttons cross-disable. 6 tests. Commit 190649bd.
 
 ## In Progress
 

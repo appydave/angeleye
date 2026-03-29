@@ -1,7 +1,7 @@
 # Project Backlog — AngelEye
 
 **Last updated**: 2026-03-29
-**Total**: 64 | Pending: 7 | In Progress: 3 | Done: 56 | Deferred: 2 | Rejected: 0
+**Total**: 64 | Pending: 7 | In Progress: 0 | Done: 59 | Deferred: 2 | Rejected: 0
 
 ## Pending
 
@@ -28,11 +28,11 @@
 
 ## In Progress
 
-- [~] B060 — Deterministic classifier extensions (~8 new fields) | Campaign: angeleye-phase2c-classifier
-- [~] B061 — Top-20 session subtype rules (~60% coverage) | Campaign: angeleye-phase2c-classifier
-- [~] B062 — Re-enrich button in Settings (full reclassification) | Campaign: angeleye-phase2c-classifier
-
 ## Done
+
+- [x] B060 — Deterministic classifier extensions (8 new fields) | Completed: angeleye-phase2c-classifier
+- [x] B061 — Top-20 session subtype rules (~60% coverage) | Completed: angeleye-phase2c-classifier
+- [x] B062 — Re-enrich button in Settings (full reclassification) | Completed: angeleye-phase2c-classifier
 
 - [x] B057 — Project registry config loader (static JSON in server/src/config/projects/) | Completed: angeleye-workflow-phase2b
 - [x] B058 — Schema inspector screen (renders type definitions + config JSON from real code) | Completed: angeleye-workflow-phase2b

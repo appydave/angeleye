@@ -246,7 +246,10 @@ export default function SettingsView() {
     setEnrichResult(null);
     setEnrichError(null);
     fetch('/api/sync?force=true', { method: 'POST' })
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error(`Server returned ${r.status}`);
+        return r.json();
+      })
       .then((d) => {
         const result = d.data as SyncResult;
         setEnrichResult(result);
