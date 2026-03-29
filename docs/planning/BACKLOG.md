@@ -1,7 +1,7 @@
 # Project Backlog — AngelEye
 
 **Last updated**: 2026-03-29
-**Total**: 56 | Pending: 5 | In Progress: 0 | Done: 49 | Deferred: 2 | Rejected: 0
+**Total**: 64 | Pending: 13 | In Progress: 4 | Done: 49 | Deferred: 2 | Rejected: 0
 
 ## Pending
 
@@ -14,7 +14,29 @@
 - [ ] B026 — Update create-appystack template with: resilient start.sh (port conflict detection + human-in-loop), dotenv override:true fix, correct VITE_SOCKET_URL | Priority: medium
 - [ ] B044 — Multi-machine registry sync: classification rules should apply across machines. M4 Pro registry defaults everything to BUILD. | Priority: low
 
+### Phase 2b — Inspector Screens + Project Registry
+
+- [ ] B057 — Project registry config loader (static JSON in server/src/config/projects/) | Priority: high
+- [ ] B058 — Schema inspector screen (renders type definitions + config JSON from real code) | Priority: high
+- [ ] B059 — Data inspector screen (browse live registry entries, workflows, affinity groups) | Priority: high
+- [ ] B063 — Add `project_dir` field to WorkflowInstance shared type | Priority: medium
+
+### Phase 2c — Deterministic Classifier Extensions
+
+- [ ] B060 — Deterministic classifier extensions (~8 new fields: delegation_style, initiation_source, session_continuity, opening_style, closing_style, autonomy_ratio, session_liveness, output_type) | Priority: high
+- [ ] B061 — Top-20 session subtype rules (~60% coverage) | Priority: high
+- [ ] B062 — Re-enrich button in Settings (re-run classifier on last N sessions) | Priority: medium
+
+### Phase 4 — LLM Enrichment
+
+- [ ] B064 — Tier 3 LLM batch enrichment runner (see docs/planning/tier3-batch-enrichment-brief.md) | Priority: low
+
 ## In Progress
+
+- [~] B056a — Extract campaign-dashboard.json from static HTML | Campaign: angeleye-workflow-phase2a
+- [~] B056b — Extract campaign-infographic.json from static HTML | Campaign: angeleye-workflow-phase2a
+- [~] B056c — Hybrid campaign dashboard mockup (live/mock overlay) | Campaign: angeleye-workflow-phase2a
+- [~] B056d — Hybrid campaign infographic mockup (live/mock overlay) | Campaign: angeleye-workflow-phase2a
 
 ## Done
 

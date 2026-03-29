@@ -516,11 +516,17 @@ function applyCardStyling(cardId, source) {
 
 // ── Fetch helpers ──
 async function fetchJSON(url) {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const json = await res.json();
-  if (json.status !== 'ok') throw new Error('API status not ok');
-  return json.data;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 5000);
+  try {
+    const res = await fetch(url, { signal: controller.signal });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    if (json.status !== 'ok') throw new Error('API status not ok');
+    return json.data;
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
 // ── Aggregate helpers ──
@@ -611,11 +617,10 @@ function topN(counts, n) {
 
   // Helper: get live or mock data for a section
   function useLive(sectionId) {
-    return apiReachable && (
-      sectionId === 'session-types' ||
-      sectionId === 'session-scale' ||
-      sectionId === 'top-projects'
-    );
+    if (!apiReachable) return false;
+    if (sectionId === 'session-types') return !!(liveStats && liveStats.byType);
+    if (sectionId === 'session-scale' || sectionId === 'top-projects') return liveSessions && liveSessions.length > 0;
+    return false;
   }
 
   // ── 1. Campaign Overview (PARTIAL) ──
@@ -650,7 +655,7 @@ function topN(counts, n) {
   {
     let labels, values, noteText;
 
-    if (apiReachable && liveStats) {
+    if (apiReachable && liveStats && liveStats.byType) {
       // Map OPS -> OPERATIONS for display consistency
       const typeMap = { ...liveStats.byType };
       if (typeMap.OPS) {
