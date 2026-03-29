@@ -6,7 +6,7 @@ import { logger } from '../config/logger.js';
 import { getWorkflowTypes } from '../services/workflow-type.service.js';
 import { readRegistry } from '../services/registry.service.js';
 import { readWorkflows } from '../services/workflow.service.js';
-import { countByType } from '../services/sync.service.js';
+import { countByType, countByFields } from '../services/sync.service.js';
 
 const router = Router();
 
@@ -40,6 +40,7 @@ router.get('/api/inspector/summary', async (_req, res, next) => {
     const entries = Object.values(registry);
 
     const { counts: byType, total } = countByType(registry);
+    const fields = countByFields(registry);
 
     const byProject: Record<string, number> = {};
     entries.forEach((e) => {
@@ -54,7 +55,7 @@ router.get('/api/inspector/summary', async (_req, res, next) => {
     });
 
     apiSuccess(res, {
-      sessions: { total, byType, byProject },
+      sessions: { total, byType, byProject, fields },
       workflows: { total: workflows.length, byStatus },
     });
   } catch (err) {

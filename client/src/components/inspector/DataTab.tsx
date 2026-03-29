@@ -96,12 +96,52 @@ function CountTable({
   );
 }
 
+// ─── Phase 2c Field Labels ─────────────────────────────────────────────────
+
+const FIELD_LABELS: Record<string, string> = {
+  session_subtype: 'Session Subtype',
+  delegation_style: 'Delegation Style',
+  initiation_source: 'Initiation Source',
+  session_continuity: 'Session Continuity',
+  opening_style: 'Opening Style',
+  closing_style: 'Closing Style',
+  session_liveness: 'Session Liveness',
+  output_type: 'Output Type',
+};
+
+// ─── Phase 2c Field Distributions ──────────────────────────────────────────
+
+function FieldDistributions({ fields }: { fields: Record<string, Record<string, number>> }) {
+  const fieldKeys = Object.keys(FIELD_LABELS);
+
+  return (
+    <div className="space-y-2">
+      {fieldKeys.map((fieldKey) => {
+        const data = fields[fieldKey] ?? {};
+        const total = Object.values(data).reduce((sum, n) => sum + n, 0);
+        const label = FIELD_LABELS[fieldKey] ?? fieldKey;
+
+        return (
+          <CollapsibleSection key={fieldKey} title={`${label} (${total})`} defaultOpen={false}>
+            <CountTable data={data} total={total} label={label} />
+          </CollapsibleSection>
+        );
+      })}
+    </div>
+  );
+}
+
 // ─── Sessions Summary Section ───────────────────────────────────────────────
 
 function SessionsSummary({
   summary,
 }: {
-  summary: { total: number; byType: Record<string, number>; byProject: Record<string, number> };
+  summary: {
+    total: number;
+    byType: Record<string, number>;
+    byProject: Record<string, number>;
+    fields: Record<string, Record<string, number>>;
+  };
 }) {
   return (
     <div className="space-y-4">
@@ -245,6 +285,10 @@ export default function DataTab() {
     <div className="space-y-4">
       <CollapsibleSection title="Sessions Summary">
         <SessionsSummary summary={data.summary.sessions} />
+      </CollapsibleSection>
+
+      <CollapsibleSection title="Phase 2c Field Distributions">
+        <FieldDistributions fields={data.summary.sessions.fields ?? {}} />
       </CollapsibleSection>
 
       <CollapsibleSection title={`Workflows (${data.workflows.length})`}>

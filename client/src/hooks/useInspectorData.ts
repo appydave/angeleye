@@ -6,6 +6,7 @@ interface InspectorSummary {
     total: number;
     byType: Record<string, number>;
     byProject: Record<string, number>;
+    fields: Record<string, Record<string, number>>;
   };
   workflows: {
     total: number;
