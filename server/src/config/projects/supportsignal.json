@@ -1,0 +1,7 @@
+{
+  "id": "supportsignal",
+  "name": "SupportSignal",
+  "path": "~/dev/clients/supportsignal/app.supportsignal.com.au",
+  "description": "NDIS support application",
+  "tags": ["client", "next-js", "convex"]
+}

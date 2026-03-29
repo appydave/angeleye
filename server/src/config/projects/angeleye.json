@@ -1,0 +1,8 @@
+{
+  "id": "angeleye",
+  "name": "AngelEye",
+  "path": "~/dev/ad/apps/angeleye",
+  "description": "Session intelligence layer for Claude Code",
+  "repository": "github.com/appydave/angeleye",
+  "tags": ["appystack", "intelligence", "claude-code"]
+}

@@ -184,15 +184,15 @@ describe('getWorkflowTypes', () => {
 // ── Real configs integration ────────────────────────────────────────────────
 
 describe('real workflow configs', () => {
-  it('loads 3 types with correct ids from actual config dir', async () => {
+  it('loads 2 types with correct ids from actual config dir', async () => {
     _resetCache();
     const realConfigDir = resolve(process.cwd(), 'src', 'config', 'workflows');
     _setConfigDir(realConfigDir);
 
     const types = await loadWorkflowTypes();
-    expect(types).toHaveLength(3);
+    expect(types).toHaveLength(2);
 
     const ids = types.map((t) => t.id).sort();
-    expect(ids).toEqual(['epic_zero', 'lightweight_story', 'regular_story']);
+    expect(ids).toEqual(['epic_zero', 'regular_story']);
   });
 });

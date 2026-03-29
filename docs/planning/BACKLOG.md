@@ -1,7 +1,7 @@
 # Project Backlog — AngelEye
 
 **Last updated**: 2026-03-29
-**Total**: 64 | Pending: 13 | In Progress: 0 | Done: 53 | Deferred: 2 | Rejected: 0
+**Total**: 64 | Pending: 10 | In Progress: 3 | Done: 53 | Deferred: 2 | Rejected: 0
 
 ## Pending
 
@@ -16,9 +16,9 @@
 
 ### Phase 2b — Inspector Screens + Project Registry
 
-- [ ] B057 — Project registry config loader (static JSON in server/src/config/projects/) | Priority: high
-- [ ] B058 — Schema inspector screen (renders type definitions + config JSON from real code) | Priority: high
-- [ ] B059 — Data inspector screen (browse live registry entries, workflows, affinity groups) | Priority: high
+- [~] B057 — Project registry config loader (static JSON in server/src/config/projects/) | Campaign: angeleye-workflow-phase2b
+- [~] B058 — Schema inspector screen (renders type definitions + config JSON from real code) | Campaign: angeleye-workflow-phase2b
+- [~] B059 — Data inspector screen (browse live registry entries, workflows, affinity groups) | Campaign: angeleye-workflow-phase2b
 - [ ] B063 — Add `project_dir` field to WorkflowInstance shared type | Priority: medium
 
 ### Phase 2c — Deterministic Classifier Extensions

@@ -1,0 +1,7 @@
+{
+  "id": "flivideo",
+  "name": "FliVideo",
+  "path": "~/dev/ad/flivideo",
+  "description": "Video asset management tools",
+  "tags": ["content", "video"]
+}

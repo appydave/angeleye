@@ -1,34 +1,10 @@
-import { useState } from 'react';
 import type { WorkflowType, ProjectConfig } from '@appystack/shared';
+import CollapsibleSection from './CollapsibleSection.js';
 
 interface SchemaTabProps {
   sharedTypes: string;
   workflowTypes: WorkflowType[];
   projects: ProjectConfig[];
-}
-
-function CollapsibleSection({
-  title,
-  defaultOpen = true,
-  children,
-}: {
-  title: string;
-  defaultOpen?: boolean;
-  children: React.ReactNode;
-}) {
-  const [open, setOpen] = useState(defaultOpen);
-  return (
-    <div className="border border-border rounded-lg overflow-hidden">
-      <button
-        onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between px-4 py-2 bg-surface text-heading font-medium text-sm hover:bg-surface-hover transition-colors"
-      >
-        <span>{title}</span>
-        <span className="text-xs text-body">{open ? '▾' : '▸'}</span>
-      </button>
-      {open && <div className="p-4">{children}</div>}
-    </div>
-  );
 }
 
 export default function SchemaTab({ sharedTypes, workflowTypes, projects }: SchemaTabProps) {

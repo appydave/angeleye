@@ -3,7 +3,7 @@
   "activeCount": 1,
   "types": [
     { "id": "regular_story", "name": "Regular Story", "stationCount": 9 },
-    { "id": "lightweight_story", "name": "Lightweight Story", "stationCount": 6 }
+    { "id": "epic_zero", "name": "Epic Zero", "stationCount": null, "status": "provisional" }
   ],
   "instances": [
     {

@@ -18,12 +18,11 @@
 
 ## 2. Config Files (server/src/config/)
 
-| File                                    | Purpose                                        | Shape           |
-| --------------------------------------- | ---------------------------------------------- | --------------- |
-| `overlays/bmad-v6.json`                 | Maps `/bmad-*` commands → role/identity/action | `DomainOverlay` |
-| `workflows/bmad-regular-story.json`     | 9-station Regular Story pipeline               | `WorkflowType`  |
-| `workflows/bmad-lightweight-story.json` | 6-station Lightweight pipeline                 | `WorkflowType`  |
-| `workflows/bmad-epic-zero.json`         | 5-station Epic Zero pipeline                   | `WorkflowType`  |
+| File                                | Purpose                                         | Shape           |
+| ----------------------------------- | ----------------------------------------------- | --------------- |
+| `overlays/bmad-v6.json`             | Maps `/bmad-*` commands → role/identity/action  | `DomainOverlay` |
+| `workflows/bmad-regular-story.json` | 9-station Regular Story pipeline                | `WorkflowType`  |
+| `workflows/bmad-epic-zero.json`     | Epic Zero pipeline (provisional — stations TBD) | `WorkflowType`  |
 
 **Missing**: Project registry configs (see Section 6).
 
@@ -121,7 +120,7 @@ Free-text fields discovered in analysis: `frustration_analysis`, `phase_breakdow
   "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
   "name": "SupportSignal",
   "domain": "bmad-v6",
-  "workflow_types": ["bmad-regular-story", "bmad-lightweight-story"],
+  "workflow_types": ["bmad-regular-story", "bmad-epic-zero"],
   "story_id_pattern": "\\d+\\.\\d+",
   "tags": ["client", "primary"],
   "notes": "NDIS application — primary client project"

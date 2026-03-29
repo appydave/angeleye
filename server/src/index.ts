@@ -23,8 +23,10 @@ import statsRouter from './routes/stats.js';
 import affinityRouter from './routes/affinity.js';
 import preferencesRouter from './routes/preferences.js';
 import mockViewsRouter from './routes/mock-views.js';
+import inspectorRouter from './routes/inspector.js';
 import { gitSyncRouter } from './routes/git-sync.js';
 import workflowsRouter from './routes/workflows.js';
+import projectsRouter from './routes/projects.js';
 import { initAngelEyeDirs } from './services/registry.service.js';
 import { backfillTranscripts } from './services/backfill.service.js';
 import type { ServerToClientEvents, ClientToServerEvents } from '@appystack/shared';
@@ -77,7 +79,9 @@ app.use('/api/stats', statsRouter);
 app.use('/api/affinity-groups', affinityRouter);
 app.use(preferencesRouter);
 app.use(workflowsRouter);
+app.use(projectsRouter);
 app.use(mockViewsRouter);
+app.use(inspectorRouter);
 app.use('/api/git-sync', gitSyncRouter);
 
 // Serve mockup/dashboard HTML files from monorepo root (no CSP — dev design files)

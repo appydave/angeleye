@@ -261,6 +261,17 @@ export interface BacktrackRecord {
   timestamp: string;
 }
 
+// ── Project Config ─────────────────────────────────────────────────────────
+
+export interface ProjectConfig {
+  id: string;
+  name: string;
+  path: string;
+  description: string;
+  repository?: string;
+  tags?: string[];
+}
+
 export interface WorkflowInstance {
   instance_id: string;
   workflow_type_id: string;
