@@ -32,3 +32,5 @@
 - **Nav placement**: Inspector goes in the System group (alongside Settings and Mockups), not Main.
 - **Schema display**: Serve angeleye.ts as raw text for the type viewer. Workflow configs and project configs served as structured JSON.
 - **Test baseline**: Server 430 passing (7 pre-existing failures), Client 42 passing (2 pre-existing failures).
+- **Delivery review**: Ran 6-dimension review at completion. Applied 3 of 4 patches (CollapsibleSection extraction, env-overridable SHARED_TYPES_PATH, description validation). Skipped current_station off-by-one patch (false positive — field is 0-based).
+- **Campaign complete**: All 4 work units done, committed as `36d19211`, assessment written.
