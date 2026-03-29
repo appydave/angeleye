@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
+import type { SessionType } from '@appystack/shared';
 
-type SessionType = 'BUILD' | 'TEST' | 'RESEARCH' | 'KNOWLEDGE' | 'OPS' | 'ORIENTATION';
 type TypeCounts = Record<SessionType | 'unclassified', number>;
 type FieldCounts = Record<string, number>;
 
@@ -40,7 +40,7 @@ interface StatsResult {
   fields?: Record<string, FieldCounts>;
 }
 
-const TYPE_ORDER: (SessionType | 'unclassified')[] = [
+const TYPE_ORDER: readonly (SessionType | 'unclassified')[] = [
   'BUILD',
   'ORIENTATION',
   'KNOWLEDGE',
@@ -48,9 +48,9 @@ const TYPE_ORDER: (SessionType | 'unclassified')[] = [
   'OPS',
   'TEST',
   'unclassified',
-];
+] as const;
 
-const TYPE_COLORS: Record<string, string> = {
+const TYPE_COLORS: Record<SessionType | 'unclassified', string> = {
   BUILD: '#c8841a',
   ORIENTATION: '#7a6e5e',
   KNOWLEDGE: '#0d9488',
