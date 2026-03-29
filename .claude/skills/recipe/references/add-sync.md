@@ -19,8 +19,12 @@ Add the ability for an AppyStack app to synchronise code and/or data between mac
 - Git repository with a remote (GitHub, GitLab, etc.)
 - For shared-folder sub-types: Dropbox, Syncthing, or similar already configured at the OS level
 
-**Upgrade Awareness**
-If sync files already exist (`git-sync.service.ts`, `git-sync.ts` routes, `useGitSync.ts` hook, UI components), do NOT skip this recipe. Read the existing code and compare its capabilities against everything described below. Implement anything missing — new endpoints, new shared type fields, new UI states, new behaviors. Don't re-scaffold what already works, but don't declare "already installed" based on file existence alone.
+**Idempotency Check**
+
+- Does `server/src/services/git-sync.service.ts` exist? → Git sync already installed
+- Does `server/src/routes/git-sync.ts` exist? → Git sync routes already installed
+- Does `client/src/hooks/useGitSync.ts` exist? → Git sync hook already installed
+- Does `server/src/services/folder-sync.service.ts` exist? → Folder sync already installed
 
 **Does Not Touch**
 
@@ -152,8 +156,6 @@ export interface GitSyncStatus {
   behind: number;
   ahead: number;
   dirty: boolean;
-  dirtyFiles: string[]; // git porcelain lines (e.g. " M server/src/index.ts")
-  dirtyCount: number; // number of dirty files
   lastChecked: string;
   error?: string;
   behindCommits?: CommitSummary[];
@@ -272,10 +274,9 @@ export function checkStatus(): Promise<GitSyncStatus> {
     const ahead = parseInt(aheadStr, 10) || 0;
     const behind = parseInt(behindStr, 10) || 0;
 
-    // 4. dirty check + file list
+    // 4. dirty check
     const porcelain = await git(['status', '--porcelain'], 5_000);
     const dirty = porcelain.length > 0;
-    const dirtyFiles = dirty ? porcelain.split('\n').filter(Boolean) : [];
 
     // 5. behind commits (for modal display)
     let behindCommits: CommitSummary[] | undefined;
@@ -292,8 +293,6 @@ export function checkStatus(): Promise<GitSyncStatus> {
       behind,
       ahead,
       dirty,
-      dirtyFiles,
-      dirtyCount: dirtyFiles.length,
       lastChecked: now,
       behindCommits,
     };
@@ -302,14 +301,20 @@ export function checkStatus(): Promise<GitSyncStatus> {
 
 export function pullUpstream(): Promise<GitPullResult> {
   return withGitLock(async (): Promise<GitPullResult> => {
-    const previousCommit = await git(['rev-parse', '--short', 'HEAD']);
-
-    // Stash any local changes (including untracked) so pull can proceed
+    // Refuse on dirty tree
     const porcelain = await git(['status', '--porcelain'], 5_000);
-    const wasDirty = porcelain.length > 0;
-    if (wasDirty) {
-      await git(['stash', 'push', '--include-untracked', '-m', 'auto-stash before pull'], 10_000);
+    if (porcelain.length > 0) {
+      return {
+        success: false,
+        previousCommit: '',
+        newCommit: '',
+        commitsPulled: 0,
+        restartTriggered: false,
+        error: 'Uncommitted changes detected — commit or stash before pulling',
+      };
     }
+
+    const previousCommit = await git(['rev-parse', '--short', 'HEAD']);
 
     try {
       await git(['pull', '--rebase'], 120_000);
@@ -320,14 +325,6 @@ export function pullUpstream(): Promise<GitPullResult> {
       } catch {
         /* already clean */
       }
-      // Restore stash so nothing is lost
-      if (wasDirty) {
-        try {
-          await git(['stash', 'pop'], 10_000);
-        } catch {
-          /* stash pop conflict — stash preserved */
-        }
-      }
       const message = err instanceof Error ? err.message : String(err);
       return {
         success: false,
@@ -337,16 +334,6 @@ export function pullUpstream(): Promise<GitPullResult> {
         restartTriggered: false,
         error: `Pull failed: ${message}`,
       };
-    }
-
-    // Restore stashed changes
-    if (wasDirty) {
-      try {
-        await git(['stash', 'pop'], 10_000);
-      } catch {
-        // Stash pop conflict — stash is still saved, user hasn't lost anything
-        logger.warn('Stash pop had conflicts — local changes preserved in stash');
-      }
     }
 
     const newCommit = await git(['rev-parse', '--short', 'HEAD']);
@@ -365,8 +352,6 @@ export function pullUpstream(): Promise<GitPullResult> {
   });
 }
 ```
-
-> **Self-healing pull:** The pull stashes local changes automatically, pulls, then restores them. No work is ever destroyed. If stash pop conflicts, the stash is preserved — the user can recover manually. There is no "reset and pull" or "discard and pull" — those are destructive operations that don't belong in a UI.
 
 ### Server Routes
 
@@ -513,36 +498,63 @@ export function useGitSync() {
 
 ### UI: Sync Pill (Header Indicator)
 
-A compact indicator in the app header. Must be mounted somewhere visible at all times.
+A compact pill in the app header. Color-coded by state. Clickable when action is available.
 
-**Visual elements** (adapt to the project's existing design system):
+```typescript
+// client/src/components/SyncPill.tsx
+import { useState } from 'react';
+import { useGitSync } from '../hooks/useGitSync.js';
+import SyncModal from './SyncModal.js';
+import type { GitSyncStatus } from '@scope/shared';
 
-- **Status dot** — small coloured circle for at-a-glance state (green=clean, amber=behind, red=dirty, blue=ahead, purple=diverged)
-- **Label** — text describing the state (language depends on audience — see Q6)
-- **Count badge** — numeric badge when relevant (commits behind, files changed)
-- **Optional summary** — brief context text ("files changed", "commits behind")
+interface PillStyle { bg: string; text: string; label: string; animation?: string; }
 
-**Behaviour requirements:**
+function getPillStyle(status: GitSyncStatus, pulling: boolean): PillStyle {
+  if (pulling) return { bg: 'bg-amber-500/15', text: 'text-amber-700', label: 'Pulling\u2026' };
+  switch (status.state) {
+    case 'clean':   return { bg: 'bg-green-600/15', text: 'text-green-700', label: 'Synced' };
+    case 'behind':  return { bg: 'bg-amber-500', text: 'text-white', label: `${status.behind} behind`, animation: 'sync-pulse' };
+    case 'dirty':   return { bg: 'bg-red-500/15', text: 'text-red-700', label: 'Dirty' };
+    case 'ahead':   return { bg: 'bg-blue-500/15', text: 'text-blue-700', label: `${status.ahead} ahead` };
+    case 'diverged':return { bg: 'bg-purple-500/15', text: 'text-purple-700', label: 'Diverged' };
+    case 'error':   return { bg: 'bg-muted-foreground/10', text: 'text-muted-foreground', label: 'Sync error' };
+    default:        return { bg: 'bg-muted-foreground/10', text: 'text-muted-foreground', label: 'Unknown' };
+  }
+}
 
-- **Always clickable** — every state opens the detail modal. Never leave the user with a dead-end indicator. Clean opens "all good" confirmation, dirty opens file list + actions, error shows diagnostics.
-- **Hover state** — must signal interactivity (don't use `cursor-default` on any state)
-- **Pulling state** — show a spinner and transient label while operation is in progress
-- **Animation** — actionable states (behind, dirty) should draw attention without alarm. A gentle pulse or glow works. Informational states (clean, ahead) should be calm.
+export default function SyncPill() {
+  const { status, pulling, pullResult, pull, clearPullResult } = useGitSync();
+  const [modalOpen, setModalOpen] = useState(false);
 
-**Language configuration:**
-The pill labels must match the audience chosen in Q6. Two built-in presets — the builder should implement whichever was chosen:
+  if (!status) return null;
 
-| State    | Developer language | Plain English (non-technical)              |
-| -------- | ------------------ | ------------------------------------------ |
-| clean    | "Synced"           | "Up to date"                               |
-| behind   | "3 behind"         | "Update available" / "3 updates available" |
-| dirty    | "Dirty"            | "Local changes detected"                   |
-| ahead    | "2 ahead"          | "Changes pending"                          |
-| diverged | "Diverged"         | "Needs attention"                          |
-| error    | "Sync error"       | "Connection issue"                         |
-| pulling  | "Pulling…"         | "Updating…"                                |
+  const style = getPillStyle(status, pulling);
+  const clickable = status.state === 'behind' || status.state === 'diverged';
 
-**CSS animation** (add to the project's stylesheet):
+  return (
+    <>
+      <button
+        onClick={() => clickable && (clearPullResult(), setModalOpen(true))}
+        title={clickable ? undefined : `Branch: ${status.branch} | Local: ${status.localCommit}`}
+        className={`inline-flex items-center gap-1.5 text-xs px-2 py-0.5 rounded-full font-medium ${style.bg} ${style.text} ${clickable ? 'cursor-pointer hover:opacity-80' : 'cursor-default'} transition-opacity`}
+        style={style.animation ? { animation: `${style.animation} 2s ease-in-out infinite` } : undefined}
+      >
+        {pulling && (
+          <svg className="animate-spin h-3 w-3" viewBox="0 0 24 24" fill="none">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+          </svg>
+        )}
+        {style.label}
+      </button>
+      <SyncModal isOpen={modalOpen} onClose={() => { setModalOpen(false); clearPullResult(); }}
+        status={status} onPull={pull} pulling={pulling} pullResult={pullResult} />
+    </>
+  );
+}
+```
+
+**CSS animation** (add to `client/src/styles/index.css`):
 
 ```css
 @keyframes sync-pulse {
@@ -556,37 +568,94 @@ The pill labels must match the audience chosen in Q6. Two built-in presets — t
 }
 ```
 
-### UI: Sync Modal (Detail View + Actions)
+### UI: Sync Modal (Pull Confirmation)
 
-A modal (or panel/drawer — adapt to project conventions) that opens when the pill is clicked. Handles **all states**, not just "behind".
+Shows commit list, confirms pull, displays result, auto-closes on success. Prevents dismissal during pull.
 
-**State-specific content:**
+```typescript
+// client/src/components/SyncModal.tsx
+import type { GitSyncStatus, GitPullResult } from '@scope/shared';
 
-| State        | Heading                             | Body content                                                                                                                                                                                                                                                | Actions                                             |
-| ------------ | ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
-| **clean**    | "Everything is up to date"          | Last checked timestamp. Reassurance message.                                                                                                                                                                                                                | Close                                               |
-| **behind**   | "N update(s) available"             | List of incoming commits (message, relative time, author). Hide SHA hashes for non-dev audiences.                                                                                                                                                           | Cancel, Get Latest (or "Pull Now" for dev language) |
-| **dirty**    | "Local changes detected"            | Explanation that files have changed locally. Collapsible file list grouped by type (Source, Components, Config, Images, etc.) with status badges (Added/Modified/Deleted). Reassure user: pull will temporarily stash these changes and restore them after. | Cancel, Get Latest (pull stashes automatically)     |
-| **diverged** | "Updates available + local changes" | Combines dirty file list + behind commit list. Same stash reassurance.                                                                                                                                                                                      | Cancel, Get Latest                                  |
-| **error**    | "Connection issue"                  | Error message from the server.                                                                                                                                                                                                                              | Close                                               |
-| **pulling**  | (transient)                         | Spinner, progress indication.                                                                                                                                                                                                                               | Modal cannot be dismissed during operation.         |
-| **success**  | (transient)                         | Success message with commit count. Auto-closes after ~3 seconds. If restart triggered, show "Restarting…"                                                                                                                                                   | None (auto-close)                                   |
-| **failure**  | "Update failed"                     | Error message from the pull result.                                                                                                                                                                                                                         | Close                                               |
+interface SyncModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  status: GitSyncStatus;
+  onPull: () => void;
+  pulling: boolean;
+  pullResult: GitPullResult | null;
+}
 
-**Dirty file list requirements:**
+function relativeTime(dateStr: string): string {
+  const diffSec = Math.round((Date.now() - new Date(dateStr).getTime()) / 1000);
+  if (diffSec < 60) return `${diffSec}s ago`;
+  const diffMin = Math.round(diffSec / 60);
+  if (diffMin < 60) return `${diffMin}m ago`;
+  const diffHr = Math.round(diffMin / 60);
+  if (diffHr < 24) return `${diffHr}h ago`;
+  return `${Math.round(diffHr / 24)}d ago`;
+}
 
-- Parse git porcelain status lines into human-readable file paths
-- Group files by type (Source, Components, Styles, Config, Images, Other) — adapt categories to the project's file structure
-- Show git status per file: Added (A), Modified (M), Deleted (D), New/Untracked
-- Collapsible — default to collapsed if >6 files
-- For non-dev audiences, add an explanatory line: "Some files on this machine have changed. This can happen during normal use."
+export default function SyncModal({ isOpen, onClose, status, onPull, pulling, pullResult }: SyncModalProps) {
+  if (!isOpen) return null;
 
-**Modal behaviour:**
+  const commits = status.behindCommits ?? [];
+  const isSuccess = pullResult?.success === true;
+  const isFailure = pullResult?.success === false;
 
-- Backdrop click closes unless an operation is in progress
-- Cancel button disabled during pull
-- Auto-close on success (3-second delay)
-- Prevent dismiss during pull to avoid orphaned UI state
+  if (isSuccess) setTimeout(onClose, 3000);
+
+  return (
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center"
+      onClick={(e) => { if (e.target === e.currentTarget && !pulling) onClose(); }}>
+      <div className="bg-card rounded-lg shadow-xl p-6 max-w-md w-full mx-4">
+        <h2 className="text-lg font-semibold text-foreground mb-4">
+          Pull {status.behind} commit{status.behind !== 1 ? 's' : ''}?
+        </h2>
+
+        {/* Commit list (before pull) */}
+        {commits.length > 0 && !pullResult && (
+          <ul className="space-y-2 mb-4 max-h-64 overflow-y-auto">
+            {commits.slice(0, 10).map((c) => (
+              <li key={c.sha} className="text-sm border-b border-border pb-2 last:border-0">
+                <div className="flex items-baseline gap-2">
+                  <code className="text-xs font-mono text-primary">{c.sha}</code>
+                  <span className="text-muted-foreground text-xs">{relativeTime(c.date)}</span>
+                </div>
+                <div className="text-foreground truncate">{c.message}</div>
+                <div className="text-xs text-muted-foreground">{c.author}</div>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {isSuccess && (
+          <p className="text-green-700 text-sm mb-4">
+            Pulled {pullResult.commitsPulled} commit{pullResult.commitsPulled !== 1 ? 's' : ''}.
+            {pullResult.restartTriggered ? ' Server restarting\u2026' : ''}
+          </p>
+        )}
+        {isFailure && (
+          <p className="text-red-600 text-sm mb-4">{pullResult.error ?? 'Pull failed'}</p>
+        )}
+
+        <div className="flex justify-end gap-3">
+          {isFailure ? (
+            <button onClick={onClose} className="px-4 py-2 text-sm rounded-md bg-muted-foreground/10 text-foreground hover:bg-muted-foreground/20">Close</button>
+          ) : isSuccess ? null : (
+            <>
+              <button onClick={onClose} disabled={pulling} className="px-4 py-2 text-sm rounded-md bg-muted-foreground/10 text-foreground hover:bg-muted-foreground/20 disabled:opacity-50">Cancel</button>
+              <button onClick={onPull} disabled={pulling} className="px-4 py-2 text-sm rounded-md bg-amber-500 text-white hover:bg-amber-600 disabled:opacity-50 flex items-center gap-2">
+                {pulling && <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>}
+                {pulling ? 'Pulling\u2026' : 'Pull Now'}
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
 
 ### Environment Configuration
 
@@ -1134,7 +1203,7 @@ RELAY_DIR=../relay   # path to shared folder (Dropbox, Syncthing, etc.)
 
 5. **`git pull --rebase` vs `git pull --merge`** — rebase keeps linear history (cleaner for data-only repos). But on conflict, you must handle `rebase --abort`. Never leave a repo in mid-rebase state.
 
-6. **Dirty tree blocks pull — stash is the answer** — a dirty tree prevents `git pull`. The correct solution is always stash: `git stash push --include-untracked` before pull, then `git stash pop` after. If stash pop has conflicts, the stash is preserved — no work is lost. Never offer a "reset" or "discard" button in the UI. If someone needs to nuke local state, they can do it from a terminal with full awareness.
+6. **Dirty tree blocks pull** — always check `git status --porcelain` before attempting pull. A pull on a dirty tree leads to unpredictable merge behaviour. Show the user: "You have unsaved changes — commit or discard before pulling."
 
 7. **Stash non-data changes during data sync** — if code and data are in the same repo, stash code changes before rebasing for data push, then restore. Signal Studio does this. Without it, code changes get caught up in the data commit.
 
@@ -1182,7 +1251,7 @@ After routing questions, collect:
 
 1. **Sub-type(s)** — which combination (A, B, C, D)?
 2. **Poll interval** — how often to check for updates? (default: 120s)
-3. **Language style** — developer jargon or plain English? Plain is the default for pull-only (Sub-type A) deployments where users are non-technical. See the language table in the UI pill section.
+3. **Language style** — developer, plain English, or custom labels for each state?
 4. **Restart behaviour** — Overmind-aware restart or manual?
 5. **Data folder path** — if Sub-type C, what path? (default: `data/`)
 6. **Relay folder path** — if Sub-type D, what path? (default: `relay/`)
