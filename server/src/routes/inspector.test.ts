@@ -191,6 +191,10 @@ describe('GET /api/inspector/summary', () => {
     expect(sessions.byType).toEqual({
       BUILD: 1,
       TEST: 1,
+      RESEARCH: 0,
+      KNOWLEDGE: 0,
+      OPS: 0,
+      ORIENTATION: 0,
       unclassified: 1,
     });
     expect(sessions.byProject).toEqual({
@@ -214,7 +218,15 @@ describe('GET /api/inspector/summary', () => {
 
     expect(res.status).toBe(200);
     expect(res.body.data.sessions.total).toBe(0);
-    expect(res.body.data.sessions.byType).toEqual({});
+    expect(res.body.data.sessions.byType).toEqual({
+      BUILD: 0,
+      TEST: 0,
+      RESEARCH: 0,
+      KNOWLEDGE: 0,
+      OPS: 0,
+      ORIENTATION: 0,
+      unclassified: 0,
+    });
     expect(res.body.data.sessions.byProject).toEqual({});
     expect(res.body.data.workflows.total).toBe(0);
     expect(res.body.data.workflows.byStatus).toEqual({});
