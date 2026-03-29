@@ -5,14 +5,20 @@ import { readRegistry, updateRegistry, getDataDir } from './registry.service.js'
 import { getSessionEvents } from './sessions.service.js';
 import { classifySession } from './classifier.service.js';
 import { logger } from '../config/logger.js';
-import type { SessionType, Registry } from '@appystack/shared';
+import type { SessionType, Registry, RegistryEntry } from '@appystack/shared';
 
 export type TypeCounts = Record<SessionType | 'unclassified', number>;
+export type FieldCounts = Record<string, number>;
 
 export interface NewByProject {
   project: string;
   count: number;
   type: SessionType | 'unclassified';
+}
+
+export interface FieldBreakdown {
+  before: FieldCounts;
+  after: FieldCounts;
 }
 
 export interface SyncResult {
@@ -25,6 +31,7 @@ export interface SyncResult {
   totalBefore: number;
   totalAfter: number;
   newByProject: NewByProject[];
+  fields?: Record<string, FieldBreakdown>;
 }
 
 export interface LastSyncRecord {
@@ -73,6 +80,33 @@ export function countByType(registry: Registry): { counts: TypeCounts; total: nu
   return { counts, total };
 }
 
+const PHASE2C_FIELDS: (keyof RegistryEntry)[] = [
+  'session_subtype',
+  'delegation_style',
+  'initiation_source',
+  'session_continuity',
+  'opening_style',
+  'closing_style',
+  'session_liveness',
+  'output_type',
+];
+
+/** Count Phase 2c field distributions from a registry snapshot. */
+export function countByFields(registry: Registry): Record<string, FieldCounts> {
+  const result: Record<string, FieldCounts> = {};
+  for (const field of PHASE2C_FIELDS) {
+    result[field] = {};
+  }
+  for (const entry of Object.values(registry)) {
+    for (const field of PHASE2C_FIELDS) {
+      const value = entry[field] as string | undefined;
+      const key = value ?? 'unknown';
+      result[field][key] = (result[field][key] ?? 0) + 1;
+    }
+  }
+  return result;
+}
+
 export interface SyncOptions {
   /** When true, reclassify all sessions (not just unclassified ones) */
   force?: boolean;
@@ -85,6 +119,7 @@ export async function runSync(options: SyncOptions = {}): Promise<SyncResult> {
   const registryBefore = await readRegistry();
   const beforeSessionIds = new Set(Object.keys(registryBefore));
   const { counts: before, total: totalBefore } = countByType(registryBefore);
+  const fieldsBefore = countByFields(registryBefore);
 
   // Step 1: backfill — imports sessions not yet in registry
   const backfillResult = await backfillTranscripts();
@@ -132,6 +167,13 @@ export async function runSync(options: SyncOptions = {}): Promise<SyncResult> {
   // Compute after-counts
   const registryAfter = await readRegistry();
   const { counts: after, total: totalAfter } = countByType(registryAfter);
+  const fieldsAfter = countByFields(registryAfter);
+
+  // Build field breakdowns
+  const fields: Record<string, FieldBreakdown> = {};
+  for (const field of PHASE2C_FIELDS) {
+    fields[field] = { before: fieldsBefore[field], after: fieldsAfter[field] };
+  }
 
   // Group new sessions by project (dominant type per project)
   const projectMap = new Map<string, { count: number; types: Map<string, number> }>();
@@ -166,6 +208,7 @@ export async function runSync(options: SyncOptions = {}): Promise<SyncResult> {
     totalBefore,
     totalAfter,
     newByProject,
+    fields,
   };
 
   // Persist delta record (non-fatal if it fails)

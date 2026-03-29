@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngelEye — Analytics Dashboard</title>
+<style>
+  :root {
+    --bg-page: #e8e0d4;
+    --bg-surface: #ede7dc;
+    --bg-card: #f5f1eb;
+    --bg-hover: #ddd6cc;
+    --border: #d4cdc4;
+    --border-raised: #ccc5bb;
+    --text-primary: #2a2018;
+    --text-secondary: #7a6e5e;
+    --text-muted: #9ca3af;
+    --accent-amber: #c8841a;
+    --accent-amber-fg: #fff;
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --destructive: #c0392b;
+    --info: #3b82f6;
+    --purple: #8b5cf6;
+    --brand-brown: #342d2d;
+    --brand-gold: #ccba9d;
+    --brand-yellow: #ffde59;
+    --brand-blue: #2E91FC;
+
+    /* Chart palette */
+    --chart-1: #c8841a;
+    --chart-2: #3b82f6;
+    --chart-3: #22c55e;
+    --chart-4: #8b5cf6;
+    --chart-5: #f59e0b;
+    --chart-6: #c0392b;
+    --chart-7: #0ea5e9;
+    --chart-8: #ec4899;
+    --chart-9: #14b8a6;
+    --chart-10: #a78bfa;
+    --chart-11: #64748b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-page);
+    color: var(--text-primary);
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.5;
+    padding: 0;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    width: 220px;
+    background: var(--brand-brown);
+    color: #ddd;
+    padding: 20px 0;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-logo {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 12px;
+  }
+
+  .sidebar-logo h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--brand-gold);
+    letter-spacing: 0.04em;
+  }
+
+  .sidebar-logo span {
+    font-size: 0.7rem;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .nav-group {
+    padding: 8px 0;
+  }
+
+  .nav-group-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #888;
+    padding: 4px 20px 6px;
+    font-weight: 600;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 20px;
+    font-size: 0.82rem;
+    color: #bbb;
+    cursor: pointer;
+    transition: background 0.15s;
+    text-decoration: none;
+  }
+
+  .nav-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
+  .nav-item.active { background: rgba(200,132,26,0.15); color: var(--accent-amber); font-weight: 600; }
+
+  .nav-icon {
+    width: 16px;
+    height: 16px;
+    opacity: 0.6;
+    flex-shrink: 0;
+  }
+
+  .nav-item.active .nav-icon { opacity: 1; }
+
+  /* ── Main content ── */
+  .main {
+    flex: 1;
+    padding: 24px 32px;
+    overflow-y: auto;
+    max-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .page-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+  }
+
+  .page-header p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+
+  /* ── Time filter ── */
+  .time-filter {
+    display: flex;
+    gap: 0;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .time-filter button {
+    padding: 7px 16px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+    border-right: 1px solid var(--border);
+    font-family: inherit;
+  }
+
+  .time-filter button:last-child { border-right: none; }
+  .time-filter button:hover { background: var(--bg-hover); }
+  .time-filter button.active {
+    background: var(--accent-amber);
+    color: var(--accent-amber-fg);
+    font-weight: 600;
+  }
+
+  /* ── Stat cards row ── */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+
+  .stat-card .label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .stat-card .value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.1;
+  }
+
+  .stat-card .detail {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+
+  .stat-card .value .unit {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  /* ── Chart grid ── */
+  .chart-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+
+  .chart-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+  }
+
+  .chart-card.full-width {
+    grid-column: 1 / -1;
+  }
+
+  .chart-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+
+  .chart-subtitle {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+  }
+
+  /* ── Pie / Donut charts ── */
+  .pie-container {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .pie-legend {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.78rem;
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .legend-label { color: var(--text-secondary); flex: 1; }
+  .legend-value { font-weight: 600; color: var(--text-primary); font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.75rem; }
+  .legend-pct { color: var(--text-muted); font-size: 0.72rem; min-width: 38px; text-align: right; }
+
+  /* ── Horizontal bar chart ── */
+  .hbar-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .hbar-row {
+    display: grid;
+    grid-template-columns: 130px 1fr 50px;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hbar-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .hbar-track {
+    height: 20px;
+    background: var(--bg-surface);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .hbar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s;
+  }
+
+  .hbar-value {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+
+  /* ── Histogram ── */
+  .histogram {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 140px;
+    padding-top: 10px;
+  }
+
+  .histogram-bar-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-end;
+  }
+
+  .histogram-bar {
+    width: 100%;
+    border-radius: 3px 3px 0 0;
+    min-height: 2px;
+  }
+
+  .histogram-label {
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .histogram-count {
+    font-size: 0.58rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .histogram-axis {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2px;
+    padding: 0 4px;
+  }
+
+  .histogram-axis span {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+
+  /* ── Heatmap ── */
+  .heatmap-container {
+    overflow-x: auto;
+  }
+
+  .heatmap-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 3px;
+  }
+
+  .heatmap-table th {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    padding: 4px 6px;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .heatmap-table th.row-header {
+    text-align: right;
+    min-width: 80px;
+  }
+
+  .heatmap-cell {
+    text-align: center;
+    padding: 8px 4px;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    min-width: 48px;
+  }
+
+  /* ── Three-col layout for bottom row ── */
+  .chart-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+
+  /* ── Mini tag list ── */
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+  }
+
+  .tag .count {
+    font-weight: 700;
+    color: var(--text-primary);
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ Sidebar ═══ -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <h2>AngelEye</h2>
+    <span>Session Intelligence</span>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Sessions</div>
+    <a class="nav-item" href="#">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="2" width="14" height="2" rx="1"/><rect x="1" y="7" width="14" height="2" rx="1"/><rect x="1" y="12" width="14" height="2" rx="1"/></svg>
+      Observer
+    </a>
+    <a class="nav-item" href="#">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M3 1h10a2 2 0 012 2v10a2 2 0 01-2 2H3a2 2 0 01-2-2V3a2 2 0 012-2zm1 3v2h8V4H4zm0 4v2h5V8H4z"/></svg>
+      Organiser
+    </a>
+    <a class="nav-item" href="#">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 2.5L10.5 8H5.5L8 3.5z"/></svg>
+      Workflows
+    </a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Insights</div>
+    <a class="nav-item" href="#">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><circle cx="5" cy="11" r="2"/><circle cx="11" cy="5" r="2"/><path d="M5 9V5h2M11 7v4H9" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
+      Affinity Groups
+    </a>
+    <a class="nav-item" href="#">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="2" y="10" width="3" height="4" rx="0.5"/><rect x="6.5" y="6" width="3" height="8" rx="0.5"/><rect x="11" y="2" width="3" height="12" rx="0.5"/></svg>
+      Campaigns
+    </a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">System</div>
+    <a class="nav-item" href="#">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M2 3h12v1H2zM2 7h8v1H2zM2 11h10v1H2zM12 6l3 3-3 3"/></svg>
+      Inspector
+    </a>
+    <a class="nav-item active" href="#">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M2 14V2h3v5l2-1.5L9 7V2h5v12H2zm5-4.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"/><rect x="1" y="12" width="4" height="3" rx="0.5"/><rect x="6" y="9" width="4" height="6" rx="0.5"/><rect x="11" y="6" width="4" height="9" rx="0.5"/></svg>
+      Analytics
+    </a>
+    <a class="nav-item" href="#">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 011 1v1.07A5.001 5.001 0 0113 8a5 5 0 01-10 0 5.001 5.001 0 014-4.93V2a1 1 0 011-1zm0 4a3 3 0 100 6 3 3 0 000-6z"/></svg>
+      Settings
+    </a>
+  </div>
+</nav>
+
+<!-- ═══ Main Content ═══ -->
+<div class="main">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h1>Analytics</h1>
+      <p>Phase 2c classifier data across 1,068 sessions</p>
+    </div>
+    <div class="time-filter">
+      <button>7 days</button>
+      <button>30 days</button>
+      <button class="active">All time</button>
+    </div>
+  </div>
+
+  <!-- ═══ Summary Stats Row ═══ -->
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="label">Total Sessions</div>
+      <div class="value">1,068</div>
+      <div class="detail">15 projects tracked</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Avg Autonomy Ratio</div>
+      <div class="value">0.41</div>
+      <div class="detail">median 0.38 | std 0.22</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Top Opening Style</div>
+      <div class="value" style="font-size:1.2rem;">typed_instruction</div>
+      <div class="detail">312 sessions (29.2%)</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Top Closing Style</div>
+      <div class="value" style="font-size:1.2rem;">natural_completion</div>
+      <div class="detail">287 sessions (26.9%)</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Classified</div>
+      <div class="value">98.4<span class="unit">%</span></div>
+      <div class="detail">17 unclassified (unknown)</div>
+    </div>
+  </div>
+
+  <!-- ═══ Chart Row 1: Delegation Style + Session Liveness ═══ -->
+  <div class="chart-grid">
+
+    <!-- Delegation Style Pie -->
+    <div class="chart-card">
+      <div class="chart-title">Delegation Style</div>
+      <div class="chart-subtitle">How sessions are steered (directive vs autonomous)</div>
+      <div class="pie-container">
+        <svg width="160" height="160" viewBox="0 0 160 160">
+          <!-- directive: 42% = 151.2deg -->
+          <circle cx="80" cy="80" r="60" fill="none" stroke="var(--chart-1)" stroke-width="32"
+            stroke-dasharray="226.2 150.8" stroke-dashoffset="0" transform="rotate(-90 80 80)"/>
+          <!-- conversational: 28% = 100.8deg -->
+          <circle cx="80" cy="80" r="60" fill="none" stroke="var(--chart-2)" stroke-width="32"
+            stroke-dasharray="105.6 271.4" stroke-dashoffset="-226.2" transform="rotate(-90 80 80)"/>
+          <!-- orchestrated: 18% = 64.8deg -->
+          <circle cx="80" cy="80" r="60" fill="none" stroke="var(--chart-4)" stroke-width="32"
+            stroke-dasharray="67.9 309.1" stroke-dashoffset="-331.8" transform="rotate(-90 80 80)"/>
+          <!-- autonomous: 12% = 43.2deg -->
+          <circle cx="80" cy="80" r="60" fill="none" stroke="var(--chart-3)" stroke-width="32"
+            stroke-dasharray="45.2 331.8" stroke-dashoffset="-399.7" transform="rotate(-90 80 80)"/>
+          <!-- Center white circle for donut -->
+          <circle cx="80" cy="80" r="44" fill="var(--bg-card)"/>
+          <text x="80" y="76" text-anchor="middle" font-size="18" font-weight="700" fill="var(--text-primary)">1,068</text>
+          <text x="80" y="92" text-anchor="middle" font-size="9" fill="var(--text-secondary)">sessions</text>
+        </svg>
+        <div class="pie-legend">
+          <div class="legend-item"><span class="legend-dot" style="background:var(--chart-1)"></span><span class="legend-label">directive</span><span class="legend-value">449</span><span class="legend-pct">42.0%</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--chart-2)"></span><span class="legend-label">conversational</span><span class="legend-value">299</span><span class="legend-pct">28.0%</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--chart-4)"></span><span class="legend-label">orchestrated</span><span class="legend-value">192</span><span class="legend-pct">18.0%</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--chart-3)"></span><span class="legend-label">autonomous</span><span class="legend-value">128</span><span class="legend-pct">12.0%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Session Liveness Donut -->
+    <div class="chart-card">
+      <div class="chart-title">Session Liveness</div>
+      <div class="chart-subtitle">Interaction density during session lifetime</div>
+      <div class="pie-container">
+        <svg width="160" height="160" viewBox="0 0 160 160">
+          <!-- high: 34% -->
+          <circle cx="80" cy="80" r="60" fill="none" stroke="var(--chart-3)" stroke-width="28"
+            stroke-dasharray="128.2 248.8" stroke-dashoffset="0" transform="rotate(-90 80 80)"/>
+          <!-- medium: 48% -->
+          <circle cx="80" cy="80" r="60" fill="none" stroke="var(--chart-5)" stroke-width="28"
+            stroke-dasharray="181.0 196.0" stroke-dashoffset="-128.2" transform="rotate(-90 80 80)"/>
+          <!-- low: 18% -->
+          <circle cx="80" cy="80" r="60" fill="none" stroke="var(--chart-11)" stroke-width="28"
+            stroke-dasharray="67.9 309.1" stroke-dashoffset="-309.2" transform="rotate(-90 80 80)"/>
+          <circle cx="80" cy="80" r="46" fill="var(--bg-card)"/>
+          <text x="80" y="78" text-anchor="middle" font-size="13" font-weight="700" fill="var(--text-primary)">Liveness</text>
+          <text x="80" y="93" text-anchor="middle" font-size="9" fill="var(--text-secondary)">3 tiers</text>
+        </svg>
+        <div class="pie-legend">
+          <div class="legend-item"><span class="legend-dot" style="background:var(--chart-3)"></span><span class="legend-label">high</span><span class="legend-value">363</span><span class="legend-pct">34.0%</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--chart-5)"></span><span class="legend-label">medium</span><span class="legend-value">513</span><span class="legend-pct">48.0%</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--chart-11)"></span><span class="legend-label">low</span><span class="legend-value">192</span><span class="legend-pct">18.0%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ Chart Row 2: Opening Style bar + Closing Style bar ═══ -->
+  <div class="chart-grid">
+
+    <!-- Opening Style -->
+    <div class="chart-card">
+      <div class="chart-title">Opening Style</div>
+      <div class="chart-subtitle">How sessions begin (11 categories)</div>
+      <div class="hbar-chart">
+        <div class="hbar-row"><span class="hbar-label">typed_instruction</span><div class="hbar-track"><div class="hbar-fill" style="width:100%;background:var(--chart-1)"></div></div><span class="hbar-value">312</span></div>
+        <div class="hbar-row"><span class="hbar-label">typed_question</span><div class="hbar-track"><div class="hbar-fill" style="width:68%;background:var(--chart-1);opacity:0.85"></div></div><span class="hbar-value">213</span></div>
+        <div class="hbar-row"><span class="hbar-label">paste_handover</span><div class="hbar-track"><div class="hbar-fill" style="width:46%;background:var(--chart-2)"></div></div><span class="hbar-value">144</span></div>
+        <div class="hbar-row"><span class="hbar-label">skill_invocation</span><div class="hbar-track"><div class="hbar-fill" style="width:38%;background:var(--chart-4)"></div></div><span class="hbar-value">118</span></div>
+        <div class="hbar-row"><span class="hbar-label">voice_dictation</span><div class="hbar-track"><div class="hbar-fill" style="width:26%;background:var(--chart-3)"></div></div><span class="hbar-value">81</span></div>
+        <div class="hbar-row"><span class="hbar-label">code_paste</span><div class="hbar-track"><div class="hbar-fill" style="width:19%;background:var(--chart-5)"></div></div><span class="hbar-value">60</span></div>
+        <div class="hbar-row"><span class="hbar-label">continuation</span><div class="hbar-track"><div class="hbar-fill" style="width:14%;background:var(--chart-7)"></div></div><span class="hbar-value">43</span></div>
+        <div class="hbar-row"><span class="hbar-label">context_dump</span><div class="hbar-track"><div class="hbar-fill" style="width:11%;background:var(--chart-8)"></div></div><span class="hbar-value">35</span></div>
+        <div class="hbar-row"><span class="hbar-label">agent_initiated</span><div class="hbar-track"><div class="hbar-fill" style="width:9%;background:var(--chart-9)"></div></div><span class="hbar-value">28</span></div>
+        <div class="hbar-row"><span class="hbar-label">greeting</span><div class="hbar-track"><div class="hbar-fill" style="width:6%;background:var(--chart-10)"></div></div><span class="hbar-value">21</span></div>
+        <div class="hbar-row"><span class="hbar-label">unknown</span><div class="hbar-track"><div class="hbar-fill" style="width:4%;background:var(--chart-11)"></div></div><span class="hbar-value">13</span></div>
+      </div>
+    </div>
+
+    <!-- Closing Style -->
+    <div class="chart-card">
+      <div class="chart-title">Closing Style</div>
+      <div class="chart-subtitle">How sessions end (9 categories)</div>
+      <div class="hbar-chart">
+        <div class="hbar-row"><span class="hbar-label">natural_completion</span><div class="hbar-track"><div class="hbar-fill" style="width:100%;background:var(--chart-3)"></div></div><span class="hbar-value">287</span></div>
+        <div class="hbar-row"><span class="hbar-label">commit_push</span><div class="hbar-track"><div class="hbar-fill" style="width:72%;background:var(--chart-3);opacity:0.8"></div></div><span class="hbar-value">206</span></div>
+        <div class="hbar-row"><span class="hbar-label">summary_close</span><div class="hbar-track"><div class="hbar-fill" style="width:55%;background:var(--chart-2)"></div></div><span class="hbar-value">158</span></div>
+        <div class="hbar-row"><span class="hbar-label">abrupt_abandon</span><div class="hbar-track"><div class="hbar-fill" style="width:42%;background:var(--chart-6)"></div></div><span class="hbar-value">121</span></div>
+        <div class="hbar-row"><span class="hbar-label">commit_only</span><div class="hbar-track"><div class="hbar-fill" style="width:30%;background:var(--chart-1)"></div></div><span class="hbar-value">87</span></div>
+        <div class="hbar-row"><span class="hbar-label">task_handoff</span><div class="hbar-track"><div class="hbar-fill" style="width:24%;background:var(--chart-4)"></div></div><span class="hbar-value">68</span></div>
+        <div class="hbar-row"><span class="hbar-label">question_answer</span><div class="hbar-track"><div class="hbar-fill" style="width:17%;background:var(--chart-5)"></div></div><span class="hbar-value">49</span></div>
+        <div class="hbar-row"><span class="hbar-label">error_bail</span><div class="hbar-track"><div class="hbar-fill" style="width:13%;background:var(--chart-6);opacity:0.7"></div></div><span class="hbar-value">38</span></div>
+        <div class="hbar-row"><span class="hbar-label">unknown</span><div class="hbar-track"><div class="hbar-fill" style="width:19%;background:var(--chart-11)"></div></div><span class="hbar-value">54</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ Autonomy Ratio Histogram (full width) ═══ -->
+  <div class="chart-grid">
+    <div class="chart-card full-width">
+      <div class="chart-title">Autonomy Ratio Distribution</div>
+      <div class="chart-subtitle">How autonomous sessions are (0.0 = fully conversational, 1.0 = fully autonomous)</div>
+      <div class="histogram">
+        <div class="histogram-bar-wrapper"><span class="histogram-count">42</span><div class="histogram-bar" style="height:30%;background:var(--chart-2)"></div><div class="histogram-label">0.0</div></div>
+        <div class="histogram-bar-wrapper"><span class="histogram-count">87</span><div class="histogram-bar" style="height:62%;background:var(--chart-2)"></div><div class="histogram-label">0.1</div></div>
+        <div class="histogram-bar-wrapper"><span class="histogram-count">124</span><div class="histogram-bar" style="height:89%;background:var(--chart-2)"></div><div class="histogram-label">0.2</div></div>
+        <div class="histogram-bar-wrapper"><span class="histogram-count">139</span><div class="histogram-bar" style="height:100%;background:var(--chart-1)"></div><div class="histogram-label">0.3</div></div>
+        <div class="histogram-bar-wrapper"><span class="histogram-count">131</span><div class="histogram-bar" style="height:94%;background:var(--chart-1)"></div><div class="histogram-label">0.4</div></div>
+        <div class="histogram-bar-wrapper"><span class="histogram-count">118</span><div class="histogram-bar" style="height:85%;background:var(--chart-1)"></div><div class="histogram-label">0.5</div></div>
+        <div class="histogram-bar-wrapper"><span class="histogram-count">104</span><div class="histogram-bar" style="height:75%;background:var(--chart-5)"></div><div class="histogram-label">0.6</div></div>
+        <div class="histogram-bar-wrapper"><span class="histogram-count">89</span><div class="histogram-bar" style="height:64%;background:var(--chart-5)"></div><div class="histogram-label">0.7</div></div>
+        <div class="histogram-bar-wrapper"><span class="histogram-count">72</span><div class="histogram-bar" style="height:52%;background:var(--chart-4)"></div><div class="histogram-label">0.8</div></div>
+        <div class="histogram-bar-wrapper"><span class="histogram-count">98</span><div class="histogram-bar" style="height:70%;background:var(--chart-4)"></div><div class="histogram-label">0.9</div></div>
+        <div class="histogram-bar-wrapper"><span class="histogram-count">64</span><div class="histogram-bar" style="height:46%;background:var(--chart-3)"></div><div class="histogram-label">1.0</div></div>
+      </div>
+      <div class="histogram-axis">
+        <span>conversational</span>
+        <span>balanced</span>
+        <span>autonomous</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ Session Type x Subtype Heatmap (full width) ═══ -->
+  <div class="chart-grid">
+    <div class="chart-card full-width">
+      <div class="chart-title">Session Type x Subtype Heatmap</div>
+      <div class="chart-subtitle">Cross-tabulation of session types against their subtypes (count per cell)</div>
+      <div class="heatmap-container">
+        <table class="heatmap-table">
+          <thead>
+            <tr>
+              <th class="row-header"></th>
+              <th>feature_impl</th>
+              <th>bug_fix</th>
+              <th>refactoring</th>
+              <th>test_writing</th>
+              <th>ci_pipeline</th>
+              <th>codebase_expl</th>
+              <th>file_retrieval</th>
+              <th>brain_maint</th>
+              <th>brain_capture</th>
+              <th>tech_survey</th>
+              <th>poem_exec</th>
+              <th>other</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th class="row-header">BUILD</th>
+              <td class="heatmap-cell" style="background:rgba(200,132,26,0.7);color:#fff">241</td>
+              <td class="heatmap-cell" style="background:rgba(200,132,26,0.55);color:#fff">168</td>
+              <td class="heatmap-cell" style="background:rgba(200,132,26,0.35);color:var(--text-primary)">89</td>
+              <td class="heatmap-cell" style="background:rgba(200,132,26,0.28);color:var(--text-primary)">72</td>
+              <td class="heatmap-cell" style="background:rgba(200,132,26,0.18);color:var(--text-secondary)">42</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:rgba(200,132,26,0.12);color:var(--text-secondary)">29</td>
+            </tr>
+            <tr>
+              <th class="row-header">ORIENTATION</th>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:rgba(59,130,246,0.5);color:#fff">112</td>
+              <td class="heatmap-cell" style="background:rgba(59,130,246,0.35);color:var(--text-primary)">68</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:rgba(59,130,246,0.15);color:var(--text-secondary)">44</td>
+            </tr>
+            <tr>
+              <th class="row-header">KNOWLEDGE</th>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:rgba(139,92,246,0.45);color:#fff">48</td>
+              <td class="heatmap-cell" style="background:rgba(139,92,246,0.3);color:var(--text-primary)">32</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:rgba(139,92,246,0.12);color:var(--text-secondary)">16</td>
+            </tr>
+            <tr>
+              <th class="row-header">RESEARCH</th>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:rgba(34,197,94,0.4);color:var(--text-primary)">38</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:rgba(34,197,94,0.15);color:var(--text-secondary)">18</td>
+            </tr>
+            <tr>
+              <th class="row-header">OPS</th>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:rgba(245,158,11,0.4);color:var(--text-primary)">24</td>
+              <td class="heatmap-cell" style="background:rgba(245,158,11,0.18);color:var(--text-secondary)">14</td>
+            </tr>
+            <tr>
+              <th class="row-header">TEST</th>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:rgba(192,57,43,0.35);color:var(--text-primary)">21</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:var(--bg-surface)">-</td>
+              <td class="heatmap-cell" style="background:rgba(192,57,43,0.12);color:var(--text-secondary)">11</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ Bottom row: Output Type + Initiation Source + Session Continuity ═══ -->
+  <div class="chart-grid-3">
+
+    <!-- Output Type -->
+    <div class="chart-card">
+      <div class="chart-title">Output Type</div>
+      <div class="chart-subtitle">What sessions produce</div>
+      <div class="pie-container" style="flex-direction:column;gap:16px;">
+        <svg width="130" height="130" viewBox="0 0 130 130">
+          <!-- code_changes: 48% -->
+          <circle cx="65" cy="65" r="50" fill="none" stroke="var(--chart-1)" stroke-width="24"
+            stroke-dasharray="150.8 163.4" stroke-dashoffset="0" transform="rotate(-90 65 65)"/>
+          <!-- mixed: 22% -->
+          <circle cx="65" cy="65" r="50" fill="none" stroke="var(--chart-2)" stroke-width="24"
+            stroke-dasharray="69.1 245.0" stroke-dashoffset="-150.8" transform="rotate(-90 65 65)"/>
+          <!-- knowledge_synthesis: 14% -->
+          <circle cx="65" cy="65" r="50" fill="none" stroke="var(--chart-4)" stroke-width="24"
+            stroke-dasharray="44.0 270.2" stroke-dashoffset="-219.9" transform="rotate(-90 65 65)"/>
+          <!-- conversation_only: 11% -->
+          <circle cx="65" cy="65" r="50" fill="none" stroke="var(--chart-11)" stroke-width="24"
+            stroke-dasharray="34.6 279.6" stroke-dashoffset="-263.9" transform="rotate(-90 65 65)"/>
+          <!-- new_artifacts: 5% -->
+          <circle cx="65" cy="65" r="50" fill="none" stroke="var(--chart-9)" stroke-width="24"
+            stroke-dasharray="15.7 298.5" stroke-dashoffset="-298.5" transform="rotate(-90 65 65)"/>
+          <circle cx="65" cy="65" r="38" fill="var(--bg-card)"/>
+        </svg>
+        <div class="pie-legend" style="width:100%">
+          <div class="legend-item"><span class="legend-dot" style="background:var(--chart-1)"></span><span class="legend-label">code_changes</span><span class="legend-pct">48%</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--chart-2)"></span><span class="legend-label">mixed</span><span class="legend-pct">22%</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--chart-4)"></span><span class="legend-label">knowledge_synthesis</span><span class="legend-pct">14%</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--chart-11)"></span><span class="legend-label">conversation_only</span><span class="legend-pct">11%</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--chart-9)"></span><span class="legend-label">new_artifacts</span><span class="legend-pct">5%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Initiation Source -->
+    <div class="chart-card">
+      <div class="chart-title">Initiation Source</div>
+      <div class="chart-subtitle">How sessions are triggered</div>
+      <div class="hbar-chart" style="margin-top:8px;">
+        <div class="hbar-row"><span class="hbar-label">user_typed</span><div class="hbar-track"><div class="hbar-fill" style="width:100%;background:var(--chart-1)"></div></div><span class="hbar-value">524</span></div>
+        <div class="hbar-row"><span class="hbar-label">voice_dictated</span><div class="hbar-track"><div class="hbar-fill" style="width:34%;background:var(--chart-2)"></div></div><span class="hbar-value">178</span></div>
+        <div class="hbar-row"><span class="hbar-label">handover_paste</span><div class="hbar-track"><div class="hbar-fill" style="width:26%;background:var(--chart-4)"></div></div><span class="hbar-value">139</span></div>
+        <div class="hbar-row"><span class="hbar-label">skill_invoked</span><div class="hbar-track"><div class="hbar-fill" style="width:22%;background:var(--chart-3)"></div></div><span class="hbar-value">116</span></div>
+        <div class="hbar-row"><span class="hbar-label">agent_dispatched</span><div class="hbar-track"><div class="hbar-fill" style="width:21%;background:var(--chart-5)"></div></div><span class="hbar-value">111</span></div>
+      </div>
+    </div>
+
+    <!-- Session Continuity -->
+    <div class="chart-card">
+      <div class="chart-title">Session Continuity</div>
+      <div class="chart-subtitle">Relationship to prior sessions</div>
+      <div style="margin-top:8px;">
+        <div class="tag-list" style="flex-direction:column;gap:8px;">
+          <div class="tag" style="justify-content:space-between;width:100%;padding:10px 14px;">
+            <span>fresh</span>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="width:120px;height:8px;background:var(--bg-page);border-radius:4px;overflow:hidden;">
+                <div style="width:52%;height:100%;background:var(--chart-1);border-radius:4px;"></div>
+              </div>
+              <span class="count">556</span>
+            </div>
+          </div>
+          <div class="tag" style="justify-content:space-between;width:100%;padding:10px 14px;">
+            <span>handover_paste</span>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="width:120px;height:8px;background:var(--bg-page);border-radius:4px;overflow:hidden;">
+                <div style="width:18%;height:100%;background:var(--chart-2);border-radius:4px;"></div>
+              </div>
+              <span class="count">192</span>
+            </div>
+          </div>
+          <div class="tag" style="justify-content:space-between;width:100%;padding:10px 14px;">
+            <span>compaction</span>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="width:120px;height:8px;background:var(--bg-page);border-radius:4px;overflow:hidden;">
+                <div style="width:14%;height:100%;background:var(--chart-4);border-radius:4px;"></div>
+              </div>
+              <span class="count">149</span>
+            </div>
+          </div>
+          <div class="tag" style="justify-content:space-between;width:100%;padding:10px 14px;">
+            <span>skill_launcher</span>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="width:120px;height:8px;background:var(--bg-page);border-radius:4px;overflow:hidden;">
+                <div style="width:10%;height:100%;background:var(--chart-3);border-radius:4px;"></div>
+              </div>
+              <span class="count">104</span>
+            </div>
+          </div>
+          <div class="tag" style="justify-content:space-between;width:100%;padding:10px 14px;">
+            <span>recall</span>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="width:120px;height:8px;background:var(--bg-page);border-radius:4px;overflow:hidden;">
+                <div style="width:6%;height:100%;background:var(--chart-5);border-radius:4px;"></div>
+              </div>
+              <span class="count">67</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ Session Type Breakdown (full width bar) ═══ -->
+  <div class="chart-grid">
+    <div class="chart-card full-width">
+      <div class="chart-title">Session Type Distribution</div>
+      <div class="chart-subtitle">Primary classification across all 1,068 sessions</div>
+      <div style="margin-top:12px;">
+        <!-- Stacked bar -->
+        <div style="display:flex;height:36px;border-radius:6px;overflow:hidden;gap:2px;">
+          <div style="flex:641;background:var(--chart-1);display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.75rem;font-weight:700;">BUILD 60%</div>
+          <div style="flex:224;background:var(--chart-2);display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.72rem;font-weight:600;">ORIENT 21%</div>
+          <div style="flex:96;background:var(--chart-4);display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.7rem;font-weight:600;">KNOW 9%</div>
+          <div style="flex:56;background:var(--chart-3);display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.65rem;font-weight:600;">RES 5%</div>
+          <div style="flex:38;background:var(--chart-5);display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.65rem;font-weight:600;">OPS 4%</div>
+          <div style="flex:32;background:var(--chart-6);display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.65rem;font-weight:600;">TEST 3%</div>
+        </div>
+        <div style="display:flex;gap:20px;margin-top:10px;flex-wrap:wrap;">
+          <div class="legend-item"><span class="legend-dot" style="background:var(--chart-1)"></span><span class="legend-label">BUILD</span><span class="legend-value">641</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--chart-2)"></span><span class="legend-label">ORIENTATION</span><span class="legend-value">224</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--chart-4)"></span><span class="legend-label">KNOWLEDGE</span><span class="legend-value">96</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--chart-3)"></span><span class="legend-label">RESEARCH</span><span class="legend-value">56</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--chart-5)"></span><span class="legend-label">OPS</span><span class="legend-value">38</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--chart-6)"></span><span class="legend-label">TEST</span><span class="legend-value">32</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:16px 0 8px;font-size:0.7rem;color:var(--text-muted);font-family:'SF Mono','Fira Code',monospace;">
+    AngelEye Analytics — Phase 2c Classifier Dashboard — Mochaccino Mockup — 2026-03-29
+  </div>
+
+</div>
+
+</body>
+</html>

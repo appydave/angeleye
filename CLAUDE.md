@@ -92,6 +92,8 @@ If a process is listed, the service is UP — **do not restart it, do not change
 Never kill a running dev server unless explicitly asked.
 Never change port numbers from what is defined in `.env`.
 
+**NEVER run dev servers from the Bash tool.** Do not run `npm run dev`, `nodemon`, `npx tsx server/...`, or any server start command to "diagnose" issues. These commands leak environment variables (especially PORT) into the Overmind/tmux session, causing the server to bind to wrong ports. The pollution persists for the entire terminal session and is invisible. To diagnose: check `lsof`, read log files, or tell the user to try a new terminal.
+
 Replace `CLIENT_PORT` and `SERVER_PORT` with this project's actual ports (see `.env`).
 
 **To start persistently** (survives terminal close):

@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AngelEye — Settings: Dashboard Grid</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset & Base ────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-page: #e8e0d4;
+      --bg-card: #f5f1eb;
+      --bg-surface-mid: #ede8e0;
+      --border: #d4cdc4;
+      --border-strong: #b8b0a4;
+      --foreground: #2a2018;
+      --muted: #7a6e5e;
+      --muted-light: #a89e8e;
+      --primary: #c8841a;
+      --primary-hover: #b5750f;
+      --accent-green: #5a9a3c;
+      --accent-red: #c0392b;
+      --accent-blue: #4a7fb5;
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-heading: 'Bebas Neue', var(--font-sans);
+      --font-mono: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+
+      /* Stacked bar segment colors — muted, distinct */
+      --seg-1: #c8841a;   /* amber/primary */
+      --seg-2: #7a9b5a;   /* sage green */
+      --seg-3: #8b6eb5;   /* muted purple */
+      --seg-4: #c07050;   /* terracotta */
+      --seg-5: #5a8a9a;   /* teal */
+      --seg-6: #b5944a;   /* gold */
+      --seg-7: #9a6a7a;   /* dusty rose */
+      --seg-8: #6a8a6a;   /* olive */
+      --seg-9: #8a7060;   /* warm gray */
+      --seg-10: #6a7a9a;  /* slate blue */
+      --seg-11: #a0784a;  /* sienna */
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg-page);
+      color: var(--foreground);
+      padding: 24px;
+      min-height: 100vh;
+    }
+
+    /* ── Page header ─────────────────────────────────── */
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0 12px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+      max-width: 840px;
+    }
+    .page-header h1 {
+      font-family: var(--font-heading);
+      font-size: 28px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--foreground);
+      font-weight: 400;
+    }
+    .variant-tag {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--primary);
+      background: rgba(200,132,26,0.12);
+      padding: 2px 8px;
+      border-radius: 3px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    /* ── State toggle ────────────────────────────────── */
+    .state-toggle {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      max-width: 840px;
+    }
+    .state-toggle button {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .state-toggle button.active {
+      background: var(--foreground);
+      color: var(--bg-card);
+      border-color: var(--foreground);
+    }
+    .state-toggle button:hover:not(.active) {
+      border-color: var(--border-strong);
+      color: var(--foreground);
+    }
+
+    /* ── Card ────────────────────────────────────────── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      max-width: 840px;
+    }
+
+    /* ── Top bar ─────────────────────────────────────── */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .top-bar .card-title {
+      font-family: var(--font-heading);
+      font-size: 18px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--primary);
+      font-weight: 400;
+    }
+    .btn-sync {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 16px;
+      border-radius: 4px;
+      border: none;
+      background: var(--primary);
+      color: white;
+      cursor: pointer;
+      transition: background 0.15s;
+      letter-spacing: 0.3px;
+    }
+    .btn-sync:hover { background: var(--primary-hover); }
+
+    /* Toggle switch */
+    .toggle-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .toggle-label {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .toggle-switch {
+      position: relative;
+      width: 36px;
+      height: 20px;
+      background: var(--border-strong);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .toggle-switch.on {
+      background: var(--primary);
+    }
+    .toggle-switch .toggle-knob {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.2s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    }
+    .toggle-switch.on .toggle-knob {
+      transform: translateX(16px);
+    }
+
+    .last-sync-ts {
+      font-size: 11px;
+      color: var(--muted-light);
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .last-sync-ts .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      display: inline-block;
+    }
+
+    /* ── Sync summary banner (post-sync only) ────────── */
+    .sync-summary {
+      padding: 10px 20px;
+      background: rgba(90,154,60,0.08);
+      border-bottom: 1px solid rgba(90,154,60,0.15);
+      font-size: 12px;
+      color: var(--foreground);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sync-summary .check {
+      color: var(--accent-green);
+      font-weight: 700;
+    }
+    .sync-summary .stat {
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    /* ── Dimension grid ──────────────────────────────── */
+    .dim-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .dim-cell {
+      background: var(--bg-card);
+      padding: 14px 18px;
+    }
+    .dim-cell:hover {
+      background: var(--bg-surface-mid);
+    }
+
+    .dim-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .dim-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--foreground);
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+    .dim-delta {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--accent-green);
+      background: rgba(90,154,60,0.1);
+      padding: 1px 6px;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+
+    /* Stacked bar */
+    .stacked-bar {
+      display: flex;
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 6px;
+      background: var(--bg-surface-mid);
+    }
+    .stacked-bar .seg {
+      height: 100%;
+      min-width: 2px;
+      transition: width 0.3s;
+    }
+
+    /* Value labels row */
+    .dim-values {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 10px;
+    }
+    .dim-val {
+      font-size: 10.5px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      line-height: 1.4;
+    }
+    .dim-val .swatch {
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+    .dim-val .count {
+      font-weight: 600;
+      color: var(--foreground);
+      font-size: 10px;
+    }
+    .dim-val .top-label {
+      font-weight: 600;
+      color: var(--foreground);
+    }
+
+    /* ── New sessions section ────────────────────────── */
+    .new-sessions {
+      padding: 16px 20px;
+    }
+    .new-sessions-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--foreground);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .new-sessions-title .badge {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--primary);
+      background: rgba(200,132,26,0.12);
+      padding: 1px 7px;
+      border-radius: 3px;
+    }
+
+    .project-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(212,205,196,0.5);
+    }
+    .project-row:last-child { border-bottom: none; }
+    .project-name {
+      font-size: 12px;
+      color: var(--foreground);
+      font-weight: 500;
+    }
+    .project-count {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 600;
+      font-family: var(--font-mono);
+    }
+
+    /* ── Legend at bottom ─────────────────────────────── */
+    .card-footer {
+      padding: 10px 20px;
+      border-top: 1px solid var(--border);
+      font-size: 10px;
+      color: var(--muted-light);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* ── Concept note ────────────────────────────────── */
+    .concept-note {
+      max-width: 840px;
+      margin-top: 20px;
+      padding: 16px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .concept-note strong {
+      color: var(--foreground);
+    }
+
+    /* ── Hidden state ────────────────────────────────── */
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <div class="page-header">
+    <h1>Settings — Unified</h1>
+    <span class="variant-tag">Variant C — Dashboard Grid</span>
+  </div>
+
+  <div class="state-toggle">
+    <button class="active" onclick="showState('idle')">Idle State</button>
+    <button onclick="showState('postsync')">Post-Sync State</button>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════
+       IDLE STATE
+       ════════════════════════════════════════════════════ -->
+  <div id="state-idle" class="card">
+    <!-- Top bar -->
+    <div class="top-bar">
+      <span class="card-title">Session Management</span>
+      <button class="btn-sync">Sync Sessions</button>
+      <div class="toggle-group">
+        <span class="toggle-label">Force reclassify</span>
+        <div class="toggle-switch" onclick="this.classList.toggle('on')">
+          <div class="toggle-knob"></div>
+        </div>
+      </div>
+      <span class="last-sync-ts"><span class="dot"></span> Last sync 4m ago</span>
+    </div>
+
+    <!-- Dimension grid -->
+    <div class="dim-grid">
+      <!-- Delegation Style -->
+      <div class="dim-cell">
+        <div class="dim-header">
+          <span class="dim-name">Delegation Style</span>
+        </div>
+        <div class="stacked-bar">
+          <div class="seg" style="width:42%; background:var(--seg-1)"></div>
+          <div class="seg" style="width:28%; background:var(--seg-2)"></div>
+          <div class="seg" style="width:18%; background:var(--seg-3)"></div>
+          <div class="seg" style="width:12%; background:var(--seg-4)"></div>
+        </div>
+        <div class="dim-values">
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-1)"></span><span class="top-label">directive</span> <span class="count">423</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-2)"></span>conversational <span class="count">281</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-3)"></span>orchestrated <span class="count">178</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-4)"></span>autonomous <span class="count">118</span></span>
+        </div>
+      </div>
+
+      <!-- Opening Style -->
+      <div class="dim-cell">
+        <div class="dim-header">
+          <span class="dim-name">Opening Style</span>
+        </div>
+        <div class="stacked-bar">
+          <div class="seg" style="width:31%; background:var(--seg-1)"></div>
+          <div class="seg" style="width:22%; background:var(--seg-5)"></div>
+          <div class="seg" style="width:16%; background:var(--seg-2)"></div>
+          <div class="seg" style="width:12%; background:var(--seg-3)"></div>
+          <div class="seg" style="width:8%; background:var(--seg-6)"></div>
+          <div class="seg" style="width:5%; background:var(--seg-4)"></div>
+          <div class="seg" style="width:3%; background:var(--seg-7)"></div>
+          <div class="seg" style="width:3%; background:var(--seg-9)"></div>
+        </div>
+        <div class="dim-values">
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-1)"></span><span class="top-label">typed_instruction</span> <span class="count">312</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-5)"></span>skill_invocation <span class="count">218</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-2)"></span>paste_handover <span class="count">159</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-3)"></span>voice_dictation <span class="count">121</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-6)"></span>typed_question <span class="count">82</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-4)"></span>code_paste <span class="count">52</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-7)"></span>continuation <span class="count">32</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-9)"></span>other <span class="count">24</span></span>
+        </div>
+      </div>
+
+      <!-- Closing Style -->
+      <div class="dim-cell">
+        <div class="dim-header">
+          <span class="dim-name">Closing Style</span>
+        </div>
+        <div class="stacked-bar">
+          <div class="seg" style="width:28%; background:var(--seg-1)"></div>
+          <div class="seg" style="width:24%; background:var(--seg-5)"></div>
+          <div class="seg" style="width:18%; background:var(--seg-2)"></div>
+          <div class="seg" style="width:12%; background:var(--seg-4)"></div>
+          <div class="seg" style="width:10%; background:var(--seg-3)"></div>
+          <div class="seg" style="width:5%; background:var(--seg-7)"></div>
+          <div class="seg" style="width:3%; background:var(--seg-6)"></div>
+        </div>
+        <div class="dim-values">
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-1)"></span><span class="top-label">natural_completion</span> <span class="count">282</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-5)"></span>commit_push <span class="count">238</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-2)"></span>summary_close <span class="count">180</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-4)"></span>abrupt_abandon <span class="count">122</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-3)"></span>commit_only <span class="count">96</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-7)"></span>task_handoff <span class="count">48</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-6)"></span>other <span class="count">34</span></span>
+        </div>
+      </div>
+
+      <!-- Output Type -->
+      <div class="dim-cell">
+        <div class="dim-header">
+          <span class="dim-name">Output Type</span>
+        </div>
+        <div class="stacked-bar">
+          <div class="seg" style="width:44%; background:var(--seg-1)"></div>
+          <div class="seg" style="width:22%; background:var(--seg-2)"></div>
+          <div class="seg" style="width:18%; background:var(--seg-5)"></div>
+          <div class="seg" style="width:10%; background:var(--seg-3)"></div>
+          <div class="seg" style="width:6%; background:var(--seg-4)"></div>
+        </div>
+        <div class="dim-values">
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-1)"></span><span class="top-label">code_changes</span> <span class="count">438</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-2)"></span>knowledge_synthesis <span class="count">223</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-5)"></span>mixed <span class="count">182</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-3)"></span>conversation_only <span class="count">98</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-4)"></span>new_artifacts <span class="count">59</span></span>
+        </div>
+      </div>
+
+      <!-- Session Liveness -->
+      <div class="dim-cell">
+        <div class="dim-header">
+          <span class="dim-name">Session Liveness</span>
+        </div>
+        <div class="stacked-bar">
+          <div class="seg" style="width:52%; background:var(--seg-1)"></div>
+          <div class="seg" style="width:34%; background:var(--seg-5)"></div>
+          <div class="seg" style="width:14%; background:var(--seg-9)"></div>
+        </div>
+        <div class="dim-values">
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-1)"></span><span class="top-label">high</span> <span class="count">518</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-5)"></span>medium <span class="count">342</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-9)"></span>low <span class="count">140</span></span>
+        </div>
+      </div>
+
+      <!-- Initiation Source -->
+      <div class="dim-cell">
+        <div class="dim-header">
+          <span class="dim-name">Initiation Source</span>
+        </div>
+        <div class="stacked-bar">
+          <div class="seg" style="width:40%; background:var(--seg-1)"></div>
+          <div class="seg" style="width:22%; background:var(--seg-5)"></div>
+          <div class="seg" style="width:18%; background:var(--seg-2)"></div>
+          <div class="seg" style="width:12%; background:var(--seg-3)"></div>
+          <div class="seg" style="width:8%; background:var(--seg-4)"></div>
+        </div>
+        <div class="dim-values">
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-1)"></span><span class="top-label">user_typed</span> <span class="count">402</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-5)"></span>skill_invoked <span class="count">218</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-2)"></span>voice_dictated <span class="count">178</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-3)"></span>handover_paste <span class="count">124</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-4)"></span>agent_dispatched <span class="count">78</span></span>
+        </div>
+      </div>
+
+      <!-- Session Continuity -->
+      <div class="dim-cell">
+        <div class="dim-header">
+          <span class="dim-name">Session Continuity</span>
+        </div>
+        <div class="stacked-bar">
+          <div class="seg" style="width:48%; background:var(--seg-1)"></div>
+          <div class="seg" style="width:20%; background:var(--seg-5)"></div>
+          <div class="seg" style="width:16%; background:var(--seg-2)"></div>
+          <div class="seg" style="width:10%; background:var(--seg-3)"></div>
+          <div class="seg" style="width:6%; background:var(--seg-4)"></div>
+        </div>
+        <div class="dim-values">
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-1)"></span><span class="top-label">fresh</span> <span class="count">482</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-5)"></span>compaction <span class="count">198</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-2)"></span>handover_paste <span class="count">162</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-3)"></span>skill_launcher <span class="count">98</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-4)"></span>recall <span class="count">60</span></span>
+        </div>
+      </div>
+
+      <!-- Session Subtype (top 8) -->
+      <div class="dim-cell">
+        <div class="dim-header">
+          <span class="dim-name">Session Subtype</span>
+        </div>
+        <div class="stacked-bar">
+          <div class="seg" style="width:28%; background:var(--seg-1)"></div>
+          <div class="seg" style="width:18%; background:var(--seg-2)"></div>
+          <div class="seg" style="width:14%; background:var(--seg-5)"></div>
+          <div class="seg" style="width:12%; background:var(--seg-3)"></div>
+          <div class="seg" style="width:10%; background:var(--seg-4)"></div>
+          <div class="seg" style="width:8%; background:var(--seg-6)"></div>
+          <div class="seg" style="width:6%; background:var(--seg-7)"></div>
+          <div class="seg" style="width:4%; background:var(--seg-9)"></div>
+        </div>
+        <div class="dim-values">
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-1)"></span><span class="top-label">feature_impl</span> <span class="count">278</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-2)"></span>bug_fix_round <span class="count">182</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-5)"></span>refactoring <span class="count">138</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-3)"></span>brain_maint <span class="count">118</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-4)"></span>codebase_expl <span class="count">96</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-6)"></span>test_writing <span class="count">82</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-7)"></span>poem_exec <span class="count">62</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-9)"></span>other <span class="count">44</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- New sessions -->
+    <div class="new-sessions">
+      <div class="new-sessions-title">
+        New Sessions
+        <span class="badge">12 unsynced</span>
+      </div>
+      <div class="project-row">
+        <span class="project-name">angeleye</span>
+        <span class="project-count">5</span>
+      </div>
+      <div class="project-row">
+        <span class="project-name">flivideo</span>
+        <span class="project-count">3</span>
+      </div>
+      <div class="project-row">
+        <span class="project-name">appydave-tools</span>
+        <span class="project-count">2</span>
+      </div>
+      <div class="project-row">
+        <span class="project-name">supportsignal</span>
+        <span class="project-count">2</span>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <span>1,000 sessions classified across 8 dimensions</span>
+      <span>AngelEye v0.14</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════
+       POST-SYNC STATE
+       ════════════════════════════════════════════════════ -->
+  <div id="state-postsync" class="card hidden">
+    <!-- Top bar -->
+    <div class="top-bar">
+      <span class="card-title">Session Management</span>
+      <button class="btn-sync" style="opacity:0.6;cursor:default">Syncing...</button>
+      <div class="toggle-group">
+        <span class="toggle-label">Force reclassify</span>
+        <div class="toggle-switch on">
+          <div class="toggle-knob"></div>
+        </div>
+      </div>
+      <span class="last-sync-ts"><span class="dot"></span> Just now</span>
+    </div>
+
+    <!-- Sync summary -->
+    <div class="sync-summary">
+      <span class="check">&#10003;</span>
+      Sync complete &mdash;
+      <span class="stat">12 new</span> sessions ingested,
+      <span class="stat">47 reclassified</span> across 8 dimensions
+    </div>
+
+    <!-- Dimension grid with deltas -->
+    <div class="dim-grid">
+      <!-- Delegation Style -->
+      <div class="dim-cell">
+        <div class="dim-header">
+          <span class="dim-name">Delegation Style</span>
+          <span class="dim-delta">+8 reclassified</span>
+        </div>
+        <div class="stacked-bar">
+          <div class="seg" style="width:43%; background:var(--seg-1)"></div>
+          <div class="seg" style="width:27%; background:var(--seg-2)"></div>
+          <div class="seg" style="width:18%; background:var(--seg-3)"></div>
+          <div class="seg" style="width:12%; background:var(--seg-4)"></div>
+        </div>
+        <div class="dim-values">
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-1)"></span><span class="top-label">directive</span> <span class="count">431</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-2)"></span>conversational <span class="count">278</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-3)"></span>orchestrated <span class="count">182</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-4)"></span>autonomous <span class="count">121</span></span>
+        </div>
+      </div>
+
+      <!-- Opening Style -->
+      <div class="dim-cell">
+        <div class="dim-header">
+          <span class="dim-name">Opening Style</span>
+          <span class="dim-delta">+5 reclassified</span>
+        </div>
+        <div class="stacked-bar">
+          <div class="seg" style="width:31%; background:var(--seg-1)"></div>
+          <div class="seg" style="width:22%; background:var(--seg-5)"></div>
+          <div class="seg" style="width:16%; background:var(--seg-2)"></div>
+          <div class="seg" style="width:12%; background:var(--seg-3)"></div>
+          <div class="seg" style="width:8%; background:var(--seg-6)"></div>
+          <div class="seg" style="width:5%; background:var(--seg-4)"></div>
+          <div class="seg" style="width:3%; background:var(--seg-7)"></div>
+          <div class="seg" style="width:3%; background:var(--seg-9)"></div>
+        </div>
+        <div class="dim-values">
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-1)"></span><span class="top-label">typed_instruction</span> <span class="count">316</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-5)"></span>skill_invocation <span class="count">220</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-2)"></span>paste_handover <span class="count">161</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-3)"></span>voice_dictation <span class="count">122</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-6)"></span>typed_question <span class="count">83</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-4)"></span>code_paste <span class="count">52</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-7)"></span>continuation <span class="count">32</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-9)"></span>other <span class="count">26</span></span>
+        </div>
+      </div>
+
+      <!-- Closing Style -->
+      <div class="dim-cell">
+        <div class="dim-header">
+          <span class="dim-name">Closing Style</span>
+          <span class="dim-delta">+6 reclassified</span>
+        </div>
+        <div class="stacked-bar">
+          <div class="seg" style="width:28%; background:var(--seg-1)"></div>
+          <div class="seg" style="width:24%; background:var(--seg-5)"></div>
+          <div class="seg" style="width:18%; background:var(--seg-2)"></div>
+          <div class="seg" style="width:12%; background:var(--seg-4)"></div>
+          <div class="seg" style="width:10%; background:var(--seg-3)"></div>
+          <div class="seg" style="width:5%; background:var(--seg-7)"></div>
+          <div class="seg" style="width:3%; background:var(--seg-6)"></div>
+        </div>
+        <div class="dim-values">
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-1)"></span><span class="top-label">natural_completion</span> <span class="count">286</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-5)"></span>commit_push <span class="count">240</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-2)"></span>summary_close <span class="count">182</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-4)"></span>abrupt_abandon <span class="count">122</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-3)"></span>commit_only <span class="count">98</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-7)"></span>task_handoff <span class="count">48</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-6)"></span>other <span class="count">36</span></span>
+        </div>
+      </div>
+
+      <!-- Output Type -->
+      <div class="dim-cell">
+        <div class="dim-header">
+          <span class="dim-name">Output Type</span>
+          <span class="dim-delta">+7 reclassified</span>
+        </div>
+        <div class="stacked-bar">
+          <div class="seg" style="width:44%; background:var(--seg-1)"></div>
+          <div class="seg" style="width:22%; background:var(--seg-2)"></div>
+          <div class="seg" style="width:18%; background:var(--seg-5)"></div>
+          <div class="seg" style="width:10%; background:var(--seg-3)"></div>
+          <div class="seg" style="width:6%; background:var(--seg-4)"></div>
+        </div>
+        <div class="dim-values">
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-1)"></span><span class="top-label">code_changes</span> <span class="count">444</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-2)"></span>knowledge_synthesis <span class="count">225</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-5)"></span>mixed <span class="count">185</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-3)"></span>conversation_only <span class="count">98</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-4)"></span>new_artifacts <span class="count">60</span></span>
+        </div>
+      </div>
+
+      <!-- Session Liveness -->
+      <div class="dim-cell">
+        <div class="dim-header">
+          <span class="dim-name">Session Liveness</span>
+          <span class="dim-delta">+4 reclassified</span>
+        </div>
+        <div class="stacked-bar">
+          <div class="seg" style="width:53%; background:var(--seg-1)"></div>
+          <div class="seg" style="width:33%; background:var(--seg-5)"></div>
+          <div class="seg" style="width:14%; background:var(--seg-9)"></div>
+        </div>
+        <div class="dim-values">
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-1)"></span><span class="top-label">high</span> <span class="count">526</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-5)"></span>medium <span class="count">338</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-9)"></span>low <span class="count">148</span></span>
+        </div>
+      </div>
+
+      <!-- Initiation Source -->
+      <div class="dim-cell">
+        <div class="dim-header">
+          <span class="dim-name">Initiation Source</span>
+          <span class="dim-delta">+6 reclassified</span>
+        </div>
+        <div class="stacked-bar">
+          <div class="seg" style="width:40%; background:var(--seg-1)"></div>
+          <div class="seg" style="width:22%; background:var(--seg-5)"></div>
+          <div class="seg" style="width:18%; background:var(--seg-2)"></div>
+          <div class="seg" style="width:12%; background:var(--seg-3)"></div>
+          <div class="seg" style="width:8%; background:var(--seg-4)"></div>
+        </div>
+        <div class="dim-values">
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-1)"></span><span class="top-label">user_typed</span> <span class="count">406</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-5)"></span>skill_invoked <span class="count">222</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-2)"></span>voice_dictated <span class="count">180</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-3)"></span>handover_paste <span class="count">126</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-4)"></span>agent_dispatched <span class="count">78</span></span>
+        </div>
+      </div>
+
+      <!-- Session Continuity -->
+      <div class="dim-cell">
+        <div class="dim-header">
+          <span class="dim-name">Session Continuity</span>
+          <span class="dim-delta">+5 reclassified</span>
+        </div>
+        <div class="stacked-bar">
+          <div class="seg" style="width:48%; background:var(--seg-1)"></div>
+          <div class="seg" style="width:20%; background:var(--seg-5)"></div>
+          <div class="seg" style="width:16%; background:var(--seg-2)"></div>
+          <div class="seg" style="width:10%; background:var(--seg-3)"></div>
+          <div class="seg" style="width:6%; background:var(--seg-4)"></div>
+        </div>
+        <div class="dim-values">
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-1)"></span><span class="top-label">fresh</span> <span class="count">488</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-5)"></span>compaction <span class="count">200</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-2)"></span>handover_paste <span class="count">164</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-3)"></span>skill_launcher <span class="count">98</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-4)"></span>recall <span class="count">62</span></span>
+        </div>
+      </div>
+
+      <!-- Session Subtype -->
+      <div class="dim-cell">
+        <div class="dim-header">
+          <span class="dim-name">Session Subtype</span>
+          <span class="dim-delta">+6 reclassified</span>
+        </div>
+        <div class="stacked-bar">
+          <div class="seg" style="width:28%; background:var(--seg-1)"></div>
+          <div class="seg" style="width:18%; background:var(--seg-2)"></div>
+          <div class="seg" style="width:14%; background:var(--seg-5)"></div>
+          <div class="seg" style="width:12%; background:var(--seg-3)"></div>
+          <div class="seg" style="width:10%; background:var(--seg-4)"></div>
+          <div class="seg" style="width:8%; background:var(--seg-6)"></div>
+          <div class="seg" style="width:6%; background:var(--seg-7)"></div>
+          <div class="seg" style="width:4%; background:var(--seg-9)"></div>
+        </div>
+        <div class="dim-values">
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-1)"></span><span class="top-label">feature_impl</span> <span class="count">284</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-2)"></span>bug_fix_round <span class="count">184</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-5)"></span>refactoring <span class="count">140</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-3)"></span>brain_maint <span class="count">120</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-4)"></span>codebase_expl <span class="count">98</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-6)"></span>test_writing <span class="count">82</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-7)"></span>poem_exec <span class="count">64</span></span>
+          <span class="dim-val"><span class="swatch" style="background:var(--seg-9)"></span>other <span class="count">40</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- New sessions (post-sync: empty) -->
+    <div class="new-sessions">
+      <div class="new-sessions-title">
+        New Sessions
+        <span class="badge" style="color:var(--accent-green);background:rgba(90,154,60,0.1)">0 unsynced</span>
+      </div>
+      <div style="font-size:12px;color:var(--muted-light);padding:8px 0;">All sessions synced and classified.</div>
+    </div>
+
+    <div class="card-footer">
+      <span>1,012 sessions classified across 8 dimensions</span>
+      <span>AngelEye v0.14</span>
+    </div>
+  </div>
+
+  <!-- Concept note -->
+  <div class="concept-note">
+    <strong>Variant C — Dashboard Grid concept:</strong>
+    Show all 8 classifier dimensions at once in a scannable 2-column grid. Each cell has a horizontal stacked bar showing the distribution,
+    with labeled segments and counts. After sync, delta badges appear on each dimension showing how many sessions were reclassified.
+    The key insight: see the health of your entire classification system at a glance — no tabs, no accordions, no hidden state.
+  </div>
+
+  <script>
+    function showState(state) {
+      document.getElementById('state-idle').classList.toggle('hidden', state !== 'idle');
+      document.getElementById('state-postsync').classList.toggle('hidden', state !== 'postsync');
+      document.querySelectorAll('.state-toggle button').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.toLowerCase().includes(state === 'idle' ? 'idle' : 'post'));
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AngelEye — Settings: Session Sync (Accordion)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset & Base ────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-page: #e8e0d4;
+      --bg-card: #f5f1eb;
+      --bg-surface-mid: #ede8e0;
+      --border: #d4cdc4;
+      --border-strong: #b8b0a4;
+      --foreground: #2a2018;
+      --muted: #7a6e5e;
+      --muted-light: #a89e8e;
+      --primary: #c8841a;
+      --primary-hover: #b5750f;
+      --accent-green: #5a9a3c;
+      --accent-red: #c0392b;
+      --accent-blue: #3a7ab8;
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-heading: 'Bebas Neue', var(--font-sans);
+      --font-mono: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg-page);
+      color: var(--foreground);
+      padding: 32px;
+      min-height: 100vh;
+    }
+
+    /* ── Page header ─────────────────────────────────── */
+    .page-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+    .page-header h1 {
+      font-family: var(--font-heading);
+      font-size: 28px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--foreground);
+      font-weight: 400;
+    }
+    .page-header .subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+    }
+
+    /* ── Layout ──────────────────────────────────────── */
+    .demo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      max-width: 1320px;
+    }
+    .demo-label {
+      font-family: var(--font-heading);
+      font-size: 15px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .demo-label .badge {
+      font-family: var(--font-sans);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      background: var(--bg-surface-mid);
+      color: var(--muted);
+      padding: 2px 7px;
+      border-radius: 3px;
+    }
+    .demo-label .badge-green {
+      background: #e8f5e0;
+      color: var(--accent-green);
+    }
+
+    /* ── Card ────────────────────────────────────────── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      padding: 24px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+    .card-title {
+      font-family: var(--font-heading);
+      font-size: 20px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--primary);
+      font-weight: 400;
+    }
+    .card-desc {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    /* ── Stats summary strip ─────────────────────────── */
+    .stats-strip {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 16px;
+      padding: 8px 12px;
+      background: var(--bg-surface-mid);
+      border-radius: 4px;
+    }
+    .stats-strip .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .stats-strip .dot-green { background: var(--accent-green); }
+    .stats-strip .dot-muted { background: var(--muted-light); }
+    .stats-strip .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .stats-strip .stat-value {
+      font-weight: 600;
+      color: var(--foreground);
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+    .stats-strip .divider {
+      width: 1px;
+      height: 14px;
+      background: var(--border);
+    }
+
+    /* ── Action row ──────────────────────────────────── */
+    .action-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .btn-sync {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-sync:hover { background: var(--primary-hover); }
+
+    .btn-sync:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .reclassify-link {
+      font-size: 11px;
+      color: var(--muted);
+      cursor: pointer;
+      border: none;
+      background: none;
+      text-decoration: underline;
+      text-decoration-style: dotted;
+      text-underline-offset: 2px;
+      transition: color 0.15s;
+    }
+    .reclassify-link:hover { color: var(--primary); }
+
+    /* ── Reclassify expansion ────────────────────────── */
+    .reclassify-expand {
+      background: #fef9f0;
+      border: 1px solid #e8dcc8;
+      border-radius: 4px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--foreground);
+    }
+    .reclassify-expand .warn-text {
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .reclassify-expand .btn-reclassify {
+      background: var(--accent-red);
+      color: white;
+      border: none;
+      padding: 5px 14px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.3px;
+    }
+    .reclassify-expand .btn-cancel {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 5px 14px;
+      border-radius: 3px;
+      font-size: 11px;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+
+    /* ── Inline results area ─────────────────────────── */
+    .results-summary {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .results-summary .count {
+      font-weight: 600;
+      color: var(--foreground);
+      font-family: var(--font-mono);
+    }
+    .results-summary .new-badge {
+      background: #e8f5e0;
+      color: var(--accent-green);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 3px;
+      letter-spacing: 0.3px;
+    }
+    .results-summary .changed-badge {
+      background: #e8f0fa;
+      color: var(--accent-blue);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 3px;
+      letter-spacing: 0.3px;
+    }
+
+    /* ── Accordion ───────────────────────────────────── */
+    .accordion {
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .accordion-section {
+      border-bottom: 1px solid var(--border);
+    }
+    .accordion-section:last-child {
+      border-bottom: none;
+    }
+
+    .accordion-trigger {
+      width: 100%;
+      background: var(--bg-card);
+      border: none;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--foreground);
+      letter-spacing: 0.3px;
+      transition: background 0.15s;
+    }
+    .accordion-trigger:hover {
+      background: var(--bg-surface-mid);
+    }
+    .accordion-trigger .trigger-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .accordion-trigger .chevron {
+      width: 14px;
+      height: 14px;
+      color: var(--muted);
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+    .accordion-section.open .accordion-trigger .chevron {
+      transform: rotate(90deg);
+    }
+    .accordion-trigger .section-count {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 400;
+      color: var(--muted);
+      background: var(--bg-surface-mid);
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+    .accordion-trigger .delta-badge {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 3px;
+      margin-left: 4px;
+    }
+    .delta-badge.changed {
+      background: #e8f0fa;
+      color: var(--accent-blue);
+    }
+    .delta-badge.unchanged {
+      background: var(--bg-surface-mid);
+      color: var(--muted-light);
+    }
+
+    .accordion-body {
+      display: none;
+      padding: 0 14px 12px;
+      background: var(--bg-card);
+    }
+    .accordion-section.open .accordion-body {
+      display: block;
+    }
+
+    /* ── Delta table ─────────────────────────────────── */
+    .delta-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+    }
+    .delta-table th {
+      text-align: left;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--muted);
+      padding: 6px 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .delta-table th.num {
+      text-align: right;
+    }
+    .delta-table td {
+      padding: 5px 8px;
+      border-bottom: 1px solid #eae5dd;
+      color: var(--foreground);
+    }
+    .delta-table td.num {
+      text-align: right;
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+    .delta-table td.label-cell {
+      font-weight: 500;
+    }
+    .delta-table tr:last-child td {
+      border-bottom: none;
+    }
+    .delta-table .delta-pos {
+      color: var(--accent-green);
+      font-weight: 600;
+    }
+    .delta-table .delta-neg {
+      color: var(--accent-red);
+      font-weight: 600;
+    }
+    .delta-table .delta-zero {
+      color: var(--muted-light);
+    }
+    .delta-table .type-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    /* ── Type colors ─────────────────────────────────── */
+    .dot-build { background: #c8841a; }
+    .dot-test { background: #5a9a3c; }
+    .dot-research { background: #3a7ab8; }
+    .dot-knowledge { background: #8b5cf6; }
+    .dot-ops { background: #64748b; }
+    .dot-orientation { background: #d4a843; }
+
+    /* ── Simple table (no delta) ─────────────────────── */
+    .simple-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+    }
+    .simple-table th {
+      text-align: left;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--muted);
+      padding: 6px 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .simple-table th.num { text-align: right; }
+    .simple-table td {
+      padding: 5px 8px;
+      border-bottom: 1px solid #eae5dd;
+      color: var(--foreground);
+    }
+    .simple-table td.num {
+      text-align: right;
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+    .simple-table td.label-cell { font-weight: 500; }
+    .simple-table tr:last-child td { border-bottom: none; }
+
+    /* ── Autonomy histogram ──────────────────────────── */
+    .histogram {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 48px;
+      margin-top: 8px;
+    }
+    .histogram-bar {
+      flex: 1;
+      background: var(--primary);
+      border-radius: 2px 2px 0 0;
+      min-width: 0;
+      position: relative;
+      opacity: 0.7;
+      transition: opacity 0.15s;
+    }
+    .histogram-bar:hover { opacity: 1; }
+    .histogram-labels {
+      display: flex;
+      gap: 3px;
+      margin-top: 3px;
+    }
+    .histogram-labels span {
+      flex: 1;
+      text-align: center;
+      font-size: 9px;
+      font-family: var(--font-mono);
+      color: var(--muted-light);
+    }
+
+    /* ── Divider ─────────────────────────────────────── */
+    .section-divider {
+      border: none;
+      border-top: 1px dashed var(--border);
+      margin: 24px 0;
+    }
+
+    /* ── Notes ───────────────────────────────────────── */
+    .design-notes {
+      margin-top: 32px;
+      max-width: 640px;
+    }
+    .design-notes h3 {
+      font-family: var(--font-heading);
+      font-size: 16px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .design-notes ul {
+      padding-left: 18px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+    .design-notes li { margin-bottom: 2px; }
+    .design-notes code {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      background: var(--bg-surface-mid);
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Page Header ─────────────────────────────────── -->
+  <div class="page-header">
+    <h1>Settings: Session Sync</h1>
+    <span class="subtitle">Variant B — Accordion sections with inline delta tables</span>
+  </div>
+
+  <!-- ── Two-up demo grid ────────────────────────────── -->
+  <div class="demo-grid">
+
+    <!-- ════════════════════════════════════════════════ -->
+    <!-- IDLE STATE                                       -->
+    <!-- ════════════════════════════════════════════════ -->
+    <div>
+      <div class="demo-label">
+        Idle State
+        <span class="badge">Before sync</span>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Session Sync</span>
+        </div>
+        <p class="card-desc">
+          Scan Claude Code sessions and classify them by type, interaction style, and behavioural metrics.
+        </p>
+
+        <!-- Stats strip -->
+        <div class="stats-strip">
+          <div class="stat-item">
+            <span class="dot dot-green"></span>
+            <span>Last sync</span>
+            <span class="stat-value">28 Mar, 14:32</span>
+          </div>
+          <div class="divider"></div>
+          <div class="stat-item">
+            <span>Sessions</span>
+            <span class="stat-value">1,024</span>
+          </div>
+          <div class="divider"></div>
+          <div class="stat-item">
+            <span>Classified</span>
+            <span class="stat-value">987</span>
+          </div>
+        </div>
+
+        <!-- Action row -->
+        <div class="action-row">
+          <button class="btn-sync">Sync Sessions</button>
+          <button class="reclassify-link">Re-classify all sessions</button>
+        </div>
+
+        <!-- Accordion — idle: only Session Types open -->
+        <div class="accordion">
+
+          <!-- Session Types (open by default) -->
+          <div class="accordion-section open">
+            <button class="accordion-trigger">
+              <span class="trigger-left">
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                Session Types
+                <span class="section-count">6 types</span>
+              </span>
+            </button>
+            <div class="accordion-body">
+              <table class="simple-table">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th class="num">Count</th>
+                    <th class="num">%</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="label-cell"><span class="type-dot dot-build"></span>BUILD</td>
+                    <td class="num">412</td>
+                    <td class="num">41.8%</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell"><span class="type-dot dot-knowledge"></span>KNOWLEDGE</td>
+                    <td class="num">198</td>
+                    <td class="num">20.1%</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell"><span class="type-dot dot-orientation"></span>ORIENTATION</td>
+                    <td class="num">142</td>
+                    <td class="num">14.4%</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell"><span class="type-dot dot-ops"></span>OPS</td>
+                    <td class="num">118</td>
+                    <td class="num">12.0%</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell"><span class="type-dot dot-research"></span>RESEARCH</td>
+                    <td class="num">74</td>
+                    <td class="num">7.5%</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell"><span class="type-dot dot-test"></span>TEST</td>
+                    <td class="num">43</td>
+                    <td class="num">4.4%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Subtypes (collapsed) -->
+          <div class="accordion-section">
+            <button class="accordion-trigger">
+              <span class="trigger-left">
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                Subtypes
+                <span class="section-count">24 subtypes</span>
+              </span>
+            </button>
+            <div class="accordion-body">
+              <table class="simple-table">
+                <thead>
+                  <tr>
+                    <th>Subtype</th>
+                    <th class="num">Count</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td class="label-cell">feature_implementation</td><td class="num">187</td></tr>
+                  <tr><td class="label-cell">bug_fix_round</td><td class="num">124</td></tr>
+                  <tr><td class="label-cell">brain_maintenance</td><td class="num">98</td></tr>
+                  <tr><td class="label-cell">refactoring</td><td class="num">76</td></tr>
+                  <tr><td class="label-cell">codebase_exploration</td><td class="num">65</td></tr>
+                  <tr><td class="label-cell">test_writing</td><td class="num">52</td></tr>
+                  <tr><td class="label-cell">poem_execution</td><td class="num">48</td></tr>
+                  <tr><td class="label-cell">advisory_refinement</td><td class="num">44</td></tr>
+                  <tr><td class="label-cell">brain_capture</td><td class="num">39</td></tr>
+                  <tr><td class="label-cell">technology_survey</td><td class="num">34</td></tr>
+                </tbody>
+              </table>
+              <div style="font-size: 10px; color: var(--muted-light); margin-top: 6px; padding-left: 8px;">
+                + 14 more subtypes with fewer than 30 sessions each
+              </div>
+            </div>
+          </div>
+
+          <!-- Interaction Style (collapsed) -->
+          <div class="accordion-section">
+            <button class="accordion-trigger">
+              <span class="trigger-left">
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                Interaction Style
+                <span class="section-count">3 dimensions</span>
+              </span>
+            </button>
+            <div class="accordion-body">
+              <!-- Delegation -->
+              <div style="margin-bottom: 10px;">
+                <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 4px;">Delegation</div>
+                <table class="simple-table">
+                  <tbody>
+                    <tr><td class="label-cell">directive</td><td class="num">389</td></tr>
+                    <tr><td class="label-cell">conversational</td><td class="num">312</td></tr>
+                    <tr><td class="label-cell">autonomous</td><td class="num">198</td></tr>
+                    <tr><td class="label-cell">orchestrated</td><td class="num">88</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- Opening -->
+              <div style="margin-bottom: 10px;">
+                <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 4px;">Opening Style</div>
+                <table class="simple-table">
+                  <tbody>
+                    <tr><td class="label-cell">typed_instruction</td><td class="num">341</td></tr>
+                    <tr><td class="label-cell">typed_question</td><td class="num">198</td></tr>
+                    <tr><td class="label-cell">paste_handover</td><td class="num">142</td></tr>
+                    <tr><td class="label-cell">skill_invocation</td><td class="num">118</td></tr>
+                    <tr><td class="label-cell">voice_dictation</td><td class="num">87</td></tr>
+                    <tr><td class="label-cell">continuation</td><td class="num">54</td></tr>
+                    <tr><td class="label-cell">code_paste</td><td class="num">38</td></tr>
+                    <tr><td class="label-cell">context_dump</td><td class="num">22</td></tr>
+                    <tr><td class="label-cell">greeting</td><td class="num">14</td></tr>
+                    <tr><td class="label-cell">agent_initiated</td><td class="num">10</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- Closing -->
+              <div>
+                <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 4px;">Closing Style</div>
+                <table class="simple-table">
+                  <tbody>
+                    <tr><td class="label-cell">natural_completion</td><td class="num">287</td></tr>
+                    <tr><td class="label-cell">commit_push</td><td class="num">198</td></tr>
+                    <tr><td class="label-cell">abrupt_abandon</td><td class="num">167</td></tr>
+                    <tr><td class="label-cell">summary_close</td><td class="num">142</td></tr>
+                    <tr><td class="label-cell">commit_only</td><td class="num">98</td></tr>
+                    <tr><td class="label-cell">task_handoff</td><td class="num">54</td></tr>
+                    <tr><td class="label-cell">question_answer</td><td class="num">38</td></tr>
+                    <tr><td class="label-cell">error_bail</td><td class="num">3</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Session Metrics (collapsed) -->
+          <div class="accordion-section">
+            <button class="accordion-trigger">
+              <span class="trigger-left">
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                Session Metrics
+                <span class="section-count">4 metrics</span>
+              </span>
+            </button>
+            <div class="accordion-body">
+              <!-- Autonomy histogram -->
+              <div style="margin-bottom: 14px;">
+                <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 4px;">Autonomy Ratio Distribution</div>
+                <div class="histogram">
+                  <div class="histogram-bar" style="height: 15%;" title="0.0-0.1: 38"></div>
+                  <div class="histogram-bar" style="height: 28%;" title="0.1-0.2: 72"></div>
+                  <div class="histogram-bar" style="height: 42%;" title="0.2-0.3: 108"></div>
+                  <div class="histogram-bar" style="height: 100%;" title="0.3-0.4: 256"></div>
+                  <div class="histogram-bar" style="height: 78%;" title="0.4-0.5: 198"></div>
+                  <div class="histogram-bar" style="height: 55%;" title="0.5-0.6: 142"></div>
+                  <div class="histogram-bar" style="height: 38%;" title="0.6-0.7: 96"></div>
+                  <div class="histogram-bar" style="height: 22%;" title="0.7-0.8: 56"></div>
+                  <div class="histogram-bar" style="height: 12%;" title="0.8-0.9: 32"></div>
+                  <div class="histogram-bar" style="height: 6%;" title="0.9-1.0: 14"></div>
+                </div>
+                <div class="histogram-labels">
+                  <span>.0</span><span>.1</span><span>.2</span><span>.3</span><span>.4</span>
+                  <span>.5</span><span>.6</span><span>.7</span><span>.8</span><span>.9</span>
+                </div>
+                <div style="font-size: 10px; color: var(--muted-light); margin-top: 4px;">Mean: 0.41 &middot; Median: 0.38</div>
+              </div>
+              <!-- Liveness -->
+              <div style="margin-bottom: 10px;">
+                <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 4px;">Session Liveness</div>
+                <table class="simple-table">
+                  <tbody>
+                    <tr><td class="label-cell">high</td><td class="num">342</td></tr>
+                    <tr><td class="label-cell">medium</td><td class="num">456</td></tr>
+                    <tr><td class="label-cell">low</td><td class="num">189</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- Output Type -->
+              <div>
+                <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 4px;">Output Type</div>
+                <table class="simple-table">
+                  <tbody>
+                    <tr><td class="label-cell">code_changes</td><td class="num">432</td></tr>
+                    <tr><td class="label-cell">mixed</td><td class="num">234</td></tr>
+                    <tr><td class="label-cell">knowledge_synthesis</td><td class="num">178</td></tr>
+                    <tr><td class="label-cell">conversation_only</td><td class="num">98</td></tr>
+                    <tr><td class="label-cell">new_artifacts</td><td class="num">45</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /accordion -->
+      </div><!-- /card -->
+    </div>
+
+    <!-- ════════════════════════════════════════════════ -->
+    <!-- POST-SYNC STATE                                  -->
+    <!-- ════════════════════════════════════════════════ -->
+    <div>
+      <div class="demo-label">
+        Post-Sync State
+        <span class="badge badge-green">After sync</span>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Session Sync</span>
+        </div>
+        <p class="card-desc">
+          Scan Claude Code sessions and classify them by type, interaction style, and behavioural metrics.
+        </p>
+
+        <!-- Stats strip — updated -->
+        <div class="stats-strip">
+          <div class="stat-item">
+            <span class="dot dot-green"></span>
+            <span>Last sync</span>
+            <span class="stat-value">29 Mar, 09:14</span>
+          </div>
+          <div class="divider"></div>
+          <div class="stat-item">
+            <span>Sessions</span>
+            <span class="stat-value">1,041</span>
+          </div>
+          <div class="divider"></div>
+          <div class="stat-item">
+            <span>Classified</span>
+            <span class="stat-value">1,041</span>
+          </div>
+          <div class="divider"></div>
+          <div class="stat-item">
+            <span class="new-badge">+17 new</span>
+            <span class="changed-badge">3 reclassified</span>
+          </div>
+        </div>
+
+        <!-- Action row -->
+        <div class="action-row">
+          <button class="btn-sync">Sync Sessions</button>
+          <button class="reclassify-link">Re-classify all sessions</button>
+        </div>
+
+        <!-- Re-classify expanded (demo) -->
+        <div class="reclassify-expand">
+          <div class="warn-text">
+            This will re-run all classifiers on every session (1,041 sessions). Existing classifications will be overwritten. This is useful after updating classifier rules.
+          </div>
+          <button class="btn-reclassify">Re-classify All</button>
+          <button class="btn-cancel">Cancel</button>
+        </div>
+
+        <!-- Results summary -->
+        <div class="results-summary">
+          Sync completed &mdash;
+          <span class="count">17</span> new sessions discovered,
+          <span class="count">3</span> reclassified,
+          <span class="count">1,021</span> unchanged
+        </div>
+
+        <!-- Accordion — post-sync: Session Types open with deltas, others show delta badges -->
+        <div class="accordion">
+
+          <!-- Session Types (open, with deltas) -->
+          <div class="accordion-section open">
+            <button class="accordion-trigger">
+              <span class="trigger-left">
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                Session Types
+                <span class="section-count">6 types</span>
+                <span class="delta-badge changed">+17</span>
+              </span>
+            </button>
+            <div class="accordion-body">
+              <table class="delta-table">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th class="num">Before</th>
+                    <th class="num">After</th>
+                    <th class="num">Delta</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="label-cell"><span class="type-dot dot-build"></span>BUILD</td>
+                    <td class="num">412</td>
+                    <td class="num">421</td>
+                    <td class="num delta-pos">+9</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell"><span class="type-dot dot-knowledge"></span>KNOWLEDGE</td>
+                    <td class="num">198</td>
+                    <td class="num">201</td>
+                    <td class="num delta-pos">+3</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell"><span class="type-dot dot-orientation"></span>ORIENTATION</td>
+                    <td class="num">142</td>
+                    <td class="num">144</td>
+                    <td class="num delta-pos">+2</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell"><span class="type-dot dot-ops"></span>OPS</td>
+                    <td class="num">118</td>
+                    <td class="num">119</td>
+                    <td class="num delta-pos">+1</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell"><span class="type-dot dot-research"></span>RESEARCH</td>
+                    <td class="num">74</td>
+                    <td class="num">76</td>
+                    <td class="num delta-pos">+2</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell"><span class="type-dot dot-test"></span>TEST</td>
+                    <td class="num">43</td>
+                    <td class="num">43</td>
+                    <td class="num delta-zero">&mdash;</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Subtypes (collapsed, with delta badge) -->
+          <div class="accordion-section">
+            <button class="accordion-trigger">
+              <span class="trigger-left">
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                Subtypes
+                <span class="section-count">24 subtypes</span>
+                <span class="delta-badge changed">+17</span>
+              </span>
+            </button>
+            <div class="accordion-body">
+              <table class="delta-table">
+                <thead>
+                  <tr>
+                    <th>Subtype</th>
+                    <th class="num">Before</th>
+                    <th class="num">After</th>
+                    <th class="num">Delta</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="label-cell">feature_implementation</td>
+                    <td class="num">187</td>
+                    <td class="num">193</td>
+                    <td class="num delta-pos">+6</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">bug_fix_round</td>
+                    <td class="num">124</td>
+                    <td class="num">127</td>
+                    <td class="num delta-pos">+3</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">brain_maintenance</td>
+                    <td class="num">98</td>
+                    <td class="num">101</td>
+                    <td class="num delta-pos">+3</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">refactoring</td>
+                    <td class="num">76</td>
+                    <td class="num">76</td>
+                    <td class="num delta-zero">&mdash;</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">codebase_exploration</td>
+                    <td class="num">65</td>
+                    <td class="num">67</td>
+                    <td class="num delta-pos">+2</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">test_writing</td>
+                    <td class="num">52</td>
+                    <td class="num">52</td>
+                    <td class="num delta-zero">&mdash;</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">poem_execution</td>
+                    <td class="num">48</td>
+                    <td class="num">49</td>
+                    <td class="num delta-pos">+1</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">technology_survey</td>
+                    <td class="num">34</td>
+                    <td class="num">36</td>
+                    <td class="num delta-pos">+2</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div style="font-size: 10px; color: var(--muted-light); margin-top: 6px; padding-left: 8px;">
+                + 16 more subtypes unchanged
+              </div>
+            </div>
+          </div>
+
+          <!-- Interaction Style (collapsed, with delta badge) -->
+          <div class="accordion-section">
+            <button class="accordion-trigger">
+              <span class="trigger-left">
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                Interaction Style
+                <span class="section-count">3 dimensions</span>
+                <span class="delta-badge changed">+17</span>
+              </span>
+            </button>
+            <div class="accordion-body">
+              <!-- Delegation delta -->
+              <div style="margin-bottom: 10px;">
+                <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 4px;">Delegation</div>
+                <table class="delta-table">
+                  <thead>
+                    <tr><th>Style</th><th class="num">Before</th><th class="num">After</th><th class="num">Delta</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td class="label-cell">directive</td><td class="num">389</td><td class="num">396</td><td class="num delta-pos">+7</td></tr>
+                    <tr><td class="label-cell">conversational</td><td class="num">312</td><td class="num">316</td><td class="num delta-pos">+4</td></tr>
+                    <tr><td class="label-cell">autonomous</td><td class="num">198</td><td class="num">202</td><td class="num delta-pos">+4</td></tr>
+                    <tr><td class="label-cell">orchestrated</td><td class="num">88</td><td class="num">90</td><td class="num delta-pos">+2</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- Opening delta -->
+              <div style="margin-bottom: 10px;">
+                <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 4px;">Opening Style</div>
+                <table class="delta-table">
+                  <thead>
+                    <tr><th>Style</th><th class="num">Before</th><th class="num">After</th><th class="num">Delta</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td class="label-cell">typed_instruction</td><td class="num">341</td><td class="num">348</td><td class="num delta-pos">+7</td></tr>
+                    <tr><td class="label-cell">typed_question</td><td class="num">198</td><td class="num">200</td><td class="num delta-pos">+2</td></tr>
+                    <tr><td class="label-cell">paste_handover</td><td class="num">142</td><td class="num">144</td><td class="num delta-pos">+2</td></tr>
+                    <tr><td class="label-cell">skill_invocation</td><td class="num">118</td><td class="num">121</td><td class="num delta-pos">+3</td></tr>
+                    <tr><td class="label-cell">voice_dictation</td><td class="num">87</td><td class="num">89</td><td class="num delta-pos">+2</td></tr>
+                    <tr><td class="label-cell">continuation</td><td class="num">54</td><td class="num">55</td><td class="num delta-pos">+1</td></tr>
+                    <tr><td class="label-cell">code_paste</td><td class="num">38</td><td class="num">38</td><td class="num delta-zero">&mdash;</td></tr>
+                    <tr><td class="label-cell">context_dump</td><td class="num">22</td><td class="num">22</td><td class="num delta-zero">&mdash;</td></tr>
+                    <tr><td class="label-cell">greeting</td><td class="num">14</td><td class="num">14</td><td class="num delta-zero">&mdash;</td></tr>
+                    <tr><td class="label-cell">agent_initiated</td><td class="num">10</td><td class="num">10</td><td class="num delta-zero">&mdash;</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- Closing delta -->
+              <div>
+                <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 4px;">Closing Style</div>
+                <table class="delta-table">
+                  <thead>
+                    <tr><th>Style</th><th class="num">Before</th><th class="num">After</th><th class="num">Delta</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td class="label-cell">natural_completion</td><td class="num">287</td><td class="num">293</td><td class="num delta-pos">+6</td></tr>
+                    <tr><td class="label-cell">commit_push</td><td class="num">198</td><td class="num">201</td><td class="num delta-pos">+3</td></tr>
+                    <tr><td class="label-cell">abrupt_abandon</td><td class="num">167</td><td class="num">170</td><td class="num delta-pos">+3</td></tr>
+                    <tr><td class="label-cell">summary_close</td><td class="num">142</td><td class="num">144</td><td class="num delta-pos">+2</td></tr>
+                    <tr><td class="label-cell">commit_only</td><td class="num">98</td><td class="num">99</td><td class="num delta-pos">+1</td></tr>
+                    <tr><td class="label-cell">task_handoff</td><td class="num">54</td><td class="num">56</td><td class="num delta-pos">+2</td></tr>
+                    <tr><td class="label-cell">question_answer</td><td class="num">38</td><td class="num">38</td><td class="num delta-zero">&mdash;</td></tr>
+                    <tr><td class="label-cell">error_bail</td><td class="num">3</td><td class="num">3</td><td class="num delta-zero">&mdash;</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Session Metrics (collapsed, with delta badge) -->
+          <div class="accordion-section">
+            <button class="accordion-trigger">
+              <span class="trigger-left">
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                Session Metrics
+                <span class="section-count">4 metrics</span>
+                <span class="delta-badge unchanged">no change</span>
+              </span>
+            </button>
+            <div class="accordion-body">
+              <!-- Autonomy histogram (post-sync) -->
+              <div style="margin-bottom: 14px;">
+                <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 4px;">Autonomy Ratio Distribution</div>
+                <div class="histogram">
+                  <div class="histogram-bar" style="height: 15%;" title="0.0-0.1: 39"></div>
+                  <div class="histogram-bar" style="height: 28%;" title="0.1-0.2: 74"></div>
+                  <div class="histogram-bar" style="height: 42%;" title="0.2-0.3: 111"></div>
+                  <div class="histogram-bar" style="height: 100%;" title="0.3-0.4: 263"></div>
+                  <div class="histogram-bar" style="height: 78%;" title="0.4-0.5: 203"></div>
+                  <div class="histogram-bar" style="height: 55%;" title="0.5-0.6: 146"></div>
+                  <div class="histogram-bar" style="height: 38%;" title="0.6-0.7: 98"></div>
+                  <div class="histogram-bar" style="height: 22%;" title="0.7-0.8: 57"></div>
+                  <div class="histogram-bar" style="height: 12%;" title="0.8-0.9: 33"></div>
+                  <div class="histogram-bar" style="height: 6%;" title="0.9-1.0: 17"></div>
+                </div>
+                <div class="histogram-labels">
+                  <span>.0</span><span>.1</span><span>.2</span><span>.3</span><span>.4</span>
+                  <span>.5</span><span>.6</span><span>.7</span><span>.8</span><span>.9</span>
+                </div>
+                <div style="font-size: 10px; color: var(--muted-light); margin-top: 4px;">Mean: 0.41 &middot; Median: 0.38</div>
+              </div>
+              <!-- Liveness (post-sync) -->
+              <div style="margin-bottom: 10px;">
+                <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 4px;">Session Liveness</div>
+                <table class="delta-table">
+                  <thead><tr><th>Level</th><th class="num">Before</th><th class="num">After</th><th class="num">Delta</th></tr></thead>
+                  <tbody>
+                    <tr><td class="label-cell">high</td><td class="num">342</td><td class="num">349</td><td class="num delta-pos">+7</td></tr>
+                    <tr><td class="label-cell">medium</td><td class="num">456</td><td class="num">462</td><td class="num delta-pos">+6</td></tr>
+                    <tr><td class="label-cell">low</td><td class="num">189</td><td class="num">193</td><td class="num delta-pos">+4</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- Output Type (post-sync) -->
+              <div>
+                <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 4px;">Output Type</div>
+                <table class="delta-table">
+                  <thead><tr><th>Type</th><th class="num">Before</th><th class="num">After</th><th class="num">Delta</th></tr></thead>
+                  <tbody>
+                    <tr><td class="label-cell">code_changes</td><td class="num">432</td><td class="num">441</td><td class="num delta-pos">+9</td></tr>
+                    <tr><td class="label-cell">mixed</td><td class="num">234</td><td class="num">237</td><td class="num delta-pos">+3</td></tr>
+                    <tr><td class="label-cell">knowledge_synthesis</td><td class="num">178</td><td class="num">181</td><td class="num delta-pos">+3</td></tr>
+                    <tr><td class="label-cell">conversation_only</td><td class="num">98</td><td class="num">99</td><td class="num delta-pos">+1</td></tr>
+                    <tr><td class="label-cell">new_artifacts</td><td class="num">45</td><td class="num">46</td><td class="num delta-pos">+1</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /accordion -->
+      </div><!-- /card -->
+    </div>
+
+  </div><!-- /demo-grid -->
+
+  <!-- ── Design Notes ────────────────────────────────── -->
+  <div class="design-notes">
+    <hr class="section-divider">
+    <h3>Design Notes — Variant B</h3>
+    <ul>
+      <li><strong>Accordion over tabs:</strong> All classifier dimensions visible as sections rather than hidden behind tab selection. Scan the full picture at a glance, drill into any dimension.</li>
+      <li><strong>Session Types always open:</strong> The primary 6-type breakdown is the most important view and stays expanded by default.</li>
+      <li><strong>Delta tables appear after sync:</strong> Idle state shows simple count tables. Post-sync state shows before/after/delta columns with colour-coded changes.</li>
+      <li><strong>Re-classify is secondary:</strong> Tucked behind a text link that expands an explanation + confirmation. Not a checkbox that might confuse — an explicit destructive action.</li>
+      <li><strong>Stats strip always visible:</strong> Last sync timestamp, total session count, and classification coverage at a glance without scrolling.</li>
+      <li><strong>Delta badges on collapsed sections:</strong> Even without opening an accordion, you can see <code>+17</code> or <code>no change</code> badges indicating whether that dimension was affected by the sync.</li>
+      <li><strong>Autonomy histogram:</strong> A small inline histogram for the continuous 0.0-1.0 autonomy ratio, more informative than a table for this data shape.</li>
+    </ul>
+  </div>
+
+</body>
+</html>

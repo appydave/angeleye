@@ -34,6 +34,34 @@ interface Phase {
 
 const phases: Phase[] = [
   {
+    title: 'Phase 6 — Unified Settings',
+    tag: '3 designs',
+    tagType: 'new',
+    dates: '2026-03-29',
+    desc: 'Merging the two Settings cards (Sync + Re-enrich) into a single unified card with force reclassify toggle and field-level result breakdowns for all Phase 2c classifier dimensions.',
+    type: 'feature',
+    items: [
+      {
+        name: 'settings-unified',
+        desc: 'Single Settings card — force reclassify checkbox, field selector tabs for 7 classifier dimensions, before/after/delta table',
+        path: `${MOCKUP_BASE}/settings-unified/index.html`,
+        featured: true,
+      },
+      {
+        name: 'settings-unified-b',
+        desc: 'Accordion variant — session types always open, subtypes/interaction style/metrics in collapsible sections with mini delta tables',
+        path: `${MOCKUP_BASE}/settings-unified-b/index.html`,
+        featured: true,
+      },
+      {
+        name: 'settings-unified-c',
+        desc: 'Dashboard grid — all dimensions visible at once as mini stat cards with stacked bars and delta indicators',
+        path: `${MOCKUP_BASE}/settings-unified-c/index.html`,
+        featured: true,
+      },
+    ] as FeatureMockup[],
+  },
+  {
     title: 'Phase 5 — Wave Visualization',
     tag: '7 designs',
     dates: '2026-03-28',
@@ -298,12 +326,18 @@ const phases: Phase[] = [
   },
   {
     title: 'Analysis Dashboards',
-    tag: '4 designs',
+    tag: '5 designs',
     tagType: 'new',
     dates: '2026-03-23 to 2026-03-29',
     desc: 'Campaign analysis views — static dashboards, infographics, and hybrid overlays that compare live registry data against analysis campaign mock data.',
     type: 'feature',
     items: [
+      {
+        name: 'analytics-dashboard',
+        desc: 'Session Analytics — 10 charts across all Phase 2c classification dimensions: delegation, liveness, opening/closing, autonomy histogram, type×subtype heatmap, output type, initiation, continuity',
+        path: `${MOCKUP_BASE}/analytics-dashboard/index.html`,
+        featured: true,
+      },
       {
         name: 'campaign-infographic-hybrid',
         desc: 'Hybrid infographic — 12 data sections with live/mock overlay, gap analysis, and coverage summary',

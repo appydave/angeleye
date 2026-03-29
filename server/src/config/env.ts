@@ -3,7 +3,7 @@ import { z } from 'zod';
 import path from 'path';
 
 // process.cwd() is server/ when nodemon runs; load .env from monorepo root
-dotenv.config({ path: path.resolve(process.cwd(), '../.env') });
+dotenv.config({ path: path.resolve(process.cwd(), '../.env'), override: true });
 
 const envSchema = z.object({
   // TODO: Update defaults for your project
