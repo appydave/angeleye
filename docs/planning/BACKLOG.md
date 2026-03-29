@@ -1,7 +1,7 @@
 # Project Backlog — AngelEye
 
 **Last updated**: 2026-03-29
-**Total**: 74 | Pending: 7 | In Progress: 10 | Done: 59 | Deferred: 2 | Rejected: 0
+**Total**: 74 | Pending: 7 | In Progress: 0 | Done: 69 | Deferred: 2 | Rejected: 0
 
 ## Pending
 
@@ -24,16 +24,7 @@
 
 ### Phase 3 — Field Propagation + Dashboard Promotion
 
-- [~] B065 — stats.ts DRY fix: use countByType() import | Campaign: angeleye-phase3-propagation
-- [~] B066 — Import SessionType from shared in SettingsView | Campaign: angeleye-phase3-propagation
-- [~] B067 — Fix totalDelta() math in SettingsView | Campaign: angeleye-phase3-propagation
-- [~] B068 — Add accordion + field data tests for SettingsView | Campaign: angeleye-phase3-propagation
-- [~] B069 — Server tests for countByFields() and stats fields | Campaign: angeleye-phase3-propagation
-- [~] B070 — Extend /api/inspector/summary with Phase 2c field distributions | Campaign: angeleye-phase3-propagation
-- [~] B071 — Phase 2c field distribution tables in Inspector DataTab | Campaign: angeleye-phase3-propagation
-- [~] B072 — Promote campaign-dashboard mockup to real CampaignDashboardView | Campaign: angeleye-phase3-propagation
-- [~] B073 — Promote campaign-infographic mockup to real CampaignInfographicView | Campaign: angeleye-phase3-propagation
-- [~] B074 — Wire Dashboard + Infographic into nav + ContentPanel | Campaign: angeleye-phase3-propagation
+(Moved to Done — campaign: angeleye-phase3-propagation)
 
 ### Phase 4 — LLM Enrichment
 
@@ -42,6 +33,17 @@
 ## In Progress
 
 ## Done
+
+- [x] B065 — stats.ts DRY fix: use countByType() import | Completed: angeleye-phase3-propagation
+- [x] B066 — Import SessionType from shared in SettingsView | Completed: angeleye-phase3-propagation
+- [x] B067 — Fix totalDelta() math in SettingsView | Completed: angeleye-phase3-propagation
+- [x] B068 — Add accordion + field data tests for SettingsView | Completed: angeleye-phase3-propagation
+- [x] B069 — Server tests for countByFields() and stats fields | Completed: angeleye-phase3-propagation
+- [x] B070 — Extend /api/inspector/summary with Phase 2c field distributions | Completed: angeleye-phase3-propagation
+- [x] B071 — Phase 2c field distribution tables in Inspector DataTab | Completed: angeleye-phase3-propagation
+- [x] B072 — Promote campaign-dashboard mockup to real CampaignDashboardView | Completed: angeleye-phase3-propagation
+- [x] B073 — Promote campaign-infographic mockup to real CampaignInfographicView | Completed: angeleye-phase3-propagation
+- [x] B074 — Wire Dashboard + Infographic into nav + ContentPanel | Completed: angeleye-phase3-propagation
 
 - [x] B060 — Deterministic classifier extensions (8 new fields) | Completed: angeleye-phase2c-classifier
 - [x] B061 — Top-20 session subtype rules (~60% coverage) | Completed: angeleye-phase2c-classifier
