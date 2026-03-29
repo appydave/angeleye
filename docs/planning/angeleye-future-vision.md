@@ -114,17 +114,17 @@ The Ralphy workflow is already an instance of this pattern: plan → launch agen
 
 ## What's Already Built That Supports This
 
-| Capability                  | Current state          | What it enables               |
-| --------------------------- | ---------------------- | ----------------------------- |
-| Hook event pipeline         | Working, 7 event types | Live awareness                |
-| Session registry            | Working, 794 sessions  | Identity + lifecycle tracking |
-| Classification              | Working, 6 types       | Automatic type detection      |
-| Workspaces                  | Working, drag-and-drop | Grouping and organisation     |
-| Real-time Socket.io         | Working                | Instant UI updates            |
-| Session naming + write-back | Working                | Cross-tool session identity   |
-| Transcript backfill         | Working                | Historical data import        |
-| Analysis campaign           | 268 sessions analysed  | Rich classification knowledge |
-| Serial write queue          | Working                | Safe concurrent writes        |
+| Capability                  | Current state                                     | What it enables               |
+| --------------------------- | ------------------------------------------------- | ----------------------------- |
+| Hook event pipeline         | Working, 25 event types                           | Live awareness                |
+| Session registry            | Working, 924+ sessions                            | Identity + lifecycle tracking |
+| Classification              | Working, 12+ types, 25 predicates, 7 observations | Automatic type detection      |
+| Workspaces                  | Working, drag-and-drop                            | Grouping and organisation     |
+| Real-time Socket.io         | Working                                           | Instant UI updates            |
+| Session naming + write-back | Working                                           | Cross-tool session identity   |
+| Transcript backfill         | Working                                           | Historical data import        |
+| Analysis campaign           | 924 sessions analysed                             | Rich classification knowledge |
+| Serial write queue          | Working                                           | Safe concurrent writes        |
 
 The foundation is solid. The gaps are in task projection (events → work states), control actions (view → interact), and delegation visibility (subagent tracking → constraints).
 

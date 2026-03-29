@@ -17,7 +17,7 @@ It is **not** an ops dashboard. It is not a log viewer. It is a live performance
 
 ---
 
-## The Three Jobs
+## The Four Jobs
 
 ### 1. Observer (live view) — BUILT
 
@@ -44,7 +44,7 @@ Interrogatable history. Filter by tool type, event type, workspace, tag. Chain e
 
 ### Source 1: Claude Code Hook Events (real-time, interactive sessions)
 
-Claude Code fires 24 hook events total (as of v2.1.83). AngelEye subscribes to 7 in v1 — Wave 11 expands to all 24. All delivered as JSON via stdin to hook scripts.
+Claude Code fires 25 hook events total (as of v2.1.83). AngelEye subscribes to all 25 (expanded in Wave 11 from the original 7). All delivered as JSON via stdin to command hooks.
 
 **Common fields on every event**: `session_id`, `transcript_path`, `cwd`, `hook_event_name`, `agent_id`, `agent_type` (v2.1.69+)
 
@@ -75,7 +75,7 @@ Claude Code fires 24 hook events total (as of v2.1.83). AngelEye subscribes to 7
 | `PreCompact`    | Before context compaction              | Preserve critical context                   |
 | `PostCompact`   | After context compaction               | Recovery tasks                              |
 
-**Full hook reference**: `~/dev/ad/brains/anthropic-claude/claude-code/hooks-reference.md` — 21 events, all schemas, all versions.
+**Full hook reference**: `~/dev/ad/brains/anthropic-claude/claude-code/hooks-reference.md` — 25 events, all schemas, all versions.
 
 **Tool summarisation before storage** (not raw):
 
@@ -350,22 +350,24 @@ Subtype examples: `build.feature_implementation`, `docs.brain_curation`, `operat
 
 The 924-session analysis was conducted across 14 waves (plus discovery rounds), processing sessions from both M4 Mini and M4 Pro machines. Campaign artifacts live in `docs/planning/angeleye-analysis-1/`. Findings are recorded per-wave in `~/dev/ad/brains/angeleye/analysis/`.
 
-### Classifier improvement backlog
+### Classifier improvement backlog (completed)
 
-- B038 — Scale-aware BUILD guard (reject BUILD for micro/light sessions)
-- B039 — Iron-clad classifier rules (operations.poem_execution, brains/ CWD guards)
-- B040 — PII detection pass during backfill
-- B041 — Paperclip/autonomous agent detection
-- B042 — Voice dictation entity dictionary (220+ misheard terms)
-- B043 — Promote confirmed subtypes to canonical taxonomy
+All items below were completed during the analysis-1 campaign:
+
+- ~~B038 — Scale-aware BUILD guard~~ (done: commit 3f593607)
+- ~~B039 — Iron-clad classifier rules~~ (done: commit 3f593607)
+- ~~B040 — PII detection pass during backfill~~ (done: commit 9b692fae)
+- ~~B041 — Paperclip/autonomous agent detection~~ (done: commit 3f593607)
+- ~~B042 — Voice dictation entity dictionary~~ (done: commit 9b692fae)
+- ~~B043 — Promote confirmed subtypes to canonical taxonomy~~ (done: commit 9b692fae)
 
 ---
 
 ## Future Capabilities
 
 - **`/angeleye:publish` skill** (B011): Context packaging to Nano Banana / FliDeck for image generation
-- **Session list pagination** (B023): Cursor-based API + virtual scrolling for 2000+ sessions
-- **Named session row design** (B037): Elevated row treatment for named sessions
+- ~~**Session list pagination** (B023)~~: Done — cursor-based API + virtual scrolling (commit 9b692fae)
+- ~~**Named session row design** (B037)~~: Done — elevated row treatment (commit 9b692fae)
 - **launchd plist** (B025): Always-on persistent service, auto-restart on crash/reboot
 - **Multi-machine registry sync** (B044): Classification rules applied across machines
 - **Pattern miner / skill suggester**: detect repeated prompt phrases across sessions, surface as skill candidates
@@ -395,7 +397,7 @@ The 924-session analysis was conducted across 14 waves (plus discovery rounds), 
 
 - `brains/angeleye/` — full domain knowledge (concepts, data model, ingestion architecture, ambient intelligence)
 - `brains/angeleye/analysis/` — per-wave findings from 924-session analysis campaign
-- `brains/anthropic-claude/claude-code/hooks-reference.md` — **all 24 hook events + schemas** (canonical hook reference)
+- `brains/anthropic-claude/claude-code/hooks-reference.md` — **all 25 hook events + schemas** (canonical hook reference)
 - `brains/anthropic-claude/claude-code/observability.md` — hook input formats, 4 data streams, JSONL format
 - `brains/anthropic-claude/claude-code/session-management.md` — session resume, /rename, /fork behaviour
 - `brains/agentic-os/communication-architecture.md` — Supabase schema (future cold path if needed)
