@@ -1,8 +1,8 @@
 {
-  "id": "epic_zero",
-  "name": "Epic Zero (Maintenance)",
+  "id": "lightweight_story",
+  "name": "Lightweight Story",
   "domain": "bmad-v6",
-  "ceremony_level": "minimal",
+  "ceremony_level": "reduced",
   "stations": [
     {
       "position": 0,
@@ -33,6 +33,15 @@
     },
     {
       "position": 3,
+      "action_code": "DR",
+      "role": "reviewer",
+      "identity": "Nate",
+      "requires_fresh_session": true,
+      "can_spawn_subagents": true,
+      "backtrack_target": false
+    },
+    {
+      "position": 4,
       "action_code": "CU",
       "role": "advisor",
       "identity": "Lisa",
@@ -41,7 +50,7 @@
       "backtrack_target": false
     },
     {
-      "position": 4,
+      "position": 5,
       "action_code": "SHIP",
       "role": "shipper",
       "identity": null,
@@ -51,15 +60,8 @@
     }
   ],
   "skip_rules": [
-    {
-      "station_action": "VS",
-      "condition": "Story scope is small and well-defined (e.g., rename + extract)"
-    },
-    {
-      "station_action": "DR",
-      "condition": "Changes are mechanical — lighter review pass may substitute"
-    },
-    { "station_action": "SAT-CS", "condition": "Pure refactor with zero new user-facing behavior" },
-    { "station_action": "SAT-RA", "condition": "Existing tests prove equivalence" }
+    { "station_action": "VS", "condition": "Story scope is small and well-defined" },
+    { "station_action": "SAT-CS", "condition": "Existing tests provide sufficient coverage" },
+    { "station_action": "SAT-RA", "condition": "No new user-facing behavior to test" }
   ]
 }
