@@ -17,7 +17,7 @@ Claude Code generates a firehose of session data — JSONL transcripts, tool cal
 - **What kind of work is each session doing — and did I already start something similar in another terminal?**
 - **Where did that session I renamed last Tuesday end up?**
 
-AngelEye answers these by parsing Claude Code's own event model — all 24 hook event types, normalised into a durable session registry — and projecting them into a live operational view. It doesn't wrap or replace Claude Code. It sits alongside it, the way a team lead uses a project board while engineers use their IDEs.
+AngelEye answers these by parsing Claude Code's own event model — all 25 hook event types, normalised into a durable session registry — and projecting them into a live operational view. It doesn't wrap or replace Claude Code. It sits alongside it, the way a team lead uses a project board while engineers use their IDEs.
 
 No other tool in the Claude Code ecosystem does this. Paperclip and similar orchestrators optimise for autonomous execution. AngelEye optimises for operator awareness — giving you the visibility to decide when to intervene, when to let agents run, and when to redirect.
 
@@ -132,7 +132,7 @@ AngelEye server (/hooks/:event)
 JSONL event file + registry.json + Socket.io -> browser
 ```
 
-All 24 Claude Code hook events are accepted. The original 7 core events drive classification; the remaining 17 (added in wave 11) are stored for future enrichment:
+All 25 Claude Code hook events are accepted. The original 7 core events drive classification; the remaining 18 (added in wave 11) are stored for future enrichment:
 
 **Core events (classification triggers):**
 

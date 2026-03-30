@@ -49,10 +49,11 @@ router.get('/api/workflows/:id', async (req, res, next) => {
 
 router.post('/api/workflows', async (req, res, next) => {
   try {
-    const { workflow_type_id, work_item_id, work_item_label } = req.body as {
+    const { workflow_type_id, work_item_id, work_item_label, project_dir } = req.body as {
       workflow_type_id?: string;
       work_item_id?: string;
       work_item_label?: string;
+      project_dir?: string;
     };
 
     if (
@@ -84,6 +85,7 @@ router.post('/api/workflows', async (req, res, next) => {
       workflow_type_id,
       work_item_id,
       work_item_label,
+      ...(project_dir ? { project_dir } : {}),
       stations,
     });
 

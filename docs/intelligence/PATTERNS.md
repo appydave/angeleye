@@ -446,9 +446,9 @@ Better activity signals than file size or clock duration:
 - `edit_count / tool_count > 0.35` → build-focused session
 - `bash_count / tool_count > 0.40` → execution/ops-focused session
 
-### CLAUDE.md Auto-Load Anti-Pattern `[VALIDATED-924-NEW]`
+### CLAUDE.md Auto-Load Anti-Pattern (OBS-AUTOLOAD) `[VALIDATED-924-NEW]`
 
-CLAUDE.md auto-load is an escalating pattern (distinct from P16_excessive_changes). In sessions where it triggers, the tool-to-prompt ratio can reach **32:1** — Claude reads dozens of files before the user types anything. This inflates tool counts and distorts classification if not accounted for. Sessions exhibiting this pattern should have their tool counts adjusted by subtracting the auto-load burst.
+CLAUDE.md auto-load is an escalating pattern. This is tracked as `OBS-AUTOLOAD`, distinct from P16 (`excessive_changes`) which measures a different concept. In sessions where it triggers, the tool-to-prompt ratio can reach **32:1** — Claude reads dozens of files before the user types anything. This inflates tool counts and distorts classification if not accounted for. Sessions exhibiting this pattern should have their tool counts adjusted by subtracting the auto-load burst.
 
 ---
 
@@ -695,7 +695,7 @@ Confirmed as a production autonomous system. Sessions attributed to this agent s
 
 **P13+P14 co-occurrence is the dominant friction pattern `[VALIDATED-924-NEW]`.** Error recovery (P13) combined with repeated tool failure (P14) is the most common frustration signal. When both fire, the session almost always contains frustration language (P09) as well. This triple is a reliable "session-under-stress" indicator.
 
-**CLAUDE.md auto-load anti-pattern is escalating `[VALIDATED-924-NEW]`.** Sessions exhibiting this pattern show a 32:1 tool-to-prompt ratio from auto-loaded CLAUDE.md reads alone. This distorts tool_count, tool_profile, and autonomy_ratio. Classification must account for this inflation. (Note: this is distinct from P16_excessive_changes.)
+**CLAUDE.md auto-load anti-pattern (OBS-AUTOLOAD) is escalating `[VALIDATED-924-NEW]`.** Sessions exhibiting this pattern show a 32:1 tool-to-prompt ratio from auto-loaded CLAUDE.md reads alone. This distorts tool_count, tool_profile, and autonomy_ratio. Classification must account for this inflation. Tracked as `OBS-AUTOLOAD` — distinct from P16 (`excessive_changes`).
 
 **Paperclip/JJ Agent is a production autonomous system `[VALIDATED-924-NEW]`.** Not a test artifact. Sessions from this agent have distinct characteristics: agent_dispatched initiation, high autonomy, minimal user interaction. Classification should handle these as a separate category.
 

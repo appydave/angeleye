@@ -439,6 +439,9 @@ export default function CampaignInfographicView() {
     'session_continuity',
     'output_type',
     'session_liveness',
+    'opening_style',
+    'closing_style',
+    'session_subtype',
   ];
   const hasLiveClassifiers = liveClassifierKeys.some(
     (k) => liveFields[k] && Object.keys(liveFields[k]).length > 0
@@ -470,9 +473,13 @@ export default function CampaignInfographicView() {
     {
       dimension: 'Session Subtypes',
       analysis: '478 unique subtypes',
-      live: '\u2014',
-      status: 'MOCK',
-      notes: 'LLM-computed during analysis. Not derived live.',
+      live: liveFields.session_subtype
+        ? `${Object.keys(liveFields.session_subtype).length} subtypes from registry`
+        : '\u2014',
+      status: liveFields.session_subtype ? 'LIVE' : 'MOCK',
+      notes: liveFields.session_subtype
+        ? 'Phase 2c classifier in registry'
+        : 'LLM-computed during analysis. Not derived live.',
     },
     {
       dimension: 'Projects',
@@ -536,9 +543,19 @@ export default function CampaignInfographicView() {
     {
       dimension: 'Opening / Closing / Tool Profile',
       analysis: `${mockData.classifiers.openingStyle.totalUniqueValues} / ${mockData.classifiers.closingStyle.totalUniqueValues} / ${mockData.classifiers.toolProfile.totalUniqueValues} unique`,
-      live: '\u2014',
-      status: 'MOCK',
-      notes: 'LLM-classified, not in live registry',
+      live: (() => {
+        const parts: string[] = [];
+        if (liveFields.opening_style)
+          parts.push(`${Object.keys(liveFields.opening_style).length} opening`);
+        if (liveFields.closing_style)
+          parts.push(`${Object.keys(liveFields.closing_style).length} closing`);
+        return parts.length > 0 ? `${parts.join(', ')} (tool profile still mock)` : '\u2014';
+      })(),
+      status: liveFields.opening_style || liveFields.closing_style ? 'PARTIAL' : 'MOCK',
+      notes:
+        liveFields.opening_style || liveFields.closing_style
+          ? 'Opening/closing from Phase 2c; tool profile LLM-only'
+          : 'LLM-classified, not in live registry',
     },
     {
       dimension: 'Predicates (live-capable)',
@@ -571,9 +588,13 @@ export default function CampaignInfographicView() {
     {
       dimension: 'Autonomy Ratio',
       analysis: `${mockData.derivedMetrics.autonomyRatio.buckets.length} buckets`,
-      live: '\u2014',
-      status: 'MOCK',
-      notes: 'Derived from tool_use_count / user_prompt_count',
+      live: hasLiveSessions
+        ? `Bucketed from ${sessions!.filter((s) => s.autonomy_ratio != null).length} sessions with autonomy_ratio`
+        : '\u2014',
+      status: hasLiveSessions ? 'LIVE' : 'MOCK',
+      notes: hasLiveSessions
+        ? 'autonomy_ratio field on RegistryEntry, bucketed client-side'
+        : 'Derived from tool_use_count / user_prompt_count',
     },
     {
       dimension: 'Session Liveness',
@@ -825,36 +846,85 @@ export default function CampaignInfographicView() {
         </SectionWrapper>
 
         {/* 4. Session Subtypes */}
-        <SectionWrapper title="Session Subtypes" num={4} badge="MOCK" variant="mock">
-          <p className="text-xs text-body italic mb-3 pl-1 border-l-2 border-border">
-            {mockData.subtypes.totalUniqueSubtypes} unique subtypes total &mdash; showing N&ge;3.
-            Not computed in live registry.
-          </p>
-          <div className="max-h-[360px] overflow-y-auto rounded-lg border border-border">
-            <table className="w-full text-sm border-collapse">
-              <thead className="sticky top-0 z-10">
-                <tr>
-                  <th className="bg-surface text-body text-left text-xs uppercase tracking-wide px-3 py-2 border-b-2 border-border">
-                    Subtype
-                  </th>
-                  <th className="bg-surface text-body text-left text-xs uppercase tracking-wide px-3 py-2 border-b-2 border-border">
-                    Count
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {mockData.subtypes.items.map((s) => (
-                  <tr
-                    key={s.name}
-                    className="border-b border-border even:bg-surface odd:bg-card hover:bg-zinc-200"
-                  >
-                    <td className="px-3 py-1.5">{s.name}</td>
-                    <td className="px-3 py-1.5 font-bold tabular-nums">{s.count}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+        <SectionWrapper
+          title="Session Subtypes"
+          num={4}
+          badge={
+            liveFields.session_subtype && Object.keys(liveFields.session_subtype).length > 0
+              ? 'LIVE'
+              : 'MOCK'
+          }
+          variant={
+            liveFields.session_subtype && Object.keys(liveFields.session_subtype).length > 0
+              ? 'live'
+              : 'mock'
+          }
+        >
+          {liveFields.session_subtype && Object.keys(liveFields.session_subtype).length > 0 ? (
+            <>
+              <p className="text-xs text-body italic mb-3 pl-1 border-l-2 border-primary">
+                {Object.keys(liveFields.session_subtype).length} unique subtypes from live registry.
+                Mock had {mockData.subtypes.totalUniqueSubtypes} unique subtypes.
+              </p>
+              <div className="max-h-[360px] overflow-y-auto rounded-lg border border-border">
+                <table className="w-full text-sm border-collapse">
+                  <thead className="sticky top-0 z-10">
+                    <tr>
+                      <th className="bg-surface text-body text-left text-xs uppercase tracking-wide px-3 py-2 border-b-2 border-border">
+                        Subtype
+                      </th>
+                      <th className="bg-surface text-body text-left text-xs uppercase tracking-wide px-3 py-2 border-b-2 border-border">
+                        Live Count
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {sorted(liveFields.session_subtype).map(([name, count]) => (
+                      <tr
+                        key={name}
+                        className="border-b border-border even:bg-surface odd:bg-card hover:bg-zinc-200"
+                      >
+                        <td className="px-3 py-1.5">{name}</td>
+                        <td className="px-3 py-1.5 font-bold tabular-nums">{count}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          ) : (
+            <>
+              <p className="text-xs text-body italic mb-3 pl-1 border-l-2 border-border">
+                {mockData.subtypes.totalUniqueSubtypes} unique subtypes total &mdash; showing
+                N&ge;3. Not computed in live registry.
+              </p>
+              <div className="max-h-[360px] overflow-y-auto rounded-lg border border-border">
+                <table className="w-full text-sm border-collapse">
+                  <thead className="sticky top-0 z-10">
+                    <tr>
+                      <th className="bg-surface text-body text-left text-xs uppercase tracking-wide px-3 py-2 border-b-2 border-border">
+                        Subtype
+                      </th>
+                      <th className="bg-surface text-body text-left text-xs uppercase tracking-wide px-3 py-2 border-b-2 border-border">
+                        Count
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {mockData.subtypes.items.map((s) => (
+                      <tr
+                        key={s.name}
+                        className="border-b border-border even:bg-surface odd:bg-card hover:bg-zinc-200"
+                      >
+                        <td className="px-3 py-1.5">{s.name}</td>
+                        <td className="px-3 py-1.5 font-bold tabular-nums">{s.count}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
         </SectionWrapper>
 
         {/* 5. Projects */}
@@ -1074,19 +1144,39 @@ export default function CampaignInfographicView() {
             />
           )}
 
-          {/* Always mock: opening, closing, tool profile */}
-          <ClassifierGroup
-            title="Opening Style"
-            items={mockData.classifiers.openingStyle.items}
-            color="#ef4444"
-            note={`(${mockData.classifiers.openingStyle.totalUniqueValues} unique — top 10)`}
-          />
-          <ClassifierGroup
-            title="Closing Style"
-            items={mockData.classifiers.closingStyle.items}
-            color="#6366f1"
-            note={`(${mockData.classifiers.closingStyle.totalUniqueValues} unique — top 10)`}
-          />
+          {/* Opening Style — live when available */}
+          {liveFields.opening_style && Object.keys(liveFields.opening_style).length > 0 ? (
+            <LiveClassifierGroup
+              title="Opening Style"
+              data={liveFields.opening_style}
+              color="#ef4444"
+            />
+          ) : (
+            <ClassifierGroup
+              title="Opening Style"
+              items={mockData.classifiers.openingStyle.items}
+              color="#ef4444"
+              note={`(${mockData.classifiers.openingStyle.totalUniqueValues} unique — top 10)`}
+            />
+          )}
+
+          {/* Closing Style — live when available */}
+          {liveFields.closing_style && Object.keys(liveFields.closing_style).length > 0 ? (
+            <LiveClassifierGroup
+              title="Closing Style"
+              data={liveFields.closing_style}
+              color="#6366f1"
+            />
+          ) : (
+            <ClassifierGroup
+              title="Closing Style"
+              items={mockData.classifiers.closingStyle.items}
+              color="#6366f1"
+              note={`(${mockData.classifiers.closingStyle.totalUniqueValues} unique — top 10)`}
+            />
+          )}
+
+          {/* Tool Profile — always mock (not in stats.fields) */}
           <ClassifierGroup
             title="Tool Profile"
             items={mockData.classifiers.toolProfile.items}
@@ -1266,36 +1356,86 @@ export default function CampaignInfographicView() {
         <SectionWrapper
           title="Derived Metrics"
           num={11}
-          badge={liveFields.session_liveness ? 'PARTIAL' : 'MOCK'}
-          variant={liveFields.session_liveness ? 'partial' : 'mock'}
+          badge={
+            hasLiveSessions || liveFields.session_liveness
+              ? hasLiveSessions && liveFields.session_liveness
+                ? 'LIVE'
+                : 'PARTIAL'
+              : 'MOCK'
+          }
+          variant={
+            hasLiveSessions || liveFields.session_liveness
+              ? hasLiveSessions && liveFields.session_liveness
+                ? 'live'
+                : 'partial'
+              : 'mock'
+          }
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Autonomy Ratio */}
             <div className="bg-card border border-border rounded-lg p-4">
-              <h3 className="text-xs uppercase tracking-wide text-body font-semibold mb-1">
-                Autonomy Ratio
+              <h3 className="text-xs uppercase tracking-wide text-body font-semibold mb-1 flex items-center gap-2">
+                Autonomy Ratio{' '}
+                {hasLiveSessions ? <SourceBadge type="LIVE" /> : <SourceBadge type="MOCK" />}
               </h3>
               <p className="text-xs text-body mb-3">
                 Formula: {mockData.derivedMetrics.autonomyRatio.formula}
               </p>
-              {(() => {
-                const buckets = mockData.derivedMetrics.autonomyRatio.buckets;
-                const maxSessions =
-                  buckets.length > 0 ? Math.max(...buckets.map((b) => b.sessions)) : 1;
-                return buckets.map((b) => (
-                  <div key={b.bucket} className="flex items-center gap-2 mb-1 flex-wrap">
-                    <span className="w-36 shrink-0 text-sm text-heading">
-                      {b.bucket} {b.range ? `(${b.range})` : ''}
-                    </span>
-                    <div className="flex-1 min-w-[80px]">
-                      <ProgressBar value={b.sessions} max={maxSessions} />
-                    </div>
-                    <span className="w-36 text-right text-xs text-body tabular-nums">
-                      {b.sessions} &mdash; {b.meaning}
-                    </span>
-                  </div>
-                ));
-              })()}
+              {hasLiveSessions
+                ? (() => {
+                    const liveBuckets: Record<string, number> = {
+                      high: 0,
+                      moderate: 0,
+                      low: 0,
+                      minimal: 0,
+                      unknown: 0,
+                    };
+                    for (const s of sessions!) {
+                      const ratio = s.autonomy_ratio;
+                      if (ratio == null || ratio === undefined) {
+                        liveBuckets['unknown']++;
+                      } else if (ratio > 3) {
+                        liveBuckets['high']++;
+                      } else if (ratio >= 1) {
+                        liveBuckets['moderate']++;
+                      } else if (ratio >= 0.3) {
+                        liveBuckets['low']++;
+                      } else {
+                        liveBuckets['minimal']++;
+                      }
+                    }
+                    const entries = Object.entries(liveBuckets).filter(([, v]) => v > 0);
+                    const maxVal = entries.length > 0 ? Math.max(...entries.map(([, v]) => v)) : 1;
+                    return entries.map(([label, count]) => (
+                      <div key={label} className="flex items-center gap-2 mb-1 flex-wrap">
+                        <span className="w-36 shrink-0 text-sm text-heading">{label}</span>
+                        <div className="flex-1 min-w-[80px]">
+                          <ProgressBar value={count} max={maxVal} />
+                        </div>
+                        <span className="w-20 text-right text-xs text-body tabular-nums">
+                          {count}
+                        </span>
+                      </div>
+                    ));
+                  })()
+                : (() => {
+                    const buckets = mockData.derivedMetrics.autonomyRatio.buckets;
+                    const maxSessions =
+                      buckets.length > 0 ? Math.max(...buckets.map((b) => b.sessions)) : 1;
+                    return buckets.map((b) => (
+                      <div key={b.bucket} className="flex items-center gap-2 mb-1 flex-wrap">
+                        <span className="w-36 shrink-0 text-sm text-heading">
+                          {b.bucket} {b.range ? `(${b.range})` : ''}
+                        </span>
+                        <div className="flex-1 min-w-[80px]">
+                          <ProgressBar value={b.sessions} max={maxSessions} />
+                        </div>
+                        <span className="w-36 text-right text-xs text-body tabular-nums">
+                          {b.sessions} &mdash; {b.meaning}
+                        </span>
+                      </div>
+                    ));
+                  })()}
             </div>
 
             {/* Session Liveness */}

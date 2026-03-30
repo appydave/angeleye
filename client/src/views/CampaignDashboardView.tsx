@@ -327,7 +327,7 @@ export default function CampaignDashboardView() {
       source: hasLiveStats && stats?.fields?.session_continuity ? 'LIVE' : 'MOCK',
     },
     { label: 'Output Type', source: hasLiveStats && stats?.fields?.output_type ? 'LIVE' : 'MOCK' },
-    { label: 'Autonomy Ratio', source: 'MOCK' as DataSource },
+    { label: 'Autonomy Ratio', source: hasLiveSessions ? 'LIVE' : ('MOCK' as DataSource) },
     {
       label: 'Session Liveness',
       source: hasLiveStats && stats?.fields?.session_liveness ? 'LIVE' : 'MOCK',
@@ -433,13 +433,41 @@ export default function CampaignDashboardView() {
   const outputTypeData = fieldData('output_type');
   const livenessData = fieldData('session_liveness');
 
-  // 8. Autonomy Ratio (mock only)
-  const autonomyData = mock?.derivedMetrics?.autonomyRatio?.buckets
-    ? {
+  // 8. Autonomy Ratio (live from sessions when available, else mock)
+  const autonomyData = (() => {
+    if (hasLiveSessions) {
+      const buckets: Record<string, number> = {
+        'high (>3)': 0,
+        'moderate (1-3)': 0,
+        'low (0.3-1)': 0,
+        'minimal (<0.3)': 0,
+        unknown: 0,
+      };
+      for (const s of sessions!) {
+        const ratio = s.autonomy_ratio;
+        if (ratio == null || ratio === undefined) {
+          buckets['unknown']++;
+        } else if (ratio > 3) {
+          buckets['high (>3)']++;
+        } else if (ratio >= 1) {
+          buckets['moderate (1-3)']++;
+        } else if (ratio >= 0.3) {
+          buckets['low (0.3-1)']++;
+        } else {
+          buckets['minimal (<0.3)']++;
+        }
+      }
+      const entries = Object.entries(buckets).filter(([, v]) => v > 0);
+      return { labels: entries.map((e) => e[0]), values: entries.map((e) => e[1]) };
+    }
+    if (mock?.derivedMetrics?.autonomyRatio?.buckets) {
+      return {
         labels: mock.derivedMetrics.autonomyRatio.buckets.map((b) => b.label),
         values: mock.derivedMetrics.autonomyRatio.buckets.map((b) => b.sessions),
-      }
-    : null;
+      };
+    }
+    return null;
+  })();
 
   // 10. Top 15 Projects
   const projectData = (() => {

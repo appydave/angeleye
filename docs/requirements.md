@@ -366,8 +366,6 @@ All items below were completed during the analysis-1 campaign:
 ## Future Capabilities
 
 - **`/angeleye:publish` skill** (B011): Context packaging to Nano Banana / FliDeck for image generation
-- ~~**Session list pagination** (B023)~~: Done — cursor-based API + virtual scrolling (commit 9b692fae)
-- ~~**Named session row design** (B037)~~: Done — elevated row treatment (commit 9b692fae)
 - **launchd plist** (B025): Always-on persistent service, auto-restart on crash/reboot
 - **Multi-machine registry sync** (B044): Classification rules applied across machines
 - **Pattern miner / skill suggester**: detect repeated prompt phrases across sessions, surface as skill candidates
@@ -393,6 +391,13 @@ All items below were completed during the analysis-1 campaign:
 
 ---
 
+## Related App Docs
+
+- `docs/planning/enrichment-pipeline/` — predicate tier reference, data architecture, gap analysis, execution paths, mockup brief, pipeline extension plan
+- `docs/planning/workflow-orchestration/` — BMAD lifecycle handover, routing rules, workflow model specs
+- `docs/planning/angeleye-analysis-1/` — analysis campaign plan, wave learnings, agents
+- `docs/intelligence/PATTERNS.md` — v3 schema definition, signal reliability, observations log
+
 ## Related Brain Files
 
 - `brains/angeleye/` — full domain knowledge (concepts, data model, ingestion architecture, ambient intelligence)
@@ -417,5 +422,5 @@ For JSONL parsing implementation, reference these before writing parsers:
 ---
 
 **Created**: 2026-03-12
-**Updated**: 2026-03-23
+**Updated**: 2026-03-29
 **Context**: Originally designed in conversation (Q&A-driven discovery session). Updated to reflect operational state after 10 build waves and 924-session analysis campaign.

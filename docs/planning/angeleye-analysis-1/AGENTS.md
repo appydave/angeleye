@@ -116,7 +116,7 @@ The index schema will evolve as we learn what data matters. The approach:
 
 v1 was a flat structure with free-text `notes`. Migrated after wave 4 (68 entries). Backup at `session-index-v1.jsonl.bak`. Migration script: `migrations/migrate-v1-to-v2.py`.
 
-### v2 Schema (current — since wave 4 completion)
+### v2 Schema (superseded by v3 — see `enrichment-pipeline.md` for current schema)
 
 Each line in `session-index.jsonl`. Splits data into raw measurements (shape, tools) and structured interpretations (classifiers, predicates, observations).
 

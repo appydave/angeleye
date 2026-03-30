@@ -32,6 +32,7 @@ export interface CreateWorkflowParams {
   workflow_type_id: string;
   work_item_id: string;
   work_item_label: string;
+  project_dir?: string;
   stations: Array<{ position: number; action_code: string }>;
 }
 
@@ -98,6 +99,7 @@ export async function createWorkflow(params: CreateWorkflowParams): Promise<Work
     workflow_type_id: params.workflow_type_id,
     work_item_id: params.work_item_id,
     work_item_label: params.work_item_label,
+    ...(params.project_dir ? { project_dir: params.project_dir } : {}),
     status: 'not_started' as WorkflowStatus,
     current_station: 0,
     created_at: now,

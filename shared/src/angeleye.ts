@@ -337,6 +337,7 @@ export interface WorkflowInstance {
   workflow_type_id: string;
   work_item_id: string;
   work_item_label: string;
+  project_dir?: string;
   status: WorkflowStatus;
   current_station: number;
   created_at: string;
