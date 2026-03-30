@@ -123,7 +123,7 @@ function makeEntry(overrides: Partial<RegistryEntry> & { session_id: string }): 
     name: null,
     tags: [],
     workspace_id: null,
-    status: 'ended',
+    status: 'active',
     source: 'hook',
     ...overrides,
   };
@@ -457,7 +457,7 @@ describe('unroutable sessions logged with reasons', () => {
         session_id: 'no-role',
         trigger_command: 'bmad-dev',
         workflow_action: 'DS 2.2',
-        workflow_role: undefined,
+        workflow_role: null,
       }),
     });
 
@@ -504,6 +504,295 @@ describe('dry run mode', () => {
   });
 });
 
+// ── Multi-session per station ─────────────────────────────────────────────────
+
+describe('multi-session per station', () => {
+  it('appends both session_ids when two sessions route to the same station', async () => {
+    mockReadRegistry.mockResolvedValueOnce({
+      's1-ds': makeEntry({
+        session_id: 's1-ds',
+        trigger_command: 'bmad-dev',
+        workflow_role: 'builder',
+        workflow_action: 'DS 2.2',
+      }),
+      's2-ds': makeEntry({
+        session_id: 's2-ds',
+        trigger_command: 'bmad-dev',
+        workflow_role: 'builder',
+        workflow_action: 'DS 2.2',
+      }),
+    });
+
+    const result = await seedWorkflowsFromRegistry();
+
+    expect(result.workflows_created).toBe(1);
+    expect(result.sessions_routed).toBe(2);
+
+    const workflows = await readWorkflows();
+    const dsStation = workflows[0]!.stations.find((s) => s.position === 3);
+    expect(dsStation!.session_ids).toContain('s1-ds');
+    expect(dsStation!.session_ids).toContain('s2-ds');
+    expect(dsStation!.session_ids).toHaveLength(2);
+  });
+});
+
+// ── Incremental seed ─────────────────────────────────────────────────────────
+
+describe('incremental seed — new sessions added to existing workflow', () => {
+  it('routes new sessions to existing workflow and increments workflows_updated', async () => {
+    // First seed: one session
+    mockReadRegistry.mockResolvedValueOnce({
+      s1: makeEntry({
+        session_id: 's1',
+        trigger_command: 'bmad-dev',
+        workflow_role: 'builder',
+        workflow_action: 'DS 2.2',
+      }),
+    });
+    await seedWorkflowsFromRegistry();
+
+    // Second seed: original session + a new one for a different station
+    mockReadRegistry.mockResolvedValueOnce({
+      s1: makeEntry({
+        session_id: 's1',
+        trigger_command: 'bmad-dev',
+        workflow_role: 'builder',
+        workflow_action: 'DS 2.2',
+      }),
+      s2: makeEntry({
+        session_id: 's2',
+        trigger_command: 'bmad-sm',
+        workflow_role: 'reviewer',
+        workflow_action: 'DR 2.2',
+      }),
+    });
+
+    const result = await seedWorkflowsFromRegistry();
+
+    expect(result.workflows_created).toBe(0);
+    expect(result.workflows_updated).toBe(1);
+    expect(result.sessions_routed).toBe(1); // only s2 is new
+
+    const workflows = await readWorkflows();
+    expect(workflows).toHaveLength(1);
+    const wf = workflows[0]!;
+
+    // DS station has s1, DR station has s2
+    expect(wf.stations.find((s) => s.position === 3)!.session_ids).toEqual(['s1']);
+    expect(wf.stations.find((s) => s.position === 4)!.session_ids).toEqual(['s2']);
+  });
+});
+
+// ── Station completion enrichment ────────────────────────────────────────────
+
+describe('station completion enrichment', () => {
+  it('marks station as completed when all sessions have ended', async () => {
+    mockReadRegistry.mockResolvedValueOnce({
+      s1: makeEntry({
+        session_id: 's1',
+        trigger_command: 'bmad-dev',
+        workflow_role: 'builder',
+        workflow_action: 'DS 2.2',
+        status: 'ended',
+        last_active: '2026-03-28T12:00:00.000Z',
+      }),
+    });
+
+    await seedWorkflowsFromRegistry();
+
+    const workflows = await readWorkflows();
+    const dsStation = workflows[0]!.stations.find((s) => s.position === 3);
+    expect(dsStation!.state).toBe('completed');
+    expect(dsStation!.completed_at).toBeTruthy();
+  });
+
+  it('keeps station in_progress when sessions are a mix of ended and active', async () => {
+    mockReadRegistry.mockResolvedValueOnce({
+      's1-ds': makeEntry({
+        session_id: 's1-ds',
+        trigger_command: 'bmad-dev',
+        workflow_role: 'builder',
+        workflow_action: 'DS 2.2',
+        status: 'ended',
+        last_active: '2026-03-28T12:00:00.000Z',
+      }),
+      's2-ds': makeEntry({
+        session_id: 's2-ds',
+        trigger_command: 'bmad-dev',
+        workflow_role: 'builder',
+        workflow_action: 'DS 2.2',
+        status: 'active',
+        last_active: '2026-03-28T13:00:00.000Z',
+      }),
+    });
+
+    await seedWorkflowsFromRegistry();
+
+    const workflows = await readWorkflows();
+    const dsStation = workflows[0]!.stations.find((s) => s.position === 3);
+    expect(dsStation!.state).toBe('in_progress');
+    expect(dsStation!.completed_at).toBeNull();
+  });
+
+  it('sets workflow status to closed when all populated stations are completed with substantial coverage', async () => {
+    // Populate 5 of 9 stations (>= half) with ended sessions to trigger closure
+    mockReadRegistry.mockResolvedValueOnce({
+      s1: makeEntry({
+        session_id: 's1',
+        trigger_command: 'bmad-pm',
+        workflow_role: 'planner',
+        workflow_action: 'WN 2.2',
+        status: 'ended',
+        last_active: '2026-03-28T10:00:00.000Z',
+      }),
+      s2: makeEntry({
+        session_id: 's2',
+        trigger_command: 'bmad-pm',
+        workflow_role: 'planner',
+        workflow_action: 'CS 2.2',
+        status: 'ended',
+        last_active: '2026-03-28T10:30:00.000Z',
+      }),
+      s3: makeEntry({
+        session_id: 's3',
+        trigger_command: 'bmad-dev',
+        workflow_role: 'builder',
+        workflow_action: 'DS 2.2',
+        status: 'ended',
+        last_active: '2026-03-28T12:00:00.000Z',
+      }),
+      s4: makeEntry({
+        session_id: 's4',
+        trigger_command: 'bmad-sm',
+        workflow_role: 'reviewer',
+        workflow_action: 'DR 2.2',
+        status: 'ended',
+        last_active: '2026-03-28T13:00:00.000Z',
+      }),
+      s5: makeEntry({
+        session_id: 's5',
+        trigger_command: 'bmad-qa',
+        workflow_role: 'tester',
+        workflow_action: 'SAT-CS 2.2',
+        status: 'ended',
+        last_active: '2026-03-28T14:00:00.000Z',
+      }),
+    });
+
+    await seedWorkflowsFromRegistry();
+
+    const workflows = await readWorkflows();
+    const wf = workflows[0]!;
+    expect(wf.status).toBe('closed');
+
+    // All 5 populated stations should be completed
+    expect(wf.stations.find((s) => s.position === 0)!.state).toBe('completed');
+    expect(wf.stations.find((s) => s.position === 1)!.state).toBe('completed');
+    expect(wf.stations.find((s) => s.position === 3)!.state).toBe('completed');
+    expect(wf.stations.find((s) => s.position === 4)!.state).toBe('completed');
+    expect(wf.stations.find((s) => s.position === 5)!.state).toBe('completed');
+
+    // Unpopulated stations remain not_started
+    expect(wf.stations.find((s) => s.position === 2)!.state).toBe('not_started');
+  });
+
+  it('does not close workflow when only a few stations are populated', async () => {
+    // Only 2 of 9 stations populated — should NOT close even if all ended
+    mockReadRegistry.mockResolvedValueOnce({
+      s1: makeEntry({
+        session_id: 's1',
+        trigger_command: 'bmad-dev',
+        workflow_role: 'builder',
+        workflow_action: 'DS 2.2',
+        status: 'ended',
+        last_active: '2026-03-28T12:00:00.000Z',
+      }),
+      s2: makeEntry({
+        session_id: 's2',
+        trigger_command: 'bmad-sm',
+        workflow_role: 'reviewer',
+        workflow_action: 'DR 2.2',
+        status: 'ended',
+        last_active: '2026-03-28T13:00:00.000Z',
+      }),
+    });
+
+    await seedWorkflowsFromRegistry();
+
+    const workflows = await readWorkflows();
+    const wf = workflows[0]!;
+    // Only 2/9 stations — not substantial coverage, should stay in_progress
+    expect(wf.status).toBe('in_progress');
+    // But the stations themselves should still be marked completed
+    expect(wf.stations.find((s) => s.position === 3)!.state).toBe('completed');
+    expect(wf.stations.find((s) => s.position === 4)!.state).toBe('completed');
+  });
+
+  it('computes duration_ms from started_at to last_active', async () => {
+    // Fix time so station.started_at is predictable
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-03-28T10:00:00.000Z'));
+
+    mockReadRegistry.mockResolvedValueOnce({
+      s1: makeEntry({
+        session_id: 's1',
+        trigger_command: 'bmad-dev',
+        workflow_role: 'builder',
+        workflow_action: 'DS 2.2',
+        status: 'ended',
+        started_at: '2026-03-28T10:00:00.000Z',
+        last_active: '2026-03-28T11:30:00.000Z',
+      }),
+    });
+
+    await seedWorkflowsFromRegistry();
+
+    vi.useRealTimers();
+
+    const workflows = await readWorkflows();
+    const dsStation = workflows[0]!.stations.find((s) => s.position === 3);
+    expect(dsStation!.state).toBe('completed');
+    // station.started_at was set to 2026-03-28T10:00:00.000Z (mocked now)
+    // last_active is 2026-03-28T11:30:00.000Z → duration = 90 minutes = 5400000ms
+    expect(dsStation!.duration_ms).toBe(5_400_000);
+  });
+
+  it('picks latest last_active across multiple sessions for duration', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-03-28T10:00:00.000Z'));
+
+    mockReadRegistry.mockResolvedValueOnce({
+      's1-ds': makeEntry({
+        session_id: 's1-ds',
+        trigger_command: 'bmad-dev',
+        workflow_role: 'builder',
+        workflow_action: 'DS 2.2',
+        status: 'ended',
+        last_active: '2026-03-28T11:00:00.000Z',
+      }),
+      's2-ds': makeEntry({
+        session_id: 's2-ds',
+        trigger_command: 'bmad-dev',
+        workflow_role: 'builder',
+        workflow_action: 'DS 2.2',
+        status: 'ended',
+        last_active: '2026-03-28T14:00:00.000Z',
+      }),
+    });
+
+    await seedWorkflowsFromRegistry();
+
+    vi.useRealTimers();
+
+    const workflows = await readWorkflows();
+    const dsStation = workflows[0]!.stations.find((s) => s.position === 3);
+    expect(dsStation!.state).toBe('completed');
+    // station.started_at = 2026-03-28T10:00:00.000Z, latest last_active = 14:00
+    // duration = 4 hours = 14400000ms
+    expect(dsStation!.duration_ms).toBe(14_400_000);
+  });
+});
+
 // ── Edge cases ────────────────────────────────────────────────────────────────
 
 describe('edge cases', () => {
@@ -526,7 +815,7 @@ describe('edge cases', () => {
     expect(result.sessions_unroutable).toBe(0);
   });
 
-  it('returns empty result when workflow type is not found', async () => {
+  it('throws when workflow type is not found', async () => {
     mockGetWorkflowType.mockResolvedValueOnce(null);
     mockReadRegistry.mockResolvedValueOnce({
       s1: makeEntry({
@@ -537,10 +826,9 @@ describe('edge cases', () => {
       }),
     });
 
-    const result = await seedWorkflowsFromRegistry();
-
-    expect(result.workflows_created).toBe(0);
-    expect(result.sessions_routed).toBe(0);
+    await expect(seedWorkflowsFromRegistry()).rejects.toThrow(
+      'Workflow type "regular_story" not found'
+    );
   });
 
   it('handles unknown role+action combination as unroutable', async () => {

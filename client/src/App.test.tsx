@@ -77,9 +77,9 @@ describe('App', () => {
     expect(document.body).toBeTruthy();
   });
 
-  it('shows the AngelEye brand name in the header', () => {
+  it('shows the AngelEYE brand name in the header', () => {
     render(<App />);
-    expect(screen.getByText((_, el) => el?.textContent === 'AngelEye')).toBeInTheDocument();
+    expect(screen.getByText((_, el) => el?.textContent === 'AngelEYE')).toBeInTheDocument();
   });
 
   it('shows all sidebar navigation items', () => {

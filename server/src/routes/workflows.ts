@@ -3,6 +3,7 @@ import { apiSuccess, apiFailure } from '../helpers/response.js';
 import { logger } from '../config/logger.js';
 import { getWorkflowTypes, getWorkflowType } from '../services/workflow-type.service.js';
 import { readWorkflows, getWorkflow, createWorkflow } from '../services/workflow.service.js';
+import { seedWorkflowsFromRegistry } from '../services/workflow-router.service.js';
 
 const router = Router();
 
@@ -92,6 +93,24 @@ router.post('/api/workflows', async (req, res, next) => {
     apiSuccess(res, instance, 201);
   } catch (err) {
     logger.error({ err }, 'Failed to create workflow');
+    next(err);
+  }
+});
+
+// ── POST /api/workflows/seed ────────────────────────────────────────────────
+
+router.post('/api/workflows/seed', async (req, res, next) => {
+  try {
+    const dryRun = req.query.dry_run === 'true';
+    const result = await seedWorkflowsFromRegistry({ dryRun });
+    apiSuccess(res, result);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    if (message === 'Seed already in progress') {
+      apiFailure(res, message, 409);
+      return;
+    }
+    logger.error({ err }, 'Failed to seed workflows from registry');
     next(err);
   }
 });

@@ -1,7 +1,8 @@
-import { useMemo } from 'react';
-import type { WorkflowInstance, WorkflowType, StationInstance } from '@appystack/shared';
+import { useMemo, useState } from 'react';
+import type { WorkflowInstance, WorkflowType } from '@appystack/shared';
 import { useWorkflows } from '../hooks/useWorkflows.js';
 import { timeAgo } from '../utils/session-helpers.js';
+import WorkflowDetailView from './WorkflowDetailView.js';
 
 // ─── Status Badge ────────────────────────────────────────────────────────────
 
@@ -29,7 +30,7 @@ function StatusBadge({ status }: { status: WorkflowInstance['status'] }) {
 
 function currentStationLabel(workflow: WorkflowInstance, type: WorkflowType | undefined): string {
   if (workflow.status === 'not_started') return '--';
-  const station: StationInstance | undefined = workflow.stations[workflow.current_station];
+  const station = workflow.stations.find((s) => s.position === workflow.current_station);
   if (!station) return '--';
   const config = type?.stations.find((s) => s.position === station.position);
   const identity = config?.identity ? ` \u2014 ${config.identity}` : '';
@@ -39,10 +40,8 @@ function currentStationLabel(workflow: WorkflowInstance, type: WorkflowType | un
 // ─── Progress Helper ─────────────────────────────────────────────────────────
 
 function progressLabel(workflow: WorkflowInstance): string {
-  const completed = workflow.stations.filter(
-    (s) => s.state === 'completed' || s.state === 'skipped'
-  ).length;
-  return `${completed}/${workflow.stations.length} stations`;
+  const active = workflow.stations.filter((s) => s.session_ids.length > 0).length;
+  return `${active}/${workflow.stations.length} stations`;
 }
 
 // ─── Session Count ───────────────────────────────────────────────────────────
@@ -55,6 +54,9 @@ function sessionCount(workflow: WorkflowInstance): number {
 
 export default function WorkflowsView() {
   const { data, loading, error, refresh } = useWorkflows();
+  const [seeding, setSeeding] = useState(false);
+  const [seedMessage, setSeedMessage] = useState<string | null>(null);
+  const [selectedWorkflowId, setSelectedWorkflowId] = useState<string | null>(null);
 
   const typeMap = useMemo(() => {
     if (!data?.types) return new Map<string, WorkflowType>();
@@ -63,6 +65,36 @@ export default function WorkflowsView() {
 
   const workflows = data?.workflows ?? [];
   const types = data?.types ?? [];
+
+  async function handleSeed() {
+    setSeeding(true);
+    setSeedMessage(null);
+    try {
+      const res = await fetch('/api/workflows/seed', { method: 'POST' });
+      const json = await res.json();
+      if (!res.ok || json.status !== 'ok') {
+        setSeedMessage(json.message ?? json.error ?? 'Seed failed');
+      } else {
+        const d = json.data;
+        setSeedMessage(
+          `Created ${d.workflows_created} workflows, routed ${d.sessions_routed} sessions`
+        );
+        refresh();
+      }
+    } catch (err) {
+      setSeedMessage(err instanceof Error ? err.message : 'Seed request failed');
+    } finally {
+      setSeeding(false);
+    }
+  }
+
+  if (selectedWorkflowId) {
+    const wf = workflows.find((w) => w.instance_id === selectedWorkflowId);
+    const wfType = wf ? typeMap.get(wf.workflow_type_id) : undefined;
+    return (
+      <WorkflowDetailView workflow={wf} type={wfType} onBack={() => setSelectedWorkflowId(null)} />
+    );
+  }
 
   return (
     <div className="flex flex-col h-full min-h-0">
@@ -78,11 +110,19 @@ export default function WorkflowsView() {
               {workflows.length} instance{workflows.length !== 1 ? 's' : ''}
             </span>
             <button
+              onClick={handleSeed}
+              disabled={seeding}
+              className="text-xs px-3 py-1 text-muted-foreground hover:text-primary transition-colors border border-border hover:border-primary rounded disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {seeding ? 'Syncing...' : 'Sync Sessions'}
+            </button>
+            <button
               onClick={refresh}
               className="text-xs px-3 py-1 text-muted-foreground hover:text-primary transition-colors border border-border hover:border-primary rounded"
             >
               Refresh
             </button>
+            {seedMessage && <span className="text-xs text-muted-foreground">{seedMessage}</span>}
           </div>
         )}
       </div>
@@ -105,8 +145,19 @@ export default function WorkflowsView() {
       ) : (
         <div className="flex-1 overflow-y-auto">
           {workflows.length === 0 ? (
-            <div className="flex items-center justify-center h-full text-muted-foreground text-sm px-4 text-center">
-              No workflow instances yet. Workflows are created when BMAD story sessions are tracked.
+            <div className="flex flex-col items-center justify-center h-full gap-4 text-sm px-4 text-center">
+              <span className="text-muted-foreground">
+                No workflow instances yet. Workflows are created when BMAD story sessions are
+                tracked.
+              </span>
+              <button
+                disabled={seeding}
+                onClick={handleSeed}
+                className="px-4 py-1.5 text-xs font-medium border border-border hover:border-primary text-muted-foreground hover:text-primary rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {seeding ? 'Seeding...' : 'Seed from Sessions'}
+              </button>
+              {seedMessage && <span className="text-xs text-muted-foreground">{seedMessage}</span>}
             </div>
           ) : (
             <table className="w-full text-sm">
@@ -127,7 +178,8 @@ export default function WorkflowsView() {
                   return (
                     <tr
                       key={wf.instance_id}
-                      className="border-b border-border hover:bg-surface-hover transition-colors"
+                      className="border-b border-border hover:bg-surface-hover transition-colors cursor-pointer"
+                      onClick={() => setSelectedWorkflowId(wf.instance_id)}
                     >
                       <td className="px-4 py-2">
                         <div className="font-medium text-foreground">{wf.work_item_label}</div>

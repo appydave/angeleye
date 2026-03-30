@@ -1,22 +1,18 @@
 # Project Backlog — AngelEye
 
-**Last updated**: 2026-03-29
-**Total**: 74 | Pending: 7 | In Progress: 0 | Done: 69 | Deferred: 2 | Rejected: 0
+**Last updated**: 2026-03-30
+**Total**: 74 | Pending: 2 | In Progress: 0 | Done: 71 | Deferred: 2 | Removed: 3
 
 ## Pending
 
-- [ ] B011 — /angeleye:publish skill (Nano Banana / FliDeck integration) | Priority: medium
-- [ ] B050 — Extract git-sync + feedback-pipeline as AppyStack recipes | Priority: low
-
 ### Infrastructure
 
-- [ ] B025 — launchd plist for AngelEye server: always-on persistent service, auto-restart on crash/reboot | Priority: medium
-- [ ] B026 — Update create-appystack template with: resilient start.sh (port conflict detection + human-in-loop), dotenv override:true fix, correct VITE_SOCKET_URL | Priority: medium
-- [ ] B044 — Multi-machine registry sync: classification rules should apply across machines. M4 Pro registry defaults everything to BUILD. | Priority: low
+- [ ] B025 — Always-on headless ingestion pipeline: separate hook ingestion from web UI so hooks never miss data during development restarts. Architecture/design investigation needed. | Priority: high
+- [ ] B064 — Tier 3 LLM batch enrichment runner using third-party models (Gemini, Codex). See docs/planning/tier3-batch-enrichment-brief.md | Priority: medium
 
 ### Phase 2b — Inspector Screens + Project Registry
 
-- [ ] B063 — Add `project_dir` field to WorkflowInstance shared type | Priority: medium
+(B063 moved to Done)
 
 ### Phase 2c — Deterministic Classifier Extensions
 
@@ -26,14 +22,12 @@
 
 (Moved to Done — campaign: angeleye-phase3-propagation)
 
-### Phase 4 — LLM Enrichment
-
-- [ ] B064 — Tier 3 LLM batch enrichment runner (see docs/planning/tier3-batch-enrichment-brief.md) | Priority: low
-
 ## In Progress
 
 ## Done
 
+- [x] B026 — Update create-appystack template: dotenv override:true fix | Completed: 2026-03-30
+- [x] B063 — Add `project_dir` field to WorkflowInstance shared type | Completed: commit 1efe57b5
 - [x] B065 — stats.ts DRY fix: use countByType() import | Completed: angeleye-phase3-propagation
 - [x] B066 — Import SessionType from shared in SettingsView | Completed: angeleye-phase3-propagation
 - [x] B067 — Fix totalDelta() math in SettingsView | Completed: angeleye-phase3-propagation
@@ -112,4 +106,8 @@
 - [-] B013 — Paperclip / OpenClaw / stream-JSON adapter layer | Reason: future provider support; not wave 1
 - [-] B014 — Supabase cold archive path | Reason: JSONL flat files sufficient for personal use; add if indexed search needed
 
-## Rejected
+## Removed
+
+- [~] B011 — /angeleye:publish skill (Nano Banana / FliDeck integration) | Reason: in-app dashboards (B072-B074) cover visualization needs. Nano Banana available via /nano-banana skill if needed.
+- [~] B044 — Multi-machine registry sync | Reason: classifier improvements (B038-B043) fixed the root cause (light sessions defaulting to BUILD). Deterministic rules produce same results on any machine. Bring back if unified reporting needed.
+- [~] B050 — Extract git-sync + feedback-pipeline as AppyStack recipes | Reason: git-sync already extracted (add-sync.md in template). Feedback-pipeline has no second consumer.
