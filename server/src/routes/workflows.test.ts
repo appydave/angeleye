@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import request from 'supertest';
 import express from 'express';
 import type { WorkflowType, WorkflowInstance } from '@appystack/shared';
+import type { SeedResult } from '../services/workflow-router.service.js';
 
 // Mock the services before importing the route
 vi.mock('../services/workflow-type.service.js', () => ({
@@ -13,9 +14,13 @@ vi.mock('../services/workflow.service.js', () => ({
   getWorkflow: vi.fn(),
   createWorkflow: vi.fn(),
 }));
+vi.mock('../services/workflow-router.service.js', () => ({
+  seedWorkflowsFromRegistry: vi.fn(),
+}));
 
 import { getWorkflowTypes, getWorkflowType } from '../services/workflow-type.service.js';
 import { readWorkflows, getWorkflow, createWorkflow } from '../services/workflow.service.js';
+import { seedWorkflowsFromRegistry } from '../services/workflow-router.service.js';
 import workflowsRouter from './workflows.js';
 
 const mockGetWorkflowTypes = vi.mocked(getWorkflowTypes);
@@ -23,6 +28,7 @@ const mockGetWorkflowType = vi.mocked(getWorkflowType);
 const mockReadWorkflows = vi.mocked(readWorkflows);
 const mockGetWorkflow = vi.mocked(getWorkflow);
 const mockCreateWorkflow = vi.mocked(createWorkflow);
+const mockSeedWorkflows = vi.mocked(seedWorkflowsFromRegistry);
 
 let app: express.Express;
 
@@ -217,6 +223,54 @@ describe('POST /api/workflows', () => {
   });
 });
 
+// ── POST /api/workflows/seed ────────────────────────────────────────────────
+
+const fakeSeedResult: SeedResult = {
+  workflows_created: 2,
+  workflows_updated: 1,
+  sessions_routed: 8,
+  sessions_unroutable: 3,
+  unroutable_reasons: [
+    {
+      session_id: 'u1',
+      reason: 'bmad session with null workflow_action (command: bmad-oversight)',
+    },
+    { session_id: 'u2', reason: 'no story id (actionCode: WN)' },
+    { session_id: 'u3', reason: 'action code missing (workflow_action: 2.3)' },
+  ],
+};
+
+describe('POST /api/workflows/seed', () => {
+  it('returns 200 with seed result', async () => {
+    mockSeedWorkflows.mockResolvedValueOnce(fakeSeedResult);
+
+    const res = await request(app).post('/api/workflows/seed');
+
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe('ok');
+    expect(res.body.data.workflows_created).toBe(2);
+    expect(res.body.data.workflows_updated).toBe(1);
+    expect(res.body.data.sessions_routed).toBe(8);
+    expect(res.body.data.sessions_unroutable).toBe(3);
+    expect(res.body.data.unroutable_reasons).toHaveLength(3);
+    expect(mockSeedWorkflows).toHaveBeenCalledWith({ dryRun: false });
+  });
+
+  it('passes dryRun: true when dry_run query param is set', async () => {
+    mockSeedWorkflows.mockResolvedValueOnce({
+      ...fakeSeedResult,
+      workflows_created: 2,
+      workflows_updated: 0,
+    });
+
+    const res = await request(app).post('/api/workflows/seed?dry_run=true');
+
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe('ok');
+    expect(mockSeedWorkflows).toHaveBeenCalledWith({ dryRun: true });
+  });
+});
+
 // ── 500 Error Paths ─────────────────────────────────────────────────────────
 
 describe('500 error paths', () => {
@@ -247,6 +301,15 @@ describe('500 error paths', () => {
       work_item_id: 'story-123',
       work_item_label: 'Add login page',
     });
+
+    expect(res.status).toBe(500);
+    expect(res.body.status).toBe('error');
+  });
+
+  it('POST /api/workflows/seed returns 500 when service throws', async () => {
+    mockSeedWorkflows.mockRejectedValueOnce(new Error('registry read failed'));
+
+    const res = await request(app).post('/api/workflows/seed');
 
     expect(res.status).toBe(500);
     expect(res.body.status).toBe('error');
