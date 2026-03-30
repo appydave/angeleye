@@ -173,7 +173,7 @@ describe('parseAction — indirect via seed', () => {
     expect(dsStation!.state).toBe('in_progress');
   });
 
-  it('treats "wn" as gatekeeper with no story — unroutable', async () => {
+  it('treats "wn" as gatekeeper with no story — unroutable with gatekeeper reason', async () => {
     mockReadRegistry.mockResolvedValueOnce({
       s1: makeEntry({
         session_id: 's1',
@@ -187,8 +187,9 @@ describe('parseAction — indirect via seed', () => {
 
     expect(result.sessions_routed).toBe(0);
     expect(result.sessions_unroutable).toBe(1);
-    expect(result.unroutable_reasons[0]!.reason).toContain('no story id');
-    expect(result.unroutable_reasons[0]!.reason).toContain('WN');
+    expect(result.unroutable_reasons[0]!.reason).toBe(
+      'gatekeeper session (WN) — pending workflow association'
+    );
   });
 
   it('treats "2.3" (digits only) as unparseable — unroutable', async () => {
@@ -846,5 +847,123 @@ describe('edge cases', () => {
     expect(result.sessions_unroutable).toBe(1);
     expect(result.unroutable_reasons[0]!.reason).toContain('no station found');
     expect(result.unroutable_reasons[0]!.reason).toContain('unknown-role');
+  });
+});
+
+// ── Action-code fallback in lookupStation ───────────────────────────────────
+
+describe('lookupStation — action-code fallback', () => {
+  it('routes CU session with role=tester to CU station (position 7) via action-code fallback', async () => {
+    mockReadRegistry.mockResolvedValueOnce({
+      'cu-from-sat': makeEntry({
+        session_id: 'cu-from-sat',
+        trigger_command: 'bmad-sat',
+        workflow_role: 'tester',
+        workflow_action: 'CU 2.6',
+      }),
+    });
+
+    const result = await seedWorkflowsFromRegistry();
+
+    expect(result.sessions_routed).toBe(1);
+    expect(result.sessions_unroutable).toBe(0);
+
+    const workflows = await readWorkflows();
+    expect(workflows).toHaveLength(1);
+
+    // CU station is position 7 (advisor:CU) — reached via action-code fallback
+    const cuStation = workflows[0]!.stations.find((s) => s.position === 7);
+    expect(cuStation!.session_ids).toContain('cu-from-sat');
+    expect(cuStation!.state).toBe('in_progress');
+  });
+});
+
+// ── WN gatekeeper logging ───────────────────────────────────────────────────
+
+describe('WN gatekeeper logging', () => {
+  it('logs WN session without story ID as gatekeeper with specific reason text', async () => {
+    mockReadRegistry.mockResolvedValueOnce({
+      'wn-1': makeEntry({
+        session_id: 'wn-1',
+        trigger_command: 'bmad-sm',
+        workflow_role: 'planner',
+        workflow_action: 'WN',
+      }),
+    });
+
+    const result = await seedWorkflowsFromRegistry();
+
+    expect(result.sessions_unroutable).toBe(1);
+    expect(result.unroutable_reasons).toHaveLength(1);
+    expect(result.unroutable_reasons[0]!.session_id).toBe('wn-1');
+    expect(result.unroutable_reasons[0]!.reason).toBe(
+      'gatekeeper session (WN) — pending workflow association'
+    );
+  });
+
+  it('logs non-WN sessions without story ID with generic reason', async () => {
+    mockReadRegistry.mockResolvedValueOnce({
+      'cs-no-story': makeEntry({
+        session_id: 'cs-no-story',
+        trigger_command: 'bmad-sm',
+        workflow_role: 'planner',
+        workflow_action: 'CS',
+      }),
+    });
+
+    const result = await seedWorkflowsFromRegistry();
+
+    expect(result.sessions_unroutable).toBe(1);
+    expect(result.unroutable_reasons[0]!.reason).toBe('no story id (actionCode: CS)');
+  });
+});
+
+// ── Overlay config ──────────────────────────────────────────────────────────
+
+describe('overlay config — bmad-v6', () => {
+  it('/bmad-sat actions do not include CU', async () => {
+    const { readFile } = await import('node:fs/promises');
+    const { resolve } = await import('node:path');
+    const { fileURLToPath } = await import('node:url');
+    const __dirname = resolve(fileURLToPath(import.meta.url), '..');
+    const overlayPath = resolve(__dirname, '..', 'config', 'overlays', 'bmad-v6.json');
+    const raw = await readFile(overlayPath, 'utf-8');
+    const overlay = JSON.parse(raw) as {
+      role_mappings: Record<string, { actions: string[] }>;
+    };
+
+    const satActions = overlay.role_mappings['/bmad-sat']!.actions;
+    expect(satActions).toEqual(['CS', 'RA']);
+    expect(satActions).not.toContain('CU');
+  });
+
+  it('/bmad-lib actions include CU (advisor/Lisa owns CU)', async () => {
+    const { readFile } = await import('node:fs/promises');
+    const { resolve } = await import('node:path');
+    const { fileURLToPath } = await import('node:url');
+    const __dirname = resolve(fileURLToPath(import.meta.url), '..');
+    const overlayPath = resolve(__dirname, '..', 'config', 'overlays', 'bmad-v6.json');
+    const raw = await readFile(overlayPath, 'utf-8');
+    const overlay = JSON.parse(raw) as {
+      role_mappings: Record<string, { actions: string[] }>;
+    };
+
+    const libActions = overlay.role_mappings['/bmad-lib']!.actions;
+    expect(libActions).toContain('CU');
+  });
+
+  it('/bmad-sm actions include WN (planner/Bob owns gatekeeper)', async () => {
+    const { readFile } = await import('node:fs/promises');
+    const { resolve } = await import('node:path');
+    const { fileURLToPath } = await import('node:url');
+    const __dirname = resolve(fileURLToPath(import.meta.url), '..');
+    const overlayPath = resolve(__dirname, '..', 'config', 'overlays', 'bmad-v6.json');
+    const raw = await readFile(overlayPath, 'utf-8');
+    const overlay = JSON.parse(raw) as {
+      role_mappings: Record<string, { actions: string[] }>;
+    };
+
+    const smActions = overlay.role_mappings['/bmad-sm']!.actions;
+    expect(smActions).toContain('WN');
   });
 });

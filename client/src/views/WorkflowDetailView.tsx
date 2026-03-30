@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import type { WorkflowInstance, WorkflowType } from '@appystack/shared';
 import WorkflowPipeline from '../components/WorkflowPipeline.js';
 import SessionEventsPanel from '../components/SessionEventsPanel.js';
+import type { SessionMetadata } from '../components/SessionEventsPanel.js';
 
 // ─── Props ──────────────────────────────────────────────────────────────────
 
@@ -54,6 +55,21 @@ export default function WorkflowDetailView({ workflow, type, onBack }: WorkflowD
     activeSessionId && sessionIds.includes(activeSessionId)
       ? activeSessionId
       : (sessionIds[0] ?? null);
+
+  // Derive session metadata for the chat panel header
+  const sessionMetadata: SessionMetadata | undefined = useMemo(() => {
+    if (!currentSessionId || !workflow) return undefined;
+    const projectName = workflow.project_dir
+      ? (workflow.project_dir.split('/').filter(Boolean).pop() ?? null)
+      : null;
+    return {
+      name: workflow.work_item_label ?? null,
+      project: projectName,
+      sessionType: station?.action_code ?? null,
+      startedAt: station?.started_at ?? workflow.created_at ?? null,
+      sessionId: currentSessionId,
+    };
+  }, [currentSessionId, workflow, station]);
 
   function handleStationClick(position: number) {
     setSelectedStation(position);
@@ -120,19 +136,22 @@ export default function WorkflowDetailView({ workflow, type, onBack }: WorkflowD
         />
       </div>
 
-      {/* Session Events — fills remaining height, scrollable */}
-      <div className="flex-1 overflow-y-auto min-h-0 border-t border-border">
-        {sessionIds.length === 0 ? (
-          <div className="flex items-center justify-center h-full text-muted-foreground text-sm">
-            No sessions for this station
-          </div>
-        ) : (
-          <SessionEventsPanel
-            sessionId={currentSessionId}
-            sessionIds={sessionIds.length > 1 ? sessionIds : undefined}
-            onSessionChange={sessionIds.length > 1 ? handleSessionChange : undefined}
-          />
-        )}
+      {/* Chat panel — constrained center column */}
+      <div className="flex-1 flex justify-center overflow-hidden min-h-0 border-t border-border">
+        <div className="flex flex-col w-full min-h-0" style={{ maxWidth: 800, minWidth: 480 }}>
+          {sessionIds.length === 0 ? (
+            <div className="flex items-center justify-center h-full text-muted-foreground text-sm">
+              No sessions for this station
+            </div>
+          ) : (
+            <SessionEventsPanel
+              sessionId={currentSessionId}
+              sessionIds={sessionIds.length > 1 ? sessionIds : undefined}
+              onSessionChange={sessionIds.length > 1 ? handleSessionChange : undefined}
+              metadata={sessionMetadata}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

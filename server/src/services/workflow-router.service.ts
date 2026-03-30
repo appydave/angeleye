@@ -81,7 +81,23 @@ function lookupStation(
   role: string,
   actionCode: string
 ): StationConfig | undefined {
-  return stationMap.get(`${role}:${actionCode}`) ?? stationMap.get(`${role}:`);
+  // Primary: role:actionCode
+  const primary = stationMap.get(`${role}:${actionCode}`);
+  if (primary) return primary;
+  // Fallback: role-less catch (shipper pattern)
+  const roleFallback = stationMap.get(`${role}:`);
+  if (roleFallback) return roleFallback;
+  // Last resort: scan for actionCode match ignoring role (e.g. CU from bmad-sat routes to advisor:CU)
+  for (const [key, config] of stationMap) {
+    if (key.endsWith(`:${actionCode}`)) {
+      logger.warn(
+        { role, actionCode, matchedKey: key },
+        'lookupStation: action-code fallback — role mismatch'
+      );
+      return config;
+    }
+  }
+  return undefined;
 }
 
 // ── Options ────────────────────────────────────────────────────────────────
@@ -160,12 +176,21 @@ async function _seedWorkflowsFromRegistryImpl(options: SeedOptions): Promise<See
 
     // Must have a story id to be associated with a workflow instance
     if (!parsed.storyId) {
-      // WN gatekeeper or other no-story sessions — unroutable for now
-      result.sessions_unroutable++;
-      result.unroutable_reasons.push({
-        session_id: entry.session_id,
-        reason: `no story id (actionCode: ${parsed.actionCode})`,
-      });
+      if (parsed.actionCode === 'WN') {
+        // WN is a gatekeeper query — it discovers the next story ID.
+        // Cannot associate with a specific workflow yet. Log separately.
+        result.sessions_unroutable++;
+        result.unroutable_reasons.push({
+          session_id: entry.session_id,
+          reason: `gatekeeper session (WN) — pending workflow association`,
+        });
+      } else {
+        result.sessions_unroutable++;
+        result.unroutable_reasons.push({
+          session_id: entry.session_id,
+          reason: `no story id (actionCode: ${parsed.actionCode})`,
+        });
+      }
       continue;
     }
 
