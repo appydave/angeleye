@@ -6,10 +6,12 @@ sources:
   - CLAUDE.md
   - STEERING.md
   - package.json
+  - appystack.json
   - shared/src/types.ts
   - shared/src/angeleye.ts
   - server/src/index.ts
   - server/src/routes/hooks.ts
+  - server/src/routes/workflows.ts
   - server/src/services/registry.service.ts
   - server/src/services/classifier.service.ts
   - server/src/services/sync.service.ts
@@ -17,14 +19,35 @@ sources:
   - server/src/services/correlator.service.ts
   - server/src/services/workflow-router.service.ts
   - server/src/services/workflow.service.ts
+  - server/src/services/workflow-type.service.ts
   - server/src/services/git-sync.service.ts
   - server/src/services/overlay.service.ts
+  - server/src/services/preferences.service.ts
+  - server/src/services/project-config.service.ts
+  - server/src/services/schema-auditor.service.ts
+  - server/src/services/sessions.service.ts
+  - server/src/config/workflows/bmad-regular-story.json
+  - server/src/config/workflows/bmad-epic-zero.json
+  - server/src/config/overlays/bmad-v6.json
   - client/src/App.tsx
   - client/src/components/AppShell.tsx
-  - client/src/views/
-  - client/src/components/
+  - client/src/views/ObserverView.tsx
+  - client/src/views/OrganiserView.tsx
+  - client/src/views/WorkflowsView.tsx
+  - client/src/views/WorkflowDetailView.tsx
+  - client/src/views/InspectorView.tsx
+  - client/src/views/SettingsView.tsx
+  - client/src/views/CampaignDashboardView.tsx
+  - client/src/views/CampaignInfographicView.tsx
+  - client/src/views/MockupsView.tsx
+  - client/src/components/WorkflowPipeline.tsx
+  - client/src/components/SessionEventsPanel.tsx
+  - .mochaccino/designs/
   - .mochaccino/samples/
-  - docs/
+  - docs/planning/BACKLOG.md
+  - docs/planning/workflow-feature-requirements.md
+  - docs/planning/workflow-detail-view-requirements.md
+  - context.globs.json
 regenerate: 'Run /system-context in the repo root'
 ---
 
@@ -36,11 +59,11 @@ Real-time command centre for monitoring, classifying, and organising Claude Code
 
 ## Core Abstractions
 
-- **Session** — A single Claude Code conversation identified by `session_id`. Has lifecycle (`active`/`ended`), rule-based classification metadata (type, scale, tool pattern, 20+ boolean predicates), and an event history stored as JSONL. Lives as a `RegistryEntry` in `registry.json`. The session is the atomic unit everything else aggregates over.
+- **Session** — A single Claude Code conversation identified by `session_id`. Has lifecycle (`active`/`ended`), rule-based classification metadata (type, scale, tool pattern, 20+ boolean predicates, Phase 2c behavioural classifiers), and an event history stored as JSONL. Lives as a `RegistryEntry` in `registry.json`. The session is the atomic unit everything else aggregates over.
 - **Event** — An `AngelEyeEvent` normalized from one of 24 Claude Code hook event types or backfilled from JSONL transcripts. Each event captures timestamp, source (`hook`/`transcript`), event type, and type-specific payload (prompt text, tool summary, error, etc.). Events are append-only JSONL per session under `~/.claude/angeleye/sessions/`.
-- **Classification** — A multi-tier enrichment pipeline that labels sessions without LLM calls. Tier 1 (deterministic counts/pattern matching), Tier 2 (regex/heuristic: voice dictation, brain writes, cross-session refs, closing ceremony). Assigns `SessionType` (BUILD/TEST/RESEARCH/KNOWLEDGE/OPS/ORIENTATION), `SessionScale`, `ToolPattern`, `SessionSubtype`, plus Phase 2c behavioural classifiers (`DelegationStyle`, `OpeningStyle`, `ClosingStyle`, `OutputType`, etc.). Tier 3 (LLM enrichment) is designed but not yet built.
+- **Classification** — A multi-tier enrichment pipeline that labels sessions without LLM calls. Tier 1 (deterministic counts/pattern matching), Tier 2 (regex/heuristic: voice dictation, brain writes, cross-session refs, closing ceremony). Assigns `SessionType` (BUILD/TEST/RESEARCH/KNOWLEDGE/OPS/ORIENTATION), `SessionScale`, `ToolPattern`, `SessionSubtype`, plus Phase 2c behavioural classifiers (`DelegationStyle`, `OpeningStyle`, `ClosingStyle`, `OutputType`, `InitiationSource`, `SessionContinuity`, `SessionLiveness`). Tier 3 (LLM enrichment) is designed but not yet built.
 - **Affinity Group** — Cross-session correlation that clusters related sessions into business units. Types: `story_unit` (deterministic, shared story ID), `epic_sprint`, `project_phase`, `ad_hoc` (temporal proximity heuristic). The correlator uses story-ID extraction (Signal 1) and temporal clustering (Signal 2) with type-guarded merge to prevent story units merging with ad-hoc clusters.
-- **Workflow** — A factory production-line model. `WorkflowType` is a pure JSON config defining stations in sequence (e.g., BMAD Regular Story has 9 stations from WN through SHIP). `WorkflowInstance` tracks runtime state per work item (story). The workflow router seeds instances from registry data by parsing `trigger_command` + `workflow_action` + `workflow_role` to associate sessions with stations. Stations progress through `not_started` → `in_progress` → `completed`, with completion detected when all associated sessions have ended.
+- **Workflow** — A factory production-line model. `WorkflowType` is a pure JSON config defining stations in sequence (e.g., BMAD Regular Story has 9 stations from WN through SHIP). `WorkflowInstance` tracks runtime state per work item (story). The workflow router seeds instances from registry data by parsing `trigger_command` + `workflow_action` + `workflow_role` to associate sessions with stations. Stations progress through `not_started` → `in_progress` → `completed`, with completion detected when all associated sessions have ended. The router includes a concurrency guard, dry-run mode, and detailed unroutable-reason tracking.
 
 ## Key Workflows
 
@@ -55,20 +78,21 @@ Real-time command centre for monitoring, classifying, and organising Claude Code
 
 1. User triggers `POST /api/sync` (optionally with `?force=true` to reclassify already-typed sessions)
 2. The backfill service scans `~/.claude/projects/*/` for JSONL transcript files, extracting events from entries that aren't yet in the registry (custom-title extraction, skill-prompt parsing from XML tags)
-3. Every session is then classified (or reclassified if forced), and the correlator runs to discover/update affinity groups
-4. A `SyncResult` is returned with before/after type counts, per-project breakdown, and field-level diffs
+3. Every session is then classified (or reclassified if forced), and Phase 2c field distributions are computed before/after for delta reporting
+4. A `SyncResult` is returned with before/after type counts, per-project breakdown, field-level diffs, and a `last-sync.json` timestamp is persisted
 
 ### Workflow seeding — associating sessions with production-line stations
 
-1. User triggers `POST /api/workflows/seed` (or dry-run variant)
-2. The workflow router reads all registry entries, filters to BMAD sessions (`trigger_command` starts with `bmad`), parses `workflow_action` to extract action code + story ID
-3. Sessions are grouped by story ID; for each group, the router finds or creates a `WorkflowInstance`, then associates sessions with the correct station by matching `role:actionCode` against the station map
-4. Station states are updated (in_progress/completed), workflow status is derived, and results are written to `workflows.json`
+1. User triggers `POST /api/workflows/seed` (or `?dry_run=true` for preview)
+2. The workflow router reads all registry entries, filters to BMAD sessions (`trigger_command` starts with `bmad`), parses `workflow_action` using `parseAction()` to extract action code + story ID
+3. For each routable session, `lookupStation()` matches `role:actionCode` against a station map built from the workflow type config, with fallback patterns for SAT-\* suffixes and role-less shipper matching
+4. Sessions are grouped by story ID; for each group, the router finds or creates a `WorkflowInstance`, associates sessions with stations (idempotent dedup), auto-completes stations when all sessions have ended, and closes workflows when sufficient coverage is reached
+5. A concurrency guard (`seedInProgress`) prevents parallel seed operations; results include `workflows_created`, `workflows_updated`, `sessions_routed`, and detailed `unroutable_reasons`
 
 ### Dashboard operation — daily use
 
 1. User opens the React client; the AppShell renders Header + Sidebar + ContentPanel with view routing via NavContext
-2. **Observer** view shows live sessions with real-time Socket.io updates. **Organiser** view allows workspace assignment and session annotation. **Workflows** view shows pipeline visualisation with station progress. **Inspector** view provides schema and data inspection.
+2. **Observer** view shows live sessions with real-time Socket.io updates. **Organiser** view allows workspace assignment and session annotation. **Workflows** view shows pipeline list. **Workflow Detail** view shows per-story station progress with a pipeline visualisation component and session events panel. **Inspector** view provides schema and data inspection. **Settings** view shows sync controls, stats, and field distribution breakdowns. **Campaign Dashboard/Infographic** views provide analysis campaign results.
 3. Mochaccino mockups (HTML in `.mochaccino/designs/`) fetch from `/api/mock-views/*` endpoints with automatic sample-data fallback from `.mochaccino/samples/`
 
 ## Design Decisions
@@ -93,6 +117,10 @@ Real-time command centre for monitoring, classifying, and organising Claude Code
   - _Alternative considered_: Classify all sessions equally regardless of size
   - _Why rejected_: Validated against 924-session analysis campaign — small sessions consistently misclassified without scale gating
 
+- **Workflow router with multi-level station lookup**: The station map supports three lookup strategies — primary `role:actionCode`, role-only fallback (for shipper), and action-code-only fallback (for cross-role routing like SAT tests). This handles the real-world variety of BMAD session shapes.
+  - _Alternative considered_: Strict role:action matching only
+  - _Why rejected_: Real sessions show role mismatches (e.g., `bmad-sat` sessions with tester role routing to advisor stations). Strict matching left ~30% of sessions unroutable.
+
 ## Non-obvious Constraints
 
 - **Hook events must always return `{ continue: true }`**: Even on errors, the hooks endpoint returns 200 with `continue: true`. Returning an error or non-200 would block Claude Code's hook pipeline and potentially hang the session. The entire hooks handler is wrapped in a try/catch that swallows errors for this reason.
@@ -102,23 +130,27 @@ Real-time command centre for monitoring, classifying, and organising Claude Code
 - **`progress` entries dominate JSONL transcripts**: ~75% of entries in hook-heavy sessions are `progress` type. Parsers that iterate all lines without filtering will be slow. The backfill service already skips these.
 - **Git sync operates on the AngelEye repo itself**: The git-sync service uses a promise-chain mutex (`withGitLock`) to prevent concurrent `git fetch` / `git pull` races. It derives state (clean/dirty/behind/ahead/diverged) from the repo containing AngelEye's own source code — not the monitored projects.
 - **Workflow router only handles `regular_story` type**: The seed function hardcodes `getWorkflowType('regular_story')`. Epic Zero and other workflow types exist as configs but have no routing logic yet.
+- **Workflow seed has a concurrency guard**: A module-level `seedInProgress` boolean prevents parallel seed calls. If a seed crashes without reaching the `finally` block, the guard stays locked until the process restarts. The API returns 409 Conflict when guarded.
+- **Project configs are cached after first load**: `project-config.service.ts` caches all project JSON configs in memory after the first `loadProjectConfigs()` call. Changes to config files require a server restart to take effect.
 
 ## Expert Mental Model
 
 - **AngelEye is a read-side projection, not a write-side system**: The system consumes events and builds increasingly rich views (registry → classification → affinity groups → workflows). It never generates events or controls sessions. Every piece of state can be rebuilt from the raw JSONL event files by running sync. If the registry gets corrupted, `POST /api/sync?force=true` regenerates everything from transcripts.
-- **Classification is layered, not monolithic**: Think of Tier 1 (counts), Tier 2 (patterns), and domain overlays as independent passes that each add fields to the same `RegistryEntry`. They can run in any order and are idempotent. Adding a new classifier means adding a new function that reads events and writes fields — the pipeline doesn't need restructuring.
+- **Classification is layered, not monolithic**: Think of Tier 1 (counts), Tier 2 (patterns), Phase 2c (behavioural), and domain overlays as independent passes that each add fields to the same `RegistryEntry`. They can run in any order and are idempotent. Adding a new classifier means adding a new function that reads events and writes fields — the pipeline doesn't need restructuring.
 - **The factory metaphor is the key to workflow understanding**: Sessions aren't "steps in a process" — they're workers arriving at stations on a production line. Multiple sessions can work the same station (retries, backtracks). A station is "completed" when all its sessions have ended, not when one session succeeds. The workflow is "closed" when either the final station has sessions or substantial coverage is reached — it doesn't require every station to be visited.
 - **Affinity groups and workflows solve different problems**: Affinity groups are bottom-up discovery ("these sessions seem related based on shared story IDs or temporal proximity"). Workflows are top-down structure ("this story should pass through these 9 stations in order"). A session can belong to an affinity group AND be routed to a workflow station — the two systems complement, not compete.
 - **The mochaccino layer is a design sandbox**: `.mochaccino/` contains standalone HTML mockups that hit the same API endpoints as the React client. They exist for rapid UI prototyping without touching the React build pipeline. The generic catch-all at `/api/mock-views/:name` serves any JSON file from `.mochaccino/samples/` — no server code needed for new mockups.
+- **The router is a state machine with fallback strategies**: Understanding the workflow router means understanding its three-level station lookup (primary → role-fallback → action-code-fallback) and its detailed unroutable tracking. Every session that can't be routed gets a specific reason, not a generic failure. This is how you debug workflow coverage — check the `unroutable_reasons` array, not the routed count.
 
 ## Scope Limits
 
 - Does NOT execute Claude Code sessions — observes and classifies only. The observer-only architecture is a fundamental design constraint, not a missing feature.
-- Does NOT have LLM enrichment yet — 22 of 58 defined classification items require Tier 3 (semantic understanding). The infrastructure (API client, enrichment queue, batch processing) is designed but not implemented.
+- Does NOT have LLM enrichment yet — 22 of 58 defined classification items require Tier 3 (semantic understanding). The infrastructure (API client, enrichment queue, batch processing) is designed but not implemented. Research documented in `docs/planning/b064-llm-enrichment-research.md`.
 - Does NOT aggregate across machines — registry and event files are local to `~/.claude/angeleye/` on the current machine. Multi-machine sync (B044) is a backlog item.
 - Does NOT have authentication — local dev tool running on localhost, trusts all incoming requests. Not designed for multi-user or networked deployment.
 - Does NOT replace Claude Code's built-in `/insights` — captures a different dimension (work-type classification, cross-session correlation, workflow tracking vs. token usage and cost).
 - Does NOT handle non-BMAD workflows yet — the workflow router only seeds `regular_story` instances. Epic Zero configs exist but have no routing logic. Non-BMAD domains would need new overlay configs and router extensions.
+- Does NOT provide harness-driven workflow automation yet — the architecture doc (`docs/planning/workflow-automation-harness.md`) describes hook-driven station transitions, agent `initialPrompt` templates, and Sentinel/Relay teams, but none of this is implemented. The current system is passive observation only.
 
 ## Failure Modes
 
@@ -128,3 +160,5 @@ Real-time command centre for monitoring, classifying, and organising Claude Code
 - **Correlator over-merging via union-find bridges**: Before the type guard fix, story_unit groups were being merged with ad_hoc temporal clusters when sessions appeared in both signals. The fix prevents cross-type merges, but if a new signal type is added without a type guard, the same over-merging can recur.
 - **Workflow router produces `unroutable` sessions without clear user notification**: Sessions missing `workflow_action`, `workflow_role`, or a matching station config are counted in `unroutable_reasons` in the seed result, but there's no UI surface for reviewing these. The only way to see them is by inspecting the API response to `POST /api/workflows/seed`.
 - **Git sync mutex doesn't prevent Overmind restart races**: If the server restarts (via Overmind) while a git operation is in progress, the promise-chain mutex is lost. A concurrent `git fetch` from a new process and the dying process's `git pull` can interleave. In practice this is rare because git operations are fast, but it can produce confusing error messages.
+- **Seed concurrency guard can get stuck**: If the workflow seed function throws between setting `seedInProgress = true` and reaching the `finally` block (unlikely but possible with out-of-memory or process signals), subsequent seed attempts return 409 until the server is restarted. The guard is a simple boolean, not a timeout-based lock.
+- **Project config cache stale after file edits**: The project-config service caches configs in memory after the first load. If JSON config files in `server/src/config/projects/` are edited while the server is running, the changes are invisible until restart. No cache invalidation mechanism exists.
