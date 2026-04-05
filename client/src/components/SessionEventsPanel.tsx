@@ -212,6 +212,7 @@ function ToolCallGroup({ tools, turnIndex }: { tools: ToolCall[]; turnIndex: num
   return (
     <div style={{ paddingLeft: 38 }}>
       <div
+        className="hover:brightness-95 transition-all"
         role="button"
         tabIndex={0}
         data-testid={`tool-toggle-${turnIndex}`}
@@ -294,6 +295,9 @@ function ToolCallGroup({ tools, turnIndex }: { tools: ToolCall[]; turnIndex: num
 }
 
 function ClaudeBubble({ turn, turnIndex }: { turn: Turn & { type: 'claude' }; turnIndex: number }) {
+  const hasMessage = turn.message !== null && turn.message !== '';
+  const hasTools = turn.tools.length > 0;
+
   return (
     <div style={{ alignSelf: 'flex-start', maxWidth: '92%' }}>
       <div className="flex gap-[10px]">
@@ -319,21 +323,27 @@ function ClaudeBubble({ turn, turnIndex }: { turn: Turn & { type: 'claude' }; tu
             <span style={{ fontSize: 11, fontWeight: 700, color: '#2a2018' }}>Claude</span>
             <span style={{ fontSize: 10, color: '#b0a494' }}>{timeAgo(turn.ts)}</span>
           </div>
-          <div
-            className="whitespace-pre-wrap break-words"
-            style={{
-              padding: '10px 14px',
-              background: '#e8e0d4',
-              border: '1px solid #d4cdc4',
-              borderRadius: '10px 10px 10px 4px',
-              fontSize: 13,
-              lineHeight: 1.5,
-              color: '#2a2018',
-              boxShadow: '0 1px 3px rgba(42,32,24,0.06)',
-            }}
-          >
-            {turn.message || 'No response text available'}
-          </div>
+          {hasMessage ? (
+            <div
+              className="whitespace-pre-wrap break-words"
+              style={{
+                padding: '10px 14px',
+                background: '#e8e0d4',
+                border: '1px solid #d4cdc4',
+                borderRadius: '10px 10px 10px 4px',
+                fontSize: 13,
+                lineHeight: 1.5,
+                color: '#2a2018',
+                boxShadow: '0 1px 3px rgba(42,32,24,0.06)',
+              }}
+            >
+              {turn.message}
+            </div>
+          ) : !hasTools ? (
+            <span style={{ fontSize: 12, color: '#b0a494', fontStyle: 'italic' }}>
+              (no text response)
+            </span>
+          ) : null}
         </div>
       </div>
       {/* Tool calls below bubble */}
@@ -459,46 +469,7 @@ function ChatFooter({ events }: { events: AngelEyeEvent[] }) {
   const separator = <span style={{ color: '#d4cdc4', margin: '0 4px' }}>&bull;</span>;
 
   return (
-    <div className="shrink-0" style={{ background: '#f5f1eb' }}>
-      {/* Note row */}
-      <div
-        className="flex items-center gap-2"
-        style={{
-          padding: '10px 20px',
-          borderTop: '1px solid #d4cdc4',
-        }}
-      >
-        <input
-          type="text"
-          placeholder="Add a note..."
-          readOnly
-          style={{
-            flex: 1,
-            border: 'none',
-            background: 'transparent',
-            fontStyle: 'italic',
-            fontSize: 12,
-            color: '#7a6e5e',
-            outline: 'none',
-          }}
-        />
-        <button
-          disabled
-          style={{
-            background: '#c8841a',
-            color: '#fff',
-            borderRadius: 4,
-            padding: '4px 12px',
-            fontSize: 11,
-            border: 'none',
-            cursor: 'default',
-            opacity: 0.7,
-          }}
-        >
-          Save
-        </button>
-      </div>
-
+    <div className="shrink-0" style={{ background: '#f5f1eb', borderTop: '1px solid #d4cdc4' }}>
       {/* Metadata row */}
       <div
         style={{
@@ -614,7 +585,7 @@ export default function SessionEventsPanel({
 
       <div
         className="flex-1 min-h-0 overflow-y-auto flex flex-col"
-        style={{ padding: 20, gap: 16 }}
+        style={{ padding: 20, gap: 16, background: '#ede7dc' }}
       >
         {loading && (
           <div className="flex items-center justify-center py-8">

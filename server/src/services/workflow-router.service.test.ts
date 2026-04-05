@@ -25,7 +25,7 @@ const mockGetWorkflowType = vi.mocked(getWorkflowType);
 
 const regularStoryType: WorkflowType = {
   id: 'regular_story',
-  name: 'Regular Story',
+  name: 'BMAD Story',
   domain: 'bmad-v6',
   ceremony_level: 'full',
   stations: [
@@ -581,6 +581,79 @@ describe('incremental seed — new sessions added to existing workflow', () => {
     // DS station has s1, DR station has s2
     expect(wf.stations.find((s) => s.position === 3)!.session_ids).toEqual(['s1']);
     expect(wf.stations.find((s) => s.position === 4)!.session_ids).toEqual(['s2']);
+  });
+});
+
+// ── updated_at derived from session last_active ─────────────────────────────
+
+describe('updated_at derived from session last_active', () => {
+  it('sets updated_at to max last_active across all routed sessions, not seed execution time', async () => {
+    const beforeSeed = new Date().toISOString();
+
+    mockReadRegistry.mockResolvedValueOnce({
+      s1: makeEntry({
+        session_id: 's1',
+        trigger_command: 'bmad-dev',
+        workflow_role: 'builder',
+        workflow_action: 'DS 2.2',
+        last_active: '2026-03-20T09:00:00.000Z',
+      }),
+      s2: makeEntry({
+        session_id: 's2',
+        trigger_command: 'bmad-sm',
+        workflow_role: 'reviewer',
+        workflow_action: 'DR 2.2',
+        last_active: '2026-03-22T15:30:00.000Z',
+      }),
+    });
+
+    await seedWorkflowsFromRegistry();
+
+    const workflows = await readWorkflows();
+    expect(workflows).toHaveLength(1);
+    const wf = workflows[0]!;
+
+    // updated_at should be the latest last_active (s2), not the seed execution time
+    expect(wf.updated_at).toBe('2026-03-22T15:30:00.000Z');
+    // Sanity: it should be earlier than the seed execution time
+    expect(wf.updated_at < beforeSeed).toBe(true);
+  });
+
+  it('uses latest last_active when incremental seed adds new sessions', async () => {
+    // First seed
+    mockReadRegistry.mockResolvedValueOnce({
+      s1: makeEntry({
+        session_id: 's1',
+        trigger_command: 'bmad-dev',
+        workflow_role: 'builder',
+        workflow_action: 'DS 2.2',
+        last_active: '2026-03-20T09:00:00.000Z',
+      }),
+    });
+    await seedWorkflowsFromRegistry();
+
+    // Second seed adds a newer session
+    mockReadRegistry.mockResolvedValueOnce({
+      s1: makeEntry({
+        session_id: 's1',
+        trigger_command: 'bmad-dev',
+        workflow_role: 'builder',
+        workflow_action: 'DS 2.2',
+        last_active: '2026-03-20T09:00:00.000Z',
+      }),
+      s2: makeEntry({
+        session_id: 's2',
+        trigger_command: 'bmad-sm',
+        workflow_role: 'reviewer',
+        workflow_action: 'DR 2.2',
+        last_active: '2026-03-25T18:00:00.000Z',
+      }),
+    });
+    await seedWorkflowsFromRegistry();
+
+    const workflows = await readWorkflows();
+    const wf = workflows[0]!;
+    expect(wf.updated_at).toBe('2026-03-25T18:00:00.000Z');
   });
 });
 

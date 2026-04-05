@@ -10,7 +10,7 @@ Read this file fully before writing any code.
 **App**: AngelEye — session intelligence layer for Claude Code.
 **Stack**: AppyStack — React 19 + Vite 7 + Express 5 + TypeScript (npm workspaces: client/, server/, shared/)
 **Repo**: `/Users/davidcruwys/dev/ad/apps/angeleye/` — ALL work here
-**Campaign goal**: Fix router data gaps (CU overlay, WN gatekeeper) + redesign chat panel to match mockup (conversation bubbles, tool call grouping, metadata header/footer, constrained layout).
+**Campaign goal (wave 2)**: Fix data bugs (Last Updated timestamps, Claude response text), compress detail header, polish chat panel to match mockup, clean up list view.
 
 ---
 
@@ -43,7 +43,7 @@ npm test --workspace client
 - **Views live in `client/src/views/`** not `client/src/pages/`
 - **Components live in `client/src/components/`**
 - **All hooks before any early return** — React invariant, enforced by `.claude/rules/react-hooks.md`
-- **Test baseline**: 38 test files, 632 tests (579 server + 53 client), all passing. Do not break existing tests.
+- **Test baseline**: 48 test files, 651 tests (585 server + 66 client), all passing. Do not break existing tests.
 - **Default export convention**: All components and views use `export default function`. Do not use named exports.
 
 ---

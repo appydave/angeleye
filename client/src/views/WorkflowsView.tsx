@@ -181,12 +181,24 @@ export default function WorkflowsView() {
                       className="border-b border-border hover:bg-surface-hover transition-colors cursor-pointer"
                       onClick={() => setSelectedWorkflowId(wf.instance_id)}
                     >
-                      <td className="px-4 py-2">
-                        <div className="font-medium text-foreground">{wf.work_item_label}</div>
-                        <div className="text-muted-foreground text-xs">{wf.work_item_id}</div>
+                      <td className="px-4 py-2 font-medium text-foreground">
+                        {wf.work_item_label}
                       </td>
                       <td className="px-4 py-2 text-foreground">
-                        {wfType?.name ?? wf.workflow_type_id}
+                        <span>{wfType?.name ?? wf.workflow_type_id}</span>
+                        {wfType?.domain && (
+                          <span
+                            className="ml-2 text-[10px] font-medium uppercase"
+                            style={{
+                              padding: '1px 6px',
+                              borderRadius: 3,
+                              background: '#c8841a20',
+                              color: '#b07518',
+                            }}
+                          >
+                            {wfType.domain}
+                          </span>
+                        )}
                       </td>
                       <td className="px-4 py-2">
                         <StatusBadge status={wf.status} />

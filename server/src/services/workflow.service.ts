@@ -134,7 +134,7 @@ export async function updateWorkflow(
       ...workflows[index]!,
       ...updates,
       instance_id: workflows[index]!.instance_id, // prevent id overwrite
-      updated_at: new Date().toISOString(),
+      updated_at: updates.updated_at ?? new Date().toISOString(),
     };
     workflows[index] = updated;
     await writeWorkflowsFile(workflows);

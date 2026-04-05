@@ -357,6 +357,18 @@ async function _seedWorkflowsFromRegistryImpl(options: SeedOptions): Promise<See
         }
       }
 
+      // Compute updated_at from latest session activity
+      const allSessionIds = stations.flatMap((s) => s.session_ids);
+      let latestActivity: string | undefined;
+      for (const sid of allSessionIds) {
+        const entry = registry[sid];
+        if (entry?.last_active) {
+          if (!latestActivity || entry.last_active > latestActivity) {
+            latestActivity = entry.last_active;
+          }
+        }
+      }
+
       // Update workflow status
       const status = workflow.status === 'not_started' ? 'in_progress' : workflow.status;
 
@@ -364,6 +376,7 @@ async function _seedWorkflowsFromRegistryImpl(options: SeedOptions): Promise<See
         stations,
         current_station: currentStation,
         status,
+        updated_at: latestActivity,
       });
 
       if (!isNew) {

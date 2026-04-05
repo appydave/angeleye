@@ -2,6 +2,8 @@
 
 AI agent context for an AppyStack project.
 
+**System context**: See [CONTEXT.md](CONTEXT.md) for purpose, domain concepts, design rationale, and scope boundaries.
+
 ## 🔄 Start Here — Read STEERING.md First
 
 Before doing any work in this project, read `STEERING.md` in this directory.

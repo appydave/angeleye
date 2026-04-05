@@ -62,14 +62,22 @@ export default function WorkflowDetailView({ workflow, type, onBack }: WorkflowD
     const projectName = workflow.project_dir
       ? (workflow.project_dir.split('/').filter(Boolean).pop() ?? null)
       : null;
+    const sc = type?.stations.find((s) => s.position === selectedStation);
+    const actionCode = station?.action_code ?? null;
+    const identity = sc?.identity ?? null;
+    const stationLabel = actionCode
+      ? identity
+        ? `${actionCode} — ${identity}`
+        : actionCode
+      : null;
     return {
-      name: workflow.work_item_label ?? null,
+      name: stationLabel,
       project: projectName,
-      sessionType: station?.action_code ?? null,
+      sessionType: actionCode,
       startedAt: station?.started_at ?? workflow.created_at ?? null,
       sessionId: currentSessionId,
     };
-  }, [currentSessionId, workflow, station]);
+  }, [currentSessionId, workflow, station, type, selectedStation]);
 
   function handleStationClick(position: number) {
     setSelectedStation(position);
@@ -102,28 +110,21 @@ export default function WorkflowDetailView({ workflow, type, onBack }: WorkflowD
   return (
     <div className="h-full min-h-0 flex flex-col">
       {/* Header */}
-      <div className="shrink-0 px-4 py-3 border-b border-border bg-surface">
-        <div className="mb-1">
-          <button
-            onClick={onBack}
-            className="text-xs px-3 py-1 text-muted-foreground hover:text-primary transition-colors border border-border hover:border-primary rounded"
-          >
-            &larr; Back to Workflows
-          </button>
-        </div>
-        <div className="flex items-center gap-3">
-          <span className="font-bebas text-2xl tracking-wider text-primary">
-            {workflow.work_item_label}
-          </span>
-          <span className="text-sm text-muted-foreground">{workflow.work_item_id}</span>
-        </div>
-        <div className="flex items-center gap-2 mt-0.5">
-          <span className="text-xs text-muted-foreground">{type.name}</span>
-          <span className="text-xs text-muted-foreground">&middot;</span>
-          <span className="text-xs text-muted-foreground">{type.domain}</span>
-          <span className="text-xs text-muted-foreground">&middot;</span>
-          <StatusPill status={workflow.status} />
-        </div>
+      <div className="shrink-0 flex items-center gap-3 px-4 py-2 border-b border-border bg-surface">
+        <button
+          onClick={onBack}
+          className="text-xs px-3 py-1 text-muted-foreground hover:text-primary transition-colors border border-border hover:border-primary rounded"
+        >
+          &larr; Back
+        </button>
+        <span className="font-bebas text-2xl tracking-wider text-primary leading-none">
+          {workflow.work_item_label}
+        </span>
+        <span className="text-xs text-muted-foreground">{type.name}</span>
+        <span className="text-xs text-muted-foreground">&middot;</span>
+        <span className="text-xs text-muted-foreground">{type.domain}</span>
+        <span className="text-xs text-muted-foreground">&middot;</span>
+        <StatusPill status={workflow.status} />
       </div>
 
       {/* Pipeline — fixed height, non-scrolling */}

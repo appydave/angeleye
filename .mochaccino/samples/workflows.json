@@ -2,7 +2,7 @@
   "totalCount": 2,
   "activeCount": 1,
   "types": [
-    { "id": "regular_story", "name": "Regular Story", "stationCount": 9 },
+    { "id": "regular_story", "name": "BMAD Story", "stationCount": 9 },
     { "id": "epic_zero", "name": "Epic Zero", "stationCount": null, "status": "provisional" }
   ],
   "instances": [
@@ -10,7 +10,7 @@
       "instanceId": "sample-wf-001",
       "workItemId": "2.5",
       "workItemLabel": "Real-time notification preferences",
-      "workflowType": "Regular Story",
+      "workflowType": "BMAD Story",
       "status": "in_progress",
       "progress": "4/9",
       "currentStation": {
@@ -27,7 +27,7 @@
       "instanceId": "sample-wf-002",
       "workItemId": "2.4",
       "workItemLabel": "Session bookmark export",
-      "workflowType": "Regular Story",
+      "workflowType": "BMAD Story",
       "status": "closed",
       "progress": "9/9",
       "currentStation": null,
