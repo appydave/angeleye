@@ -2,7 +2,11 @@ import { Router } from 'express';
 import { apiSuccess, apiFailure } from '../helpers/response.js';
 import { logger } from '../config/logger.js';
 import { readRegistry, updateRegistry } from '../services/registry.service.js';
-import { getSessionEvents, writeSessionName } from '../services/sessions.service.js';
+import {
+  getSessionEvents,
+  writeSessionName,
+  getRawTranscript,
+} from '../services/sessions.service.js';
 import { readEnrichmentHistory, appendEnrichmentPass } from '../services/enrichment.service.js';
 import { readWorkspaces } from '../services/workspace.service.js';
 import type { EnrichmentPass, RegistryEntry } from '@appystack/shared';
@@ -55,8 +59,11 @@ router.get('/api/sessions/:id/events', async (req, res, next) => {
   }
 });
 
+const SAFE_SESSION_ID = /^[a-zA-Z0-9_-]+$/;
+
 router.get('/api/sessions/:id/enrichments', async (req, res, next) => {
   try {
+    if (!SAFE_SESSION_ID.test(req.params.id)) return apiFailure(res, 'Invalid session id', 400);
     const registry = await readRegistry();
     if (!registry[req.params.id]) return apiFailure(res, 'Session not found', 404);
     const history = await readEnrichmentHistory(req.params.id);
@@ -69,21 +76,69 @@ router.get('/api/sessions/:id/enrichments', async (req, res, next) => {
 
 router.post('/api/sessions/:id/enrichments', async (req, res, next) => {
   try {
+    if (!SAFE_SESSION_ID.test(req.params.id)) return apiFailure(res, 'Invalid session id', 400);
     const registry = await readRegistry();
     if (!registry[req.params.id]) return apiFailure(res, 'Session not found', 404);
 
     const { version, enriched_at, model, changes, notes } = req.body as Partial<EnrichmentPass>;
-    if (typeof version !== 'number' || !enriched_at || !model || !changes) {
-      return apiFailure(res, 'version (number), enriched_at, model, and changes are required', 400);
-    }
 
-    const pass: EnrichmentPass = { version, enriched_at, model, changes, notes };
+    if (!Number.isInteger(version) || (version as number) < 1)
+      return apiFailure(res, 'version must be a positive integer', 400);
+    const trimmedAt = enriched_at?.trim();
+    if (!trimmedAt || isNaN(Date.parse(trimmedAt)))
+      return apiFailure(res, 'enriched_at must be a valid ISO timestamp', 400);
+    if (!model || !changes) return apiFailure(res, 'model and changes are required', 400);
+
+    const pass: EnrichmentPass = {
+      version: version as number,
+      enriched_at: trimmedAt,
+      model,
+      changes,
+      notes,
+    };
     await appendEnrichmentPass(req.params.id, pass);
-    // keep registry fields in sync
-    await updateRegistry(req.params.id, { enrichment_version: version, enriched_at });
+
+    // Apply enrichment changes back to registry so UI and API filters see them
+    const registryUpdate: Partial<RegistryEntry> = {
+      enrichment_version: version as number,
+      enriched_at: trimmedAt,
+    };
+    if (changes.session_subtype) registryUpdate.session_subtype = changes.session_subtype;
+    if (changes.session_tags) registryUpdate.session_tags = changes.session_tags;
+    await updateRegistry(req.params.id, registryUpdate);
+
     apiSuccess(res, { written: true });
   } catch (err) {
     logger.error({ err, sessionId: req.params.id }, 'Failed to append enrichment pass');
+    next(err);
+  }
+});
+
+router.get('/api/sessions/:id/raw', async (req, res, next) => {
+  try {
+    if (!SAFE_SESSION_ID.test(req.params.id)) return apiFailure(res, 'Invalid session id', 400);
+    const registry = await readRegistry();
+    const entry = registry[req.params.id];
+    if (!entry) return apiFailure(res, 'Session not found', 404);
+    if (!entry.project_dir) return apiFailure(res, 'No project_dir on registry entry', 404);
+
+    const limitParam = req.query.limit;
+    const limit = limitParam
+      ? Math.min(Math.max(1, parseInt(String(limitParam), 10) || 200), 2000)
+      : 200;
+
+    const result = await getRawTranscript(req.params.id, entry.project_dir);
+    if (!result)
+      return apiFailure(res, 'Raw JSONL not found — file may have been purged by Claude Code', 404);
+
+    apiSuccess(res, {
+      lines: result.lines.slice(0, limit),
+      count: Math.min(result.total, limit),
+      total: result.total,
+      source: result.source,
+    });
+  } catch (err) {
+    logger.error({ err, sessionId: req.params.id }, 'Failed to read raw transcript');
     next(err);
   }
 });

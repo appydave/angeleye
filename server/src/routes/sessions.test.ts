@@ -577,5 +577,14 @@ describe('POST /api/sessions/:id/enrichments', () => {
     expect(pass.enriched_at).toBe(enrichedAt);
     expect(pass.model).toBe('claude-opus-4-7');
     expect(pass.notes).toBe('first pass');
+
+    // Registry fields must also be updated (DVR-009)
+    const sessionsRes = await request(app).get('/api/sessions');
+    const entry = (sessionsRes.body.data.sessions as Array<Record<string, unknown>>).find(
+      (s) => s.session_id === sessionId
+    );
+    expect(entry?.enrichment_version).toBe(1);
+    expect(entry?.enriched_at).toBe(enrichedAt);
+    expect(entry?.session_subtype).toBe('build.feature');
   });
 });

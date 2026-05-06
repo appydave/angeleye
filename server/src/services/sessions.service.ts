@@ -1,6 +1,7 @@
 import { readFile, rename, appendFile, access } from 'node:fs/promises';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
+import { existsSync } from 'node:fs';
 import type { AngelEyeEvent } from '@appystack/shared';
 import { logger } from '../config/logger.js';
 import { _sessionsDir, _archiveDir } from './registry.service.js';
@@ -63,6 +64,30 @@ export async function writeSessionName(
   const line2 = JSON.stringify({ type: 'agent-name', agentName: name, sessionId }) + '\n';
 
   await appendFile(jsonlPath, line1 + line2, 'utf-8');
+}
+
+export interface RawTranscript {
+  lines: unknown[];
+  total: number;
+  source: 'upstream';
+}
+
+export async function getRawTranscript(
+  sessionId: string,
+  projectDir: string
+): Promise<RawTranscript | null> {
+  const expandedDir = projectDir.startsWith('~') ? homedir() + projectDir.slice(1) : projectDir;
+  const encoded = expandedDir.replace(/\//g, '-');
+  const jsonlPath = join(homedir(), '.claude', 'projects', encoded, `${sessionId}.jsonl`);
+
+  if (!existsSync(jsonlPath)) return null;
+
+  const raw = await readFile(jsonlPath, 'utf-8');
+  const lines = raw
+    .split('\n')
+    .filter((l) => l.trim() !== '')
+    .map((l) => JSON.parse(l) as unknown);
+  return { lines, total: lines.length, source: 'upstream' };
 }
 
 export async function archiveSession(sessionId: string): Promise<void> {
