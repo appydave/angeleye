@@ -17,6 +17,12 @@ export function _archiveDir(): string {
 export function _auditDir(): string {
   return join(_baseDir, 'audit');
 }
+export function _enrichmentsDir(): string {
+  return join(_baseDir, 'enrichments');
+}
+export function _enrichmentsLogPath(): string {
+  return join(_baseDir, 'enrichments.jsonl');
+}
 export function _registryPath(): string {
   return join(_baseDir, 'registry.json');
 }
@@ -48,6 +54,7 @@ export async function initAngelEyeDirs(): Promise<void> {
   await mkdir(sessionsDir, { recursive: true });
   await mkdir(archiveDir, { recursive: true });
   await mkdir(auditDir, { recursive: true });
+  await mkdir(_enrichmentsDir(), { recursive: true });
 
   if (!existsSync(registryPath)) {
     await writeFile(registryPath, JSON.stringify({}), 'utf-8');

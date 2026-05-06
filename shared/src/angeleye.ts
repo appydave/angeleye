@@ -299,6 +299,20 @@ export interface WorkspaceEntry {
 
 export type Registry = Record<string, RegistryEntry>;
 
+// ── Enrichment sidecar types ────────────────────────────────────────────────
+
+export interface EnrichmentPass {
+  version: number; // matches enrichment_version on RegistryEntry
+  enriched_at: string; // ISO timestamp
+  model: string; // e.g. 'claude-opus-4-7'
+  changes: Partial<RegistryEntry>; // fields written to registry this pass
+  notes?: string; // optional summary of what this pass concluded
+}
+
+export interface EnrichmentLogEntry extends EnrichmentPass {
+  session_id: string; // foreign key into registry
+}
+
 // ── Domain Overlay types (C14-C16) ─────────────────────────────────────────
 
 export interface DomainRoleMapping {

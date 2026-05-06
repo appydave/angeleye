@@ -44,4 +44,6 @@ export type {
   WorkflowInstance,
   ProjectConfig,
   DiagnosticsResponse,
+  EnrichmentPass,
+  EnrichmentLogEntry,
 } from './angeleye.js';
