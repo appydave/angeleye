@@ -87,7 +87,13 @@ Fetch raw only when the mode warrants it:
 curl -s "http://localhost:5051/api/sessions/SESSION_ID/raw?limit=100"
 ```
 
-Raw lines are the unprocessed Claude Code JSONL — each line is a JSON object with a `type` field. Useful types to look for:
+The response includes a `source` field — record it per session:
+
+- `"source": "upstream"` — original Claude Code JSONL, full fidelity (thinking blocks, raw tool JSON)
+- `"source": "archive"` — AngelEye's own event archive, available for any session AngelEye tracked even after Claude Code purges the upstream file. Same event format as `/events` but unfiltered.
+- `404` — no data at all (AngelEye never captured this session, or archive was deleted)
+
+Raw lines are JSON objects. For upstream, each line has a `type` field. For archive, each line has an `event` field. Useful types to look for:
 
 | Type                          | What it tells you                                                          |
 | ----------------------------- | -------------------------------------------------------------------------- |
@@ -140,9 +146,9 @@ curl -s -X POST "http://localhost:5051/api/sessions/SESSION_ID/enrichments" \
 
 `changes` should contain only: `session_tags`, `session_subtype`. Do not include identity fields (`session_id`, `project_dir`, `status`, etc.).
 
-## Step 5 — Spot code-change opportunities
+## Step 5 — Spot opportunities and log observations
 
-After the batch, review observations for patterns that require code changes:
+**5a — Code-change opportunities** (write a requirement doc for each):
 
 - Missing subtype in the taxonomy → `category: classifier`
 - Heuristic producing wrong results for a clear pattern → `category: classifier`
@@ -150,7 +156,52 @@ After the batch, review observations for patterns that require code changes:
 - A UI field that would aid classification but doesn't exist → `category: ui`
 - A schema field needed that isn't on RegistryEntry → `category: schema`
 
-Write a requirement doc for each opportunity found. See `docs/requirements/format.md` for the schema and `docs/requirements/_template.md` to copy.
+See `docs/requirements/format.md` for the schema and `docs/requirements/_template.md` to copy.
+
+**5b — Intelligence observations** (append to `docs/intelligence/observations.jsonl`):
+
+For anything interesting that doesn't require a code change but is worth knowing, append one line per observation:
+
+```json
+{
+  "observed_at": "<ISO timestamp>",
+  "session_id": "<id>",
+  "category": "<category>",
+  "description": "<plain English — what was interesting and why it matters>"
+}
+```
+
+Categories:
+
+| Category                | Use for                                                                       |
+| ----------------------- | ----------------------------------------------------------------------------- |
+| `new_project`           | A project appearing for the first time in the corpus                          |
+| `new_tool_class`        | A new type of tool observed (new MCP server, new Claude tool)                 |
+| `heuristic_miss`        | Heuristic fired but was clearly wrong — note what it got and what was correct |
+| `taxonomy_gap`          | Heuristic value seen that isn't in the taxonomy                               |
+| `methodology_insight`   | Session where David was designing the system or workflow itself               |
+| `cross_session_pattern` | A pattern noticed across multiple sessions in this batch                      |
+| `schema_anomaly`        | Unexpected data shape, missing field, or upstream JSONL curiosity             |
+
+Write an observation when something is genuinely interesting or unexpected. Don't log routine sessions — one observation per batch is typical, zero is fine.
+
+**5c — Escape detection** (deterministic, no LLM):
+
+For every batch, run the detection rules from `docs/intelligence/escapes-ledger.md` against the sessions you fetched. Count per category. If any non-zero:
+
+- Add the count to the Step 6 report under "Escapes flagged"
+- If a NEW category appears (rule doesn't exist in the ledger yet), append it as a new section in `escapes-ledger.md` with detection rule, count, and evidence
+- If an EXISTING category appears, append the new session_ids to that category's evidence table in `escapes-ledger.md`
+
+Current rules (re-check against `escapes-ledger.md` for the canonical set):
+
+| Rule                            | Detection                                                                                                        |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| **E1: UUID project**            | `session_kind === 'main'` AND `project` matches `^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$` |
+| **E2: main + teammate_id**      | `session_kind === 'main'` AND `teammate_id` is set                                                               |
+| **E3: silent_session not junk** | `session_subtype === 'meta.silent_session'` AND `is_junk !== true`                                               |
+
+These are deterministic checks — no LLM judgment needed. They run in milliseconds against the batch data already fetched in Step 1. Always run them.
 
 ## Step 6 — Report
 
@@ -162,9 +213,13 @@ End the pass with a summary:
 | Sessions enriched                      | N     |
 | Sessions skipped (already done)        | N     |
 | Sessions skipped (subagent/subprocess) | N     |
-| Raw transcript fetched                 | N     |
+| Raw fetched (upstream)                 | N     |
+| Raw fetched (archive fallback)         | N     |
+| Raw unavailable (404)                  | N     |
 | Data quality issues found              | N     |
 | Requirement docs written               | N     |
+| Observations logged                    | N     |
+| Escapes flagged (per category)         | N     |
 
 List any requirement docs written with their titles and categories.
 
