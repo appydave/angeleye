@@ -92,6 +92,7 @@ export type SessionSubtype =
   | 'build.campaign' // /skill invocation OR task_orchestration + parallel bursts
   | 'build.orchestrated_campaign' // agent-heavy + task_orchestration, no parallel bursts
   | 'build.bmad_orchestrator' // BMAD lifecycle lead session (Swagger/orchestrator pane)
+  | 'build.bmad_agent' // BMAD individual agent pane (bmad-sm, bmad-dev, bmad-dr, bmad-sat, etc.)
   | 'build.ruflo_orchestrator' // RuFlo Mode B lead session (subagent_starts + Agent() calls)
   | 'build.ralphy_campaign' // Ralphy-led parallel multi-agent run
   | 'build.multi_phase' // session spans multiple distinct phases

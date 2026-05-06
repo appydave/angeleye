@@ -823,6 +823,7 @@ export function classifySession(
       session_kind: sessionKind,
       has_ruflo_context,
       subagent_start_count,
+      trigger_command,
     }
   );
 
@@ -1027,9 +1028,11 @@ export function detectSessionSubtype(
     session_kind?: string;
     has_ruflo_context?: boolean;
     subagent_start_count?: number;
+    trigger_command?: string | null;
   }
 ): SessionSubtype | undefined {
   const prompt = options.first_real_prompt ?? '';
+  const triggerCommand = options.trigger_command ?? '';
   const skillInvocation = isSkillInvocation(prompt);
 
   // ── Scheduled probe / ghost session ────────────────────────────────────
@@ -1121,17 +1124,28 @@ export function detectSessionSubtype(
       return 'build.ruflo_orchestrator';
     }
 
-    // Ralphy campaign: /appydave:ralphy or /ralphy prefix.
-    // Ralphy is a parallel multi-agent orchestrator for AppyDave content pipelines.
-    // Strong fingerprint — no other skill family uses this prefix.
-    if (prompt.match(/^\/(?:appydave:)?ralphy\b/)) {
+    // Ralphy campaign: trigger_command is `ralphy` or `appydave:ralphy`.
+    // Falls back to prompt regex for older sessions where trigger_command may be missing.
+    if (
+      triggerCommand === 'ralphy' ||
+      triggerCommand === 'appydave:ralphy' ||
+      prompt.match(/^\/(?:appydave:)?ralphy\b/)
+    ) {
       return 'build.ralphy_campaign';
     }
 
-    // Note: BMAD orchestrator vs BMAD agent sessions can't be reliably split by
-    // prompt alone (both use /bmad-* prefixes). BMAD sessions route through
-    // build.campaign via skillInvocation + workflow overlay (workflow_role/identity).
-    // LLM enrichment promotes the lead session to build.bmad_orchestrator where needed.
+    // BMAD orchestrator vs BMAD agent — split by trigger_command.
+    // story-lifecycle = the Swagger orchestrator pane (delegates to agents).
+    // Any other bmad-* trigger = an individual agent pane (bmad-sm, bmad-dev, bmad-dr, etc.).
+    if (
+      triggerCommand === 'appydave:bmad-story-lifecycle' ||
+      triggerCommand === 'bmad-story-lifecycle'
+    ) {
+      return 'build.bmad_orchestrator';
+    }
+    if (triggerCommand.startsWith('bmad-') || triggerCommand.startsWith('appydave:bmad-')) {
+      return 'build.bmad_agent';
+    }
 
     // Orchestrated campaign: skill invocation OR multi-agent coordination
     if (
