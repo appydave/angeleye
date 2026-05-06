@@ -1,11 +1,24 @@
 # Project Backlog — AngelEye
 
-**Last updated**: 2026-03-30
-**Total**: 74 | Pending: 2 | In Progress: 0 | Done: 71 | Deferred: 2 | Removed: 3
+**Last updated**: 2026-05-06
+**Total**: 82 | Pending: 10 | In Progress: 0 | Done: 71 | Deferred: 2 | Removed: 3
 
 ## Pending
 
-### Infrastructure
+### Enrichment Loop — Stream 1 Infrastructure (2026-05-06)
+
+Background and full design: [`docs/planning/enrichment-loop-design.md`](enrichment-loop-design.md). All items are AngelEye-the-application changes that block or enable a self-improving classification loop over historical session data.
+
+- [ ] B075 — Fix live-JSONL path in skill code: read from `~/.claude/projects/<encoded-project-dir>/<session_id>.jsonl` (live) with `~/.claude/angeleye/archive/session-<id>.jsonl` as fallback. Today's `enrich-subtypes` skill points at a path that doesn't exist. | Priority: high
+- [ ] B076 — Add sidecar enrichment file format + writer at `~/.claude/angeleye/enrichments/<session_id>.json`. Append-only `passes[]` array per session. Schema in design doc. | Priority: high
+- [ ] B077 — Add `enrichment_version` and `enriched_at` optional fields to `RegistryEntry` in `shared/src/angeleye.ts`. Required for L3 (refresh) selection. | Priority: high
+- [ ] B078 — Add `GET /api/sessions/<id>/events` endpoint. Returns parsed event stream; live JSONL → archive fallback internally. Removes filesystem coupling for cross-machine clients. | Priority: high
+- [ ] B079 — Add `GET /api/sessions/<id>/enrichment-history` and `POST /api/sessions/<id>/enrichment-pass` endpoints. Read/write sidecar files. Server is the only writer. | Priority: medium
+- [ ] B080 — Add append-only `~/.claude/angeleye/enrichments.jsonl` log (one line per pass per session). Cross-session aggregation surface. | Priority: medium
+- [ ] B081 — Skill respects `ANGELEYE_API` env var (defaults to `http://localhost:5051`). Enables cross-machine execution from machine B against machine A's data via Tailscale. | Priority: high
+- [ ] B082 — Author new first-class skill at `apps/angeleye/.claude/skills/angeleye-enrichment-loop/`. Owns L1/L2/L3 architecture, methodology layer, capture-lessons step. Replaces broken `enrich-subtypes`. | Priority: high
+
+### Pre-existing infrastructure (carried forward)
 
 - [ ] B025 — Always-on headless ingestion pipeline: separate hook ingestion from web UI so hooks never miss data during development restarts. Architecture/design investigation needed. | Priority: high
 - [ ] B064 — Tier 3 LLM batch enrichment runner using third-party models (Gemini, Codex). See docs/planning/tier3-batch-enrichment-brief.md | Priority: medium
