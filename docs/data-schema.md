@@ -131,28 +131,36 @@ Location: `~/.claude/angeleye/`
 
 **Classification fields:**
 
-| Field               | Type             | Description                                                              |
-| ------------------- | ---------------- | ------------------------------------------------------------------------ |
-| `session_type`      | `SessionType`    | Primary type: BUILD / TEST / RESEARCH / KNOWLEDGE / OPS / ORIENTATION    |
-| `session_subtype`   | `SessionSubtype` | Sub-label within the primary type                                        |
-| `tool_pattern`      | `ToolPattern`    | Dominant tool usage pattern                                              |
-| `first_edited_dir`  | string           | First directory meaningfully touched                                     |
-| `first_real_prompt` | string           | First non-junk prompt snippet, max 200 chars                             |
-| `pii_flags`         | string[]         | PII categories detected in prompts (email, ipv4, api_key patterns, etc.) |
+The subtype layer uses a three-field model. `subtype_heuristic` is written by the deterministic classifier on every sync (free, sometimes wrong). `session_tags` is written by the LLM enrichment skill (manual, considered) and is the source of truth when present. `session_subtype` is derived: it equals `session_tags[0].tag` when present, otherwise `subtype_heuristic`.
+
+| Field               | Type             | Description                                                                                      |
+| ------------------- | ---------------- | ------------------------------------------------------------------------------------------------ |
+| `session_type`      | `SessionType`    | Primary type: BUILD / TEST / RESEARCH / KNOWLEDGE / OPS / ORIENTATION                            |
+| `subtype_heuristic` | `SessionSubtype` | Deterministic-classifier output. Always present after sync. Approximate.                         |
+| `session_tags`      | `SessionTag[]`   | LLM enrichment output. Multiple tags with confidence scores, sorted descending. Source of truth. |
+| `session_subtype`   | `SessionSubtype` | DERIVED: `session_tags[0].tag` if tags present, else `subtype_heuristic`.                        |
+| `tool_pattern`      | `ToolPattern`    | Dominant tool usage pattern                                                                      |
+| `first_edited_dir`  | string           | First directory meaningfully touched                                                             |
+| `first_real_prompt` | string           | First non-junk prompt snippet, max 200 chars                                                     |
+| `pii_flags`         | string[]         | PII categories detected in prompts (email, ipv4, api_key patterns, etc.)                         |
+
+**`SessionTag` shape:** `{ tag: SessionSubtype, confidence: number, source?: 'llm' | 'migrated' | 'heuristic_only' }`. `source` is provenance — `'llm'` for considered enrichment work, `'migrated'` for backfill from older snake_case subtypes, `'heuristic_only'` for automation-confirmed fallbacks. Treat undefined as `'migrated'` for back-compat.
 
 **Tier 1 predicates (deterministic):**
 
-| Field                          | Type    | Detection basis                                                           |
-| ------------------------------ | ------- | ------------------------------------------------------------------------- |
-| `has_playwright_calls`         | boolean | Any `mcp__playwright__*` tool call                                        |
-| `is_compaction_resume`         | boolean | `pre_compact` or `post_compact` event present                             |
-| `is_machine_initiated`         | boolean | First event is not `user_prompt`                                          |
-| `has_web_research`             | boolean | `WebFetch`, `WebSearch`, or `mcp__brave-search__*` present                |
-| `has_parallel_subagent_bursts` | boolean | 3+ Agent tool calls within 60-second window                               |
-| `has_task_orchestration`       | boolean | `TaskCreate`, `TaskUpdate`, `TaskOutput`, or `TaskList` present           |
-| `has_git_outcome`              | boolean | `git commit`, `git push`, `git merge`, or `gh pr create` in Bash commands |
-| `has_skill_created`            | boolean | `Write` tool targeting `/.claude/skills/`                                 |
-| `has_skill_modified`           | boolean | `Edit`/`MultiEdit` targeting `/.claude/skills/`                           |
+| Field                          | Type    | Detection basis                                                                                |
+| ------------------------------ | ------- | ---------------------------------------------------------------------------------------------- |
+| `has_playwright_calls`         | boolean | Any `mcp__playwright__*` tool call                                                             |
+| `is_compaction_resume`         | boolean | `pre_compact` or `post_compact` event present                                                  |
+| `is_machine_initiated`         | boolean | First event is not `user_prompt`                                                               |
+| `has_web_research`             | boolean | `WebFetch`, `WebSearch`, or `mcp__brave-search__*` present                                     |
+| `has_parallel_subagent_bursts` | boolean | 3+ Agent tool calls within 60-second window                                                    |
+| `has_task_orchestration`       | boolean | `TaskCreate`, `TaskUpdate`, `TaskOutput`, or `TaskList` present                                |
+| `has_git_outcome`              | boolean | `git commit`, `git push`, `git merge`, or `gh pr create` in Bash commands                      |
+| `has_skill_created`            | boolean | `Write` tool targeting `/.claude/skills/`                                                      |
+| `has_skill_modified`           | boolean | `Edit`/`MultiEdit` targeting `/.claude/skills/`                                                |
+| `has_ruflo_context`            | boolean | `instructions_loaded` event with file path containing `.appydave/` or ending `CLAUDE.local.md` |
+| `subagent_start_count`         | number  | Count of `subagent_start` events in the session — proxy for subagents spawned                  |
 
 **Tier 1 extractors:**
 
@@ -199,6 +207,19 @@ Location: `~/.claude/angeleye/`
 | Field       | Type     | Description                                            |
 | ----------- | -------- | ------------------------------------------------------ |
 | `group_ids` | string[] | IDs of `AffinityGroup` records this session belongs to |
+
+**Session origin classification:**
+
+`session_kind` distinguishes how a session came into existence — important for filtering enrichment work, since subagent and subprocess sessions should be excluded from primary-session classification.
+
+| Field          | Type                                   | Description                                                                                                          |
+| -------------- | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `session_kind` | `'main' \| 'subagent' \| 'subprocess'` | Detected at SessionStart; backfilled by `scripts/audits/backfill-session-kind.ts` and `backfill-subprocess-kind.ts`. |
+| `teammate_id`  | string or null                         | Set on subagent sessions. Observed values: `'team-lead'`.                                                            |
+
+- `main` — human-driven primary session.
+- `subagent` — spawned by Agent Teams (Mechanism B). First user message is wrapped in `<teammate-message teammate_id="...">`.
+- `subprocess` — headless skill subprocess (e.g. `omi-extract-haiku` Haiku invocations). Identified by `event_count <= 5` plus first prompt matching template patterns (`"-\nGenerate..."`, `"-\nExtract..."`, `"You are executing..."`). See `docs/architecture/known-issues.md#subprocess-session-mechanism-3`.
 
 ### sessions/session-`<id>`.jsonl — AngelEyeEvent schema
 
@@ -262,7 +283,18 @@ Canonical source: `/Users/davidcruwys/dev/ad/apps/angeleye/shared/src/angeleye.t
 
 Note: The 924-session campaign identified 12 extended types (META, SYSOPS, PLANNING, MIXED, SKILL, SETUP). These are not yet in the codebase enum — the current enum covers 6.
 
-**SessionSubtype** — Sub-labels within each primary type. Detection is rule-based on prompt keywords and tool patterns. Full list in `shared/src/angeleye.ts`. Examples: `feature_implementation`, `bug_fix_round`, `brain_maintenance`, `technology_survey`, `poem_execution`.
+**SessionSubtype** — Dot-notation sub-labels within each primary type. Detection is a mix of deterministic rules (in `classifier.service.ts`) and LLM-assigned tags (via the enrichment skill). Full list is the canonical source in `shared/src/angeleye.ts` — do not duplicate it here.
+
+Subtype namespaces and examples:
+
+- `build.*` — code production sessions: `build.feature`, `build.shipped`, `build.bug_fix`, `build.refactor`, `build.test_writing`, `build.campaign`, `build.orchestrated_campaign`, `build.bmad_orchestrator`, `build.bmad_agent`, `build.ruflo_orchestrator`, `build.ralphy_campaign`, `build.user_acceptance_test`, etc.
+- `orientation.*` — navigation and lookup: `orientation.codebase_exploration`, `orientation.morning_triage`, `orientation.bookend`, `orientation.visual_inspection`, etc.
+- `knowledge.*` — brain and documentation: `knowledge.brain_capture`, `knowledge.brain_audit`, `knowledge.advisory_refinement`, `knowledge.omi_ingestion`, etc.
+- `research.*` — investigation: `research.technology_survey`, `research.tool_evaluation`, `research.quick_answer`, etc.
+- `meta.*` — session quality classifications: `meta.ghost_session` (human opened, did nothing, closed), `meta.scheduled_probe` (scheduler-spawned context-load-only session), `meta.accidental`.
+- `skill.*` — skill creation/development sessions.
+
+Each tag has `confidence` 0.0–1.0 and a `source` field tracking provenance. The `SessionSubtype` union is also a `string` escape-hatch — the classifier may produce values not yet in the union (logged as schema surprises).
 
 **ToolPattern** — Dominant tool pattern over all tool calls in the session:
 
@@ -319,6 +351,8 @@ All boolean. Computed from event counts and patterns — no regex, no heuristics
 | `has_git_outcome`              | `git commit/push/merge` or `gh pr create` in Bash tool events                                                    |
 | `has_skill_created`            | `Write` to `/.claude/skills/`                                                                                    |
 | `has_skill_modified`           | `Edit`/`MultiEdit` on `/.claude/skills/`                                                                         |
+| `has_ruflo_context`            | `instructions_loaded` with `.appydave/` path, or path ending `CLAUDE.local.md`                                   |
+| `subagent_start_count`         | Number of `subagent_start` events (counter, not boolean) — used for orchestrator detection                       |
 
 ### Tier 1 Extractors
 
@@ -326,6 +360,8 @@ All boolean. Computed from event counts and patterns — no regex, no heuristics
 | --------- | ------------------- | ----------------------------------------------------------------- |
 | E01       | `trigger_command`   | `/[\w:-]+` regex on first user prompt                             |
 | E02       | `trigger_arguments` | Text after the slash command, first line only, capped at 50 chars |
+
+`trigger_command` is also used by the subtype classifier to deterministically route BMAD lifecycle sessions: `appydave:bmad-story-lifecycle` → `build.bmad_orchestrator`, any other `bmad-*` or `appydave:bmad-*` → `build.bmad_agent`. Ralphy sessions (`ralphy` / `appydave:ralphy`) → `build.ralphy_campaign`.
 
 ### Tier 2 Predicates (heuristic/regex)
 
