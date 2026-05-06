@@ -233,6 +233,9 @@ export interface RegistryEntry {
   subtype_heuristic?: SessionSubtype;
   session_tags?: SessionTag[];
   session_subtype?: SessionSubtype;
+  // Enrichment pass metadata — set by the enrichment loop, never by the classifier
+  enrichment_version?: number; // increments when the enrichment algorithm changes
+  enriched_at?: string; // ISO timestamp of the last enrichment pass
   tool_pattern?: ToolPattern;
   session_scale?: SessionScale;
   first_edited_dir?: string; // first directory meaningfully touched
