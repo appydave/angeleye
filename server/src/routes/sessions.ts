@@ -3,8 +3,9 @@ import { apiSuccess, apiFailure } from '../helpers/response.js';
 import { logger } from '../config/logger.js';
 import { readRegistry, updateRegistry } from '../services/registry.service.js';
 import { getSessionEvents, writeSessionName } from '../services/sessions.service.js';
+import { readEnrichmentHistory, appendEnrichmentPass } from '../services/enrichment.service.js';
 import { readWorkspaces } from '../services/workspace.service.js';
-import type { RegistryEntry } from '@appystack/shared';
+import type { EnrichmentPass, RegistryEntry } from '@appystack/shared';
 
 const router = Router();
 
@@ -50,6 +51,39 @@ router.get('/api/sessions/:id/events', async (req, res, next) => {
     apiSuccess(res, { events, count: events.length });
   } catch (err) {
     logger.error({ err, sessionId: req.params.id }, 'Failed to read session events');
+    next(err);
+  }
+});
+
+router.get('/api/sessions/:id/enrichments', async (req, res, next) => {
+  try {
+    const registry = await readRegistry();
+    if (!registry[req.params.id]) return apiFailure(res, 'Session not found', 404);
+    const history = await readEnrichmentHistory(req.params.id);
+    apiSuccess(res, { history, count: history.length });
+  } catch (err) {
+    logger.error({ err, sessionId: req.params.id }, 'Failed to read enrichment history');
+    next(err);
+  }
+});
+
+router.post('/api/sessions/:id/enrichments', async (req, res, next) => {
+  try {
+    const registry = await readRegistry();
+    if (!registry[req.params.id]) return apiFailure(res, 'Session not found', 404);
+
+    const { version, enriched_at, model, changes, notes } = req.body as Partial<EnrichmentPass>;
+    if (typeof version !== 'number' || !enriched_at || !model || !changes) {
+      return apiFailure(res, 'version (number), enriched_at, model, and changes are required', 400);
+    }
+
+    const pass: EnrichmentPass = { version, enriched_at, model, changes, notes };
+    await appendEnrichmentPass(req.params.id, pass);
+    // keep registry fields in sync
+    await updateRegistry(req.params.id, { enrichment_version: version, enriched_at });
+    apiSuccess(res, { written: true });
+  } catch (err) {
+    logger.error({ err, sessionId: req.params.id }, 'Failed to append enrichment pass');
     next(err);
   }
 });

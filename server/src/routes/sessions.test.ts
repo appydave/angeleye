@@ -478,3 +478,104 @@ describe('PATCH /api/sessions/:id', () => {
     expect(res.status).toBe(200);
   });
 });
+
+// ── GET /api/sessions/:id/enrichments ─────────────────────────────────────────
+
+describe('GET /api/sessions/:id/enrichments', () => {
+  it('returns 404 for unknown session', async () => {
+    const res = await request(app).get('/api/sessions/ses-unknown/enrichments');
+    expect(res.status).toBe(404);
+  });
+
+  it('returns empty history for a session with no enrichment passes', async () => {
+    await updateRegistry('ses-enrich-empty', {
+      session_id: 'ses-enrich-empty',
+      project: 'test',
+      project_dir: '/tmp',
+      started_at: new Date().toISOString(),
+      last_active: new Date().toISOString(),
+      name: null,
+      tags: [],
+      workspace_id: null,
+      status: 'ended',
+      source: 'hook',
+    });
+    const res = await request(app).get('/api/sessions/ses-enrich-empty/enrichments');
+    expect(res.status).toBe(200);
+    expect(res.body.data.history).toEqual([]);
+    expect(res.body.data.count).toBe(0);
+  });
+});
+
+// ── POST /api/sessions/:id/enrichments ────────────────────────────────────────
+
+describe('POST /api/sessions/:id/enrichments', () => {
+  it('returns 404 for unknown session', async () => {
+    const res = await request(app)
+      .post('/api/sessions/ses-unknown/enrichments')
+      .send({
+        version: 1,
+        enriched_at: new Date().toISOString(),
+        model: 'claude-opus-4-7',
+        changes: { session_subtype: 'build.feature' },
+      });
+    expect(res.status).toBe(404);
+  });
+
+  it('returns 400 when required fields are missing', async () => {
+    await updateRegistry('ses-enrich-bad', {
+      session_id: 'ses-enrich-bad',
+      project: 'test',
+      project_dir: '/tmp',
+      started_at: new Date().toISOString(),
+      last_active: new Date().toISOString(),
+      name: null,
+      tags: [],
+      workspace_id: null,
+      status: 'ended',
+      source: 'hook',
+    });
+    const res = await request(app)
+      .post('/api/sessions/ses-enrich-bad/enrichments')
+      .send({ version: 1 });
+    expect(res.status).toBe(400);
+  });
+
+  it('appends a pass and syncs registry fields', async () => {
+    const sessionId = 'ses-enrich-write';
+    await updateRegistry(sessionId, {
+      session_id: sessionId,
+      project: 'test',
+      project_dir: '/tmp',
+      started_at: new Date().toISOString(),
+      last_active: new Date().toISOString(),
+      name: null,
+      tags: [],
+      workspace_id: null,
+      status: 'ended',
+      source: 'hook',
+    });
+
+    const enrichedAt = '2026-05-06T10:00:00.000Z';
+    const postRes = await request(app)
+      .post(`/api/sessions/${sessionId}/enrichments`)
+      .send({
+        version: 1,
+        enriched_at: enrichedAt,
+        model: 'claude-opus-4-7',
+        changes: { session_subtype: 'build.feature' },
+        notes: 'first pass',
+      });
+    expect(postRes.status).toBe(200);
+    expect(postRes.body.data.written).toBe(true);
+
+    const getRes = await request(app).get(`/api/sessions/${sessionId}/enrichments`);
+    expect(getRes.status).toBe(200);
+    expect(getRes.body.data.count).toBe(1);
+    const pass = getRes.body.data.history[0];
+    expect(pass.version).toBe(1);
+    expect(pass.enriched_at).toBe(enrichedAt);
+    expect(pass.model).toBe('claude-opus-4-7');
+    expect(pass.notes).toBe('first pass');
+  });
+});
