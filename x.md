@@ -1,50 +1,56 @@
-# Handover — AngelEye Enrichment Loop (2026-05-06)
+# Handover — AngelEye Enrichment Loop (2026-05-06, session 2)
 
-## North Star
+## What was built this session
 
-AngelEye becomes a self-improving system that gets continuously sharper at understanding past Claude Code sessions. Every enrichment pass costs less and reveals more than the one before. Three properties:
+All five items from the previous handover are done:
 
-1. **Self-improving** — passes leave a permanent audit trail; recurring LLM judgments get promoted to deterministic code so the next pass is cheaper.
-2. **Cheap to run** — runs from any machine via Tailscale, billed against whichever Claude account makes sense.
-3. **Memory, not amnesia** — old judgments aren't overwritten; pass v1 vs v3 is comparable.
+| Step | What                                                                    | Commit  |
+| ---- | ----------------------------------------------------------------------- | ------- |
+| 1    | `enrichment_version` + `enriched_at` on `RegistryEntry`                 | 3eb6d50 |
+| 2    | Sidecar writer + `enrichments.jsonl` (`enrichment.service.ts`)          | 028b812 |
+| 3    | `GET/POST /api/sessions/:id/enrichments` endpoints + 32 tests           | b0c52cf |
+| 4    | Requirement-doc format (`docs/requirements/format.md` + `_template.md`) | 071e7b8 |
+| 5    | `angeleye-enrichment-loop` skill (replaces broken `enrich-subtypes`)    | 24da9b1 |
 
-## Hard boundary
+The infrastructure is functionally complete. The skill is usable today.
 
-**The enrichment loop reads and enriches data. It does not change code.**
+## Known hardening gaps (from delivery review)
 
-When the loop spots a code-change opportunity (new classifier rule, new schema field, new predicate, UI gap, ingestion drift), it writes a structured requirement document. A separate developer-agent session (on the primary machine) picks those up and does the actual code work.
+A `/appydave:delivery-review` was run after step 3. The session ended before applying the patches. These are real issues — fix them before running the loop at volume:
 
-The loop must not modify: `shared/src/angeleye.ts`, `server/src/services/`, any SKILL.md, any tests, any code commits. Its write surface is API-only: tag writes and sidecar/history writes. Code changes are out of scope.
+| ID      | Issue                                                                          | Fix                                                                                                                         |
+| ------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
+| DVR-002 | No sidecar write queue — concurrent POSTs lose data                            | Add `Map<sessionId, Promise<void>>` queue in `enrichment.service.ts`, same pattern as `writeQueue` in `registry.service.ts` |
+| DVR-004 | Non-atomic sidecar write — crash mid-write wipes history                       | Use `tmp + rename` pattern (same as `_doUpdateRegistry`)                                                                    |
+| DVR-005 | No `enrichment.service.test.ts`                                                | Create service-level tests: empty history, corrupt sidecar, log append, second pass accumulates                             |
+| DVR-006 | `JSON.parse` doesn't validate array — non-array sidecar causes TypeError       | Add `Array.isArray(parsed) ? parsed : []` guard                                                                             |
+| DVR-007 | `sessionId` used raw in filesystem path — path traversal risk                  | Add `if (!/^[a-zA-Z0-9_-]+$/.test(sessionId))` guard in route                                                               |
+| DVR-008 | Input validation gaps — NaN version, whitespace enriched_at, non-ISO timestamp | `Number.isInteger(version) && version > 0`, `.trim()`, `!isNaN(Date.parse(...))`                                            |
+| DVR-009 | Test "syncs registry fields" doesn't check registry                            | After POST, assert `entry.enrichment_version` and `entry.enriched_at` on registry row                                       |
 
-## What's already in place (verified)
+Two items were intentionally deferred (need skill usage to resolve):
 
-- **`GET /api/sessions/:id/events`** at `server/src/routes/sessions.ts:47` — returns the parsed event stream for a session, with live → archive fallback in `getSessionEvents` (`sessions.service.ts:18`). Tests at `sessions.test.ts:220`. Cross-machine clients can read events over HTTP today.
-- **`POST /api/registry/llm-tags`** at `server/src/routes/sessions.ts:64` — bulk write LLM tags. Goes through the serialised registry write queue.
-- **`POST /api/registry/session-kind`** at `sessions.ts:103` — bulk write session_kind classifications.
-- **`ANGELEYE_API` env var convention** — every audit script in `scripts/audits/` reads `process.env.ANGELEYE_API ?? 'http://localhost:5051'`. The new skill follows the same pattern; cross-machine is `ANGELEYE_API=http://<tailscale-name>:5051`.
-- **Three-field subtype model** — `subtype_heuristic` (deterministic), `session_tags` (LLM, source of truth when present), `session_subtype` (derived). Source of truth at `shared/src/angeleye.ts:208`.
-
-## What's actually missing (the real Stream 1)
-
-- **Audit fields on `RegistryEntry`**: `enrichment_version` and `enriched_at`. Required for L3 (refresh) selection — "anything older than the current technique generation gets re-evaluated".
-- **Sidecar enrichment files** at `~/.claude/angeleye/enrichments/<session_id>.json`. Append-only `passes[]` array per session — model, skill commit, classifier commit, reasoning, signals weighted, tags assigned, diff from previous pass. Without this, every L1 pass overwrites the previous judgment and L2/L3 are impossible.
-- **Sidecar HTTP endpoints**: `GET /api/sessions/:id/enrichment-history` (read) and `POST /api/sessions/:id/enrichment-pass` (append). Server is the only writer.
-- **Append-only `enrichments.jsonl` log** at `~/.claude/angeleye/enrichments.jsonl`. One line per pass per session; cross-session aggregation surface ("show me everything machine-b enriched yesterday").
-- **The new skill itself** at `apps/angeleye/.claude/skills/angeleye-enrichment-loop/`. Replaces (does not extend) the `enrich-subtypes` skill. Owns L1/L2/L3 modes, methodology layer, capture-lessons step, and the hard-boundary above.
-
-## Documents to read first
-
-- **`docs/planning/enrichment-loop-design.md`** — full architectural design (three nested loops L1/L2/L3, multi-source data model, sidecar file format, registry deltas, cross-machine pattern). Read this first.
-- **`docs/data-schema.md`** — refreshed to match current `shared/src/angeleye.ts`. _Before_ snapshot for any schema-delta proposals.
-- **`docs/planning/BACKLOG.md`** — list of pending items (use it as a list; don't invoke Ralphy ceremonies around it).
+- **DVR-001**: `changes` field says "written to registry" but route doesn't apply them. Design decision: apply directly OR rename to `observed_changes`. Resolve after first real loop run.
+- **DVR-003**: `changes` allow-list undefined. Can't define it until the skill establishes what it writes.
 
 ## What to do next
 
-Pick one of:
+**Option A — Harden first, then run**
+Apply the 7 patches above (DVR-002 through DVR-009). ~1–2 hours. Then run `/angeleye-enrichment-loop 5 1` as a smoke test.
 
-- **Add `enrichment_version` + `enriched_at` to `RegistryEntry`** in `shared/src/angeleye.ts`. Two optional fields, no migration needed. Smallest viable step. Unblocks the version-stamping side of every other piece.
-- **Define the sidecar file format and writer.** Server-side service that opens/appends to `~/.claude/angeleye/enrichments/<id>.json`. Plus the two HTTP endpoints to read/write it.
-- **Draft the new skill** at `apps/angeleye/.claude/skills/angeleye-enrichment-loop/SKILL.md`. Methodology layer first; reviewable before infrastructure is built. Must explicitly include the hard boundary above and the requirement-doc output format.
-- **Define the requirement-doc format** that the loop writes when it spots code-change opportunities. Path convention (suggest `docs/requirements/from-enrichment-loop/<date>-<short-title>.md`), schema (title, evidence sessions, proposed change, category: schema/classifier/predicate/UI/ingestion). This is the artifact the developer-agent will consume.
+**Option B — Run first, harden after**
+Run `/angeleye-enrichment-loop 5 1` now against a small batch to validate the skill works end-to-end. The concurrent-write risk (DVR-002) is low for a single-agent manual run. Fix hardening gaps after the smoke test confirms the loop works.
 
-This is **not a Ralphy campaign**. No PR, no worktree, no SHIP. Just incremental work tracked as commits.
+**Recommendation**: Option B. The concurrent-write risk doesn't apply to a manual single-agent run. Running first confirms the `changes` design question (DVR-001) with real data before hardening.
+
+## Hard boundary reminder
+
+The enrichment loop reads and enriches data only. When it spots code-change opportunities, it writes to `docs/requirements/`. It never touches `shared/src/`, `server/src/services/`, tests, or skills.
+
+## Infrastructure reference
+
+- Skill: `.claude/skills/angeleye-enrichment-loop/SKILL.md`
+- Requirement-doc format: `docs/requirements/format.md`
+- Enrichment service: `server/src/services/enrichment.service.ts`
+- API endpoints: `GET/POST /api/sessions/:id/enrichments` (in `server/src/routes/sessions.ts`)
+- Server: `http://localhost:5051`
