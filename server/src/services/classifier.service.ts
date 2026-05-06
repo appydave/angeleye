@@ -18,7 +18,9 @@ import { resolveOverlay } from './overlay.service.js';
 export interface ClassificationResult {
   is_junk: boolean;
   session_type?: SessionType;
-  session_subtype?: SessionSubtype;
+  // Rule-based subtype output. session_subtype is no longer produced by the
+  // classifier — it's derived in sync.service from session_tags (LLM) or this field.
+  subtype_heuristic?: SessionSubtype;
   tool_pattern?: ToolPattern;
   session_scale?: SessionScale;
   first_edited_dir?: string;
@@ -181,6 +183,10 @@ export function detectSessionScale(events: AngelEyeEvent[]): SessionScale {
 const PAPERCLIP_PATTERN = /^You are agent\s+[0-9a-f-]{36}/i;
 const POEM_RUN_PATTERN = /^\*?run\s+\d+/i;
 
+// DATA: detectors.custom_agents
+// See docs/architecture/data-driven-extraction.md §4.
+// Paperclip is one specific agent in David's stack. The mechanism is generic,
+// the agent name is not. Move to a registered-agents config list.
 export function detectIsPaperclipAgent(events: AngelEyeEvent[]): boolean {
   const firstPrompt = events.find((e) => e.event === 'user_prompt');
   if (!firstPrompt?.prompt) return false;
@@ -276,6 +282,20 @@ export function findFirstEditedDir(events: AngelEyeEvent[]): string | undefined 
 
 // ── first_real_prompt detection ───────────────────────────────────────────────
 
+/**
+ * Built-in commands that, when used as the *first* user prompt, should be
+ * skipped over to find the real first prompt that follows. Surfaced
+ * 2026-05-04 enriching the `undefined` queue: many sessions opened with a
+ * settings command (`/model sonnet`, `/login`) and the heuristic stopped
+ * there, missing the real instruction that came next.
+ *
+ * Only skip when the command is the entire prompt — `/model sonnet please
+ * help with X` is a real instruction with a model switch prefix and should
+ * be returned.
+ */
+const FIRST_PROMPT_SKIP_REGEX =
+  /^\/(?:model|login|logout|fast|effort|clear|compact)(?:\s+\S+)?\s*$/;
+
 export function findFirstRealPrompt(events: AngelEyeEvent[]): string | undefined {
   for (const e of events) {
     if (e.event !== 'user_prompt') continue;
@@ -290,6 +310,9 @@ export function findFirstRealPrompt(events: AngelEyeEvent[]): string | undefined
     if (trimmed.startsWith('This session is being continued')) continue;
     if (trimmed.startsWith('<task-notification')) continue;
     if (trimmed.startsWith('Session Context:')) continue;
+
+    // Skip settings-only built-in commands so the next real prompt wins
+    if (FIRST_PROMPT_SKIP_REGEX.test(trimmed)) continue;
 
     // Skip paste-as-prompt (too long to be a natural first prompt)
     if (prompt.length > 2000) continue;
@@ -466,6 +489,9 @@ export function detectHasSkillModified(events: AngelEyeEvent[]): boolean {
 
 // ── P04: has_brain_file_writes ───────────────────────────────────────────────
 
+// DATA: detectors.brain_paths
+// See docs/architecture/data-driven-extraction.md §3.
+// "/brains/" is David's convention. Should be a configurable list of glob patterns.
 export function detectHasBrainFileWrites(events: AngelEyeEvent[]): boolean {
   return events.some((e) => {
     if (
@@ -766,20 +792,32 @@ export function classifySession(
   const session_liveness = detectSessionLiveness(events);
   const output_type = detectOutputType(events);
 
-  // Session subtype (B061) — depends on session_type, tool_pattern, session_scale
-  const session_subtype = detectSessionSubtype(events, session_type, tool_pattern, session_scale, {
-    has_brain_file_writes,
-    has_git_outcome,
-    first_real_prompt,
-    is_machine_initiated,
-  });
+  // Subtype heuristic (B061) — deterministic rule-based output. Cheap, runs on every sync.
+  // This writes to subtype_heuristic only. session_subtype is derived elsewhere
+  // (in sync.service) so LLM-set session_tags are never trampled.
+  const subtype_heuristic = detectSessionSubtype(
+    events,
+    session_type,
+    tool_pattern,
+    session_scale,
+    {
+      has_brain_file_writes,
+      has_git_outcome,
+      first_real_prompt,
+      is_machine_initiated,
+      has_skill_created,
+      has_skill_modified,
+      has_task_orchestration,
+      has_parallel_subagent_bursts,
+    }
+  );
 
   return {
     is_junk: false,
     tool_pattern,
     session_scale,
     session_type,
-    ...(session_subtype !== undefined && { session_subtype }),
+    ...(subtype_heuristic !== undefined && { subtype_heuristic }),
     ...(first_edited_dir !== undefined && { first_edited_dir }),
     ...(first_real_prompt !== undefined && { first_real_prompt }),
     ...(pii_flags.length > 0 && { pii_flags }),
@@ -817,6 +855,147 @@ export function classifySession(
 
 // ── session_subtype detection (B061) ────────────────────────────────────────
 
+// Built-in Claude Code commands. Sessions opening with one of these are NOT
+// skill invocations — they're navigation, settings, or housekeeping. They
+// should not trigger build.campaign classification.
+//
+// DATA: classifier.builtin_commands
+// See docs/architecture/data-driven-extraction.md §2.
+const BUILTIN_COMMANDS = new Set([
+  'clear',
+  'compact',
+  'help',
+  'skills',
+  'context',
+  'usage',
+  'jump',
+  'exit',
+  'memory',
+  'model',
+  'effort',
+  'diff',
+  'doctor',
+  'debug',
+  'config',
+  'permissions',
+  'fast',
+  'fork',
+  'rename',
+  'stats',
+  'simplify',
+  'batch',
+  'login',
+  'logout',
+  'install',
+  'upgrade',
+  'review',
+  'plan',
+]);
+
+/**
+ * True only when the prompt starts with a non-built-in slash command
+ * (i.e. a skill or custom command, not a Claude Code built-in).
+ */
+function isSkillInvocation(prompt: string): boolean {
+  const trimmed = prompt.trimStart();
+  if (!trimmed.startsWith('/')) return false;
+  // Extract the command word: first run of non-whitespace, non-colon chars after the slash.
+  // (Plugin commands like /appydave:ralphy use a colon — treat the whole token as one command.)
+  const match = /^\/(\S+)/.exec(trimmed);
+  if (!match) return false;
+  const cmd = match[1]!.toLowerCase();
+  // Plugin-prefixed commands (e.g. /appydave:ralphy) are always skill invocations.
+  if (cmd.includes(':')) return true;
+  return !BUILTIN_COMMANDS.has(cmd);
+}
+
+/**
+ * Extract the skill command word from a first_real_prompt.
+ * Returns the lowercased command (without leading slash, with plugin prefix preserved):
+ *   "/bmad-dev DS 5.4"        → "bmad-dev"
+ *   "/appydave:ralphy go"     → "appydave:ralphy"
+ *   "/brand-dave:refresh-bmad-brain" → "brand-dave:refresh-bmad-brain"
+ *   "no slash here"           → null
+ *   "/clear"                  → null  (built-in, not a skill)
+ */
+function extractSkillCommand(prompt: string): string | null {
+  const trimmed = prompt.trimStart();
+  if (!trimmed.startsWith('/')) return null;
+  const match = /^\/(\S+)/.exec(trimmed);
+  if (!match) return null;
+  const cmd = match[1]!.toLowerCase();
+  if (cmd.includes(':')) return cmd;
+  if (BUILTIN_COMMANDS.has(cmd)) return null;
+  return cmd;
+}
+
+/**
+ * Skill-name → subtype lookup. Skills with strong, observed semantics override
+ * the default `skillInvocation → build.campaign` routing. These were captured
+ * from LLM enrichment runs that systematically corrected the same skill prefixes.
+ *
+ * Match order:
+ *   1. Exact match on the whole command (e.g. "brain-librarian", "release-notes")
+ *   2. Plugin-prefixed exact match (e.g. "appydave:system-context")
+ *   3. Wildcard prefix match for command families (e.g. "brand-dave:refresh-*")
+ *
+ * Add a new mapping when LLM enrichment redirects 3+ sessions of the same
+ * skill to the same non-build.campaign subtype.
+ */
+const SKILL_SUBTYPE_RULES: Array<{
+  match: (cmd: string) => boolean;
+  subtype: SessionSubtype;
+}> = [
+  // /brain-librarian — brain health audits
+  { match: (c) => c === 'brain-librarian', subtype: 'knowledge.brain_audit' },
+
+  // /release-notes — brain refresh / release notes work
+  { match: (c) => c === 'release-notes', subtype: 'knowledge.brain_maintenance' },
+
+  // /brand-dave:refresh-* — brain refresh skills (claude-brain, bmad-brain, google-brain, etc.)
+  {
+    match: (c) => c.startsWith('brand-dave:refresh-'),
+    subtype: 'knowledge.brain_maintenance',
+  },
+
+  // OMI transcript ingestion family
+  {
+    match: (c) =>
+      c === 'omi-extract' ||
+      c === 'omi-fetch' ||
+      c === 'appydave:omi-extract' ||
+      c === 'appydave:omi-fetch' ||
+      c === 'appydave:omi' ||
+      c === 'appydave:omi-extract-haiku',
+    subtype: 'knowledge.omi_ingestion',
+  },
+
+  // /system-context and plugin variant — refresh CONTEXT.md / advisory docs
+  {
+    match: (c) => c === 'system-context' || c === 'appydave:system-context',
+    subtype: 'knowledge.advisory_refinement',
+  },
+
+  // /screenshot-tour — automated visual documentation capture
+  {
+    match: (c) => c === 'screenshot-tour' || c === 'appydave:screenshot-tour',
+    subtype: 'orientation.documentation_capture',
+  },
+];
+
+/**
+ * If the prompt invokes a skill we have a specific subtype rule for, return it.
+ * Otherwise null — caller falls through to general classification.
+ */
+function lookupSkillSubtype(prompt: string): SessionSubtype | null {
+  const cmd = extractSkillCommand(prompt);
+  if (!cmd) return null;
+  for (const rule of SKILL_SUBTYPE_RULES) {
+    if (rule.match(cmd)) return rule.subtype;
+  }
+  return null;
+}
+
 export function detectSessionSubtype(
   events: AngelEyeEvent[],
   sessionType: SessionType,
@@ -827,60 +1006,268 @@ export function detectSessionSubtype(
     has_git_outcome?: boolean;
     first_real_prompt?: string;
     is_machine_initiated?: boolean;
+    has_skill_created?: boolean;
+    has_skill_modified?: boolean;
+    has_task_orchestration?: boolean;
+    has_parallel_subagent_bursts?: boolean;
   }
 ): SessionSubtype | undefined {
   const prompt = options.first_real_prompt ?? '';
+  const skillInvocation = isSkillInvocation(prompt);
+
+  // ── Empty ghost session ────────────────────────────────────────────────
+  // No user_prompt event ever fired — session opened (instructions_loaded /
+  // session_start) and immediately closed without any human input. Surfaced
+  // 2026-05-04 enriching orientation.quick_check batch 4: ~47 of 50 sessions
+  // matched this pattern, heaviest in `appyctrl`. They're not subprocess
+  // (no template prompt) and not user activity (no prompt at all) — pure
+  // ghosts. Auto-classify to keep them out of every other queue.
+  // Require at least 2 events to qualify (real ghost sessions always have at least
+  // session_start + session_end). Also require minimal tool use — sessions with
+  // edits or substantial bash work aren't ghosts even if first_real_prompt extraction
+  // missed the user_prompt. This avoids firing on empty-events test inputs and on
+  // legitimate work sessions where the user_prompt was stored differently.
+  const userPromptCount = events.filter((e) => e.event === 'user_prompt').length;
+  const toolUseCount = events.filter((e) => e.event === 'tool_use').length;
+  if (userPromptCount === 0 && events.length >= 2 && events.length <= 10 && toolUseCount < 2) {
+    return 'meta.ghost_session';
+  }
+
+  // ── Skill-name lookup (overrides sessionType routing) ──────────────────
+  // Specific skill prefixes have strong, observed semantics that beat the
+  // generic skillInvocation → build.campaign rule. Captured from systematic
+  // LLM corrections. See SKILL_SUBTYPE_RULES above.
+  const skillSubtype = lookupSkillSubtype(prompt);
+  if (skillSubtype) return skillSubtype;
+
+  // ── Abandoned / test prompts ──────────────────────────────────────────
+  // Sessions opened with a single-word, built-in-only, or test-poke prompt
+  // and immediately abandoned. Surfaced 2026-05-04 enriching
+  // orientation.quick_check batch 3: ~17 of 50 sessions matched this pattern.
+  // Catches: "session"/"config"/"hello", "/exit"/"/model X"/"/login",
+  // "Unknown skill: X" (typed_instruction echoing failed skill name),
+  // "say X" / "yay" test pokes.
+  if (events.length <= 3) {
+    const trimmed = prompt.trim();
+    if (
+      // Single word (no spaces) ≤ 12 chars
+      (/^[A-Za-z]{1,12}$/.test(trimmed) && !isSkillInvocation(trimmed)) ||
+      // Built-in command alone (with optional argument like "/model sonnet")
+      /^\/(?:exit|model|login|logout|clear|compact|help|fast|memory)\b\s*\S*$/.test(trimmed) ||
+      // Failed-skill echo
+      /^Unknown skill:/i.test(trimmed) ||
+      // Test pokes
+      /^say\s+['"\u2018\u2019\u201c\u201d]?(?:hello|yay|hi|test|something|the\s+quick)/i.test(
+        trimmed
+      )
+    ) {
+      return 'meta.accidental';
+    }
+  }
+
+  // DATA: classifier.rules
+  // See docs/architecture/data-driven-extraction.md §7.
+  // The whole if/else decision tree below is a hardcoded rule engine. The
+  // largest extraction in the registry. Move to a YAML rule DSL when a
+  // second user with different rules appears.
 
   // ── BUILD subtypes ──────────────────────────────────────────────────────
   if (sessionType === 'BUILD') {
+    // Skill file work takes priority
+    if (options.has_skill_created) return 'skill.creation';
+    if (options.has_skill_modified) return 'skill.development';
+
+    // Orchestrated campaign: skill invocation OR multi-agent coordination
+    if (
+      skillInvocation ||
+      (options.has_task_orchestration && options.has_parallel_subagent_bursts)
+    ) {
+      return 'build.campaign';
+    }
+
+    // Agent-heavy multi-agent (orchestration without parallel bursts)
+    if (toolPattern === 'agent-heavy' && options.has_task_orchestration) {
+      return 'build.orchestrated_campaign';
+    }
+
+    // Feature implementation: edit-heavy + meaningful scale + git outcome
     if (
       toolPattern === 'edit-heavy' &&
       (sessionScale === 'moderate' || sessionScale === 'heavy' || sessionScale === 'marathon') &&
       options.has_git_outcome
     ) {
-      return 'feature_implementation';
+      return 'build.shipped';
     }
-    if (/\b(?:fix|bug|broken|error)s?\b/i.test(prompt)) return 'bug_fix_round';
-    if (/\b(?:refactor|rename|extract|clean)\b/i.test(prompt)) return 'refactoring';
-    if (/\b(?:test|spec|coverage)s?\b/i.test(prompt)) return 'test_writing';
-    // Check edit targets for test files
+
+    // Bash-heavy "commit and push" sessions: git operations dominate, no edits needed.
+    // Surfaced 2026-05-04 enriching orientation.exploration: 5 of 36 sessions in
+    // batch matched "Can you commit and push" / "Need to commit and push" with
+    // bash-heavy + git outcome. The edit-heavy rule above misses these.
+    if (
+      toolPattern === 'bash-heavy' &&
+      options.has_git_outcome &&
+      /\b(?:commit(?:ted)?\s+(?:and|&)?\s*push|git\s+(?:commit|push)|push\s+(?:to\s+)?(?:remote|origin|main))\b/i.test(
+        prompt
+      )
+    ) {
+      return 'build.shipped';
+    }
+
+    // ── Playwright disambiguation ─────────────────────────────────────────
+    // Sessions using browser tools split into 4 distinct activities. Surfaced
+    // 2026-05-04 enriching the legacy `playwright_e2e` queue: 18 of 18 sessions
+    // were misclassified — none were actual e2e tests. They were:
+    //   - screenshot tours (orientation.documentation_capture)
+    //   - UAT validation (build.user_acceptance_test)
+    //   - visual debugging (orientation.visual_inspection)
+    //   - real e2e tests (rare — playwright_e2e kept for these)
+    if (options.has_playwright_calls) {
+      const playwrightEvents = events.filter(
+        (e) =>
+          e.event === 'tool_use' &&
+          typeof e.tool === 'string' &&
+          e.tool.startsWith('mcp__playwright__')
+      );
+      const screenshotEvents = playwrightEvents.filter(
+        (e) => e.tool === 'mcp__playwright__browser_take_screenshot'
+      );
+      const navigateEvents = playwrightEvents.filter(
+        (e) => e.tool === 'mcp__playwright__browser_navigate'
+      );
+      const clickEvents = playwrightEvents.filter(
+        (e) => e.tool === 'mcp__playwright__browser_click'
+      );
+
+      // Real e2e: edits to test files
+      const editEventsForPw = events.filter(
+        (e) =>
+          e.event === 'tool_use' &&
+          (e.tool === 'Edit' || e.tool === 'Write' || e.tool === 'MultiEdit')
+      );
+      const testFileEditsForPw = editEventsForPw.filter((e) => {
+        const file = typeof e.tool_summary?.['file'] === 'string' ? e.tool_summary['file'] : '';
+        return file.endsWith('.test.ts') || file.endsWith('.test.tsx') || file.endsWith('.spec.ts');
+      });
+      if (
+        testFileEditsForPw.length > 0 &&
+        testFileEditsForPw.length >= editEventsForPw.length * 0.5
+      ) {
+        return 'playwright_e2e'; // genuine e2e: tests get authored
+      }
+
+      // Documentation capture: tour skill or sequential navigate+screenshot, few clicks
+      if (
+        /\bscreenshot.tour|capture.all|tour.guide|every.screen|full.system\s+tour\b/i.test(
+          prompt
+        ) ||
+        prompt.includes('/appydave:screenshot-tour') ||
+        prompt.includes('/screenshot-tour') ||
+        (screenshotEvents.length >= 10 &&
+          clickEvents.length < screenshotEvents.length * 0.5 &&
+          navigateEvents.length >= 5)
+      ) {
+        return 'orientation.documentation_capture';
+      }
+
+      // UAT / acceptance test: BMAD-sat or AC keywords + bash + few/no edits
+      if (
+        prompt.includes('/bmad-sat') ||
+        /\b(?:acceptance\s+criteria|acceptance\s+test|UAT|verify\s+story|validate\s+story)\b/i.test(
+          prompt
+        )
+      ) {
+        return 'build.user_acceptance_test';
+      }
+
+      // Visual inspection: clicks + screenshots, but minimal/no edits — looking at the UI
+      if (editEventsForPw.length < 3 && (clickEvents.length > 0 || screenshotEvents.length > 0)) {
+        return 'orientation.visual_inspection';
+      }
+
+      // Falls through to other rules; final default catches edits + playwright as feature
+    }
+
+    // Prompt signals — diagnostic / repair intent
+    // DATA: classifier.bug_fix_patterns
+    if (
+      /\b(?:fix|bug|broken|error)s?\b/i.test(prompt) ||
+      /\bwhy (?:did|is|does|has|was)\b.{0,60}\b(?:fail|break|crash|not work|wrong|not (?:run|start|load))\b/i.test(
+        prompt
+      ) ||
+      /\bfigure out why\b/i.test(prompt) ||
+      /\bdiagnos[ei]/i.test(prompt) ||
+      /\bkeeps? (?:fail|break|crash)/i.test(prompt)
+    )
+      return 'build.bug_fix';
+    if (/\b(?:refactor|rename|extract|clean)\b/i.test(prompt)) return 'build.refactor';
+    if (/\b(?:ci|pipeline|deploy|release)s?\b/i.test(prompt) && toolPattern === 'bash-heavy') {
+      return 'build.ci_pipeline';
+    }
+
+    // Test file targeting
+    if (/\b(?:test|spec|coverage)s?\b/i.test(prompt)) return 'build.test_writing';
     const editEvents = events.filter(
       (e) =>
         e.event === 'tool_use' &&
         (e.tool === 'Edit' || e.tool === 'Write' || e.tool === 'MultiEdit')
     );
+    // DATA: detectors.test_files
+    // See docs/architecture/data-driven-extraction.md §5.
+    // TS-only — Python (test_*.py), Go (*_test.go), Ruby (*_spec.rb) etc. need config.
     const testFileEdits = editEvents.filter((e) => {
       const file = typeof e.tool_summary?.['file'] === 'string' ? e.tool_summary['file'] : '';
       return file.endsWith('.test.ts') || file.endsWith('.test.tsx') || file.endsWith('.spec.ts');
     });
     if (testFileEdits.length > 0 && testFileEdits.length >= editEvents.length * 0.5) {
-      return 'test_writing';
+      return 'build.test_writing';
     }
-    if (/\b(?:ci|pipeline|deploy|release)s?\b/i.test(prompt) && toolPattern === 'bash-heavy') {
-      return 'ci_pipeline';
+
+    // Iterative design: agent-heavy AND meaningful edit volume.
+    // Tightened 2026-05-04 — previous rule (agent-heavy alone) caught
+    // exploration sessions that delegate to agents for codebase reads
+    // without producing iterative refinement work. Surfaced enriching
+    // build.iterative_design queue: 9 of 20 sessions were misclassified
+    // codebase exploration. Now require >5 Edit/Write events to qualify.
+    if (toolPattern === 'agent-heavy') {
+      const editCount = events.filter(
+        (e) =>
+          e.event === 'tool_use' &&
+          (e.tool === 'Edit' || e.tool === 'Write' || e.tool === 'MultiEdit')
+      ).length;
+      if (editCount > 5) return 'build.iterative_design';
+      // Otherwise fall through — agent-heavy + minimal edits is exploration
     }
-    return undefined;
+
+    // Default for all BUILD sessions
+    return 'build.feature';
   }
 
   // ── ORIENTATION subtypes ────────────────────────────────────────────────
   if (sessionType === 'ORIENTATION') {
-    if ((sessionScale === 'micro' || sessionScale === 'light') && events.length > 0) {
+    // Quick in-and-out: micro scale or specific lookup prompts
+    if (sessionScale === 'micro') return 'orientation.quick_check';
+    if (/\b(?:find|where|locate|show me)\b/i.test(prompt)) return 'orientation.artifact_lookup';
+
+    // File retrieval: light sessions starting with a read tool
+    if (sessionScale === 'light') {
       const firstTool = events.find((e) => e.event === 'tool_use');
       if (firstTool && (firstTool.tool === 'Read' || firstTool.tool === 'Glob')) {
-        return 'file_retrieval';
+        return 'orientation.file_retrieval';
       }
     }
-    if (/\b(?:find|where|locate|show me)\b/i.test(prompt)) return 'artifact_lookup';
-    if (toolPattern === 'read-heavy') return 'codebase_exploration';
-    return undefined;
+
+    if (toolPattern === 'read-heavy') return 'orientation.codebase_exploration';
+
+    // Default for all ORIENTATION sessions
+    return 'orientation.exploration';
   }
 
   // ── KNOWLEDGE subtypes ──────────────────────────────────────────────────
   if (sessionType === 'KNOWLEDGE') {
     if (options.has_brain_file_writes && /capture|save|store|remember/i.test(prompt)) {
-      return 'brain_capture';
+      return 'knowledge.brain_capture';
     }
-    if (options.has_brain_file_writes) return 'brain_maintenance';
+    if (options.has_brain_file_writes) return 'knowledge.brain_maintenance';
     // advisory_refinement: edit-heavy targeting .md files (not brains/)
     if (toolPattern === 'edit-heavy') {
       const editEvents = events.filter(
@@ -888,22 +1275,27 @@ export function detectSessionSubtype(
           e.event === 'tool_use' &&
           (e.tool === 'Edit' || e.tool === 'Write' || e.tool === 'MultiEdit')
       );
+      // DATA: detectors.advisory_files
+      // See docs/architecture/data-driven-extraction.md §6.
+      // ".md outside /brains/" is a David convention. Move to file-pattern config.
       const mdEdits = editEvents.filter((e) => {
         const file = typeof e.tool_summary?.['file'] === 'string' ? e.tool_summary['file'] : '';
         return file.endsWith('.md') && !file.includes('/brains/');
       });
-      if (mdEdits.length > 0) return 'advisory_refinement';
+      if (mdEdits.length > 0) return 'knowledge.advisory_refinement';
     }
-    return undefined;
+    // Default for all KNOWLEDGE sessions
+    return 'knowledge.general';
   }
 
   // ── RESEARCH subtypes ──────────────────────────────────────────────────
   if (sessionType === 'RESEARCH') {
-    if (toolPattern === 'websearch-heavy') return 'technology_survey';
-    if (/\b(?:setup|install|config|hardware)\b/i.test(prompt))
-      return 'hardware_setup_troubleshooting';
-    if (/\b(?:release|version|changelog)s?\b/i.test(prompt)) return 'release_exploration';
-    return undefined;
+    if (toolPattern === 'websearch-heavy') return 'research.technology_survey';
+    // Setup/install signals fold into technology_survey for now (no canonical 'research.hardware')
+    if (/\b(?:setup|install|config|hardware)\b/i.test(prompt)) return 'research.technology_survey';
+    if (/\b(?:release|version|changelog)s?\b/i.test(prompt)) return 'research.exploration';
+    // Default for all RESEARCH sessions
+    return 'research.exploration';
   }
 
   // ── OPS subtypes ────────────────────────────────────────────────────────
@@ -913,14 +1305,16 @@ export function detectSessionSubtype(
     if (toolPattern === 'bash-heavy' && /\b(?:clean|delete|remove|organize)\b/i.test(prompt)) {
       return 'directory_cleanup';
     }
-    return undefined;
+    // Default for all OPS sessions
+    return 'operations.system_task';
   }
 
   // ── TEST subtypes ──────────────────────────────────────────────────────
   if (sessionType === 'TEST') {
     if (toolPattern === 'playwright-heavy') return 'playwright_e2e';
     if (/\b(?:debug|fail|broken|fix)\w*\b/i.test(prompt)) return 'test_debugging';
-    return undefined;
+    // Default for all TEST sessions
+    return 'test.execution';
   }
 
   return undefined;

@@ -13,6 +13,7 @@ import type { Registry } from '@appystack/shared';
 
 const EXPECTED_FIELDS = [
   'session_subtype',
+  'subtype_heuristic',
   'delegation_style',
   'initiation_source',
   'session_continuity',
@@ -25,10 +26,10 @@ const EXPECTED_FIELDS = [
 // ── countByFields() pure function tests ───────────────────────────────────────
 
 describe('countByFields()', () => {
-  it('returns all 8 field keys with empty objects for an empty registry', () => {
+  it('returns all 9 field keys with empty objects for an empty registry', () => {
     const result = countByFields({});
 
-    expect(Object.keys(result)).toHaveLength(8);
+    expect(Object.keys(result)).toHaveLength(9);
     for (const field of EXPECTED_FIELDS) {
       expect(result).toHaveProperty(field);
       expect(result[field]).toEqual({});

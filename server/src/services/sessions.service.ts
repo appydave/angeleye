@@ -16,21 +16,26 @@ export async function writeEvent(event: AngelEyeEvent): Promise<void> {
 }
 
 export async function getSessionEvents(sessionId: string): Promise<AngelEyeEvent[]> {
-  const filePath = join(_sessionsDir(), `session-${sessionId}.jsonl`);
-  try {
-    const raw = await readFile(filePath, 'utf-8');
-    return raw
-      .split('\n')
-      .filter((line) => line.trim() !== '')
-      .map((line) => JSON.parse(line) as AngelEyeEvent);
-  } catch (err) {
-    const nodeErr = err as NodeJS.ErrnoException;
-    if (nodeErr.code === 'ENOENT') {
-      return [];
+  const filename = `session-${sessionId}.jsonl`;
+  // Try live sessions first, then archive (so reclassification covers both)
+  const candidates = [join(_sessionsDir(), filename), join(_archiveDir(), filename)];
+  for (const filePath of candidates) {
+    try {
+      const raw = await readFile(filePath, 'utf-8');
+      return raw
+        .split('\n')
+        .filter((line) => line.trim() !== '')
+        .map((line) => JSON.parse(line) as AngelEyeEvent);
+    } catch (err) {
+      const nodeErr = err as NodeJS.ErrnoException;
+      if (nodeErr.code !== 'ENOENT') {
+        logger.error({ err, sessionId }, 'Failed to read session events');
+        return [];
+      }
+      // ENOENT — try next candidate
     }
-    logger.error({ err, sessionId }, 'Failed to read session events');
-    return [];
   }
+  return [];
 }
 
 export async function writeSessionName(

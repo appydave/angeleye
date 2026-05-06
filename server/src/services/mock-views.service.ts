@@ -850,3 +850,41 @@ export async function getWorkflowsView() {
     instances,
   };
 }
+
+// ── Classification Status View ───────────────────────────────────────────────
+
+export async function getClassificationStatusView() {
+  const registry = await readRegistry();
+  const all = Object.values(registry);
+  const total = all.length;
+  const junk = all.filter((e) => e.is_junk).length;
+  const nonJunk = all.filter((e) => !e.is_junk);
+  const nonJunkTotal = nonJunk.length;
+  const classified = nonJunk.filter((e) => e.session_type).length;
+  const unclassified = nonJunk.filter((e) => !e.session_type).length;
+  const hookSource = all.filter((e) => e.source === 'hook').length;
+  const transcriptSource = all.filter((e) => e.source === 'transcript').length;
+
+  const byType: Record<string, number> = {};
+  for (const e of nonJunk) {
+    if (e.session_type) {
+      byType[e.session_type] = (byType[e.session_type] ?? 0) + 1;
+    }
+  }
+
+  return {
+    total,
+    junk,
+    junkPct: total > 0 ? Math.round((junk / total) * 100) : 0,
+    nonJunk: nonJunkTotal,
+    classified,
+    classifiedPct: nonJunkTotal > 0 ? Math.round((classified / nonJunkTotal) * 100) : 0,
+    unclassified,
+    unclassifiedPct: nonJunkTotal > 0 ? Math.round((unclassified / nonJunkTotal) * 100) : 0,
+    hookSource,
+    hookPct: total > 0 ? Math.round((hookSource / total) * 100) : 0,
+    transcriptSource,
+    transcriptPct: total > 0 ? Math.round((transcriptSource / total) * 100) : 0,
+    byType,
+  };
+}

@@ -82,6 +82,7 @@ export function countByType(registry: Registry): { counts: TypeCounts; total: nu
 
 const PHASE2C_FIELDS: (keyof RegistryEntry)[] = [
   'session_subtype',
+  'subtype_heuristic',
   'delegation_style',
   'initiation_source',
   'session_continuity',
@@ -90,6 +91,20 @@ const PHASE2C_FIELDS: (keyof RegistryEntry)[] = [
   'session_liveness',
   'output_type',
 ];
+
+/**
+ * Derive the effective session_subtype from the two writers.
+ * LLM-set session_tags wins over the rule-based subtype_heuristic.
+ */
+export function deriveSessionSubtype(
+  entry: Pick<RegistryEntry, 'session_tags' | 'subtype_heuristic'>
+): RegistryEntry['session_subtype'] {
+  if (entry.session_tags && entry.session_tags.length > 0) {
+    const sorted = [...entry.session_tags].sort((a, b) => b.confidence - a.confidence);
+    return sorted[0]!.tag;
+  }
+  return entry.subtype_heuristic;
+}
 
 /** Count Phase 2c field distributions from a registry snapshot. */
 export function countByFields(registry: Registry): Record<string, FieldCounts> {
@@ -149,7 +164,19 @@ export async function runSync(options: SyncOptions = {}): Promise<SyncResult> {
 
       const events = await getSessionEvents(sessionId);
       const classificationResult = classifySession(events, sessionId, entry.project_dir ?? '');
-      await updateRegistry(sessionId, { ...classificationResult });
+
+      // Derive session_subtype: LLM-set session_tags (already on the entry) wins over
+      // the rule-based subtype_heuristic just produced. This stops force-syncs from
+      // overwriting LLM enrichment with the rule-based answer.
+      const session_subtype = deriveSessionSubtype({
+        session_tags: entry.session_tags,
+        subtype_heuristic: classificationResult.subtype_heuristic,
+      });
+
+      await updateRegistry(sessionId, {
+        ...classificationResult,
+        ...(session_subtype !== undefined && { session_subtype }),
+      });
       classified++;
 
       if (!beforeSessionIds.has(sessionId)) {

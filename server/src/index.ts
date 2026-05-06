@@ -27,6 +27,7 @@ import inspectorRouter from './routes/inspector.js';
 import { gitSyncRouter } from './routes/git-sync.js';
 import workflowsRouter from './routes/workflows.js';
 import projectsRouter from './routes/projects.js';
+import diagnosticsRouter from './routes/diagnostics.js';
 import { initAngelEyeDirs } from './services/registry.service.js';
 import { backfillTranscripts } from './services/backfill.service.js';
 import type { ServerToClientEvents, ClientToServerEvents } from '@appystack/shared';
@@ -83,6 +84,7 @@ app.use(projectsRouter);
 app.use(mockViewsRouter);
 app.use(inspectorRouter);
 app.use('/api/git-sync', gitSyncRouter);
+app.use('/api/diagnostics', diagnosticsRouter);
 
 // Serve mockup/dashboard HTML files from monorepo root (no CSP — dev design files)
 const monorepoRoot = join(__dirname, '../..');

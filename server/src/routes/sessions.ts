@@ -54,6 +54,83 @@ router.get('/api/sessions/:id/events', async (req, res, next) => {
   }
 });
 
+// POST /api/registry/llm-tags — bulk write LLM-stamped session_tags
+//
+// Routes writes through updateRegistry's serialised queue, preventing the
+// race condition where concurrent hook events overwrite enrichment writes.
+// Used by the enrich-subtypes skill instead of writing registry.json directly.
+//
+// See: docs/architecture/known-issues.md#registry-write-race
+router.post('/api/registry/llm-tags', async (req, res, next) => {
+  try {
+    const { changes } = req.body as {
+      changes?: Array<{ id: string; tags: Array<{ tag: string; confidence: number }> }>;
+    };
+    if (!Array.isArray(changes)) {
+      return apiFailure(res, 'changes array required', 400);
+    }
+    const registry = await readRegistry();
+    let written = 0;
+    const missing: string[] = [];
+    for (const { id, tags } of changes) {
+      if (!registry[id]) {
+        missing.push(id);
+        continue;
+      }
+      const stamped = tags.map((t) => ({ ...t, source: 'llm' as const }));
+      const sorted = [...stamped].sort((a, b) => b.confidence - a.confidence);
+      const top = sorted[0];
+      if (!top) continue;
+      await updateRegistry(id, {
+        session_tags: sorted,
+        session_subtype: top.tag,
+      });
+      written++;
+    }
+    apiSuccess(res, { written, missing, total: changes.length });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// POST /api/registry/session-kind — bulk write session_kind on existing rows.
+//
+// Used by backfill scripts that retroactively classify sessions as 'subagent'
+// or 'subprocess' (Mechanism B and C detection). Routes through the same
+// serialised queue as hooks to avoid the registry write race.
+//
+// See: docs/architecture/known-issues.md#subprocess-session-mechanism-3
+router.post('/api/registry/session-kind', async (req, res, next) => {
+  try {
+    const { changes } = req.body as {
+      changes?: Array<{
+        id: string;
+        kind: 'main' | 'subagent' | 'subprocess';
+        teammate_id?: string | null;
+      }>;
+    };
+    if (!Array.isArray(changes)) {
+      return apiFailure(res, 'changes array required', 400);
+    }
+    const registry = await readRegistry();
+    let written = 0;
+    const missing: string[] = [];
+    for (const { id, kind, teammate_id } of changes) {
+      if (!registry[id]) {
+        missing.push(id);
+        continue;
+      }
+      const update: Partial<RegistryEntry> = { session_kind: kind };
+      if (teammate_id !== undefined) update.teammate_id = teammate_id;
+      await updateRegistry(id, update);
+      written++;
+    }
+    apiSuccess(res, { written, missing, total: changes.length });
+  } catch (err) {
+    next(err);
+  }
+});
+
 // PATCH /api/sessions/:id — update name, tags, workspace_id
 router.patch('/api/sessions/:id', async (req, res, next) => {
   try {

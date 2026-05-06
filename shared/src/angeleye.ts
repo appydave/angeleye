@@ -57,46 +57,85 @@ export type SessionType =
   | 'ORIENTATION'; // cold start, reorientation, lookup
 
 // ── Session Subtypes (B043) ─────────────────────────────────────────────────
-// Confirmed subtypes with N >= 3 occurrences from 924-session campaign.
-// Keyed by parent SessionType. Detection logic is NOT yet implemented —
-// these types exist so downstream code can reference them.
+// Dot-notation taxonomy. session_subtype is derived: session_tags[0].tag (highest confidence).
+// session_tags is the source of truth; session_subtype is a convenience read field.
+//
+// DATA: taxonomy.subtypes
+// See docs/architecture/data-driven-extraction.md §1.
+// This union encodes domain-specific subtypes (knowledge.brain_capture,
+// knowledge.omi_ingestion, etc.). For multi-user deployments these would move
+// to a config file (YAML/JSON) and SessionSubtype becomes string with runtime
+// validation, or be code-generated from config.
+
+export interface SessionTag {
+  tag: SessionSubtype;
+  confidence: number; // 0.0–1.0
+  /**
+   * Provenance of this tag. Lets cleanup scripts safely target migration-derived
+   * tags without nuking real LLM work that happens to share the same shape.
+   * - 'llm'           — written by the enrich-subtypes skill (considered work)
+   * - 'migrated'      — written by the original migration from snake_case session_subtype
+   * - 'heuristic_only' — written by automation as a heuristic-confirmed fallback
+   * Optional for backwards compatibility with pre-source data; treat undefined as 'migrated'.
+   */
+  source?: 'llm' | 'migrated' | 'heuristic_only';
+}
 
 export type SessionSubtype =
-  // BUILD subtypes
-  | 'bug_fix_round'
-  | 'feature_implementation'
-  | 'refactoring'
-  | 'test_writing'
-  | 'ci_pipeline'
-  // ORIENTATION subtypes
-  | 'codebase_exploration'
-  | 'file_retrieval'
-  | 'artifact_lookup'
-  // KNOWLEDGE subtypes
-  | 'brain_maintenance'
-  | 'advisory_refinement'
-  | 'brain_capture'
-  // RESEARCH subtypes
-  | 'technology_survey'
-  | 'hardware_setup_troubleshooting'
-  | 'release_exploration'
-  // OPS subtypes
-  | 'poem_execution'
-  | 'directory_cleanup'
-  | 'paperclip_agent'
-  // PLANNING subtypes
-  | 'daily_planning'
-  | 'interactive_design'
-  | 'sprint_planning'
-  // SETUP subtypes
-  | 'mcp_integration'
-  | 'environment_setup'
-  | 'dependency_management'
-  // TEST subtypes
+  // BUILD — code production sessions
+  | 'build.feature' // generic fallback (confidence 0.50)
+  | 'build.shipped' // clear feature shipped + git outcome
+  | 'build.bug_fix' // fix/bug in prompt or edit targets
+  | 'build.refactor' // refactor/rename/extract
+  | 'build.test_writing' // majority of edits are test files
+  | 'build.ci_pipeline' // CI/deploy/pipeline edits
+  | 'build.campaign' // /skill invocation OR task_orchestration + parallel bursts
+  | 'build.orchestrated_campaign' // agent-heavy + task_orchestration, no parallel bursts
+  | 'build.multi_phase' // session spans multiple distinct phases
+  | 'build.project_scaffolding' // scaffold/init/setup prompt
+  | 'build.visual_implementation' // UI/CSS/Tailwind edits, component work
+  | 'build.worktree_campaign' // worktree in file paths or prompt
+  | 'build.prompt_engineering' // edits to SKILL.md, CLAUDE.md, prompt files
+  // ORIENTATION — navigation and lookup sessions
+  | 'orientation.quick_check' // generic fallback (confidence 0.50)
+  | 'orientation.codebase_exploration' // broad read of codebase
+  | 'orientation.file_retrieval' // fetching a known file
+  | 'orientation.artifact_lookup' // looking for config, credential, specific output
+  | 'orientation.feature_exploration' // exploring how a specific feature works
+  | 'orientation.identity_check' // prompt asks who Claude is / what project
+  | 'orientation.morning_triage' // first prompt about what to work on today
+  | 'orientation.bookend' // opening/closing around another session
+  | 'orientation.exploration' // generic orientation, nothing specific
+  // KNOWLEDGE — brain and documentation sessions
+  | 'knowledge.general' // generic fallback (confidence 0.50)
+  | 'knowledge.brain_capture' // capturing new findings for first time
+  | 'knowledge.brain_maintenance' // updating/reorganising existing brain files
+  | 'knowledge.advisory_refinement' // editing CLAUDE.md, skills, prompt docs
+  | 'knowledge.brain_audit' // auditing brain structure, planning organisation
+  | 'knowledge.methodology_design' // designing a process, workflow, or method
+  | 'knowledge.loom_capture' // processing Loom/video transcript
+  | 'knowledge.omi_ingestion' // OMI wearable transcript processing
+  // RESEARCH — investigation and evaluation sessions
+  | 'research.exploration' // generic fallback (confidence 0.50)
+  | 'research.technology_survey' // websearch-heavy, evaluating tools/libraries
+  | 'research.tool_evaluation' // comparing specific tools or approaches
+  | 'research.conceptual_exploration' // exploring ideas, no specific deliverable
+  | 'research.quick_answer' // short session, specific question answered
+  // META — session quality/nature classifications
+  | 'meta.ghost_session' // near-zero events, nothing happened (confidence 0.95)
+  | 'meta.accidental' // micro + no tool use + abrupt abandon (confidence 0.95)
+  // PLAYWRIGHT-DERIVED — disambiguating what playwright tool use means
+  | 'orientation.visual_inspection' // playwright clicks/screenshots, no edits — looking at UI
+  | 'orientation.documentation_capture' // /screenshot-tour: visit every route + capture screenshots
+  | 'build.user_acceptance_test' // /bmad-sat: AC validation via playwright + bash, no edits
+  // LEGACY — values still present in registry data, not produced by classifier going forward
   | 'playwright_e2e'
-  | 'test_debugging'
-  // META subtypes
-  | 'session_about_sessions';
+  | 'skill.development'
+  | 'skill.creation'
+  | 'knowledge.brain_creation'
+  | 'orientation.artifact_retrieval'
+  | 'operations.poem_execution'
+  | string; // escape hatch — classifier may produce values not yet in this union
 
 export type ToolPattern =
   | 'playwright-heavy' // mcp__playwright__ > 40% of tool calls
@@ -176,6 +215,18 @@ export interface RegistryEntry {
   // rule-based classification (no LLM, computed from events)
   is_junk?: boolean;
   session_type?: SessionType;
+  // Three-field subtype model:
+  //   subtype_heuristic — written by the deterministic classifier (free, runs on every sync).
+  //                       Approximate, sometimes wrong (e.g. over-applies build.campaign to
+  //                       any /command). Always present after sync.
+  //   session_tags      — written by the LLM enrichment skill (manual, considered).
+  //                       Multiple tags with confidence scores, sorted descending.
+  //                       Source of truth when present.
+  //   session_subtype   — DERIVED. Equals session_tags[0].tag when session_tags is present,
+  //                       otherwise equals subtype_heuristic. Written by both writers but
+  //                       neither writer overrides an LLM-set value.
+  subtype_heuristic?: SessionSubtype;
+  session_tags?: SessionTag[];
   session_subtype?: SessionSubtype;
   tool_pattern?: ToolPattern;
   session_scale?: SessionScale;
@@ -219,6 +270,16 @@ export interface RegistryEntry {
   output_type?: OutputType;
   // Affinity group references
   group_ids?: string[];
+  // Session origin classification
+  // 'main'       = human-driven primary session
+  // 'subagent'   = spawned by Agent Teams; first user message is a <teammate-message> wrapper
+  // 'subprocess' = headless skill subprocess (e.g. omi-extract-haiku Haiku invocations).
+  //                Identified by event_count <= 5 + first prompt matching template patterns
+  //                ("-\nGenerate...", "-\nExtract...", "You are executing...").
+  //                See docs/architecture/known-issues.md#subprocess-session-mechanism-3
+  // Detected at SessionStart; backfilled by scripts/audits/backfill-session-kind.ts
+  session_kind?: 'main' | 'subagent' | 'subprocess';
+  teammate_id?: string | null; // observed values: 'team-lead'
 }
 
 export interface WorkspaceEntry {
@@ -345,4 +406,40 @@ export interface WorkflowInstance {
   stations: StationInstance[];
   backtracks: BacktrackRecord[];
   metadata: Record<string, unknown>;
+}
+
+// ── Diagnostics ─────────────────────────────────────────────────────────────
+// Surfaces registry data-quality and ingestion-health metrics for the
+// Diagnostics view. Live counts come from the registry; subagent stats
+// and orphan counts come from a precomputed audit snapshot when present.
+export interface DiagnosticsResponse {
+  generated_at: string;
+  registry: {
+    total: number;
+    with_jsonl: number; // upstream JSONL still on disk
+    archive_only: number; // no upstream JSONL but AngelEye archive present
+    true_phantom: number; // no upstream JSONL and no archive (data lost)
+    is_junk: number;
+  };
+  tags: {
+    llm_enriched: number;
+    heuristic_only: number;
+    migrated: number;
+    untagged: number;
+    build_feature_queue: number;
+  };
+  subagents: {
+    snapshot_present: boolean;
+    snapshot_path?: string;
+    teammate_message_files?: number; // raw JSONLs identified as Mechanism B
+    in_registry_main?: number; // estimate: registry rows minus subagent count
+    in_registry_subagent?: number;
+    field_populated?: boolean; // whether session_kind has been backfilled
+  };
+  orphans: {
+    snapshot_present: boolean;
+    count?: number;
+    top_dirs?: { dir: string; count: number }[];
+  };
+  open_issues: { id: string; title: string; doc_link: string }[];
 }

@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngelEye — Classification Status</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #e8e0d4;
+    --surface: #ede7dc;
+    --surface-mid: #ddd6cc;
+    --card: #f5f1eb;
+    --border: #d4cdc4;
+    --border-raised: #ccc5bb;
+    --primary: #c8841a;
+    --fg: #2a2018;
+    --muted: #7a6e5e;
+    --muted-dim: #9e9484;
+    --green: #3a7a52;
+    --green-bg: #eaf3ee;
+    --red: #8a2020;
+    --red-bg: #f8eaea;
+    --blue: #2e6ea0;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .banner {
+    background: var(--fg);
+    color: var(--muted);
+    font-size: 11px;
+    text-align: center;
+    padding: 3px 0;
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+  }
+
+  .app-layout { display: flex; flex: 1; overflow: hidden; }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    width: 180px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+  }
+  .sidebar-brand { padding: 16px 14px 12px; border-bottom: 1px solid var(--border); }
+  .sidebar-brand h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.18em;
+    color: var(--primary);
+    font-weight: 400;
+  }
+  .sidebar-brand .brand-sub { font-size: 9px; color: var(--muted-dim); letter-spacing: 0.06em; margin-top: 2px; }
+  .sidebar-section { padding: 10px 0 4px; }
+  .sidebar-label { font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted-dim); padding: 0 14px 4px; }
+  .sidebar-item { font-size: 12px; color: var(--muted); padding: 6px 14px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+  .sidebar-item:hover { background: var(--surface-mid); color: var(--fg); }
+  .sidebar-item.active { background: var(--surface-mid); color: var(--fg); font-weight: 600; }
+  .sidebar-divider { height: 1px; background: var(--border); margin: 4px 0; }
+  .sidebar-footer { margin-top: auto; padding: 10px 14px; font-size: 9px; color: var(--muted-dim); border-top: 1px solid var(--border); }
+
+  /* ── Main ── */
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .main-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 20px;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  .main-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.12em;
+    color: var(--fg);
+    font-weight: 400;
+  }
+  .main-header .subtitle { font-size: 11px; color: var(--muted); }
+  .main-header .header-pills { margin-left: auto; display: flex; gap: 6px; }
+  .pill {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--muted);
+  }
+  .pill.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+  .content { flex: 1; overflow-y: auto; padding: 16px 20px 24px; }
+
+  /* ── Section label ── */
+  .section-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .section { margin-bottom: 20px; }
+
+  /* ── Stat cards ── */
+  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--border);
+    border-radius: 5px;
+    padding: 10px 12px;
+  }
+  .stat-card.green { border-top-color: var(--green); }
+  .stat-card.amber { border-top-color: var(--primary); }
+  .stat-card.muted { border-top-color: var(--muted); }
+  .stat-num { font-size: 24px; font-weight: 700; color: var(--fg); line-height: 1; }
+  .stat-pct { font-size: 12px; color: var(--muted); margin-left: 3px; font-weight: 400; }
+  .stat-label { font-size: 10px; color: var(--muted); margin-top: 4px; }
+
+  /* ── Sync callout ── */
+  .sync-callout {
+    background: var(--green-bg);
+    border: 1px solid #b0d0b8;
+    border-left: 4px solid var(--green);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 11px;
+    color: var(--fg);
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+  .sync-callout strong { color: var(--green); }
+  .sync-callout code {
+    font-family: monospace;
+    font-size: 10px;
+    background: rgba(0,0,0,0.06);
+    padding: 1px 4px;
+    border-radius: 2px;
+  }
+
+  /* ── Progress rows ── */
+  .progress-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin-bottom: 5px;
+  }
+  .progress-label {
+    width: 160px;
+    flex-shrink: 0;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--fg);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .progress-pct { font-size: 10px; color: var(--muted); font-weight: 400; font-family: monospace; }
+  .progress-bar-wrap { flex: 1; height: 7px; background: var(--surface-mid); border-radius: 4px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; border-radius: 4px; transition: width 0.4s ease; }
+  .fill-green  { background: var(--green); }
+  .fill-blue   { background: var(--blue); }
+  .fill-amber  { background: var(--primary); }
+  .fill-muted  { background: var(--muted); }
+  .progress-note { font-size: 10px; color: var(--muted-dim); min-width: 100px; text-align: right; font-family: monospace; }
+
+  /* ── 7 Questions ── */
+  .q-row {
+    display: flex;
+    align-items: stretch;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 5px;
+  }
+  .q-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--primary);
+    background: var(--surface);
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    min-width: 40px;
+    justify-content: center;
+    border-right: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .q-body { flex: 1; padding: 8px 12px; }
+  .q-question { font-size: 12px; font-weight: 600; color: var(--fg); margin-bottom: 3px; }
+  .q-field { font-family: monospace; font-size: 10px; color: var(--blue); margin-bottom: 5px; }
+  .q-values { display: flex; flex-wrap: wrap; gap: 3px; }
+  .q-val {
+    font-family: monospace;
+    font-size: 9px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    background: var(--surface-mid);
+    border: 1px solid var(--border);
+    color: var(--fg);
+  }
+  .q-note { font-size: 10px; color: var(--muted); margin-top: 5px; font-style: italic; }
+  .q-status {
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    min-width: 110px;
+    border-left: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .status-pill {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .status-pill.implemented { background: var(--green-bg); color: var(--green); border: 1px solid #b0d0b8; }
+  .status-pill.partial     { background: #f0f4e8; color: #5a6e3a; border: 1px solid #c8d9a8; }
+  .status-pill.designed    { background: #fdf3e3; color: var(--primary); border: 1px solid #e8c880; }
+  .status-pill.not-built   { background: var(--red-bg); color: var(--red); border: 1px solid #e0b0b0; }
+
+  /* ── Two-col ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .list-box { background: var(--card); border: 1px solid var(--border); border-radius: 5px; overflow: hidden; }
+  .list-header {
+    padding: 6px 12px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  .list-header.green { background: var(--green-bg); color: var(--green); }
+  .list-header.red   { background: var(--red-bg); color: var(--red); }
+  .list-item { display: flex; align-items: baseline; gap: 6px; padding: 4px 12px; border-bottom: 1px solid var(--border); font-size: 11px; }
+  .list-item:last-child { border-bottom: none; }
+  .list-item .what { flex: 1; color: var(--fg); }
+  .tier-dot { font-family: monospace; font-size: 9px; padding: 1px 4px; border-radius: 2px; background: var(--surface-mid); color: var(--muted); border: 1px solid var(--border); white-space: nowrap; }
+  .nb-count { font-family: monospace; font-size: 10px; color: var(--red); background: var(--red-bg); padding: 1px 6px; border-radius: 3px; border: 1px solid #e0b0b0; }
+  .nb-note { font-size: 10px; color: var(--muted); font-style: italic; padding: 0 12px 4px; }
+
+  /* ── Completeness ── */
+  .comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; }
+  .comp-card { background: var(--card); border: 1px solid var(--border); border-radius: 5px; overflow: hidden; }
+  .comp-header { padding: 6px 12px; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
+  .comp-card.hook .comp-header { background: var(--green-bg); color: var(--green); }
+  .comp-card.trans .comp-header { background: #fdf3e3; color: var(--primary); }
+  .comp-body { padding: 10px 12px; font-size: 11px; color: var(--fg); }
+  .comp-stat { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 0.06em; line-height: 1; margin-bottom: 4px; }
+  .comp-card.hook .comp-stat { color: var(--green); }
+  .comp-card.trans .comp-stat { color: var(--primary); }
+  .comp-pct { font-family: monospace; font-size: 9px; color: var(--muted); }
+  .comp-desc { color: var(--muted); font-size: 10.5px; margin-top: 4px; line-height: 1.4; }
+  .gap-box { background: #fdf3e3; border: 1px solid #e8c880; border-left: 4px solid var(--primary); border-radius: 4px; padding: 8px 12px; font-size: 11px; color: var(--fg); line-height: 1.5; }
+
+  /* ── Reclass ── */
+  .reclass-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .reclass-card { background: var(--card); border: 1px solid var(--border); border-radius: 5px; padding: 10px 12px; }
+  .reclass-card h3 { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg); margin-bottom: 8px; }
+  .reclass-row { display: flex; gap: 6px; margin-bottom: 4px; font-size: 11px; align-items: baseline; }
+  .reclass-key { font-family: monospace; font-size: 9px; color: var(--muted); min-width: 55px; }
+  .reclass-code { font-family: monospace; font-size: 10px; background: var(--surface-mid); border: 1px solid var(--border); padding: 2px 6px; border-radius: 3px; color: var(--fg); display: inline-block; margin-top: 4px; }
+  .reclass-note { font-size: 10px; color: var(--muted); font-style: italic; margin-top: 8px; border-top: 1px solid var(--border); padding-top: 6px; line-height: 1.4; }
+
+  /* ── Loading / error ── */
+  .loading-row { display: flex; align-items: center; gap: 8px; padding: 10px 0; font-size: 11px; color: var(--muted); }
+  .err-box { background: var(--red-bg); border: 1px solid #e0b0b0; border-left: 4px solid var(--red); border-radius: 4px; padding: 8px 12px; font-size: 11px; color: var(--red); }
+</style>
+</head>
+<body>
+<!-- Mochaccino citation — data: /api/mock-views/classification-status (live) + ../../data/classification-status.json (fallback) — source: registry.json — rendered: 2026-05-03 -->
+
+<div class="banner">Mocha — Classification Status — 2026-05-03 — live data via /api/mock-views/classification-status</div>
+
+<div class="app-layout">
+
+  <nav class="sidebar">
+    <div class="sidebar-brand">
+      <h1>AngelEye</h1>
+      <div class="brand-sub">OBSERVABILITY</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Monitor</div>
+      <div class="sidebar-item">◎ Observer</div>
+      <div class="sidebar-item">⊞ Organiser</div>
+      <div class="sidebar-item">⇄ Workflows</div>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Tools</div>
+      <div class="sidebar-item">⊕ Inspector</div>
+      <div class="sidebar-item">⚙ Settings</div>
+      <div class="sidebar-item active">◈ Intelligence</div>
+    </div>
+    <div class="sidebar-footer" id="sidebar-footer">AngelEye</div>
+  </nav>
+
+  <div class="main">
+    <div class="main-header">
+      <h2>CLASSIFICATION STATUS</h2>
+      <span class="subtitle">What AngelEye knows about your sessions</span>
+      <div class="header-pills">
+        <span class="pill primary" id="hdr-total">loading…</span>
+        <span class="pill">10% enriched</span>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ── Registry state — LIVE ── -->
+      <div class="section">
+        <div class="section-label">Registry — current state <span id="data-source" style="font-style:italic;font-weight:400;text-transform:none;letter-spacing:0;"></span></div>
+        <div id="stats-area">
+          <div class="loading-row">Loading live registry stats…</div>
+        </div>
+      </div>
+
+      <!-- ── 7 questions — static ── -->
+      <div class="section">
+        <div class="section-label">The 7 questions we're answering per session</div>
+
+        <div class="q-row">
+          <div class="q-num">1</div>
+          <div class="q-body">
+            <div class="q-question">What kind of work was this?</div>
+            <div class="q-field">session_type</div>
+            <div class="q-values"><span class="q-val">BUILD</span><span class="q-val">TEST</span><span class="q-val">RESEARCH</span><span class="q-val">KNOWLEDGE</span><span class="q-val">OPS</span><span class="q-val">ORIENTATION</span></div>
+            <div class="q-note">Empirically validated across 924 sessions. Scale-aware — micro sessions demoted to ORIENTATION.</div>
+          </div>
+          <div class="q-status"><span class="status-pill implemented">Implemented</span></div>
+        </div>
+
+        <div class="q-row">
+          <div class="q-num">2</div>
+          <div class="q-body">
+            <div class="q-question">How much work happened?</div>
+            <div class="q-field">session_scale</div>
+            <div class="q-values"><span class="q-val">micro</span><span class="q-val">light</span><span class="q-val">moderate</span><span class="q-val">heavy</span><span class="q-val">marathon</span></div>
+            <div class="q-note">Deterministic. micro = 1–3 tool calls. marathon = 150+.</div>
+          </div>
+          <div class="q-status"><span class="status-pill implemented">Implemented</span></div>
+        </div>
+
+        <div class="q-row">
+          <div class="q-num">3</div>
+          <div class="q-body">
+            <div class="q-question">What tools dominated?</div>
+            <div class="q-field">tool_pattern</div>
+            <div class="q-values"><span class="q-val">edit-heavy</span><span class="q-val">bash-heavy</span><span class="q-val">read-heavy</span><span class="q-val">playwright-heavy</span><span class="q-val">agent-heavy</span><span class="q-val">websearch-heavy</span><span class="q-val">task-heavy</span><span class="q-val">mixed</span></div>
+            <div class="q-note">8 patterns by tool-use ratio. e.g. edit-heavy = Edit+Write &gt; 40%.</div>
+          </div>
+          <div class="q-status"><span class="status-pill implemented">Implemented</span></div>
+        </div>
+
+        <div class="q-row">
+          <div class="q-num">4</div>
+          <div class="q-body">
+            <div class="q-question">What specifically was built or done?</div>
+            <div class="q-field">session_subtype</div>
+            <div class="q-values"><span class="q-val">feature_implementation</span><span class="q-val">bug_fix_round</span><span class="q-val">brain_maintenance</span><span class="q-val">codebase_exploration</span><span class="q-val">+ 21 more</span></div>
+            <div class="q-note">25 confirmed subtypes from 924-session campaign. No classifier built — needs Tier 3 LLM.</div>
+          </div>
+          <div class="q-status"><span class="status-pill not-built">Not built</span></div>
+        </div>
+
+        <div class="q-row">
+          <div class="q-num">5</div>
+          <div class="q-body">
+            <div class="q-question">How did this session start and end?</div>
+            <div class="q-field">opening_style + closing_style</div>
+            <div class="q-values"><span class="q-val">typed_question</span><span class="q-val">skill_invocation</span><span class="q-val">voice_dictation</span><span class="q-val">paste_handover</span><span class="q-val">commit_push</span><span class="q-val">abrupt_abandon</span></div>
+            <div class="q-note">Phase 2c — fields exist in schema, detection logic not yet implemented.</div>
+          </div>
+          <div class="q-status"><span class="status-pill designed">Designed</span></div>
+        </div>
+
+        <div class="q-row">
+          <div class="q-num">6</div>
+          <div class="q-body">
+            <div class="q-question">Was this part of a larger workflow?</div>
+            <div class="q-field">workflow_role + workflow_action + group_ids</div>
+            <div class="q-values"><span class="q-val">WN</span><span class="q-val">CS</span><span class="q-val">VS</span><span class="q-val">DS</span><span class="q-val">DR</span><span class="q-val">CU</span><span class="q-val">SHIP</span></div>
+            <div class="q-note">Role + action via BMAD overlay. Affinity group correlation (epic, phase) not fully built.</div>
+          </div>
+          <div class="q-status"><span class="status-pill partial">Partial</span></div>
+        </div>
+
+        <div class="q-row">
+          <div class="q-num">7</div>
+          <div class="q-body">
+            <div class="q-question">What signals of interest are present?</div>
+            <div class="q-field">boolean predicates</div>
+            <div class="q-values"><span class="q-val">has_brain_file_writes</span><span class="q-val">has_git_outcome</span><span class="q-val">is_machine_initiated</span><span class="q-val">has_voice_dictation</span><span class="q-val">pii_flags</span><span class="q-val">+4 more built</span><span class="q-val">+24 designed</span></div>
+            <div class="q-note">~9 predicates built. ~24 more documented — some easy Tier 1/2 wins.</div>
+          </div>
+          <div class="q-status"><span class="status-pill partial">Partial</span></div>
+        </div>
+      </div>
+
+      <!-- ── Built vs not built — static ── -->
+      <div class="section">
+        <div class="section-label">Implementation — ~10% of 58 enrichment items built</div>
+        <div class="two-col">
+          <div class="list-box">
+            <div class="list-header green">Built &amp; running today <span>13 items</span></div>
+            <div class="list-item"><span class="what">Junk detection (5 rules)</span><span class="tier-dot">T1</span></div>
+            <div class="list-item"><span class="what">Session type (6 types)</span><span class="tier-dot">T2</span></div>
+            <div class="list-item"><span class="what">Session scale (5 levels)</span><span class="tier-dot">T1</span></div>
+            <div class="list-item"><span class="what">Tool pattern (8 patterns)</span><span class="tier-dot">T1</span></div>
+            <div class="list-item"><span class="what">PII detection (11 regex)</span><span class="tier-dot">T2</span></div>
+            <div class="list-item"><span class="what">Brain file write detection</span><span class="tier-dot">T2</span></div>
+            <div class="list-item"><span class="what">Voice dictation artifacts</span><span class="tier-dot">T2</span></div>
+            <div class="list-item"><span class="what">Compaction resume</span><span class="tier-dot">T1</span></div>
+            <div class="list-item"><span class="what">Machine initiation</span><span class="tier-dot">T1</span></div>
+            <div class="list-item"><span class="what">Playwright call detection</span><span class="tier-dot">T1</span></div>
+            <div class="list-item"><span class="what">Git outcome detection</span><span class="tier-dot">T1</span></div>
+            <div class="list-item"><span class="what">Trigger command extraction</span><span class="tier-dot">T1</span></div>
+            <div class="list-item"><span class="what">Workflow role + action</span><span class="tier-dot">T1</span></div>
+          </div>
+          <div class="list-box">
+            <div class="list-header red">Designed but not built <span>~45 items</span></div>
+            <div class="list-item"><span class="what">Session subtype detection</span><span class="nb-count">25</span></div>
+            <div class="nb-note">Needs Tier 3 LLM to distinguish reliably</div>
+            <div class="list-item"><span class="what">Unimplemented predicates</span><span class="nb-count">24</span></div>
+            <div class="nb-note">Mix of easy T1/2 wins and LLM-required</div>
+            <div class="list-item"><span class="what">Phase 2c behavioural classifiers</span><span class="nb-count">8</span></div>
+            <div class="nb-note">Fields exist — detection logic missing</div>
+            <div class="list-item"><span class="what">Tier 3 LLM enrichment items</span><span class="nb-count">22</span></div>
+            <div class="nb-note">No LLM pipeline infrastructure yet</div>
+            <div class="list-item"><span class="what">Observations + extractors</span><span class="nb-count">11</span></div>
+            <div class="nb-note">0% implemented</div>
+            <div class="list-item"><span class="what">Affinity group correlation</span><span class="nb-count">1</span></div>
+            <div class="nb-note">story_unit partial — epic/phase not built</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Data completeness — live hook/transcript counts ── -->
+      <div class="section">
+        <div class="section-label">Data completeness — hooks vs transcript</div>
+        <div class="comp-grid">
+          <div class="comp-card hook">
+            <div class="comp-header">Hook-sourced <span>live capture</span></div>
+            <div class="comp-body">
+              <div class="comp-stat" id="comp-hook-count">—</div>
+              <div class="comp-pct" id="comp-hook-pct"></div>
+              <div class="comp-desc">AngelEye was running. Full real-time event stream — all 25 hook types, precise timing, every tool call.</div>
+            </div>
+          </div>
+          <div class="comp-card trans">
+            <div class="comp-header">Transcript-only <span>backfilled</span></div>
+            <div class="comp-body">
+              <div class="comp-stat" id="comp-trans-count">—</div>
+              <div class="comp-pct" id="comp-trans-pct"></div>
+              <div class="comp-desc">Backfilled from JSONL. Has prompts + tool calls. Missing: real-time timing, pre_tool_use, permission events.</div>
+            </div>
+          </div>
+        </div>
+        <div class="gap-box">
+          <strong>Period gap:</strong> When AngelEye isn't running, sessions accumulate as JSONL only. Sync recovers conversation content — enough for Tier 1/2/3 classification — but hook events from that period are gone. <strong>Tier 1+2 classification works fine on transcript-only sessions.</strong>
+        </div>
+      </div>
+
+      <!-- ── Reclassification — static ── -->
+      <div class="section">
+        <div class="section-label">Reclassification — re-run anytime as rules improve</div>
+        <div class="reclass-grid">
+          <div class="reclass-card">
+            <h3>Tier 1+2 — runs today</h3>
+            <div class="reclass-row"><span class="reclass-key">cost</span><span>Zero API cost</span></div>
+            <div class="reclass-row"><span class="reclass-key">speed</span><span>Milliseconds per session</span></div>
+            <div class="reclass-row"><span class="reclass-key">all sessions</span></div>
+            <div><span class="reclass-code">POST /api/sync?force=true</span></div>
+            <div class="reclass-row" style="margin-top:6px;"><span class="reclass-key">untyped only</span></div>
+            <div><span class="reclass-code">POST /api/sync</span></div>
+            <div class="reclass-note">Registry is the output. Raw event JSONL and manually-set fields are never touched.</div>
+          </div>
+          <div class="reclass-card">
+            <h3>Tier 3 LLM — not built yet</h3>
+            <div class="reclass-row"><span class="reclass-key">cost</span><span>API tokens per session</span></div>
+            <div class="reclass-row"><span class="reclass-key">design</span><span>Selective re-runs only — by date range or project</span></div>
+            <div class="reclass-note">Transcript-only sessions work fine for Tier 3 — JSONL content is all Claude needs regardless of whether hooks fired.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+const API_BASE = 'http://localhost:5051';
+
+function fmt(n) { return n.toLocaleString(); }
+
+function renderStats(d) {
+  // Header pill
+  document.getElementById('hdr-total').textContent = fmt(d.total) + ' sessions';
+  document.getElementById('sidebar-footer').textContent = 'AngelEye · ' + fmt(d.total) + ' sessions';
+
+  const canClassify = d.unclassified > 0;
+
+  const html = `
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-num">${fmt(d.total)}</div>
+        <div class="stat-label">Total sessions</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-num">${fmt(d.classified)} <span class="stat-pct">${d.classifiedPct}%</span></div>
+        <div class="stat-label">Classified (of non-junk)</div>
+      </div>
+      <div class="stat-card amber">
+        <div class="stat-num">${fmt(d.unclassified)} <span class="stat-pct">${d.unclassifiedPct}%</span></div>
+        <div class="stat-label">Unclassified — never synced</div>
+      </div>
+      <div class="stat-card muted">
+        <div class="stat-num">${fmt(d.junk)} <span class="stat-pct">${d.junkPct}%</span></div>
+        <div class="stat-label">Junk — excluded</div>
+      </div>
+    </div>
+
+    ${canClassify ? `
+    <div class="sync-callout">
+      <strong>Can we get to 100%?</strong> ${fmt(d.unclassified)} unclassified sessions have never been through the pipeline — not edge cases, just unsynced. Run <code>POST /api/sync</code> to push classification to ~100% of non-junk sessions at zero API cost.
+    </div>` : `
+    <div class="sync-callout" style="background:var(--green-bg);border-left-color:var(--green);">
+      <strong>Fully classified.</strong> All non-junk sessions have a session_type. Run <code>POST /api/sync?force=true</code> to re-run with updated rules.
+    </div>`}
+
+    <div class="progress-row">
+      <div class="progress-label">Classified <span class="progress-pct">${d.classifiedPct}%</span></div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill fill-green" style="width:${d.classifiedPct}%"></div></div>
+      <div class="progress-note">${fmt(d.classified)} / ${fmt(d.nonJunk)} non-junk</div>
+    </div>
+    <div class="progress-row">
+      <div class="progress-label">Hook source <span class="progress-pct">${d.hookPct}%</span></div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill fill-blue" style="width:${d.hookPct}%"></div></div>
+      <div class="progress-note">${fmt(d.hookSource)} of ${fmt(d.total)}</div>
+    </div>
+    <div class="progress-row">
+      <div class="progress-label">Transcript only <span class="progress-pct">${d.transcriptPct}%</span></div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill fill-amber" style="width:${d.transcriptPct}%"></div></div>
+      <div class="progress-note">${fmt(d.transcriptSource)} of ${fmt(d.total)}</div>
+    </div>
+    <div class="progress-row" style="opacity:0.65;">
+      <div class="progress-label">Enrichment built <span class="progress-pct">10%</span></div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill fill-muted" style="width:10%"></div></div>
+      <div class="progress-note">~13 of 58 items</div>
+    </div>
+  `;
+
+  document.getElementById('stats-area').innerHTML = html;
+
+  // Completeness section
+  document.getElementById('comp-hook-count').textContent = fmt(d.hookSource);
+  document.getElementById('comp-hook-pct').textContent = d.hookPct + '% of registry';
+  document.getElementById('comp-trans-count').textContent = fmt(d.transcriptSource);
+  document.getElementById('comp-trans-pct').textContent = d.transcriptPct + '% of registry';
+}
+
+async function load() {
+  try {
+    const res = await fetch(`${API_BASE}/api/mock-views/classification-status`, { signal: AbortSignal.timeout(4000) });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    document.getElementById('data-source').textContent = '· live';
+    renderStats(json.data ?? json);
+  } catch (err) {
+    document.getElementById('stats-area').innerHTML =
+      `<div class="err-box">Could not reach AngelEye API (${err.message}). Is the server running on port 5051?</div>`;
+  }
+}
+
+load();
+</script>
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AngelEye — Data Schema</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #e8e0d4;
+    --surface: #ede7dc;
+    --surface-mid: #ddd6cc;
+    --card: #f5f1eb;
+    --border: #d4cdc4;
+    --primary: #c8841a;
+    --fg: #2a2018;
+    --muted: #7a6e5e;
+    --muted-dim: #9e9484;
+    --green: #3a7a52;
+    --green-bg: #eaf3ee;
+    --red: #8a2020;
+    --red-bg: #f8eaea;
+    --blue: #2e6ea0;
+    --purple: #7b4fa0;
+    --teal: #1f8080;
+    --orange: #b35a00;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .banner { background: var(--fg); color: var(--muted); font-size: 11px; text-align: center; padding: 3px 0; letter-spacing: 0.08em; flex-shrink: 0; }
+  .app-layout { display: flex; flex: 1; overflow: hidden; }
+
+  .sidebar { width: 180px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; }
+  .sidebar-brand { padding: 16px 14px 12px; border-bottom: 1px solid var(--border); }
+  .sidebar-brand h1 { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.18em; color: var(--primary); font-weight: 400; }
+  .sidebar-brand .brand-sub { font-size: 9px; color: var(--muted-dim); letter-spacing: 0.06em; margin-top: 2px; }
+  .sidebar-section { padding: 10px 0 4px; }
+  .sidebar-label { font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted-dim); padding: 0 14px 4px; }
+  .sidebar-item { font-size: 12px; color: var(--muted); padding: 6px 14px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+  .sidebar-item:hover { background: var(--surface-mid); color: var(--fg); }
+  .sidebar-item.active { background: var(--surface-mid); color: var(--fg); font-weight: 600; }
+  .sidebar-divider { height: 1px; background: var(--border); margin: 4px 0; }
+  .sidebar-footer { margin-top: auto; padding: 10px 14px; font-size: 9px; color: var(--muted-dim); border-top: 1px solid var(--border); }
+
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .main-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 10px 20px; display: flex; align-items: baseline; gap: 12px; flex-shrink: 0; }
+  .main-header h2 { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 0.12em; color: var(--fg); font-weight: 400; }
+  .main-header .subtitle { font-size: 11px; color: var(--muted); }
+  .main-header .header-pills { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+  .pill { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; border: 1px solid var(--border); background: var(--card); color: var(--muted); }
+
+  .content { flex: 1; overflow-y: auto; padding: 16px 20px 24px; }
+
+  .section-label { font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--primary); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .section { margin-bottom: 20px; }
+
+  /* Data flow */
+  .flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; background: var(--card); border: 1px solid var(--border); border-radius: 5px; padding: 12px 14px; }
+  .flow-node { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 7px 10px; }
+  .node-label { font-size: 11px; font-weight: 700; color: var(--fg); letter-spacing: 0.04em; }
+  .node-path { font-family: monospace; font-size: 9px; color: var(--muted); margin-top: 2px; }
+  .flow-node.source { border-left: 3px solid var(--blue); }
+  .flow-node.source .node-label { color: var(--blue); }
+  .flow-node.core-node { background: var(--fg); border-color: var(--fg); padding: 9px 18px; }
+  .flow-node.core-node .node-label { color: var(--primary); font-size: 15px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.12em; }
+  .flow-node.storage { border-left: 3px solid var(--primary); }
+  .flow-node.storage .node-label { color: var(--primary); }
+  .flow-node.storage-dim { border-left: 3px solid var(--border); opacity: 0.7; }
+  .arrow { color: var(--muted); font-size: 16px; flex-shrink: 0; }
+  .storage-group { display: flex; flex-direction: column; gap: 5px; }
+  .storage-group .flow-node { padding: 5px 9px; }
+
+  /* Field grid */
+  .field-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+  .field-card { background: var(--card); border: 1px solid var(--border); border-top: 3px solid var(--border); border-radius: 5px; padding: 9px 11px; }
+  .field-card-header { display: flex; align-items: center; gap: 5px; margin-bottom: 7px; flex-wrap: wrap; }
+  .field-card-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg); }
+  .tier-badge { font-family: monospace; font-size: 9px; padding: 1px 5px; border-radius: 3px; background: var(--surface-mid); color: var(--muted); border: 1px solid var(--border); }
+  .impl-badge { font-family: monospace; font-size: 9px; padding: 1px 5px; border-radius: 3px; background: var(--red-bg); color: var(--red); border: 1px solid #e0b0b0; }
+  .chips { display: flex; flex-wrap: wrap; gap: 3px; }
+  .chip { font-family: monospace; font-size: 9.5px; padding: 2px 6px; border-radius: 3px; background: var(--surface-mid); border: 1px solid var(--border); color: var(--fg); cursor: default; position: relative; }
+  .chip:hover { background: var(--surface); border-color: var(--primary); }
+  .chip:hover::after { content: attr(data-note); position: absolute; bottom: calc(100% + 5px); left: 0; background: var(--fg); color: var(--card); font-size: 10px; font-family: system-ui, sans-serif; padding: 5px 9px; border-radius: 4px; white-space: normal; max-width: 260px; z-index: 100; pointer-events: none; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+
+  /* Event table */
+  .event-table-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 5px; overflow: hidden; }
+  .event-table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+  .event-table th { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); background: var(--surface-mid); padding: 5px 10px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  .event-table td { padding: 3px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .event-table tr:last-child td { border-bottom: none; }
+  .event-table tr:hover td { background: var(--surface); }
+  .event-table .fname { font-family: monospace; color: var(--fg); white-space: nowrap; }
+  .event-table .ftype { font-family: monospace; color: var(--blue); white-space: nowrap; font-size: 10.5px; }
+  .event-table .req-y { color: var(--green); }
+  .event-table .req-n { color: var(--border); }
+  .event-table .fnote { color: var(--muted); font-size: 10.5px; }
+  .event-table .divider-col { border-left: 1px solid var(--border); }
+
+  /* Enums */
+  .enum-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+  .enum-card { background: var(--card); border: 1px solid var(--border); border-radius: 5px; overflow: hidden; }
+  .enum-card-header { background: var(--fg); padding: 5px 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--primary); display: flex; justify-content: space-between; align-items: center; }
+  .enum-card-header .count { font-family: monospace; font-size: 10px; color: var(--muted); font-weight: 400; }
+  .enum-row { display: flex; gap: 8px; padding: 3px 10px; border-bottom: 1px solid var(--border); align-items: baseline; }
+  .enum-row:last-child { border-bottom: none; }
+  .enum-val { font-family: monospace; font-size: 10px; color: var(--fg); font-weight: 700; min-width: 80px; flex-shrink: 0; }
+  .enum-desc { font-size: 10px; color: var(--muted); line-height: 1.3; }
+  .wave11-label { padding: 4px 10px 2px; font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted-dim); border-top: 1px solid var(--border); }
+  .wave11-list { padding: 3px 10px 7px; display: flex; flex-wrap: wrap; gap: 3px; }
+  .wave11-chip { font-family: monospace; font-size: 9px; padding: 1px 5px; border-radius: 3px; background: var(--surface-mid); border: 1px solid var(--border); color: var(--muted); }
+
+  .loading-row { padding: 10px 0; font-size: 11px; color: var(--muted); }
+  .err-box { background: var(--red-bg); border: 1px solid #e0b0b0; border-left: 4px solid var(--red); border-radius: 4px; padding: 8px 12px; font-size: 11px; color: var(--red); }
+</style>
+</head>
+<body>
+<!-- Mochaccino citation — data: /data/angeleye-schema.json — source: shared/src/angeleye.ts + docs/data-schema.md — rendered: 2026-05-03 -->
+
+<div class="banner">Mocha — AngelEye Data Schema — 2026-05-03 — data: /data/angeleye-schema.json</div>
+
+<div class="app-layout">
+  <nav class="sidebar">
+    <div class="sidebar-brand">
+      <h1>AngelEye</h1>
+      <div class="brand-sub">OBSERVABILITY</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Monitor</div>
+      <div class="sidebar-item">◎ Observer</div>
+      <div class="sidebar-item">⊞ Organiser</div>
+      <div class="sidebar-item">⇄ Workflows</div>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Tools</div>
+      <div class="sidebar-item">⊕ Inspector</div>
+      <div class="sidebar-item">⚙ Settings</div>
+      <div class="sidebar-item active">◈ Intelligence</div>
+    </div>
+    <div class="sidebar-footer">TypeScript source<br>shared/src/angeleye.ts</div>
+  </nav>
+
+  <div class="main">
+    <div class="main-header">
+      <h2>DATA SCHEMA</h2>
+      <span class="subtitle">RegistryEntry · AngelEyeEvent · Enums · Storage</span>
+      <div class="header-pills" id="hdr-pills">
+        <span class="pill">loading…</span>
+      </div>
+    </div>
+
+    <div class="content" id="content">
+      <div class="loading-row">Loading schema from /data/angeleye-schema.json…</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Color map: JSON color name → CSS class suffix for card-*
+const COLOR_CLASS = {
+  blue: 'core', green: 'classif', purple: 'tier1', orange: 'tier2',
+  teal: 'overlay', red: 'phase2c', gray: 'affinity', orange2: 'genesis',
+};
+// Also map the exact color values used in the JSON
+function groupClass(color) {
+  const map = { blue:'core', green:'classif', purple:'tier1', orange:'tier2', teal:'overlay', red:'phase2c', gray:'affinity' };
+  return map[color] || 'tier2';
+}
+
+function chip(f) {
+  const note = f.note ? ` data-note="${f.note.replace(/"/g,'&quot;')}"` : '';
+  return `<span class="chip"${note}>${f.name}</span>`;
+}
+
+function renderFieldGroups(groups) {
+  const cards = Object.entries(groups).map(([key, group]) => {
+    const isPhase2c = key === 'phase2c';
+    const span = isPhase2c ? ' style="grid-column:span 2"' : '';
+    const tierBadge = group.tier ? `<span class="tier-badge">${group.tier.split('—')[0].trim()}</span>` : '';
+    const implBadge = isPhase2c ? `<span class="impl-badge">NOT YET IMPLEMENTED</span>` : '';
+    const cls = groupClass(group.color);
+    return `
+      <div class="field-card card-${cls}"${span}>
+        <div class="field-card-header">
+          <span class="field-card-title">${group.label}</span>
+          ${tierBadge}${implBadge}
+        </div>
+        <div class="chips">${(group.fields || []).map(chip).join('')}</div>
+      </div>`;
+  }).join('');
+  return `<div class="field-grid">${cards}</div>`;
+}
+
+function renderEventTable(fields) {
+  // Split into two columns
+  const half = Math.ceil(fields.length / 2);
+  const left = fields.slice(0, half);
+  const right = fields.slice(half);
+  const rows = left.map((l, i) => {
+    const r = right[i];
+    const lReq = l.required ? '<span class="req-y">●</span>' : '<span class="req-n">○</span>';
+    const rCell = r ? `<td class="fname divider-col">${r.name}</td><td class="ftype">${r.type}</td><td>${r.required ? '<span class="req-y">●</span>' : '<span class="req-n">○</span>'}</td><td class="fnote">${r.note || ''}</td>` : '<td class="divider-col"></td><td></td><td></td><td></td>';
+    return `<tr><td class="fname">${l.name}</td><td class="ftype">${l.type}</td><td>${lReq}</td><td class="fnote">${l.note || ''}</td>${rCell}</tr>`;
+  }).join('');
+  return `
+    <div class="event-table-wrap">
+      <table class="event-table">
+        <thead><tr><th>Field</th><th>Type</th><th>Req</th><th>Note</th><th class="divider-col">Field</th><th>Type</th><th>Req</th><th>Note</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+function renderEnums(enums) {
+  const cards = Object.entries(enums).map(([key, e]) => {
+    if (key === 'event_types') {
+      const coreRows = (e.core || []).map(v => `<div class="enum-row"><span class="enum-val">${v.value}</span><span class="enum-desc">${v.description}</span></div>`).join('');
+      const wave11 = (e.wave11 || []).map(v => `<span class="wave11-chip">${v}</span>`).join('');
+      return `<div class="enum-card"><div class="enum-card-header">${e.label || key} <span class="count">25 types</span></div>${coreRows}<div class="wave11-label">+ ${(e.wave11||[]).length} Wave 11 types</div><div class="wave11-list">${wave11}</div></div>`;
+    }
+    const rows = (e.values || []).map(v => `<div class="enum-row"><span class="enum-val">${v.value}</span><span class="enum-desc">${v.description}</span></div>`).join('');
+    return `<div class="enum-card"><div class="enum-card-header">${e.label || key} <span class="count">${(e.values||[]).length} values</span></div>${rows}</div>`;
+  }).join('');
+  return `<div class="enum-grid">${cards}</div>`;
+}
+
+function renderContent(schema) {
+  // Header pills
+  const fields = schema.registry_entry_fields || {};
+  const fieldCount = Object.values(fields).reduce((n, g) => n + (g.fields||[]).length, 0);
+  const eventCount = (schema.angel_eye_event_fields || []).length;
+  document.getElementById('hdr-pills').innerHTML = `
+    <span class="pill">~${fieldCount} registry fields</span>
+    <span class="pill">${eventCount} event fields</span>
+    <span class="pill">25 event types</span>
+    <span class="pill">58 enrichment items</span>`;
+
+  document.getElementById('content').innerHTML = `
+    <!-- Data flow -->
+    <div class="section">
+      <div class="section-label">Data Flow</div>
+      <div class="flow">
+        <div class="flow-node source"><div class="node-label">Claude JSONL</div><div class="node-path">~/.claude/projects/&lt;path&gt;/&lt;id&gt;.jsonl</div><div class="node-path">user · assistant · custom-title · progress</div></div>
+        <div class="arrow">→</div>
+        <div class="flow-node source"><div class="node-label">Hook Events</div><div class="node-path">POST /hooks/:event (live)</div><div class="node-path">25 event types</div></div>
+        <div class="arrow">→</div>
+        <div class="flow-node core-node"><div class="node-label">AngelEye</div></div>
+        <div class="arrow">→</div>
+        <div class="storage-group">
+          ${(schema.storage_locations || []).slice(0,2).map(s => `<div class="flow-node storage"><div class="node-label">${s.label}</div><div class="node-path">${s.path}</div></div>`).join('')}
+          ${schema.storage_locations?.[2] ? `<div class="flow-node storage-dim"><div class="node-label">${schema.storage_locations[2].label}</div><div class="node-path">${schema.storage_locations[2].path}</div></div>` : ''}
+        </div>
+      </div>
+    </div>
+
+    <!-- Registry fields -->
+    <div class="section">
+      <div class="section-label">RegistryEntry — field groups · one entry per session in registry.json</div>
+      ${renderFieldGroups(schema.registry_entry_fields || {})}
+    </div>
+
+    <!-- Event fields -->
+    <div class="section">
+      <div class="section-label">AngelEyeEvent — one per line in sessions/*.jsonl and archive/*.jsonl</div>
+      ${renderEventTable(schema.angel_eye_event_fields || [])}
+    </div>
+
+    <!-- Enums -->
+    <div class="section">
+      <div class="section-label">Enumerations</div>
+      ${renderEnums(schema.enums || {})}
+    </div>
+  `;
+}
+
+async function load() {
+  try {
+    const res = await fetch('/data/angeleye-schema.json', { signal: AbortSignal.timeout(3000) });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const schema = await res.json();
+    renderContent(schema);
+  } catch (err) {
+    document.getElementById('content').innerHTML =
+      `<div class="err-box">Could not load /data/angeleye-schema.json (${err.message}). Is the static server running on port 7422?</div>`;
+  }
+}
+
+load();
+</script>
+</body>
+</html>

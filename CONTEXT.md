@@ -1,5 +1,5 @@
 ---
-generated: 2026-04-05
+generated: 2026-04-09
 generator: system-context
 status: snapshot
 sources:
@@ -48,6 +48,8 @@ sources:
   - docs/planning/workflow-feature-requirements.md
   - docs/planning/workflow-detail-view-requirements.md
   - context.globs.json
+  - .screenshots/full-app/tour.yml
+  - .screenshots/full-app/analysis.md
 regenerate: 'Run /system-context in the repo root'
 ---
 
@@ -64,6 +66,7 @@ Real-time command centre for monitoring, classifying, and organising Claude Code
 - **Classification** — A multi-tier enrichment pipeline that labels sessions without LLM calls. Tier 1 (deterministic counts/pattern matching), Tier 2 (regex/heuristic: voice dictation, brain writes, cross-session refs, closing ceremony). Assigns `SessionType` (BUILD/TEST/RESEARCH/KNOWLEDGE/OPS/ORIENTATION), `SessionScale`, `ToolPattern`, `SessionSubtype`, plus Phase 2c behavioural classifiers (`DelegationStyle`, `OpeningStyle`, `ClosingStyle`, `OutputType`, `InitiationSource`, `SessionContinuity`, `SessionLiveness`). Tier 3 (LLM enrichment) is designed but not yet built.
 - **Affinity Group** — Cross-session correlation that clusters related sessions into business units. Types: `story_unit` (deterministic, shared story ID), `epic_sprint`, `project_phase`, `ad_hoc` (temporal proximity heuristic). The correlator uses story-ID extraction (Signal 1) and temporal clustering (Signal 2) with type-guarded merge to prevent story units merging with ad-hoc clusters.
 - **Workflow** — A factory production-line model. `WorkflowType` is a pure JSON config defining stations in sequence (e.g., BMAD Regular Story has 9 stations from WN through SHIP). `WorkflowInstance` tracks runtime state per work item (story). The workflow router seeds instances from registry data by parsing `trigger_command` + `workflow_action` + `workflow_role` to associate sessions with stations. Stations progress through `not_started` → `in_progress` → `completed`, with completion detected when all associated sessions have ended. The router includes a concurrency guard, dry-run mode, and detailed unroutable-reason tracking.
+- **Conversation Turn** — The UI's interpretation unit for session events. Raw `AngelEyeEvent` streams are grouped into `Turn` objects: `user` (from `user_prompt` events), `claude` (aggregating `tool_use` calls + the final `stop` message), and `divider` (from lifecycle events like `session_start`, `subagent_start`). This grouping is what the `SessionEventsPanel` renders as a chat-style conversation replay.
 
 ## Key Workflows
 
@@ -85,14 +88,22 @@ Real-time command centre for monitoring, classifying, and organising Claude Code
 
 1. User triggers `POST /api/workflows/seed` (or `?dry_run=true` for preview)
 2. The workflow router reads all registry entries, filters to BMAD sessions (`trigger_command` starts with `bmad`), parses `workflow_action` using `parseAction()` to extract action code + story ID
-3. For each routable session, `lookupStation()` matches `role:actionCode` against a station map built from the workflow type config, with fallback patterns for SAT-\* suffixes and role-less shipper matching
+3. For each routable session, `lookupStation()` matches `role:actionCode` against a station map built from the workflow type config, with fallback patterns for SAT-\* suffixes, role-less shipper matching, and a last-resort action-code-only scan (handles CU sessions from `bmad-sat` routing to the advisor station)
 4. Sessions are grouped by story ID; for each group, the router finds or creates a `WorkflowInstance`, associates sessions with stations (idempotent dedup), auto-completes stations when all sessions have ended, and closes workflows when sufficient coverage is reached
 5. A concurrency guard (`seedInProgress`) prevents parallel seed operations; results include `workflows_created`, `workflows_updated`, `sessions_routed`, and detailed `unroutable_reasons`
+
+### Workflow detail inspection — per-story station review
+
+1. User opens the Workflows view, sees a list of `WorkflowInstance` records grouped by status
+2. Clicking a story opens `WorkflowDetailView` — a three-panel layout: header (label, type, domain, status pill), pipeline strip (scrollable horizontal row of `StationNode` cards), and a chat panel below
+3. The `WorkflowPipeline` component renders each station as a clickable card showing: agent avatar with identity-coded color (Bob=blue, Amelia=green, Nate=orange, Taylor=purple, Lisa=pink), action code in Bebas Neue, duration, state badge (✓ green for completed, pulsing amber dot for in_progress, dimmed for pending), and a session count badge when multiple sessions hit the same station
+4. Clicking a station loads its session(s) in `SessionEventsPanel`: raw events are grouped into conversation turns (user bubbles, claude bubbles with expandable tool-call groups, lifecycle dividers). Multiple sessions on one station show tabs.
+5. The chat footer shows aggregate stats (tool call count, prompt count, time started); noise events (`pre_tool_use`, `progress`, `instructions_loaded`, `cwd_changed`) are silently filtered before turn grouping
 
 ### Dashboard operation — daily use
 
 1. User opens the React client; the AppShell renders Header + Sidebar + ContentPanel with view routing via NavContext
-2. **Observer** view shows live sessions with real-time Socket.io updates. **Organiser** view allows workspace assignment and session annotation. **Workflows** view shows pipeline list. **Workflow Detail** view shows per-story station progress with a pipeline visualisation component and session events panel. **Inspector** view provides schema and data inspection. **Settings** view shows sync controls, stats, and field distribution breakdowns. **Campaign Dashboard/Infographic** views provide analysis campaign results.
+2. **Observer** view shows live sessions with real-time Socket.io updates. **Organiser** view allows workspace assignment and session annotation. **Workflows** view shows pipeline list. **Workflow Detail** view shows per-story station progress with pipeline visualization and conversation replay. **Inspector** view provides schema and data inspection. **Settings** view shows sync controls, stats, and field distribution breakdowns. **Campaign Dashboard/Infographic** views provide analysis campaign results.
 3. Mochaccino mockups (HTML in `.mochaccino/designs/`) fetch from `/api/mock-views/*` endpoints with automatic sample-data fallback from `.mochaccino/samples/`
 
 ## Design Decisions
@@ -117,9 +128,13 @@ Real-time command centre for monitoring, classifying, and organising Claude Code
   - _Alternative considered_: Classify all sessions equally regardless of size
   - _Why rejected_: Validated against 924-session analysis campaign — small sessions consistently misclassified without scale gating
 
-- **Workflow router with multi-level station lookup**: The station map supports three lookup strategies — primary `role:actionCode`, role-only fallback (for shipper), and action-code-only fallback (for cross-role routing like SAT tests). This handles the real-world variety of BMAD session shapes.
+- **Workflow router with multi-level station lookup**: The station map supports three lookup strategies — primary `role:action_code`, role-only fallback (for shipper), and action-code-only scan (for cross-role routing like `bmad-sat` sessions with CU action code routing to the advisor station). This handles the real-world variety of BMAD session shapes.
   - _Alternative considered_: Strict role:action matching only
   - _Why rejected_: Real sessions show role mismatches (e.g., `bmad-sat` sessions with tester role routing to advisor stations). Strict matching left ~30% of sessions unroutable.
+
+- **Conversation turn grouping in the UI, not the server**: `groupEventsIntoTurns()` runs client-side in `SessionEventsPanel`, grouping raw events into user/claude/divider turns. The server serves raw events; the client decides how to render them.
+  - _Alternative considered_: Server-side turn aggregation endpoint
+  - _Why rejected_: Turn grouping is a presentation concern. Keeping raw events on the server means the same data can be displayed differently (future: timeline view, tool-only view) without a new API.
 
 ## Non-obvious Constraints
 
@@ -127,11 +142,13 @@ Real-time command centre for monitoring, classifying, and organising Claude Code
 - **Rate limiting excludes `/hooks/*`**: Hooks are internal machine events that can fire in rapid bursts (especially `pre_tool_use` and `tool_use` pairs). Rate limiting would silently drop events. Only `/api/*` routes are rate-limited.
 - **Backfill skill-prompt extraction is fragile**: When Claude Code expands a skill (e.g., `/bmad-sm WN`), the JSONL records XML like `<command-name>bmad-sm</command-name><command-args>WN</command-args>`. The backfill's original `content.startsWith('<')` filter was discarding all skill-triggered prompts. The `extractSkillPrompt()` regex parser is the fix — if Claude Code changes its XML format, backfill breaks silently.
 - **Registry concurrent writes rely on the serial promise queue**: There is no file lock. The `writeQueue` serialises writes within a single Node process, but if two AngelEye instances pointed at the same data directory, they would corrupt `registry.json`. This is acceptable because AngelEye is a local single-instance tool.
-- **`progress` entries dominate JSONL transcripts**: ~75% of entries in hook-heavy sessions are `progress` type. Parsers that iterate all lines without filtering will be slow. The backfill service already skips these.
+- **`progress` entries dominate JSONL transcripts**: ~75% of entries in hook-heavy sessions are `progress` type. Parsers that iterate all lines without filtering will be slow. The backfill service already skips these; the `SessionEventsPanel` also filters them before turn grouping.
+- **WN (gatekeeper) sessions are always unroutable**: `parseAction('wn')` returns `{ actionCode: 'WN', storyId: null }`. Because no story ID is present, the router cannot associate WN sessions with a workflow instance — they appear in `unroutable_reasons` with reason `"gatekeeper session (WN) — pending workflow association"`. This is by design, not a bug.
 - **Git sync operates on the AngelEye repo itself**: The git-sync service uses a promise-chain mutex (`withGitLock`) to prevent concurrent `git fetch` / `git pull` races. It derives state (clean/dirty/behind/ahead/diverged) from the repo containing AngelEye's own source code — not the monitored projects.
 - **Workflow router only handles `regular_story` type**: The seed function hardcodes `getWorkflowType('regular_story')`. Epic Zero and other workflow types exist as configs but have no routing logic yet.
 - **Workflow seed has a concurrency guard**: A module-level `seedInProgress` boolean prevents parallel seed calls. If a seed crashes without reaching the `finally` block, the guard stays locked until the process restarts. The API returns 409 Conflict when guarded.
 - **Project configs are cached after first load**: `project-config.service.ts` caches all project JSON configs in memory after the first `loadProjectConfigs()` call. Changes to config files require a server restart to take effect.
+- **`SessionEventsPanel` noise filter is a fixed set**: The `NOISE_EVENTS` set (`pre_tool_use`, `progress`, `instructions_loaded`, `cwd_changed`) is hardcoded in the component. Adding a new high-volume event type to the hook system without updating this set will produce noisy turn rendering.
 
 ## Expert Mental Model
 
@@ -141,6 +158,7 @@ Real-time command centre for monitoring, classifying, and organising Claude Code
 - **Affinity groups and workflows solve different problems**: Affinity groups are bottom-up discovery ("these sessions seem related based on shared story IDs or temporal proximity"). Workflows are top-down structure ("this story should pass through these 9 stations in order"). A session can belong to an affinity group AND be routed to a workflow station — the two systems complement, not compete.
 - **The mochaccino layer is a design sandbox**: `.mochaccino/` contains standalone HTML mockups that hit the same API endpoints as the React client. They exist for rapid UI prototyping without touching the React build pipeline. The generic catch-all at `/api/mock-views/:name` serves any JSON file from `.mochaccino/samples/` — no server code needed for new mockups.
 - **The router is a state machine with fallback strategies**: Understanding the workflow router means understanding its three-level station lookup (primary → role-fallback → action-code-fallback) and its detailed unroutable tracking. Every session that can't be routed gets a specific reason, not a generic failure. This is how you debug workflow coverage — check the `unroutable_reasons` array, not the routed count.
+- **Turn grouping is the UI's interpretation layer**: Raw events are stored faithfully; the `groupEventsIntoTurns()` function is the lens that makes them readable. A `tool_use` event mid-session doesn't stand alone — it accumulates into a `claude` turn until a `stop` event closes it. The session panel shows you a conversation; the JSONL file contains a mechanical event log. Both describe the same session, but at different levels of abstraction.
 
 ## Scope Limits
 
@@ -151,6 +169,16 @@ Real-time command centre for monitoring, classifying, and organising Claude Code
 - Does NOT replace Claude Code's built-in `/insights` — captures a different dimension (work-type classification, cross-session correlation, workflow tracking vs. token usage and cost).
 - Does NOT handle non-BMAD workflows yet — the workflow router only seeds `regular_story` instances. Epic Zero configs exist but have no routing logic. Non-BMAD domains would need new overlay configs and router extensions.
 - Does NOT provide harness-driven workflow automation yet — the architecture doc (`docs/planning/workflow-automation-harness.md`) describes hook-driven station transitions, agent `initialPrompt` templates, and Sentinel/Relay teams, but none of this is implemented. The current system is passive observation only.
+- Does NOT show WN (gatekeeper) sessions in workflow pipelines — WN sessions have no story ID and are intentionally excluded from workflow instance association.
+
+## Visual Reference
+
+A full screenshot tour was captured 2026-04-09 covering all 11 built screens and 9 key mockups:
+
+- **Tour + per-screen descriptions**: `.screenshots/full-app/tour.yml`
+- **Full analysis + built-vs-designed gap table**: `.screenshots/full-app/analysis.md`
+
+Key finding from the analysis: the built WorkflowDetailView (pipeline + chat panel) is the strongest screen but is missing the right-panel intelligence layer (Predicates/Observations/Classifications/Extractions) that the `wave-three-panel` and `chain-session-detail` mockups designed. Adding that right column is the highest-leverage next UI step. Sub-agent tree visualization (`wave-subagents` mockup) and handover UX (`wave-handover` mockup) are the two largest gaps between design vision and built reality.
 
 ## Failure Modes
 
@@ -162,3 +190,4 @@ Real-time command centre for monitoring, classifying, and organising Claude Code
 - **Git sync mutex doesn't prevent Overmind restart races**: If the server restarts (via Overmind) while a git operation is in progress, the promise-chain mutex is lost. A concurrent `git fetch` from a new process and the dying process's `git pull` can interleave. In practice this is rare because git operations are fast, but it can produce confusing error messages.
 - **Seed concurrency guard can get stuck**: If the workflow seed function throws between setting `seedInProgress = true` and reaching the `finally` block (unlikely but possible with out-of-memory or process signals), subsequent seed attempts return 409 until the server is restarted. The guard is a simple boolean, not a timeout-based lock.
 - **Project config cache stale after file edits**: The project-config service caches configs in memory after the first load. If JSON config files in `server/src/config/projects/` are edited while the server is running, the changes are invisible until restart. No cache invalidation mechanism exists.
+- **SessionEventsPanel shows empty chat if events API is slow**: The panel sets `loading = true` and clears events immediately on session change. If the network is slow or the server is under load, there's a visible blank state between station clicks with no timeout or retry logic.

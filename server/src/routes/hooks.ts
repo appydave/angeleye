@@ -7,6 +7,8 @@ import { writeEvent, getSessionEvents, archiveSession } from '../services/sessio
 import { readRegistry, updateRegistry } from '../services/registry.service.js';
 import { classifySession, findFirstRealPrompt } from '../services/classifier.service.js';
 import { auditPayload } from '../services/schema-auditor.service.js';
+import { detectTeammate } from '../services/teammate-detection.service.js';
+import { detectSubprocess } from '../services/subprocess-detection.service.js';
 
 const EVENT_MAP: Record<string, AngelEyeEventType> = {
   // Original 7
@@ -180,6 +182,10 @@ export function createHooksRouter(io: Server): Router {
       if (eventType === 'session_start') {
         const project =
           cwd !== undefined && cwd.length > 0 ? (cwd.split('/').filter(Boolean).pop() ?? cwd) : '';
+        // Detect Mechanism B subagents (Agent Teams). Best-effort at SessionStart —
+        // the JSONL may not yet contain the teammate-message line. Backfill script
+        // catches misses. See known-issues.md#subagent-detection.
+        const teammate = detectTeammate(sessionId, cwd);
         await updateRegistry(sessionId, {
           session_id: sessionId,
           project,
@@ -191,14 +197,35 @@ export function createHooksRouter(io: Server): Router {
           workspace_id: null,
           status: 'active',
           source: 'hook',
+          session_kind: teammate.is_subagent ? 'subagent' : 'main',
+          ...(teammate.teammate_id !== undefined && { teammate_id: teammate.teammate_id }),
         });
       } else if (eventType === 'stop') {
         const allEvents = await getSessionEvents(sessionId);
         const classification = classifySession(allEvents, sessionId, cwd ?? '');
+        // Re-detect teammate in case SessionStart fired before the wrapper was in JSONL.
+        // Then, if not a teammate, check for headless skill subprocess (Mechanism C).
+        // See known-issues.md#subprocess-session-mechanism-3
+        const registry = await readRegistry();
+        const existing = registry[sessionId];
+        const kindUpdate: {
+          session_kind?: 'subagent' | 'subprocess';
+          teammate_id?: string | null;
+        } = {};
+        if (existing?.session_kind === undefined || existing.session_kind === 'main') {
+          const t = detectTeammate(sessionId, cwd);
+          if (t.is_subagent) {
+            kindUpdate.session_kind = 'subagent';
+            kindUpdate.teammate_id = t.teammate_id ?? null;
+          } else if (detectSubprocess(allEvents).is_subprocess) {
+            kindUpdate.session_kind = 'subprocess';
+          }
+        }
         await updateRegistry(sessionId, {
           last_active: ts,
           ...(cwd !== undefined && { project_dir: cwd }),
           ...classification,
+          ...kindUpdate,
         });
       } else if (eventType === 'session_end') {
         const allEvents = await getSessionEvents(sessionId);

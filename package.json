@@ -22,7 +22,10 @@
     "typecheck": "npm run typecheck -w shared -w server -w client",
     "clean": "rm -rf node_modules shared/dist server/dist client/dist",
     "prepare": "husky",
-    "customize": "tsx scripts/customize.ts"
+    "customize": "tsx scripts/customize.ts",
+    "audit:registry": "tsx scripts/audits/registry-health.ts",
+    "audit:backfill-session-kind": "tsx scripts/audits/backfill-session-kind.ts",
+    "audit:backfill-subprocess-kind": "tsx scripts/audits/backfill-subprocess-kind.ts"
   },
   "devDependencies": {
     "@appydave/appystack-config": "^1.0.3",

@@ -100,6 +100,167 @@ const ACCORDION_SECTIONS: AccordionSection[] = [
   },
 ];
 
+// ── Value descriptions (shown on hover) ──────────────────────────────────
+
+const VALUE_DESCRIPTIONS: Record<string, string> = {
+  // Session types
+  BUILD: 'Sessions where you built, implemented, or modified code',
+  ORIENTATION: 'Sessions spent reading, exploring, or understanding a codebase',
+  KNOWLEDGE: 'Sessions creating or updating knowledge documents and brain files',
+  RESEARCH: 'Sessions investigating external tools, libraries, or concepts',
+  OPS: 'Sessions running operational tasks — deployments, pipelines, system maintenance',
+  TEST: 'Sessions writing, debugging, or running tests',
+  unclassified: "Sessions where classification rules didn't fire — usually very short or unusual",
+
+  // Session subtypes — flat taxonomy
+  bug_fix_round: 'Tracking down and fixing a specific bug',
+  feature_implementation: 'Building a new feature end-to-end with code changes',
+  refactoring: 'Restructuring existing code without changing behaviour',
+  test_writing: 'Writing or updating test files',
+  ci_pipeline: 'Setting up or fixing CI/CD pipelines and deployment scripts',
+  codebase_exploration: 'Reading through a codebase to understand its structure and patterns',
+  file_retrieval: 'Fetching a specific file or piece of information',
+  artifact_lookup: 'Finding a specific artifact — config, credential, or generated output',
+  brain_maintenance: 'Updating or reorganising knowledge brain files',
+  advisory_refinement: 'Refining prompts, instructions, or AI guidance documents',
+  brain_capture: 'Capturing new knowledge into brain files for the first time',
+  technology_survey: 'Researching a technology, library, or tool from external sources',
+  hardware_setup_troubleshooting: 'Setting up or fixing hardware or environment issues',
+  release_exploration: 'Investigating release notes, changelogs, or version differences',
+  poem_execution: 'Running a POEM OS workflow or prompt orchestration sequence',
+  directory_cleanup: 'Organising, archiving, or removing files and directories',
+  paperclip_agent: 'Autonomous agent running a long background task',
+  daily_planning: 'Planning session — reviewing priorities and setting direction for the day',
+  interactive_design: 'Designing or iterating on UI, architecture, or system design interactively',
+  sprint_planning: 'Planning a sprint, campaign, or batch of work items',
+  mcp_integration: 'Setting up or configuring an MCP server integration',
+  environment_setup: 'Setting up a development environment, dependencies, or tooling',
+  dependency_management: 'Updating, auditing, or resolving package dependencies',
+  playwright_e2e: 'Running or writing Playwright end-to-end browser tests',
+  test_debugging: 'Debugging failing tests to find root cause',
+  session_about_sessions: 'A meta-session where AngelEye or session classification is the topic',
+  unknown: 'Not yet determined — will be classified in a future enrichment pass',
+
+  // LLM-enrichment taxonomy (dot-notation, March 2026 campaign)
+  'build.feature': 'Standard feature implementation — new capability added to an existing codebase',
+  'build.campaign':
+    'Coordinated multi-agent build — coordinator session launching parallel workers',
+  'build.orchestrated_campaign':
+    'Multi-session orchestrated effort using agent chains and subagents',
+  'build.iterative_design':
+    'Back-and-forth design iteration — trying, evaluating, adjusting in a loop',
+  'build.multi_phase': 'Session spanning multiple distinct implementation phases',
+  'research.exploration': 'Open-ended research into an unfamiliar topic or technology',
+  'research.quick_answer': 'Targeted lookup — a specific question with a specific answer needed',
+  'research.codebase_exploration': 'Deep read of an external codebase to understand its patterns',
+  'knowledge.general': 'General knowledge capture — observations, patterns, lessons learned',
+  'knowledge.research': 'Research findings captured into knowledge documents',
+  'knowledge.brain_creation': 'Creating a new brain file or knowledge domain from scratch',
+  'knowledge.brain_update': 'Updating an existing brain file with new findings',
+  'knowledge.methodology_design': 'Designing or refining a methodology, framework, or process',
+  'operations.maintenance': 'Routine maintenance — cleanup, updates, housekeeping',
+  'operations.system_task': 'Running a specific system-level task or script',
+  'operations.poem_execution': 'Executing a POEM OS prompt sequence',
+  'orientation.artifact_retrieval': 'Retrieving a specific artifact, config, or credential',
+  'orientation.codebase_exploration': 'Exploring a codebase to orient within it',
+  'orientation.quick_check': 'Fast check of a value, status, or fact — in and out',
+  'orientation.exploration': 'Open-ended exploration of an area without a specific goal',
+  'orientation.abandoned': 'Session that started orientation but was immediately abandoned',
+  'planning.general': 'General planning session — reviewing state, setting direction',
+  'sysops.system_configuration': 'Configuring system settings, shell, or OS-level tools',
+  'sysops.infrastructure': 'Infrastructure work — networking, servers, deployment config',
+  'skill.development': 'Building or refining a Claude Code skill',
+  'skill.creation': 'Creating a new skill from scratch',
+  'mixed.multi_activity': 'Session that clearly spanned multiple unrelated activities',
+  'meta.accidental':
+    "Session that wasn't real work — accidental window open, brief wrong-project visit",
+  'meta.ghost_session': 'Session file exists but has no meaningful content or activity',
+  'test.execution': 'Running existing tests to check for regressions (not writing new tests)',
+
+  // Delegation styles
+  orchestrated: 'Claude coordinating multiple parallel subagents or tasks',
+  directive: 'User giving specific step-by-step instructions, Claude executing',
+  autonomous: 'Claude working independently with minimal user direction',
+  conversational: 'Back-and-forth dialogue — user and Claude refining together',
+
+  // Opening styles
+  skill_invocation: 'Session started by invoking a slash command (e.g. /plan, /ralphy)',
+  agent_initiated: 'Session started by an automated agent or hook, not a human typing',
+  typed_question: 'Session opened with a natural language question',
+  paste_handover: 'Session opened by pasting a large block of context or prior conversation',
+  typed_instruction: 'Session opened with a direct instruction or command',
+  context_dump: 'Session opened with a large context block — docs, specs, or data',
+  voice_dictation: 'Session opened with voice-to-text input (OMI wearable or similar)',
+  code_paste: 'Session opened by pasting code for review or modification',
+  continuation: 'Session explicitly resumed from a prior session with handover context',
+  greeting: 'Session opened with a greeting or pleasantry before the real work',
+
+  // Closing styles
+  abrupt_abandon:
+    'Session ended without a formal close — window closed or task just stopped. The most common pattern; not a problem.',
+  summary_close: 'Claude provided a summary or handover note before the session ended',
+  natural_completion: 'Task completed cleanly — the work was done and the session ended',
+  question_answer: 'Session ended after a question was answered with no follow-up',
+  commit_push: 'Session ended after a git commit and push to remote',
+  task_handoff: 'Session ended with an explicit handoff note prepared for the next session',
+  commit_only: 'Session ended after committing locally but without pushing',
+  error_bail: 'Session ended due to an error or blocker — work was abandoned mid-task',
+
+  // Liveness
+  low: 'Minimal activity — few tool calls, short session; possibly orientation or accidental',
+  medium: 'Moderate activity — a mix of reading and writing tool calls',
+  high: 'High activity — many tool calls, substantial work performed',
+
+  // Output types
+  code: 'Primary output was code changes to the codebase',
+  knowledge: 'Primary output was knowledge documents or brain files',
+  research: 'Primary output was research findings or analysis',
+  operations: 'Primary output was operational changes — config, scripts, infrastructure',
+  test: 'Primary output was test files',
+  planning: 'Primary output was plans, tickets, or task lists',
+  mixed: 'Session produced multiple distinct output types',
+
+  // Initiation source
+  human: 'Session started by a human typing in Claude Code',
+  agent: 'Session started by an automated agent or tool',
+  hook: 'Session started by a Claude Code hook event',
+
+  // Session continuity
+  fresh: 'New session with no connection to prior sessions',
+  resumed: 'Explicitly resumed from a prior session using /rename or --resume',
+};
+
+function getDescription(value: string): string | undefined {
+  return VALUE_DESCRIPTIONS[value];
+}
+
+// ── Tooltip ───────────────────────────────────────────────────────────────
+
+function Tooltip({
+  content,
+  children,
+}: {
+  content: string | undefined;
+  children: React.ReactNode;
+}) {
+  const [visible, setVisible] = useState(false);
+  if (!content) return <>{children}</>;
+  return (
+    <span
+      className="relative inline-block"
+      onMouseEnter={() => setVisible(true)}
+      onMouseLeave={() => setVisible(false)}
+    >
+      {children}
+      {visible && (
+        <span className="absolute top-full left-0 mt-1 z-50 w-[260px] bg-card border border-border rounded shadow-lg px-2.5 py-1.5 text-[11px] text-foreground leading-relaxed pointer-events-none whitespace-normal">
+          {content}
+        </span>
+      )}
+    </span>
+  );
+}
+
 // ── Helpers ────────────────────────────────────────────────────────────────
 
 function relativeTime(isoString: string): string {
@@ -156,7 +317,17 @@ function TypeDeltaTable({ before, after }: { before: TypeCounts; after: TypeCoun
           return (
             <tr key={type} className="border-b border-border/50 last:border-b-0">
               <td className="py-1 px-2 font-medium" style={{ color: TYPE_COLORS[type] }}>
-                {type === 'unclassified' ? 'unclassified' : type}
+                <Tooltip content={getDescription(type)}>
+                  <span
+                    className={
+                      getDescription(type)
+                        ? 'border-b border-dotted border-current/40 cursor-help'
+                        : ''
+                    }
+                  >
+                    {type === 'unclassified' ? 'unclassified' : type}
+                  </span>
+                </Tooltip>
               </td>
               <td className="py-1 px-2 text-right font-mono tabular-nums">{b}</td>
               <td className="py-1 px-2 text-right font-mono tabular-nums">{a}</td>
@@ -211,7 +382,19 @@ function FieldDeltaTable({ before, after }: { before: FieldCounts; after: FieldC
           const delta = a - b;
           return (
             <tr key={key} className="border-b border-border/50 last:border-b-0">
-              <td className="py-1 px-2 font-medium text-foreground">{formatLabel(key)}</td>
+              <td className="py-1 px-2 font-medium text-foreground">
+                <Tooltip content={getDescription(key)}>
+                  <span
+                    className={
+                      getDescription(key)
+                        ? 'border-b border-dotted border-muted-foreground/40 cursor-help'
+                        : ''
+                    }
+                  >
+                    {formatLabel(key)}
+                  </span>
+                </Tooltip>
+              </td>
               <td className="py-1 px-2 text-right font-mono tabular-nums">{b}</td>
               <td className="py-1 px-2 text-right font-mono tabular-nums">{a}</td>
               <td
@@ -252,7 +435,19 @@ function FieldStatsTable({ counts }: { counts: FieldCounts }) {
       <tbody>
         {sorted.map(([key, count]) => (
           <tr key={key} className="border-b border-border/50 last:border-b-0">
-            <td className="py-1 px-2 font-medium text-foreground">{formatLabel(key)}</td>
+            <td className="py-1 px-2 font-medium text-foreground">
+              <Tooltip content={getDescription(key)}>
+                <span
+                  className={
+                    getDescription(key)
+                      ? 'border-b border-dotted border-muted-foreground/40 cursor-help'
+                      : ''
+                  }
+                >
+                  {formatLabel(key)}
+                </span>
+              </Tooltip>
+            </td>
             <td className="py-1 px-2 text-right font-mono tabular-nums">{count}</td>
           </tr>
         ))}

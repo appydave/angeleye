@@ -1,0 +1,28 @@
+{
+  "pattern": "rvets",
+  "globs": {
+    "docs": ["docs/**/*.md"],
+    "types": ["shared/src/*.ts"],
+    "config": ["server/src/config/**/*.json", "*.config.*", ".env.example"],
+    "services": ["server/src/services/**/*.ts"],
+    "routes": ["server/src/routes/**/*.ts"],
+    "components": ["client/src/components/**/*.tsx"],
+    "views": ["client/src/views/**/*.tsx"],
+    "tests": ["**/*.test.ts"],
+    "styles": ["client/src/styles/**/*.css"],
+    "context": ["CLAUDE.md", "CONTEXT.md", "STEERING.md"],
+    "mockups": [".mochaccino/designs/**/*.html"],
+    "planning": ["docs/planning/**/*.md"]
+  },
+  "aliases": {
+    "backend": ["services", "routes"],
+    "frontend": ["components", "views", "styles"],
+    "api": ["routes", "types"],
+    "ui": ["components", "views", "styles"]
+  },
+  "composites": {
+    "understand": ["context", "docs", "types", "config"],
+    "codebase": ["services", "routes", "components", "views"],
+    "full": ["*"]
+  }
+}

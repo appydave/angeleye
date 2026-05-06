@@ -2,7 +2,7 @@
 
 AI agent context for an AppyStack project.
 
-**System context**: See [CONTEXT.md](CONTEXT.md) for purpose, domain concepts, design rationale, and scope boundaries.
+**System context**: See [CONTEXT.md](CONTEXT.md) for purpose, core abstractions, key workflows, design decisions, non-obvious constraints, expert mental model, scope limits, and failure modes.
 
 ## 🔄 Start Here — Read STEERING.md First
 
@@ -11,6 +11,23 @@ Before doing any work in this project, read `STEERING.md` in this directory.
 It contains David's current observations/blockers/questions and Claude's last direction. Process David's items, write direction back, move resolved items. Stable direction gets absorbed into this CLAUDE.md over time.
 
 **Brain**: `~/dev/ad/brains/angeleye/` — full domain knowledge for AngelEye (concepts, data model, ingestion architecture, ambient intelligence).
+
+## ⚠️ Known Open Issues — Check Before Touching Ingestion or Enrichment
+
+AngelEye has open data-quality issues that are easy to trip over. Before changing anything in:
+
+- **ingestion** (`server/src/routes/hooks.ts`, `server/src/services/sync.service.ts`),
+- **classifier** (`server/src/services/classifier.service.ts`),
+- **enrichment** (`.claude/skills/enrich-subtypes/`),
+
+read `docs/architecture/known-issues.md` first. Highlights as of 2026-05-04:
+
+- **Subagent detection (Mechanism B / Agent Teams) not yet at ingest** — 33% of raw JSONLs (454/1378) carry `<teammate-message teammate_id="...">` but AngelEye doesn't flag them. They're being treated as primary sessions.
+- **`session_kind` / `teammate_id` schema fields not added yet** — required to filter subagents from enrichment.
+- **Enrichment scripts read raw JSONL only** — should fall back to AngelEye archive (761 archive-only rows would otherwise be invisible).
+- **Upstream JSONLs disappear over time** — likely Claude Code auto-purges old sessions. AngelEye's own archive is the long-term source of truth, not `~/.claude/projects/`.
+
+Diagnostics view at `/diagnostics` in the running app surfaces live counts. Run `npm run audit:registry` to refresh `~/.claude/angeleye/diagnostics-snapshot.json`.
 
 ## 📚 Claude Code Internals — Canonical Documentation
 
@@ -27,7 +44,7 @@ AngelEye reads and writes Claude Code's own data files. Before implementing anyt
 - Session files live at `~/.claude/projects/<encoded-path>/<session_id>.jsonl`
 - `/rename` appends `custom-title` + `agent-name` entries (no `parentUuid` — tree-detached). Write-back by appending a new pair — never mutate existing entries
 - `progress` entries are the most numerous type (~75% in hook-heavy sessions) — skip when parsing for conversation content
-- `isSidechain: true` entries appear in subagent files (`agent-*.jsonl`), not main sessions
+- Subagent detection in this environment: `<teammate-message teammate_id="...">` in the first `type: user` message body — NOT `isSidechain: true` and NOT `agent-*.jsonl` (those don't exist in our corpus, audited 2026-05-04). 454/1378 files (33%) are Agent Teams subagents. Full detail in `~/dev/ad/brains/anthropic-claude/claude-code/observability.md` §"Sub-Agent Sessions — Two Different Mechanisms"
 - Auto-slug (`witty-painting-plum` style) lives in `system/turn_duration` entries — this is NOT the user-assigned name
 
 ## ⚠️ Already Inside an AppyStack Project

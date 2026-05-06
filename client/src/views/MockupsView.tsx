@@ -34,6 +34,28 @@ interface Phase {
 
 const phases: Phase[] = [
   {
+    title: 'Phase 7 — System Intelligence',
+    tag: '2 designs',
+    tagType: 'new',
+    dates: '2026-05-03',
+    desc: 'Internal reference views for AngelEye developers and AI agents. Data schema visualisation (RegistryEntry field groups, AngelEyeEvent, enums) and classification status dashboard (registry coverage, 7 core questions, built vs designed gap, data completeness).',
+    type: 'feature',
+    items: [
+      {
+        name: 'classification-status',
+        desc: 'Classification status dashboard — registry coverage stats, 7 core questions with implementation status, built vs not-built breakdown, hooks vs transcript completeness',
+        path: `${MOCKUP_BASE}/classification-status/index.html`,
+        featured: true,
+      },
+      {
+        name: 'data-schema',
+        desc: 'AngelEye data schema reference — RegistryEntry field groups (9 groups, color-coded by tier), AngelEyeEvent fields, SessionType/Scale/ToolPattern/EventType enums, data flow diagram',
+        path: `${MOCKUP_BASE}/data-schema/index.html`,
+        featured: true,
+      },
+    ] as FeatureMockup[],
+  },
+  {
     title: 'Phase 6 — Unified Settings',
     tag: '3 designs',
     tagType: 'new',

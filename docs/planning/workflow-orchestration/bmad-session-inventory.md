@@ -404,3 +404,181 @@ Project Phase (Planning / Build / Ship)
 | BMAD Advisor (brains)               | 5       | ~3,100               |
 | Special (Lisa upgrade, debug, etc.) | 4       | ~2,300               |
 | **Total BMAD-related**              | **~85** | **~35,600**          |
+
+---
+
+## Phase 4: Build — Apr 7–9 2026 (Stories 0.13–0.16, 7.1–7.4)
+
+**Source**: `bmad-deep-analysis-2026-04-09.md` — 7-agent parallel analysis of ~100 sessions.
+**Orchestrator**: Overwatch (`bmad-story-lifecycle` skill, `/appydave:bmad-story-lifecycle`).
+
+### Story 0.13 — Epic 6 Post-Sprint Cleanup
+
+**Date**: 2026-04-07, ~06:19–07:24 UTC. **Duration**: ~65 minutes. **Outcome**: SHIPPED.
+
+| #   | Step      | Agent             | SID | Notes                                                                                                                                                             |
+| --- | --------- | ----------------- | --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | DS 0.13   | Amelia (bmad-dev) | —   | Extracted `formatTimestamp`, `display-maps.ts`. EmptyState distinction added. 27 net new tests. Self-corrected Radix mock failure using `importOriginal` pattern. |
+| 2   | DR 0.13   | Nate (bmad-dr)    | —   | Reviewed cleanup changes. PASS.                                                                                                                                   |
+| 3   | SAT CS+RA | Taylor (bmad-sat) | —   | Combined CS and RA in single session without returning to orchestrator.                                                                                           |
+| 4   | CU 0.13   | Lisa (bmad-lib)   | —   | Captured `radix-partial-mock-import-original-kdd.md`. Flagged process/ KDD folder at 22 files (deferred).                                                         |
+| 5   | Ship 0.13 | (bmad-ship)       | —   | Commits `84ebded` (code) + `0adee38` (Lisa artifacts). CI run #24069454718 green in 3m7s.                                                                         |
+
+**Test count**: ~1190 → **1217 passing** (+27 net new).
+
+---
+
+### Story 7.1 — Test Plan Synthesis
+
+**Date**: 2026-04-07, ~07:24–11:40 UTC. **Duration**: ~4 hours 16 minutes. **Outcome**: SHIPPED.
+
+| #   | Step       | Agent               | SID        | Notes                                                                                                                                                                                                                                          |
+| --- | ---------- | ------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | CS 7.1     | Bob (bmad-sm)       | —          | Story file created.                                                                                                                                                                                                                            |
+| 2   | VS 7.1     | Bob (bmad-sm, Opus) | `87175f62` | Validated that all 41 story paths exist at expected locations. Human gate: David approved.                                                                                                                                                     |
+| 3   | DS 7.1     | Amelia (bmad-dev)   | —          | Used parallel sub-agents to read all 38 story files simultaneously (split by epic). First observed use of this enumeration pattern. Produced `master-test-matrix.md` (205 entries, 27 routes) and `security-test-checklist.md` (16 auth gaps). |
+| 4   | DR 7.1     | Nate (bmad-dr)      | —          | PASS.                                                                                                                                                                                                                                          |
+| 5   | SAT CS 7.1 | Taylor (bmad-sat)   | —          | Test plan created.                                                                                                                                                                                                                             |
+| 6   | SAT RA 7.1 | Taylor (bmad-sat)   | —          | AT-2 discrepancy noted (27 routes vs 23 groups) — logged not failed.                                                                                                                                                                           |
+| 7   | CU 7.1     | Lisa (bmad-lib)     | —          | KDD learnings captured. process/ KDD folder flagged again at 22 files (second deferral).                                                                                                                                                       |
+| 8   | Ship 7.1   | (bmad-ship)         | —          | Commit `ffe9987` — 9 files, 1106 insertions. CI green in 3m6s.                                                                                                                                                                                 |
+
+**Human gates**: After Bob VS (David said "proceed"), and SHIP gate.
+
+---
+
+### Story 7.2 — UI UAT Pass
+
+**Date**: 2026-04-07, ~11:42–12:36 UTC. **Duration**: ~54 minutes. **Outcome**: SHIPPED.
+
+| #   | Step     | Agent               | SID        | Notes                                                                                                                                                                                                                                                                                                                 |
+| --- | -------- | ------------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | CS 7.2   | Bob (bmad-sm)       | —          | Story file created.                                                                                                                                                                                                                                                                                                   |
+| 2   | VS 7.2   | Bob (bmad-sm, Opus) | —          | Caught login route test ordering issue (Task 3 tested /login after Task 2 logged in — would redirect). Real bug caught pre-DS.                                                                                                                                                                                        |
+| 3   | DS 7.2   | Amelia (bmad-dev)   | `8a89cd15` | 31-entry Playwright UAT pass across 10 routes + 9 cross-cutting concerns. 18MB session driven by 14 embedded Playwright base64 screenshots. Results: 24 PASS, 6 PARTIAL PASS (data-constraint), 1 FAIL (Entry #61, participant search). Produced `uat-report-2026.md` and `0-14-participant-search-missing-brief.md`. |
+| 4   | DR 7.2   | Nate (bmad-dr)      | —          | Noticed Amelia's summary discrepancy (20/10 vs 24/6). PASS after Lisa corrected numbers.                                                                                                                                                                                                                              |
+| —   | SAT      | Taylor (bmad-sat)   | —          | **Skipped** — zero source code changes (UAT-only story).                                                                                                                                                                                                                                                              |
+| 5   | CU 7.2   | Lisa (bmad-lib)     | —          | KDD learnings. Corrected Amelia's summary to 24 PASS / 6 PARTIAL.                                                                                                                                                                                                                                                     |
+| 6   | Ship 7.2 | (bmad-ship)         | —          | Commit `224e2be`. CI green in 3m10s.                                                                                                                                                                                                                                                                                  |
+
+**Notable**: The 18MB session (`8a89cd15`) is the clearest documented case of the Playwright screenshot size problem. After ship, Orchestrator recommended Story 0.15 before 7.3 (seed data first). David agreed.
+
+---
+
+### Story 0.15 — Dev Seed Data Enrichment
+
+**Date**: 2026-04-07, ~12:44–13:23 UTC (ran before 0.14). **Duration**: ~39 minutes. **Outcome**: SHIPPED.
+
+| #   | Step    | Agent             | Notes                                                                                                                                                                                                                              |
+| --- | ------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | CS 0.15 | Bob (bmad-sm)     | Story file created.                                                                                                                                                                                                                |
+| 2   | DS 0.15 | Amelia (bmad-dev) | Built `scripts/seed-dev-data.ts` — standalone seed script, deterministic UUIDs, `ON CONFLICT DO NOTHING`. Made 12+ direct `mcp__supabase__execute_sql` queries for audit. Fixed root cause of all 6 PARTIAL PASSes from Story 7.2. |
+| 3   | DR 0.15 | Nate (bmad-dr)    | Recommended skipping Taylor SAT (seed script only, no source code changes). PASS.                                                                                                                                                  |
+| —   | SAT     | Taylor (bmad-sat) | **Skipped** — Nate recommendation, seed script only.                                                                                                                                                                               |
+| 4   | CU 0.15 | Lisa (bmad-lib)   | KDDs: `seed-script-idempotency-pattern-kdd.md`, `dev-data-id-divergence-runtime-audit-kdd.md`. Marked `dev-data-constraint-browser-verification` KDD as RESOLVED.                                                                  |
+
+**Note**: No Overwatch session for 0.15 found in batches analyzed — orchestrator session precedes batch window or ran in separate session. `dev-data-constraint` KDD recurrence bumped to 3 (7.2 → 0.15 → final closure).
+
+---
+
+### Story 0.14 — Participant Search Restore
+
+**Date**: 2026-04-07, ~13:24–13:47 UTC. **Duration**: 23 minutes 30 seconds. **Outcome**: SHIPPED.
+**Orchestrator**: Overwatch (`e9efd76b`) — inline mode, auto-proceeded all gates.
+
+| #   | Step      | Agent             | SID        | Notes                                                                                                                                                                                                                                                                     |
+| --- | --------- | ----------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | CS 0.14   | Bob (bmad-sm)     | —          | Epic 0 ceremony: Bob VS skipped (standing rule).                                                                                                                                                                                                                          |
+| 2   | DS 0.14   | Amelia (bmad-dev) | `e36ca6e4` | Added `searchTerm` + `debouncedTerm` (300ms) to `participants-list-client.tsx`. Search input inline with filters. Search-aware EmptyState. 6 new search tests with fake timers. Self-corrected Lucide `Search` mock gap. 3MB session (2 Playwright screenshots embedded). |
+| 3   | DR 0.14   | Nate (bmad-dr)    | —          | Clean PASS. Taylor SAT skipped per Overwatch standing rule.                                                                                                                                                                                                               |
+| —   | SAT       | Taylor (bmad-sat) | —          | **Skipped** — Epic 0 ceremony (Nate clean PASS).                                                                                                                                                                                                                          |
+| 4   | CU 0.14   | Lisa (bmad-lib)   | —          | Overwatch self-maintenance ran between Lisa completion and ship gate: doctrine scan, added lucide-react mock note to Bob build phase rules.                                                                                                                               |
+| 5   | Ship 0.14 | (bmad-ship)       | —          | Commits `b8150f8` (implementation) + `e438163` (Lisa CU). CI run #24084649524 green in 3m5s.                                                                                                                                                                              |
+
+**Root cause**: Story 6.9 filter migration silently dropped the search input added in Story 5.3. Fastest complete lifecycle this sprint. Only SHIP required human approval.
+**Test count**: 1222 passing after ship.
+
+---
+
+### Story 0.16 — KDD Folder Reorganisation — ABORTED
+
+**Date**: 2026-04-07, ~13:48–14:02 UTC. **Outcome**: ABORTED — story returned to backlog, no code changes.
+
+| #   | Event                  | Notes                                                                                                                                                                                                                                                                     |
+| --- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Overwatch launch       | Launched for 0.16 (`kdd-folder-reorganisation`).                                                                                                                                                                                                                          |
+| 2   | Incorrect Bob CS spawn | Overwatch tried `npx claude --dangerously-skip-permissions` — spawned nested CLI instead of sub-agent.                                                                                                                                                                    |
+| 3   | Second error           | Overwatch then invoked `/bmad-sm CS 0.16` via Skill tool in its own context, turning itself into Bob instead of spawning a new agent.                                                                                                                                     |
+| 4   | David interrupted      | "Why would you be running the BMAD SM skill here in your context? You're meant to be orchestrating other agents. This is broken."                                                                                                                                         |
+| 5   | Root cause identified  | `bmad-story-lifecycle` fallback "when in doubt: assume in-context mode" caused in-context behavior in tmux context where sub-agents were needed.                                                                                                                          |
+| 6   | Resolution             | Overwatch updated `bmad-story-lifecycle/SKILL.md`: mandatory environment detection step, explicit in-context execution table, hard prohibition on TeamCreate/Agent tool/`npx claude` in non-tmux context. Wrote memory file `feedback_bmad_lifecycle_in_context_mode.md`. |
+| 7   | Ghost session          | Bob CS (`aab38c17`) spawned incorrectly via nested CLI. Bob tried `npx claude` again — same bug propagating. David killed it via teammate message after 4+ minutes stuck.                                                                                                 |
+
+**Current status**: KDD directories at 23 files (process/) and 20+ files (testing/) — both over VAL-003 threshold of 20. Story 0.16 deferred.
+
+---
+
+### Story 7.3 — E2E Suite Build
+
+**Date**: 2026-04-07 14:03 → 2026-04-08 05:10 UTC. **Duration**: ~15 hours wall time. **Outcome**: SHIPPED (after extended repair loop).
+**Primary orchestrator session**: `da39bfcd` (15.5 hours, 314 lines). **Completion session**: `a572f298`.
+
+| #   | Step                | Agent               | SID        | Time (UTC)   | Notes                                                                                                                                                                                                                                                                                       |
+| --- | ------------------- | ------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Env detection fix   | Overwatch           | `da39bfcd` | 14:03–14:17  | Env detection bug surfaced and patched: removed "when in doubt" fallback, added explicit `$TMUX`/`AGENT_TEAMS` detection.                                                                                                                                                                   |
+| 2   | VS 7.3              | Bob (bmad-sm, Opus) | `87175f62` | 14:17–14:20  | 3 criticals + 3 enhancements fixed: C1 .gitignore entries, C2 missing loginAsSupportWorker fixture, C3 no .gitignore task.                                                                                                                                                                  |
+| 3   | Human gate          | David               | —          | 14:20–15:27  | David read Bob VS output for 65 minutes, then approved.                                                                                                                                                                                                                                     |
+| 4   | DS 7.3              | Amelia (bmad-dev)   | `1f2f1dba` | 15:27–15:35  | Playwright installed from zero, chromium downloaded. 33 E2E specs across 7 files. Support-worker user created in Supabase. CI triple: lint ✓ test 1222 ✓ build ✓. Task 8 (Quinn) marked pending.                                                                                            |
+| 5   | Quinn QA coverage   | Quinn               | `ee0518eb` | 15:42–15:47  | Mapped 33 specs against 106 E2E-automatable entries. 81 of 106 uncovered. Created `users.spec.ts`, added 17 specs. 33 → 50 specs total.                                                                                                                                                     |
+| 6   | DR 7.3 (attempt 1)  | Nate (bmad-dr)      | `645695cb` | 15:48–15:57  | CONDITIONAL PASS. P1: incidents test clicks Continue with empty localStorage. P2: afterEach cleanup mismatch. P3: Task 8 checkboxes unmarked.                                                                                                                                               |
+| 7   | Amelia fix-1        | Amelia (bmad-dev)   | `6ee117ce` | ~23:06–23:10 | P1/P2/P3 fixed. CI clean. 3 minutes 12 seconds.                                                                                                                                                                                                                                             |
+| 8   | DR 7.3 (attempt 2)  | Nate (bmad-dr)      | `12c6d80a` | 23:10–23:12  | Spot-verified P1/P2/P3. **PASS**. Automated handoff to Taylor at 23:12:06 (11-second gap).                                                                                                                                                                                                  |
+| 9   | SAT RA 7.3          | Taylor (bmad-sat)   | `4b1062df` | 23:12–23:55  | 7 autopilot checks: all PASS. Live E2E run: 24/50 PASS, 26/50 FAIL. CONDITIONAL FAIL — AC2 (≥45/50) not met.                                                                                                                                                                                |
+| 10  | Amelia fix-2        | Amelia (bmad-dev)   | `53cabf62` | 00:36–01:23  | Fixed 7 Taylor-identified selector issues. localStorage nuking bug fixed. 41 → 45 → 47/50. 3 failures remain.                                                                                                                                                                               |
+| 11  | Amelia fix-3        | Amelia (bmad-dev)   | `23af8796` | 01:27–02:15  | Tests #36/#38 resolved. Test #34 active debugging cut off at session boundary (INCOMPLETE).                                                                                                                                                                                                 |
+| 12  | Recovery/assessment | Overwatch           | `a43daa3b` | 02:17–02:29  | Overwatch explains tmux limitation. David frustrated. Session ends with instructions for new tmux session.                                                                                                                                                                                  |
+| 13  | Completion (inline) | Taylor+Lisa+Ship    | `a572f298` | 02:33–05:10  | Taylor RA inline: 49/50. NDIS seed bug found ("4312345678" is 10 digits, should be 9). Fixed to "431234567". 50/50 passing. Lisa CU: 6 new KDDs, total 168. Ship: commit `bc3fe1b` — 35 files, 3897 insertions. CI green. UAT runner built. Credentials page added (16 users, 4 companies). |
+
+**Note at ~23:00**: Corrupted session — Amelia took over orchestration position when Overwatch became unavailable (gap in record).
+
+---
+
+### Story 7.4 — Security Audit Pass
+
+**Date**: 2026-04-08, ~06:06–08:08 UTC. **Duration**: ~2 hours. **Outcome**: SHIPPED (zero backtracks, fastest complete lifecycle).
+
+| #   | Step   | Agent               | SID        | Notes                                                                                                                                                                                                                                                                                |
+| --- | ------ | ------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1   | CS 7.4 | Bob (bmad-sm)       | `75d4d379` | Created `7-4-security-audit-pass.md`: 4 ACs, 10 tasks. Classified doc-only, Taylor SAT skip pre-decided.                                                                                                                                                                             |
+| 2   | VS 7.4 | Bob (bmad-sm, Opus) | `9ae18265` | Verified 12 referenced source files exist. Ran grep checks. Found 1 real error: `draft-sync.ts` misattributed as localStorage consumer. Applied correction. PASS.                                                                                                                    |
+| 3   | DS 7.4 | Amelia (bmad-dev)   | `24e09d05` | Playwright headed browser for auth testing. K1-K6 code inspections: all Mitigated. 16 gaps verified (10 Exploitable, 5 Theoretical, 1 reclassified Mitigated). 7 story stubs created (P1-P4 priority). `security-audit-report-2026.md` created. Test account created as side effect. |
+| 4   | DR 7.4 | Nate (bmad-dr)      | `39cd13cf` | Pre-review: lint ✓ 1222 tests ✓ build ✓. All 4 ACs: **PASS**. 3 KDD candidates identified. 3 minutes.                                                                                                                                                                                |
+| —   | SAT    | Taylor (bmad-sat)   | —          | **Skipped** — doc-only story, pre-decided at CS.                                                                                                                                                                                                                                     |
+| 5   | CU 7.4 | Lisa (bmad-lib)     | `a4cd4275` | 3 new KDDs: `supabase-password-min-length-only`, `supabase-ssr-cookie-not-httponly`, `supabase-getclaims-auto-refresh`. KDD count: 168 → 171. Security category: 2 → 5. 3 minutes. Story 7.4 closed. Epic 7 closed.                                                                  |
+
+**Why clean**: Pure verification/documentation story, no source code changes. Amelia used Playwright headed browser for interactive auth — pre-planned. Both Nate and Lisa had 3 minutes of work.
+
+---
+
+## Apr 7–9 Overwatch Sessions
+
+| #   | SID        | Stories Covered | Key Activity                                                                                                                                                                                      |
+| --- | ---------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | `e9efd76b` | 0.14            | Inline mode. Auto-proceeded all gates. Only SHIP required human approval.                                                                                                                         |
+| 2   | `da39bfcd` | 7.3             | Primary orchestrator. 15.5-hour session. Env detection bug patched mid-session. Managed full Story 7.3 repair loop including Quinn, 3 Amelia fix passes, 2 Nate reviews, Taylor CONDITIONAL FAIL. |
+| 3   | `a43daa3b` | 7.3 (recovery)  | Recovery assessment. Explained tmux limitation to David. Session ended with new tmux instructions.                                                                                                |
+
+---
+
+## Apr 7–9 Chain Efficiency
+
+| Story    | Sessions           | Backtracks                                              | Duration  | Verdict                       |
+| -------- | ------------------ | ------------------------------------------------------- | --------- | ----------------------------- |
+| **0.13** | 5                  | 0                                                       | ~65 min   | SHIPPED                       |
+| **7.1**  | 8                  | 0                                                       | ~4h 16m   | SHIPPED                       |
+| **7.2**  | 5 (SAT skipped)    | 0                                                       | ~54 min   | SHIPPED                       |
+| **0.15** | 4 (SAT skipped)    | 0                                                       | ~39 min   | SHIPPED                       |
+| **0.14** | 4 (VS+SAT skipped) | 0                                                       | 23.5 min  | SHIPPED — fastest lifecycle   |
+| **0.16** | 1                  | — (aborted)                                             | ~14 min   | ABORTED — returned to backlog |
+| **7.3**  | 13                 | 3 (Nate COND, Taylor COND FAIL, session boundary abort) | ~15h wall | SHIPPED after extended repair |
+| **7.4**  | 5 (SAT skipped)    | 0                                                       | ~2h       | SHIPPED — zero backtracks     |

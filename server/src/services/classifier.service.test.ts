@@ -756,20 +756,20 @@ describe('SessionSubtype — B043 type definitions', () => {
     // Type-level test: these assignments should compile without error.
     // If the type is wrong, TypeScript will fail at build time.
     const subtypes: SessionSubtype[] = [
-      'bug_fix_round',
-      'feature_implementation',
-      'refactoring',
-      'test_writing',
-      'ci_pipeline',
-      'codebase_exploration',
-      'file_retrieval',
-      'artifact_lookup',
-      'brain_maintenance',
-      'advisory_refinement',
-      'brain_capture',
-      'technology_survey',
-      'hardware_setup_troubleshooting',
-      'release_exploration',
+      'build.bug_fix',
+      'build.shipped',
+      'build.refactor',
+      'build.test_writing',
+      'build.ci_pipeline',
+      'orientation.codebase_exploration',
+      'orientation.file_retrieval',
+      'orientation.artifact_lookup',
+      'knowledge.brain_maintenance',
+      'knowledge.advisory_refinement',
+      'knowledge.brain_capture',
+      'research.technology_survey',
+      'research.technology_survey',
+      'research.exploration',
       'poem_execution',
       'directory_cleanup',
       'paperclip_agent',
@@ -786,7 +786,7 @@ describe('SessionSubtype — B043 type definitions', () => {
     expect(subtypes.length).toBe(26);
   });
 
-  it('ClassificationResult accepts session_subtype field', () => {
+  it('classifier writes subtype_heuristic, not session_subtype', () => {
     const result = classifySession(
       [
         makeEvent({ event: 'session_start', cwd: '/projects/app' }),
@@ -796,8 +796,11 @@ describe('SessionSubtype — B043 type definitions', () => {
       'ses-subtype-1',
       '/projects/app'
     );
-    // session_subtype is not yet populated by detection logic, so it should be undefined
-    expect(result.session_subtype).toBeUndefined();
+    // BUILD session with no specific signals defaults to build.feature
+    expect(result.subtype_heuristic).toBe('build.feature');
+    // session_subtype is now derived in sync.service, not produced by the classifier.
+    // The ClassificationResult type no longer carries it.
+    expect('session_subtype' in result).toBe(false);
   });
 });
 

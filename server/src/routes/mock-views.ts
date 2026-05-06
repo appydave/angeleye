@@ -22,6 +22,7 @@ import {
   getChainSessionDetailView,
   getStoryChainsView,
   getWorkflowsView,
+  getClassificationStatusView,
 } from '../services/mock-views.service.js';
 
 const router = Router();
@@ -195,6 +196,19 @@ router.get('/api/mock-views/workflows', async (req, res, next) => {
     apiSuccessWithSource(res, await getWorkflowsView(), 'live');
   } catch (err) {
     logger.error({ err }, 'mock-views: workflows failed');
+    next(err);
+  }
+});
+
+router.get('/api/mock-views/classification-status', async (req, res, next) => {
+  try {
+    const data = await getClassificationStatusView();
+    if (data.total > 0) return apiSuccessWithSource(res, data, 'live');
+    const sample = await loadSample('classification-status');
+    if (sample) return apiSuccessWithSource(res, sample, 'sample');
+    apiSuccessWithSource(res, data, 'live');
+  } catch (err) {
+    logger.error({ err }, 'mock-views: classification-status failed');
     next(err);
   }
 });

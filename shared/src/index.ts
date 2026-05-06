@@ -43,4 +43,5 @@ export type {
   BacktrackRecord,
   WorkflowInstance,
   ProjectConfig,
+  DiagnosticsResponse,
 } from './angeleye.js';

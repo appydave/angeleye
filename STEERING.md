@@ -118,7 +118,192 @@ App doc audit found **7 contradictions, 6 stale refs, 4 cross-ref gaps, 4 termin
 
 ## Claude → David
 
+### 🚨 Pause for handover (2026-05-04, late evening)
+
+**Status**: enrichment loop paused mid-flight after discovering a registry write-race bug. **Fix is live** (POST /api/registry/llm-tags). Resume in a fresh session.
+
+**Read first**: `docs/planning/handover-2026-05-04-enrichment-loop.md` — full action-oriented handover with verification steps, lessons captured, and exact next commands.
+
+**TL;DR**:
+
+1. Verify write-race fix with a one-row curl test (handover §Step 1)
+2. Run `npm run audit:registry` to refresh diagnostics
+3. Re-enter the loop: `/loop /enrich-subtypes 50 build.campaign`
+4. Audit task #34 — clobbered tag count from batches 7–14 is unknown
+
+**LLM-enriched count is overstated** — clobbering was happening silently. Real number is lower than 386. The audit will surface it.
+
+---
+
 _Current direction, analysis, priorities. Updated by Claude at the start of each session after reading the David section._
+
+### 🚨 Pause Enrichment — Audit Findings (2026-05-04 evening, REVISED)
+
+**Decision**: pause `/enrich-subtypes` campaign. Resume after the fixes below.
+
+**Original hypothesis (FALSIFIED)**: I claimed AngelEye was ingesting `agent-*.jsonl` sidechain files as primary sessions. This was wrong. Audit results below.
+
+**Verified findings (corpus audit, 2026-05-04)**:
+
+| Finding                                                                                         | Number                  |
+| ----------------------------------------------------------------------------------------------- | ----------------------- |
+| Main JSONLs in `~/.claude/projects/`                                                            | 1,378                   |
+| `agent-*.jsonl` sidechain files                                                                 | **0**                   |
+| Entries with `isSidechain: true` (across 279,348 events)                                        | **0**                   |
+| **Agent Teams subagent files** (detected via `<teammate-message teammate_id="...">` in opening) | **454** (33% of corpus) |
+| Registry rows total                                                                             | 2,623                   |
+| Registry rows matching a JSONL on disk                                                          | 1,068                   |
+| **Phantom registry rows** (in registry, no JSONL on disk)                                       | **1,555**               |
+| Orphan JSONLs (on disk, not in registry)                                                        | 310                     |
+| AngelEye transformed event store (`~/.claude/angeleye/sessions/`)                               | 2,144                   |
+| AngelEye archive                                                                                | 1,261                   |
+
+**Real problems (in priority order)**:
+
+1. **Subagent detection mechanism mismatch.** Subagents in this environment are NOT `agent-*.jsonl` and do NOT have `isSidechain: true`. They are normal `.jsonl` files in the same project root, identified by `<teammate-message teammate_id="team-lead">` XML wrapper in the first user message. **454 of 1,378 files (33%) are subagents**, not the ~47 I originally estimated. All 454 currently have `teammate_id="team-lead"`. Brain doc updated 2026-05-04 with both Mechanism A (claimed, not observed) and Mechanism B (verified). See `~/dev/ad/brains/anthropic-claude/claude-code/observability.md`.
+
+2. **Phantom registry rows (1,555).** Sessions where the JSONL was deleted/moved but the registry row remained. Many show `project: undefined`, `event_count: undefined`. Some carry LLM tags from earlier enrichment batches (e.g., `bbc86dc1` we just tagged `build.visual_implementation` is a phantom — the JSONL is gone). The registry is partly stale.
+
+3. **Orphan JSONLs (310).** Real sessions on disk that AngelEye never ingested.
+
+4. **User-prompt parser failure on slash-command openings.** Sessions opening with `/bmad-help`, `/poem:agents:penny`, `/appydave:ralphy`, etc. produce `opening_style: agent_initiated` and zero `user_prompt` events — but they're real human-driven sessions with a slash-command first prompt. The parser is treating the slash command as a system event, not as a user input. This is a separate bug from #1 — affects sessions where the opener is a skill invocation by a human, not an Agent Teams spawn.
+
+**Sources of subagent volume in the 454**:
+
+- BMAD tmux campaigns (Amelia, Quinn, etc.)
+- Agent Teams research preview (Opus 4.6) — automatic parallel teammate spawns
+- Paperclip multi-agent runs
+- Ruflo (added 2026-05-04 evening) — Mode B uses Agent Teams under the hood, will add more
+
+**Revised remediation plan (5 steps)**:
+
+1. **Diagnose user_prompt parser** — read `classifier.service.ts` and the JSONL→event transform pipeline. Find why slash-command openings produce zero user_prompts. Identify the fix without implementing yet.
+
+2. **Add `session_kind: 'main' | 'subagent'` and `teammate_id` fields** to the registry schema (`shared/src/angeleye.ts`). Update ingestion to detect Mechanism B (teammate-message wrapper) at parse time.
+
+3. **Reconcile registry vs filesystem**:
+   - **Phantoms (1,555)**: archive these into a `registry.json.phantom-archive.<date>` snapshot, then drop from the live registry. Some carry LLM tags worth preserving for posterity, but they're not addressable session data anymore.
+   - **Orphans (310)**: ingest through the normal pipeline.
+   - **Backfill `session_kind`** retroactively across all remaining rows by re-scanning JSONLs.
+
+4. **Re-evaluate batches 5–6 LLM tags**: identify which of the 47 newly-tagged `build.campaign` rows are actually subagents (Mechanism B detected) and adjust. Could become `subagent_of:build.campaign` or just inherit a future `meta.subagent_session` tag — pending taxonomy decision.
+
+5. **Resume enrichment** against the cleaned dataset. Existing LLM tags from earlier batches (~322 rows that aren't in the 47-row subagent miscategorisation) stay as-is unless they're phantoms.
+
+**Decision (David, 2026-05-04 evening)**: David said "we almost have to go back to the beginning" — confirmed direction is to fix and re-enrich rather than patch. Sunk cost is low (~2 days of tagging) and second pass will benefit from accumulated classifier observations.
+
+**Cross-reference**: full diagnosis in `docs/architecture/classifier-observations.md` §3.1.
+
+---
+
+### Reconciliation Done — Registry Cleanup (2026-05-04, REVISED after over-prune)
+
+**Critical correction**: my first cleanup pass over-pruned. I treated "no upstream JSONL at `~/.claude/projects/...`" as the phantom criterion. But AngelEye archives event streams to `~/.claude/angeleye/archive/` when SessionEnd fires. **761 of the 1,555 rows I called phantoms had archived event streams** — they were fully-captured sessions that just had their raw Claude Code JSONL pruned upstream. Restored them.
+
+**Why upstream JSONLs disappear** (the question David asked): not from AngelEye. AngelEye's `archiveSession` only moves its own `session-*.jsonl` from `~/.claude/angeleye/sessions/` to `~/.claude/angeleye/archive/` — it never touches `~/.claude/projects/`. The likely upstream causes:
+
+1. Claude Code auto-purges old session JSONLs by age/count (most likely — phantoms cluster in _active_ projects, suggesting "older sessions in this project aged out")
+2. A user-run cleanup script — appyctrl had 121 phantoms; that's a pattern worth checking
+3. `claude /clear` or similar built-in
+4. Disk-level events (Time Machine, etc.) — less likely
+
+**Implication for AngelEye design**: the archive at `~/.claude/angeleye/archive/` is the long-term source of truth. Anything that re-reads raw JSONLs (e.g., the LLM enrichment skill's Step 1 extraction script) needs to fall back to the archive when the upstream JSONL is gone. **This is a separate bug** — not addressed yet, will affect future enrichment passes.
+
+**Final reconciliation state**:
+
+| State               | Was   | After over-prune | Final     |
+| ------------------- | ----- | ---------------- | --------- |
+| Registry rows       | 2,623 | 1,068            | **1,829** |
+| LLM-enriched        | 369   | 88               | **201**   |
+| is_junk             | 444   | 11               | **88**    |
+| build.feature queue | 266   | 262              | **262**   |
+
+794 true phantoms (no upstream JSONL **and** no archive event stream — i.e., genuinely no data anywhere) remain dropped. Their tags are preserved in the snapshot for posterity.
+
+**Other actions completed (data layer only)**:
+
+1. Brain doc fixed — `~/dev/ad/brains/anthropic-claude/claude-code/observability.md` documents both Mechanism A (claimed, not observed) and Mechanism B (verified, 454/1378 = 33%).
+2. angeleye CLAUDE.md fixed.
+3. Audit snapshot — `~/.claude/angeleye/reconciliation-audit.2026-05-04T13-06-16-782Z.json` (preserves all 1,555 originally-flagged rows).
+4. Registry backup — `~/.claude/angeleye/registry.json.bak-pre-phantom-drop-2026-05-04` (full pre-cleanup state, recoverable).
+
+**Subagent count from raw JSONL audit**: 454 Mechanism B sessions in `~/.claude/projects/`, of which 274 have AngelEye event streams (live + archive). Need raw-JSONL scan + archive fallback when backfilling `session_kind` on the 1,829 live rows.
+
+**Pending — code changes (stop point reached this session)**:
+
+1. **Schema**: add `session_kind: 'main' | 'subagent'` and `teammate_id?: string` to `shared/src/angeleye.ts` `SessionRegistryRow` (or whatever the canonical type is).
+2. **Ingest detection**: at SessionStart hook, peek at the raw JSONL's first ~20 lines for `<teammate-message teammate_id="...">`. If found, stamp `session_kind: 'subagent'` and `teammate_id`. Hook events alone are insufficient — only 19/274 teammate sessions have any teammate_idle/subagent_start hook signal.
+3. **Backfill**: re-scan all 1,068 live JSONLs and stamp `session_kind` retroactively. Estimated 274+ subagent rows.
+4. **Orphan ingest**: 310 JSONLs on disk with no registry row. Mostly `archon-workspaces/` (Archon worktree-style sessions). Decide whether to ingest, ignore, or filter.
+5. **Re-evaluate batches 5–6 LLM tags**: identify which of the ~47 newly-tagged `build.campaign` rows are subagents (Mechanism B) and adjust. Likely defer until #1–3 are in place so we have the field to filter on.
+6. **Resume enrichment** with `session_kind: 'main'` filter applied — `/enrich-subtypes` should not run against subagent rows.
+
+**Decision deferred to next session**: should subagents be classified at all (with their own tags), or simply marked and skipped from enrichment until parent linkage exists? My take: skip from enrichment until parent linkage; classifying subagent legs without parent context produces the same "leg looks like a campaign" mistakes we just made.
+
+---
+
+### Enrichment Update — Batch 5 (Opus 4.7, 2026-05-04)
+
+**Batch 5 written**: 28 changes, 2 keeps. Distribution: build.campaign×9, build.shipped×5, build.orchestrated_campaign×3, knowledge.brain_capture×3, build.bug_fix×2, build.prompt_engineering×2, build.visual_implementation×1, knowledge.brain_maintenance×1, knowledge.methodology_design×1, build.feature×1.
+
+**Registry state after batch 5**: 319 LLM-enriched, 314 `build.feature` remaining.
+
+**New design insights from batch 5 (David, 2026-05-04):**
+
+4. **`brains/` is a 70-brain monorepo, not a single project.** Sessions tagged `project: brains` may actually be working in completely different sub-brains (anthropic-claude/, agent-workflow-builder/, brand-dave/, etc.). Examples this batch: #11 (97c1599c), #25 (a9670559), #26 (d856c614) — all `project: brains` but three different sub-brain domains. **Action**: consider adding a `subproject_path` field derived from edited file paths (e.g., `brains/anthropic-claude/claude-code/`). This pattern can also apply to general code monorepos when consumers want sub-folder tagging. Not a tag — a missing axis.
+
+5. **Story 0 / Epic 0 pattern: explore → write-up → execute (cross-session).** Some projects (BMAD-style) have a known pattern where session N explores an idea + writes it up as a planning artifact, then session N+1 executes on it. Currently both phases get classified the same way (often `knowledge.methodology_design` or `build.feature`). **Action**: consider `build.story_authoring` for the write-up phase to distinguish from generic methodology design. Only applies to certain projects (those using Epic 0 / Story 0).
+
+6. **Session seams — currently invisible.** No notion of `predecessor_session_id` / `successor_session_id` or seam patterns (research→dev, single-doc→multi-session, ralphy/wiggum loop continuation). We detect `opening_style: paste_handover` but don't link to the source session. We don't detect `closing_style: handover_artifact_written`. The 5-session `dev` campaign (#12-16) clearly belongs to a chain (same project, same Skill+SendMessage fingerprint, same time window) but is treated as 5 independent sessions. **Action backlog**: add session-pair detection — handover doc paths, time-windowed Skill fingerprints, project+context links. This unlocks "what was the research that fed this build session?" and "how did this 10-session run begin?".
+
+**Enrichment skill heuristic candidate**: `project === 'dev' + agent_initiated + SendMessage ≥ 1 + zero user prompts → build.campaign (0.85)`. This batch had 5 instances of the identical fingerprint.
+
+7. **Rabbit hole syndrome (David, 2026-05-04).** Daily pattern — David starts a session intending to solve problem X, but each new idea spawns a fresh session, then those sessions spawn further sessions. By end of day there's a hierarchy of explored concepts when the morning intent was a single problem. **Why this matters for AngelEye:**
+   - Point-to-point session linkage (predecessor/successor) doesn't model this — it's a tree/forest, not a chain.
+   - "Intent drift" is a real first-class concept: `original_intent` (morning) vs `actual_focus` (where the session went) vs `descendant_sessions` (what it spawned).
+   - This is exactly the topology argument from #6 — seams are not linear, they branch. A session can have multiple parents (idea source + handover source) and multiple children (spawned explorations).
+   - Boundaries are missing because David has no autopilot system to enforce them. AngelEye could surface this: "you started today on X, now 14 sessions in, working on Y — was this intentional?"
+   - **Action backlog (post 2,000-session enrichment)**: model session-trees, not session-pairs. Detect intent drift between session opening and session closing. Visualize daily session-spawn trees. Flag rabbit-hole days vs focus days as a metric.
+
+**Note on portability config extraction**: David confirmed — keep checking the `// DATA:` markers and the extraction registry as we go, but don't move config out of code yet. Wait until after the 2,000-session enrichment campaign, then revisit.
+
+**Note on brains rinse-cycle**: 70 sub-brains will be a future batch — once all 2,000 sessions have a first pass of LLM enrichment, we'll loop back over `project: brains` sessions with sub-brain-aware classification.
+
+---
+
+### Enrichment Handover — Switch to Opus 4.7 (2026-05-04)
+
+**Session context**: Sonnet 4.6 session hit ~70% context after 4 LLM enrichment batches. Switching to Opus 4.7 for remaining batches.
+
+**What was done this session (enrichment track):**
+
+1. `SessionTag.source` field added (`shared/src/angeleye.ts`) — provenance stamps prevent cleanup scripts from wiping real LLM work
+2. `scripts/demote-stale-llm-tags.ts` rewritten — now safely targets `source === 'migrated'` only
+3. `scripts/backfill-tag-source.ts` created + run — stamped 147 LLM, 2,442 migrated
+4. `.claude/settings.json` — 10 permission allowlist entries (including `Bash(node -e " *)` fix)
+5. `classifier.service.ts` — expanded `build.bug_fix` heuristic to catch diagnostic prompts ("why did X fail?", "figure out why", "keeps failing")
+6. `enrich-subtypes/SKILL.md` — default batch 30→50; table format updated to Before→After columns
+7. `docs/architecture/data-driven-extraction.md` — portability registry (10 extraction points, `// DATA:` markers in code)
+
+**Registry state**: 299 LLM-enriched (13.8%), 340 `build.feature` remaining in queue
+
+**Next action**: `/enrich-subtypes 50 build.feature` (batch default is now 50, not 30)
+
+**Important — extraction command**: Do NOT append `| head -3000` to the Step 1 bash command. Large output is saved to a persisted file automatically. The head truncation caused batch 4 to only return 70 sessions instead of 100.
+
+**Open design questions for future sessions**:
+
+- Paperclip/BMAD multi-agent subagent sessions (project = UUID) — currently `build.campaign`, might need `build.subagent_session`
+- David uses "build.campaign" to mean "a big coordinated agent run" — consider renaming to `build.coordinated_run`
+- signal-studio sessions are all historical mock/POC (pre-SupportSignal) — note for classifier context
+
+**Classifier design insights (from David, 2026-05-04) — important for future enrichment and heuristic work:**
+
+1. **`first_real_prompt` is often noise.** Opening prompts are frequently context loads, handover receipts, housekeeping ("yes", "continue", "open a file in VS Code"). You need to read 3-5 prompts before you understand what the session is actually about. The classifier and the LLM enrichment skill both over-index on the first prompt.
+
+2. **`paste_handover` + immediate execution = missing human-in-the-loop.** bb54ff44's issue wasn't wrong work — the agent received a handover doc and started executing without pausing for human guidance or asking what to do. This is a known flaw in the handover pattern. Sessions with `opening_style === 'paste_handover'` and large context fed in should be flagged as "context-load pending decision", not classified by what the agent did next.
+
+3. **Implication for the enrich-subtypes skill:** When classifying, look at prompts 2-5 as much as prompt 1. If prompt 1 is a paste/handover/yes/continue, treat it as noise and weight the subsequent prompts more heavily.
 
 ### Phase 2b Complete — Inspector Screens + Project Registry (2026-03-29)
 
