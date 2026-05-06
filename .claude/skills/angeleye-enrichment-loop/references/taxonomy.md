@@ -49,11 +49,12 @@ Full patterns and heuristics are in `docs/intelligence/PATTERNS.md`. This is the
 
 ## META — session quality
 
-| Subtype                | Signal                                                       |
-| ---------------------- | ------------------------------------------------------------ |
-| `meta.ghost_session`   | Human opened Claude, typed nothing, closed (confidence 0.95) |
-| `meta.scheduled_probe` | Scheduler spawned Claude, no prompt (confidence 0.95)        |
-| `meta.accidental`      | Micro + no tool use + abrupt abandon (confidence 0.95)       |
+| Subtype               | Signal                                                                                                                                                                                                                                                                                                    |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `meta.silent_session` | No `user_prompt` events between session_start and session_end. Cause unknown without further evidence — note the hypothesis (T3 capability probe, human-opened-and-closed, scheduler ping, future host app) in the notes field, not the tag. Auto-flagged `is_junk: true` at ingestion. (confidence 0.95) |
+| `meta.accidental`     | Micro + no tool use + abrupt abandon (confidence 0.95)                                                                                                                                                                                                                                                    |
+
+**Deprecated:** `meta.ghost_session` and `meta.scheduled_probe` were both observable-pattern misnomers (they baked cause into the tag). Both are folded into `meta.silent_session`. Existing v1 enrichments using those tags are not retroactively reclassified.
 
 ## Classification rules
 

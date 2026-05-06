@@ -243,7 +243,19 @@ export function createHooksRouter(io: Server): Router {
       } else if (eventType === 'session_end') {
         const allEvents = await getSessionEvents(sessionId);
         const classification = classifySession(allEvents, sessionId, cwd ?? '');
-        await updateRegistry(sessionId, { status: 'ended', last_active: ts, ...classification });
+        // Silent-session filter: no user_prompt → mark junk + override subtype.
+        // Catches T3/OpenCode capability probes, human-opened-and-closed, scheduler
+        // pings — anything where Claude started but no user actually interacted.
+        const hasNoUserPrompt = !allEvents.some((e) => e.event === 'user_prompt');
+        const silentOverride = hasNoUserPrompt
+          ? { is_junk: true, session_subtype: 'meta.silent_session' }
+          : {};
+        await updateRegistry(sessionId, {
+          status: 'ended',
+          last_active: ts,
+          ...classification,
+          ...silentOverride,
+        });
         await archiveSession(sessionId);
         // Back up upstream JSONL before Claude Code purges it — fire-and-forget
         backupUpstreamJSONL(sessionId, cwd ?? '').catch((err) =>

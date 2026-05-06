@@ -220,6 +220,44 @@ router.post('/api/registry/session-kind', async (req, res, next) => {
   }
 });
 
+// POST /api/registry/backfill-silent — flag historic silent sessions as junk
+//
+// Pages through the registry, finds any session with no `user_prompt` events,
+// and marks it { is_junk: true, session_subtype: 'meta.silent_session' }.
+// Idempotent — only flags entries where is_junk is currently false/undefined.
+//
+// Body: { dry_run?: boolean } — if true, returns what would change without writing.
+router.post('/api/registry/backfill-silent', async (req, res, next) => {
+  try {
+    const { dry_run = false } = req.body as { dry_run?: boolean };
+    const registry = await readRegistry();
+    const candidates: string[] = [];
+    let scanned = 0;
+    for (const [id, entry] of Object.entries(registry)) {
+      scanned++;
+      if (entry.is_junk === true) continue; // already flagged
+      const events = await getSessionEvents(id);
+      const hasPrompt = events.some((e) => e.event === 'user_prompt');
+      if (!hasPrompt) candidates.push(id);
+    }
+    if (dry_run) {
+      return apiSuccess(res, { scanned, would_flag: candidates.length, dry_run: true });
+    }
+    let flagged = 0;
+    for (const id of candidates) {
+      await updateRegistry(id, {
+        is_junk: true,
+        session_subtype: 'meta.silent_session',
+      });
+      flagged++;
+    }
+    apiSuccess(res, { scanned, flagged, dry_run: false });
+  } catch (err) {
+    logger.error({ err }, 'Backfill silent failed');
+    next(err);
+  }
+});
+
 // PATCH /api/sessions/:id — update name, tags, workspace_id
 router.patch('/api/sessions/:id', async (req, res, next) => {
   try {
