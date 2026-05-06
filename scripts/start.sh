@@ -105,6 +105,15 @@ echo "  overmind connect server  — attach to server logs"
 echo "  overmind stop            — stop all processes"
 echo ""
 
+# ── Stop any existing Overmind session and clean stale sock ──────────────────
+
+if [[ -S ".overmind.sock" ]]; then
+  echo "Stopping existing Overmind session..."
+  overmind stop 2>/dev/null || true
+  sleep 1
+  rm -f .overmind.sock
+fi
+
 # Open browser once server health check passes (background)
 (
   for _ in {1..15}; do
