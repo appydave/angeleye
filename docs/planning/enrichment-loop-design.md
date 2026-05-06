@@ -52,9 +52,7 @@ The loop is **not just AngelEye data** — it reads three layers, each with a di
 | **AngelEye archive**       | `~/.claude/angeleye/archive/session-<session_id>.jsonl`       | Long-term snapshot — survives Claude Code's auto-purge           | Fallback when live file gone                                  |
 | **AngelEye registry**      | `~/.claude/angeleye/registry.json`                            | Index of derived features (predicates, tags, scale, classifiers) | Always — but it's an _index_, not a substitute for raw events |
 
-**Critical correction to today's `enrich-subtypes` skill**: it reads from `~/.claude/angeleye/sessions/` (a path that doesn't exist) then falls back to archive. Effective behaviour today is archive-only — silently misses live sessions. The fix is to point at `~/.claude/projects/<encoded>/` first.
-
-**Encoded-path convention**: Claude Code flattens project directory paths into the JSONL filename, e.g. `/Users/davidcruwys/dev/ad/apps/angeleye` becomes a directory like `-Users-davidcruwys-dev-ad-apps-angeleye/`. The mapping logic must match Claude Code's encoding.
+**On data sourcing — corrected 2026-05-06**: AngelEye does not generally read Claude Code's raw JSONLs at `~/.claude/projects/<encoded>/<id>.jsonl`. It owns its own ingestion stream populated by hooks: `~/.claude/angeleye/sessions/` (transient, while session is active) → `~/.claude/angeleye/archive/` (permanent, on `session_end`). The `getSessionEvents` service (`sessions.service.ts:18`) handles this with live → archive fallback. The Claude Code raw JSONL is only read by `writeSessionName` (for `/rename` support) and the sync service. The enrichment loop reads via `GET /api/sessions/:id/events`, which serves AngelEye's own stream.
 
 ---
 
@@ -188,12 +186,15 @@ interface RegistryEntry {
 
 The loop talks only to the AngelEye HTTP API. No direct filesystem reads. From machine B, set `ANGELEYE_API=http://<machine-a-tailscale-name>:5051` and the skill works identically — Tailscale handles the network, AngelEye serves the data.
 
-### What's needed
+### What's already in place
 
-- **`GET /api/sessions/<id>/events`** — returns the parsed event stream for a session. Internally reads live JSONL with archive fallback. Doesn't expose the raw filesystem path.
-- **`POST /api/registry/llm-tags`** — already exists. Used to write tags back. Already supports queued writes safely.
-- **Sidecar endpoints** — `GET /api/sessions/<id>/enrichment-history` returns the sidecar; `POST /api/sessions/<id>/enrichment-pass` appends a new pass. Server is the only writer; clients (skill from machine B) only see HTTP.
-- **Skill respects `ANGELEYE_API` env var** — defaults to `http://localhost:5051`, overrides for cross-machine.
+- **`GET /api/sessions/:id/events`** — exists at `server/src/routes/sessions.ts:47`. Returns parsed event stream with live → archive fallback in `getSessionEvents`. Cross-machine clients can read events over HTTP today.
+- **`POST /api/registry/llm-tags`** — exists. Used to write tags back, routed through serialised registry write queue.
+- **`ANGELEYE_API` env var convention** — every audit script in `scripts/audits/` already reads `process.env.ANGELEYE_API ?? 'http://localhost:5051'`. The new skill follows the same pattern.
+
+### What still needs building
+
+- **Sidecar endpoints** — `GET /api/sessions/:id/enrichment-history` returns the sidecar; `POST /api/sessions/:id/enrichment-pass` appends a new pass. Server is the only writer.
 
 ---
 
@@ -210,20 +211,31 @@ Each pass should produce a small list of code-change tickets. They land in BACKL
 
 ---
 
-## Stream 1 — infrastructure work units
+## Stream 1 — infrastructure work units (revised 2026-05-06)
 
-These are AngelEye-the-application changes that block or enable the loop. Not the skill itself — the skill goes in Stream 2 below. These are roughly ordered by dependency (1 unblocks 2 and 6; 2 unblocks 5; etc.).
+These are AngelEye-the-application changes that block or enable the loop. The original list contained items already implemented (`GET /api/sessions/:id/events`, `ANGELEYE_API` env convention) and a wrong claim about a "live JSONL path bug". Corrected list below.
 
-| #   | Work unit                                                                               | Surface                                                                     | Notes                                                                                                                                                                                 |
-| --- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | Fix live-JSONL path                                                                     | skill code (eventually)                                                     | Today's `enrich-subtypes` reads `~/.claude/angeleye/sessions/` (dead). Live path is `~/.claude/projects/<encoded>/<id>.jsonl`. Encoded-path mapping logic needs to match Claude Code. |
-| 2   | Sidecar enrichment file format + writer                                                 | server (`server/src/services/`) + new dir `~/.claude/angeleye/enrichments/` | Append-only per-session JSON. Schema as specified above.                                                                                                                              |
-| 3   | `enrichment_version` + `enriched_at` on `RegistryEntry`                                 | `shared/src/angeleye.ts` + classifier output + types                        | Two optional fields, no migration needed (optional = backward-compatible).                                                                                                            |
-| 4   | `GET /api/sessions/<id>/events` endpoint                                                | `server/src/routes/`                                                        | Returns parsed events. Internally: live JSONL → archive fallback. Removes filesystem coupling for clients.                                                                            |
-| 5   | `GET /api/sessions/<id>/enrichment-history` + `POST /api/sessions/<id>/enrichment-pass` | `server/src/routes/`                                                        | Read/write sidecar. Server-only writer.                                                                                                                                               |
-| 6   | Append-only `enrichments.jsonl` log                                                     | `server/src/services/`                                                      | Cross-session aggregation surface. One line per pass.                                                                                                                                 |
-| 7   | Skill respects `ANGELEYE_API` env var                                                   | skill code                                                                  | Defaults to `http://localhost:5051`; cross-machine sets to Tailscale URL.                                                                                                             |
-| 8   | Update `data-schema.md` to document the above                                           | `docs/data-schema.md`                                                       | After Stream 1 lands; capture sidecar shape, new endpoints, new fields.                                                                                                               |
+| #   | Work unit                                                                             | Surface                                                                     | Notes                                                                   |
+| --- | ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| 1   | `enrichment_version` + `enriched_at` on `RegistryEntry`                               | `shared/src/angeleye.ts`                                                    | Two optional fields, no migration needed. Required for L3 selection.    |
+| 2   | Sidecar enrichment file format + writer                                               | server (`server/src/services/`) + new dir `~/.claude/angeleye/enrichments/` | Append-only per-session JSON. Schema as specified above.                |
+| 3   | `GET /api/sessions/:id/enrichment-history` + `POST /api/sessions/:id/enrichment-pass` | `server/src/routes/`                                                        | Read/write sidecar. Server-only writer.                                 |
+| 4   | Append-only `enrichments.jsonl` log                                                   | `server/src/services/`                                                      | Cross-session aggregation surface. One line per pass.                   |
+| 5   | Update `data-schema.md` to document the above                                         | `docs/data-schema.md`                                                       | After Stream 1 lands; capture sidecar shape, new endpoints, new fields. |
+
+Stream 2 — **the new skill at `apps/angeleye/.claude/skills/angeleye-enrichment-loop/`** — gets a separate work item. Skill scope: SKILL.md + supporting refs, methodology layer (predicates, lens patterns, capture-lessons step), L1/L2/L3 mode flags, the requirement-doc output format for code-change findings.
+
+**Minimum to run a first L1 pass cross-machine**: nothing additional — `GET /api/sessions/:id/events` and `POST /api/registry/llm-tags` are both live, `ANGELEYE_API` convention is established. The skill itself is the only blocker. Items 1–4 add the audit/version layer needed for L2/L3.
+
+--- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1 | Fix live-JSONL path | skill code (eventually) | Today's `enrich-subtypes` reads `~/.claude/angeleye/sessions/` (dead). Live path is `~/.claude/projects/<encoded>/<id>.jsonl`. Encoded-path mapping logic needs to match Claude Code. |
+| 2 | Sidecar enrichment file format + writer | server (`server/src/services/`) + new dir `~/.claude/angeleye/enrichments/` | Append-only per-session JSON. Schema as specified above. |
+| 3 | `enrichment_version` + `enriched_at` on `RegistryEntry` | `shared/src/angeleye.ts` + classifier output + types | Two optional fields, no migration needed (optional = backward-compatible). |
+| 4 | `GET /api/sessions/<id>/events` endpoint | `server/src/routes/` | Returns parsed events. Internally: live JSONL → archive fallback. Removes filesystem coupling for clients. |
+| 5 | `GET /api/sessions/<id>/enrichment-history` + `POST /api/sessions/<id>/enrichment-pass` | `server/src/routes/` | Read/write sidecar. Server-only writer. |
+| 6 | Append-only `enrichments.jsonl` log | `server/src/services/` | Cross-session aggregation surface. One line per pass. |
+| 7 | Skill respects `ANGELEYE_API` env var | skill code | Defaults to `http://localhost:5051`; cross-machine sets to Tailscale URL. |
+| 8 | Update `data-schema.md` to document the above | `docs/data-schema.md` | After Stream 1 lands; capture sidecar shape, new endpoints, new fields. |
 
 Stream 2 — **the new skill at `apps/angeleye/.claude/skills/angeleye-enrichment-loop/`** — gets a separate set of work units once Stream 1 has the bones in place. Skill scope: SKILL.md + supporting refs, methodology layer (predicates, lens patterns, capture-lessons step), L1/L2/L3 mode flags.
 

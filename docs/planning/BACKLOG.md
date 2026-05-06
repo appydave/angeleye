@@ -1,22 +1,27 @@
 # Project Backlog — AngelEye
 
 **Last updated**: 2026-05-06
-**Total**: 82 | Pending: 10 | In Progress: 0 | Done: 71 | Deferred: 2 | Removed: 3
+**Total**: 82 | Pending: 7 | In Progress: 0 | Done: 71 | Deferred: 2 | Removed: 3 | Withdrawn: 3 (B075/B078/B081 — already in place)
 
 ## Pending
 
-### Enrichment Loop — Stream 1 Infrastructure (2026-05-06)
+### Enrichment Loop — Stream 1 Infrastructure (2026-05-06; revised after verification)
 
-Background and full design: [`docs/planning/enrichment-loop-design.md`](enrichment-loop-design.md). All items are AngelEye-the-application changes that block or enable a self-improving classification loop over historical session data.
+Background and full design: [`docs/planning/enrichment-loop-design.md`](enrichment-loop-design.md). The original list contained items that were already implemented; this revised list reflects what's actually missing.
 
-- [ ] B075 — Fix live-JSONL path in skill code: read from `~/.claude/projects/<encoded-project-dir>/<session_id>.jsonl` (live) with `~/.claude/angeleye/archive/session-<id>.jsonl` as fallback. Today's `enrich-subtypes` skill points at a path that doesn't exist. | Priority: high
+**Already in place (do not re-build):**
+
+- ~~B075~~ — Withdrawn. The "live-JSONL path bug" was a false alarm. The skill reads `~/.claude/angeleye/sessions/` (transient) → `archive/` (permanent), which is correct AngelEye-owned data.
+- ~~B078~~ — Already implemented. `GET /api/sessions/:id/events` lives at `server/src/routes/sessions.ts:47` with live → archive fallback in `getSessionEvents`. Tests at `sessions.test.ts:220`.
+- ~~B081~~ — Already established convention. Every audit script in `scripts/audits/` uses `process.env.ANGELEYE_API ?? 'http://localhost:5051'`. The new skill follows the same pattern.
+
+**Genuinely missing (real Stream 1):**
+
 - [ ] B076 — Add sidecar enrichment file format + writer at `~/.claude/angeleye/enrichments/<session_id>.json`. Append-only `passes[]` array per session. Schema in design doc. | Priority: high
 - [ ] B077 — Add `enrichment_version` and `enriched_at` optional fields to `RegistryEntry` in `shared/src/angeleye.ts`. Required for L3 (refresh) selection. | Priority: high
-- [ ] B078 — Add `GET /api/sessions/<id>/events` endpoint. Returns parsed event stream; live JSONL → archive fallback internally. Removes filesystem coupling for cross-machine clients. | Priority: high
-- [ ] B079 — Add `GET /api/sessions/<id>/enrichment-history` and `POST /api/sessions/<id>/enrichment-pass` endpoints. Read/write sidecar files. Server is the only writer. | Priority: medium
+- [ ] B079 — Add `GET /api/sessions/:id/enrichment-history` and `POST /api/sessions/:id/enrichment-pass` endpoints. Read/write sidecar files. Server is the only writer. | Priority: medium
 - [ ] B080 — Add append-only `~/.claude/angeleye/enrichments.jsonl` log (one line per pass per session). Cross-session aggregation surface. | Priority: medium
-- [ ] B081 — Skill respects `ANGELEYE_API` env var (defaults to `http://localhost:5051`). Enables cross-machine execution from machine B against machine A's data via Tailscale. | Priority: high
-- [ ] B082 — Author new first-class skill at `apps/angeleye/.claude/skills/angeleye-enrichment-loop/`. Owns L1/L2/L3 architecture, methodology layer, capture-lessons step. Replaces broken `enrich-subtypes`. | Priority: high
+- [ ] B082 — Author new first-class skill at `apps/angeleye/.claude/skills/angeleye-enrichment-loop/`. Owns L1/L2/L3 architecture, methodology layer, capture-lessons step, requirement-doc output format. Replaces (does not extend) `enrich-subtypes`. | Priority: high
 
 ### Pre-existing infrastructure (carried forward)
 
