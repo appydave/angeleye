@@ -67,8 +67,8 @@ Root cause traced to `apps/server/src/provider/Layers/ClaudeProvider.ts:445` (pr
 
 ## Acceptance Criteria
 
-- [ ] `references/taxonomy.md` lists `meta.silent_session` and removes (or marks deprecated) `meta.ghost_session` and `meta.scheduled_probe`
-- [ ] `server/src/routes/hooks.ts` `session_end` handler sets `is_junk: true` and `session_subtype: 'meta.silent_session'` when no `user_prompt` events exist in the session
-- [ ] Existing v1-enriched sessions are not retroactively modified — the new logic applies to all newly-ingested sessions and is the default for any future v2 reclassification pass
-- [ ] The enrichment loop's eligibility filter already excludes `is_junk: true`, so silent sessions never reach the queue going forward
-- [ ] A backfill script exists (or the ingestion filter is run retroactively over the registry) so the ~2000 historic ghost/probe sessions get the new tag and `is_junk: true`
+- [x] `references/taxonomy.md` lists `meta.silent_session` and removes (or marks deprecated) `meta.ghost_session` and `meta.scheduled_probe`
+- [x] `server/src/routes/hooks.ts` `session_end` handler sets `is_junk: true` and `session_subtype: 'meta.silent_session'` when no `user_prompt` events exist in the session
+- [x] Existing v1-enriched sessions are not retroactively modified — the new logic applies to all newly-ingested sessions and is the default for any future v2 reclassification pass
+- [x] The enrichment loop's eligibility filter already excludes `is_junk: true`, so silent sessions never reach the queue going forward
+- [x] A backfill script exists (or the ingestion filter is run retroactively over the registry) so the ~2000 historic ghost/probe sessions get the new tag and `is_junk: true`
