@@ -14,13 +14,21 @@ Never modify: `shared/src/`, `server/src/services/`, tests, skills, or any code 
 ## Arguments
 
 ```
-/angeleye-enrichment-loop [batch_size] [version]
+/angeleye-enrichment-loop [batch_size] [version] [raw_mode]
 ```
 
 - `batch_size` — sessions per pass (default: 20)
 - `version` — enrichment version number to stamp (default: 1)
+- `raw_mode` — when to read the raw Claude Code JSONL (default: `fallback`)
+  - `off` — events layer only, never fetch raw
+  - `fallback` — fetch raw only when events are thin (< 15 filtered events) or confidence would be low
+  - `always` — fetch raw for every session in the batch (slower, best for data quality audit)
 
-Example: `/angeleye-enrichment-loop 20 1`
+Examples:
+
+- `/angeleye-enrichment-loop 20 1` — standard pass, raw fallback on thin sessions
+- `/angeleye-enrichment-loop 5 1 always` — full raw audit pass
+- `/angeleye-enrichment-loop 50 1 off` — fast pass, events only
 
 ## Step 1 — Fetch batch
 
@@ -67,6 +75,35 @@ curl -s "http://localhost:5051/api/sessions/SESSION_ID/enrichments"
 Focus on: `user_prompt` events (especially prompts 1–5), `tool_use` pattern, `stop` events. Skip `progress` and `pre_tool_use` — they are noise.
 
 If `enrichments.history` is non-empty and `history[0].version >= VERSION`, skip this session.
+
+## Step 2b — Read raw transcript (conditional)
+
+Fetch raw only when the mode warrants it:
+
+- **`raw_mode: always`** — fetch for every session
+- **`raw_mode: fallback`** — fetch when filtered event count < 15, or when the session has no `user_prompt` events, or when the opening is ambiguous and you'd otherwise fall back to a low-confidence subtype
+
+```bash
+curl -s "http://localhost:5051/api/sessions/SESSION_ID/raw?limit=100"
+```
+
+Raw lines are the unprocessed Claude Code JSONL — each line is a JSON object with a `type` field. Useful types to look for:
+
+| Type                          | What it tells you                                                          |
+| ----------------------------- | -------------------------------------------------------------------------- |
+| `user`                        | Full human message text — what the person actually typed                   |
+| `assistant`                   | Full model response including `thinking` blocks (where present)            |
+| `summary`                     | Compaction summary — signals this session resumed from a compacted context |
+| `custom-title` / `agent-name` | User renamed the session via `/rename`                                     |
+
+When reading raw lines: look at the first 10–20 lines for session opening context, then spot-check the last 10 for closing shape. The middle is mostly streamed assistant output — skip unless you need to verify a specific claim.
+
+**Data quality checks to run when raw is available:**
+
+1. **Prompt extraction fidelity** — does the first `user_prompt` event match the actual `user` message in the raw JSONL? If not, the transform missed or truncated something → `category: ingestion` requirement doc.
+2. **Thinking blocks present?** — raw `assistant` entries with `type: thinking` are stripped by the events layer. If the session has thinking, the classification may benefit from it.
+3. **Compaction resume** — a `summary` entry at position 0–2 means this session started from a compacted context. The `is_compaction_resume` field should be `true` on the registry entry. If it isn't, that's an ingestion gap.
+4. **Tool call arguments** — raw `assistant` tool_use blocks include full input JSON. If the heuristic got `trigger_command` wrong, the raw tool call arguments will show the actual command.
 
 ## Step 3 — Classify
 
@@ -125,9 +162,13 @@ End the pass with a summary:
 | Sessions enriched                      | N     |
 | Sessions skipped (already done)        | N     |
 | Sessions skipped (subagent/subprocess) | N     |
+| Raw transcript fetched                 | N     |
+| Data quality issues found              | N     |
 | Requirement docs written               | N     |
 
 List any requirement docs written with their titles and categories.
+
+If raw was fetched, summarise any data quality findings: prompt extraction gaps, missing `is_compaction_resume` flags, mismatched `trigger_command`, thinking blocks present.
 
 ## References
 

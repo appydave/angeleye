@@ -84,6 +84,40 @@ Response:
 
 If `history` is non-empty and `history[0].version >= target_version`, skip this session.
 
+## Raw transcript
+
+```
+GET /api/sessions/:id/raw?limit=N
+```
+
+Returns the raw Claude Code JSONL lines for a session. Default limit 200, max 2000.
+
+Response:
+
+```json
+{
+  "status": "ok",
+  "data": {
+    "lines": [{ "type": "user", "message": {...}, ... }],
+    "count": 100,
+    "total": 566,
+    "source": "upstream"
+  }
+}
+```
+
+Returns 404 if the upstream JSONL was purged by Claude Code (file no longer exists at `~/.claude/projects/`).
+
+Key `type` values in raw lines:
+
+| type           | What it contains                                            |
+| -------------- | ----------------------------------------------------------- |
+| `user`         | Human message — full text, tool results                     |
+| `assistant`    | Model response — text, thinking blocks, tool calls          |
+| `summary`      | Compaction summary — session resumed from compacted context |
+| `custom-title` | User renamed session via `/rename`                          |
+| `agent-name`   | Agent-set session name                                      |
+
 ## Write enrichment pass
 
 ```
