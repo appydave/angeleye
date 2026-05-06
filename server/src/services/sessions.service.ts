@@ -69,25 +69,44 @@ export async function writeSessionName(
 export interface RawTranscript {
   lines: unknown[];
   total: number;
-  source: 'upstream';
+  source: 'upstream' | 'archive';
 }
 
 export async function getRawTranscript(
   sessionId: string,
   projectDir: string
 ): Promise<RawTranscript | null> {
+  // Try upstream Claude Code JSONL first
   const expandedDir = projectDir.startsWith('~') ? homedir() + projectDir.slice(1) : projectDir;
   const encoded = expandedDir.replace(/\//g, '-');
-  const jsonlPath = join(homedir(), '.claude', 'projects', encoded, `${sessionId}.jsonl`);
+  const upstreamPath = join(homedir(), '.claude', 'projects', encoded, `${sessionId}.jsonl`);
 
-  if (!existsSync(jsonlPath)) return null;
+  if (existsSync(upstreamPath)) {
+    const raw = await readFile(upstreamPath, 'utf-8');
+    const lines = raw
+      .split('\n')
+      .filter((l) => l.trim() !== '')
+      .map((l) => JSON.parse(l) as unknown);
+    return { lines, total: lines.length, source: 'upstream' };
+  }
 
-  const raw = await readFile(jsonlPath, 'utf-8');
-  const lines = raw
-    .split('\n')
-    .filter((l) => l.trim() !== '')
-    .map((l) => JSON.parse(l) as unknown);
-  return { lines, total: lines.length, source: 'upstream' };
+  // Fall back to AngelEye's own archive — present for any session AngelEye tracked,
+  // even after Claude Code purges the upstream file
+  for (const archivePath of [
+    join(_archiveDir(), `session-${sessionId}.jsonl`),
+    join(_sessionsDir(), `session-${sessionId}.jsonl`),
+  ]) {
+    if (existsSync(archivePath)) {
+      const raw = await readFile(archivePath, 'utf-8');
+      const lines = raw
+        .split('\n')
+        .filter((l) => l.trim() !== '')
+        .map((l) => JSON.parse(l) as unknown);
+      return { lines, total: lines.length, source: 'archive' };
+    }
+  }
+
+  return null;
 }
 
 export async function archiveSession(sessionId: string): Promise<void> {
