@@ -3,8 +3,14 @@ import type { Server } from 'socket.io';
 import type { AngelEyeEvent, AngelEyeEventType } from '@appystack/shared';
 import { SOCKET_EVENTS } from '@appystack/shared';
 import { logger } from '../config/logger.js';
-import { writeEvent, getSessionEvents, archiveSession } from '../services/sessions.service.js';
-import { readRegistry, updateRegistry } from '../services/registry.service.js';
+import { appendFile } from 'node:fs/promises';
+import {
+  writeEvent,
+  getSessionEvents,
+  archiveSession,
+  backupUpstreamJSONL,
+} from '../services/sessions.service.js';
+import { readRegistry, updateRegistry, _unknownHooksPath } from '../services/registry.service.js';
 import { classifySession, findFirstRealPrompt } from '../services/classifier.service.js';
 import { auditPayload } from '../services/schema-auditor.service.js';
 import { detectTeammate } from '../services/teammate-detection.service.js';
@@ -77,6 +83,13 @@ export function createHooksRouter(io: Server): Router {
       const eventType = EVENT_MAP[hookEventName];
       if (!eventType) {
         logger.warn({ hookEventName }, 'Unknown hook event name — ignoring');
+        const entry = {
+          hook_event_name: hookEventName,
+          seen_at: new Date().toISOString(),
+          payload_keys: Object.keys(body).slice(0, 20),
+          session_id: typeof body.session_id === 'string' ? body.session_id : 'unknown',
+        };
+        appendFile(_unknownHooksPath(), JSON.stringify(entry) + '\n', 'utf-8').catch(() => {});
         res.status(200).json({ continue: true });
         return;
       }
@@ -232,6 +245,10 @@ export function createHooksRouter(io: Server): Router {
         const classification = classifySession(allEvents, sessionId, cwd ?? '');
         await updateRegistry(sessionId, { status: 'ended', last_active: ts, ...classification });
         await archiveSession(sessionId);
+        // Back up upstream JSONL before Claude Code purges it — fire-and-forget
+        backupUpstreamJSONL(sessionId, cwd ?? '').catch((err) =>
+          logger.warn({ err, sessionId }, 'backupUpstreamJSONL failed (non-fatal)')
+        );
       } else {
         await updateRegistry(sessionId, {
           last_active: ts,

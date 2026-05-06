@@ -29,6 +29,15 @@ export function _registryPath(): string {
 export function _workspacesPath(): string {
   return join(_baseDir, 'workspaces.json');
 }
+export function _rawTranscriptsDir(): string {
+  return join(_baseDir, 'raw-transcripts');
+}
+export function _schemaObservationsPath(): string {
+  return join(_baseDir, 'schema-observations.jsonl');
+}
+export function _unknownHooksPath(): string {
+  return join(_baseDir, 'unknown-hooks.jsonl');
+}
 
 /**
  * Override the base data directory. Intended for tests only — prefix signals test-only usage.
@@ -55,6 +64,7 @@ export async function initAngelEyeDirs(): Promise<void> {
   await mkdir(archiveDir, { recursive: true });
   await mkdir(auditDir, { recursive: true });
   await mkdir(_enrichmentsDir(), { recursive: true });
+  await mkdir(_rawTranscriptsDir(), { recursive: true });
 
   if (!existsSync(registryPath)) {
     await writeFile(registryPath, JSON.stringify({}), 'utf-8');
