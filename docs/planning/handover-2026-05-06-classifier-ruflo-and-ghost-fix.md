@@ -1,8 +1,38 @@
 # Handover — Classifier + RuFlo Investigation + Ghost Fix (2026-05-06)
 
-**Author**: Claude (Sonnet 4.6) at end of 2026-05-06 afternoon session
+**Author**: Claude (Sonnet 4.6) at end of 2026-05-06 afternoon session; updated end of evening session.
 **Audience**: next Claude session continuing AngelEye classifier work
-**Status**: 2 commits landed, 710 tests passing. Two backfill scripts needed before enrichment resumes.
+**Status**: 3 commits landed, 710 tests passing. Backfill scripts COMPLETE (this session evening). The real priority for next session is **targeted LLM enrichment of BMAD / Ralphy / RuFlo families** — see new section below.
+
+---
+
+## ⭐ ACTUAL PRIORITY FOR NEXT SESSION — Targeted Enrichment
+
+The bigger strategic gap: two sessions of classifier infrastructure work, but no LLM eyes have looked at the session families that anchor the workflow model. New subtypes (`build.bmad_orchestrator`, `build.ralphy_campaign`, `build.ruflo_orchestrator`) are in the schema but empty — heuristic alone can't assign them reliably from prompts.
+
+**Why this matters**: the workflow view depends on understanding which sessions are orchestrators vs agents vs UAT vs knowledge capture. Without enrichment on these families, the pipeline visualization shows structure without meaning.
+
+**What's missing per family:**
+
+- **BMAD** (~92 sessions enriched months ago): labels predate the orchestrator/agent distinction. BMAD chains are the foundation of the workflow model — chain groupings have nothing to anchor to until re-enriched with current taxonomy. Filter: `workflow_role IS NOT NULL` OR `trigger_command LIKE '/bmad-%'`.
+- **Ralphy**: zero LLM enrichment. No idea what Ralphy sessions look like from the inside (content pipelines vs research vs campaigns). Filter: `first_real_prompt LIKE '/ralphy%'` (also `/appydave:ralphy`).
+- **RuFlo**: zero LLM enrichment. Detection works but the work inside is unreviewed. Filter: `project = 'appyctrl'` excluding `meta.scheduled_probe` (now correctly tagged after this session's backfill).
+
+**Suggested order (one family per pass, review between):**
+
+1. BMAD — biggest history, anchors the workflow model
+2. Ralphy — second
+3. RuFlo — third
+4. After each pass: pause and review what patterns emerged before moving on
+
+**Skill tweak likely needed**: `enrich-subtypes` filters by subtype queue. For this work you want to filter by a _predicate_ (`workflow_role`, `trigger_command`, `first_real_prompt`). Either:
+
+- Pre-filter into a list of session_ids, pipe into the skill, OR
+- Extend the skill to accept a predicate filter
+
+Confirm with David which approach he prefers before starting.
+
+---
 
 ---
 
@@ -72,9 +102,22 @@ Read from docs: `docs/planning/handover-2026-05-06-ruflo-deep-enrichment.md` (Ru
 
 ---
 
-## What the next session must do FIRST (before any enrichment)
+## ✅ Backfill scripts — DONE in 2026-05-06 evening session
 
-Two backfill scripts needed. Both fix tag data in-place — no classifier changes required.
+All three landed and ran successfully. Skip this section unless re-auditing.
+
+- `scripts/audits/fix-subprocess-ghost-tags.ts` — written + run, **56/61** subprocess rows cleaned (59 k-lars + 2 prompt.supportsignal)
+- `scripts/audits/fix-scheduled-probe-tags.ts` — written + run, **116/116** appyctrl rows retagged ghost → scheduled_probe
+- `scripts/audits/backfill-secondary-tags.ts` (already existed) — run, **13/13** sessions got secondary tags (9 campaign+shipped, 3 feature+shipped, 1 campaign+brain_capture)
+- `npm run audit:registry` — diagnostics snapshot refreshed (2212 rows, 477 Mechanism B subagents)
+
+Original spec retained below for reference.
+
+---
+
+## (Reference) What the backfill scripts did
+
+Two backfill scripts. Both fixed tag data in-place — no classifier changes required.
 
 ### Script A — remove `meta.ghost_session` from subprocess sessions
 
