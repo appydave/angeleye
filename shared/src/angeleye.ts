@@ -91,6 +91,9 @@ export type SessionSubtype =
   | 'build.ci_pipeline' // CI/deploy/pipeline edits
   | 'build.campaign' // /skill invocation OR task_orchestration + parallel bursts
   | 'build.orchestrated_campaign' // agent-heavy + task_orchestration, no parallel bursts
+  | 'build.bmad_orchestrator' // BMAD lifecycle lead session (Swagger/orchestrator pane)
+  | 'build.ruflo_orchestrator' // RuFlo Mode B lead session (subagent_starts + Agent() calls)
+  | 'build.ralphy_campaign' // Ralphy-led parallel multi-agent run
   | 'build.multi_phase' // session spans multiple distinct phases
   | 'build.project_scaffolding' // scaffold/init/setup prompt
   | 'build.visual_implementation' // UI/CSS/Tailwind edits, component work
@@ -122,7 +125,8 @@ export type SessionSubtype =
   | 'research.conceptual_exploration' // exploring ideas, no specific deliverable
   | 'research.quick_answer' // short session, specific question answered
   // META — session quality/nature classifications
-  | 'meta.ghost_session' // near-zero events, nothing happened (confidence 0.95)
+  | 'meta.ghost_session' // human opened Claude, typed nothing, closed (confidence 0.95)
+  | 'meta.scheduled_probe' // scheduler spawned Claude with no prompt — lifecycle only (confidence 0.95)
   | 'meta.accidental' // micro + no tool use + abrupt abandon (confidence 0.95)
   // PLAYWRIGHT-DERIVED — disambiguating what playwright tool use means
   | 'orientation.visual_inspection' // playwright clicks/screenshots, no edits — looking at UI

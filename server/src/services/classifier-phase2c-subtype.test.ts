@@ -46,6 +46,9 @@ interface SubtypeOptions {
   has_parallel_subagent_bursts?: boolean;
   has_skill_created?: boolean;
   has_skill_modified?: boolean;
+  session_kind?: string;
+  has_ruflo_context?: boolean;
+  subagent_start_count?: number;
 }
 
 function callDetect(
@@ -347,40 +350,65 @@ describe('detectSessionSubtype — built-in slash commands do NOT trigger build.
     });
   });
 
-  it('still triggers build.campaign for genuine skill invocations like /ralphy', () => {
+  it('routes /ralphy to build.ralphy_campaign (Ralphy orchestrator, not generic campaign)', () => {
     const events = [
       makePromptEvent('/ralphy let us go'),
-      ...Array.from({ length: 5 }, (_, i) => makeToolEvent('Bash', undefined, { id: `e${i}` })),
+      ...Array.from({ length: 5 }, () => makeToolEvent('Bash', undefined)),
     ];
     const result = callDetect(events, 'BUILD', 'bash-heavy', 'moderate', {
       first_real_prompt: '/ralphy let us go',
     });
-    expect(result).toBe('build.campaign');
+    expect(result).toBe('build.ralphy_campaign');
   });
 
-  it('still triggers build.campaign for plugin-prefixed commands like /appydave:ralphy', () => {
+  it('routes /appydave:ralphy to build.ralphy_campaign', () => {
     const events = [
       makePromptEvent('/appydave:ralphy do the thing'),
-      ...Array.from({ length: 5 }, (_, i) => makeToolEvent('Bash', undefined, { id: `e${i}` })),
+      ...Array.from({ length: 5 }, () => makeToolEvent('Bash', undefined)),
     ];
     const result = callDetect(events, 'BUILD', 'bash-heavy', 'moderate', {
       first_real_prompt: '/appydave:ralphy do the thing',
     });
-    expect(result).toBe('build.campaign');
+    expect(result).toBe('build.ralphy_campaign');
   });
 });
 
 // ── Empty ghost session ─────────────────────────────────────────────────────
 
 describe('detectSessionSubtype — empty ghost sessions', () => {
-  it('returns meta.ghost_session when no user_prompt events fire', () => {
+  it('returns meta.scheduled_probe for lifecycle-only sessions (no user_prompt, no tool_use)', () => {
+    // Pure lifecycle shape: instructions_loaded + session_start + session_end only.
+    // This is a scheduler spawn (cron, /loop, AngelEye task) — not a human ghost.
     const events: AngelEyeEvent[] = [
       makeEvent({ event: 'session_start', id: 'e1' }),
       makeEvent({ event: 'instructions_loaded', id: 'e2' }),
       makeEvent({ event: 'session_end', id: 'e3' }),
     ];
     const result = callDetect(events, 'BUILD', 'mixed', 'micro', {});
+    expect(result).toBe('meta.scheduled_probe');
+  });
+
+  it('returns meta.ghost_session for brief non-lifecycle sessions with no user_prompt', () => {
+    // Has a non-lifecycle event (notification) — human was briefly present but did nothing.
+    const events: AngelEyeEvent[] = [
+      makeEvent({ event: 'session_start', id: 'e1' }),
+      makeEvent({ event: 'instructions_loaded', id: 'e2' }),
+      makeEvent({ event: 'notification', id: 'e3' }),
+      makeEvent({ event: 'session_end', id: 'e4' }),
+    ];
+    const result = callDetect(events, 'BUILD', 'mixed', 'micro', {});
     expect(result).toBe('meta.ghost_session');
+  });
+
+  it('does NOT flag subprocess sessions as ghost/probe (subprocess_kind guard)', () => {
+    // k-lars omi-extract-haiku subprocess sessions have no user_prompt by design.
+    const events: AngelEyeEvent[] = [
+      makeEvent({ event: 'session_start', id: 'e1' }),
+      makeEvent({ event: 'session_end', id: 'e2' }),
+    ];
+    const result = callDetect(events, 'BUILD', 'mixed', 'micro', { session_kind: 'subprocess' });
+    expect(result).not.toBe('meta.ghost_session');
+    expect(result).not.toBe('meta.scheduled_probe');
   });
 
   it('does NOT flag empty ghost when there IS a user_prompt', () => {

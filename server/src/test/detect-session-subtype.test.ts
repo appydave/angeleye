@@ -35,10 +35,18 @@ describe('detectSessionSubtype — BUILD', () => {
     ).toBe('skill.development');
   });
 
-  it('returns build.campaign when prompt starts with /command', () => {
+  it('returns build.ralphy_campaign when prompt starts with /ralphy', () => {
     expect(
       detectSessionSubtype([], 'BUILD', 'agent-heavy', 'heavy', {
         first_real_prompt: '/ralphy start the campaign',
+      })
+    ).toBe('build.ralphy_campaign');
+  });
+
+  it('returns build.campaign when prompt starts with a non-Ralphy /command', () => {
+    expect(
+      detectSessionSubtype([], 'BUILD', 'agent-heavy', 'heavy', {
+        first_real_prompt: '/focus build the auth service',
       })
     ).toBe('build.campaign');
   });

@@ -163,7 +163,12 @@ export async function runSync(options: SyncOptions = {}): Promise<SyncResult> {
       }
 
       const events = await getSessionEvents(sessionId);
-      const classificationResult = classifySession(events, sessionId, entry.project_dir ?? '');
+      const classificationResult = classifySession(
+        events,
+        sessionId,
+        entry.project_dir ?? '',
+        entry.session_kind
+      );
 
       // Derive session_subtype: LLM-set session_tags (already on the entry) wins over
       // the rule-based subtype_heuristic just produced. This stops force-syncs from

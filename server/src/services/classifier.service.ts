@@ -742,7 +742,8 @@ export function detectOutputType(events: AngelEyeEvent[]): OutputType {
 export function classifySession(
   events: AngelEyeEvent[],
   sessionId: string,
-  projectDir: string
+  projectDir: string,
+  sessionKind?: string
 ): ClassificationResult {
   const is_junk = detectIsJunk(events, sessionId);
 
@@ -762,6 +763,16 @@ export function classifySession(
   const has_web_research = detectHasWebResearch(events);
   const has_parallel_subagent_bursts = detectHasParallelSubagentBursts(events);
   const has_task_orchestration = detectHasTaskOrchestration(events);
+  // RuFlo context: CLAUDE.local.md or .appydave/* paths in instructions_loaded events.
+  // Distinguishes RuFlo-enabled sessions from standard Claude Code sessions.
+  const has_ruflo_context = events.some(
+    (e) =>
+      e.event === 'instructions_loaded' &&
+      (e.payload?.file_path?.includes('.appydave/') ||
+        e.payload?.file_path?.endsWith('CLAUDE.local.md'))
+  );
+  // Count subagent_start events — proxy for how many subagents were spawned.
+  const subagent_start_count = events.filter((e) => e.event === 'subagent_start').length;
   const has_git_outcome = detectHasGitOutcome(events);
   const trigger_command = extractTriggerCommand(events);
   const trigger_arguments = extractTriggerArguments(events);
@@ -809,6 +820,9 @@ export function classifySession(
       has_skill_modified,
       has_task_orchestration,
       has_parallel_subagent_bursts,
+      session_kind: sessionKind,
+      has_ruflo_context,
+      subagent_start_count,
     }
   );
 
@@ -1010,27 +1024,45 @@ export function detectSessionSubtype(
     has_skill_modified?: boolean;
     has_task_orchestration?: boolean;
     has_parallel_subagent_bursts?: boolean;
+    session_kind?: string;
+    has_ruflo_context?: boolean;
+    subagent_start_count?: number;
   }
 ): SessionSubtype | undefined {
   const prompt = options.first_real_prompt ?? '';
   const skillInvocation = isSkillInvocation(prompt);
 
-  // ── Empty ghost session ────────────────────────────────────────────────
-  // No user_prompt event ever fired — session opened (instructions_loaded /
-  // session_start) and immediately closed without any human input. Surfaced
-  // 2026-05-04 enriching orientation.quick_check batch 4: ~47 of 50 sessions
-  // matched this pattern, heaviest in `appyctrl`. They're not subprocess
-  // (no template prompt) and not user activity (no prompt at all) — pure
-  // ghosts. Auto-classify to keep them out of every other queue.
-  // Require at least 2 events to qualify (real ghost sessions always have at least
-  // session_start + session_end). Also require minimal tool use — sessions with
-  // edits or substantial bash work aren't ghosts even if first_real_prompt extraction
-  // missed the user_prompt. This avoids firing on empty-events test inputs and on
-  // legitimate work sessions where the user_prompt was stored differently.
+  // ── Scheduled probe / ghost session ────────────────────────────────────
+  // No user_prompt + no tool_use = session opened and closed with no work.
+  // Two distinct causes with different labels:
+  //
+  // meta.scheduled_probe — scheduler (cron, /loop, AngelEye task) spawned Claude
+  //   with no prompt. Lifecycle-only events only (instructions_loaded + session_start
+  //   + session_end). Pure probe shape — 5–7 events max. NOT subprocess-derived.
+  //
+  // meta.ghost_session — human opened Claude, typed nothing, closed the terminal.
+  //   Slightly more events (up to 10) because the human might have been present
+  //   briefly. Also no tool_use, also no user_prompt.
+  //
+  // Guard: subprocess sessions (session_kind === 'subprocess') never fire this rule —
+  //   they have no user_prompt by design (template-injected system prompt).
+  //   59 k-lars subprocess rows were incorrectly ghost-tagged before this guard.
   const userPromptCount = events.filter((e) => e.event === 'user_prompt').length;
   const toolUseCount = events.filter((e) => e.event === 'tool_use').length;
-  if (userPromptCount === 0 && events.length >= 2 && events.length <= 10 && toolUseCount < 2) {
-    return 'meta.ghost_session';
+  const isSubprocess = options.session_kind === 'subprocess';
+
+  if (!isSubprocess && userPromptCount === 0 && toolUseCount < 2 && events.length >= 2) {
+    const nonLifecycleEvents = events.filter(
+      (e) => !['instructions_loaded', 'session_start', 'session_end'].includes(e.event)
+    );
+    if (nonLifecycleEvents.length === 0 && events.length <= 7) {
+      // Pure lifecycle-only — a scheduler spawned this session with no prompt.
+      return 'meta.scheduled_probe';
+    }
+    if (events.length <= 10) {
+      // Brief session with minimal activity — human likely opened Claude and closed it.
+      return 'meta.ghost_session';
+    }
   }
 
   // ── Skill-name lookup (overrides sessionType routing) ──────────────────
@@ -1076,6 +1108,30 @@ export function detectSessionSubtype(
     // Skill file work takes priority
     if (options.has_skill_created) return 'skill.creation';
     if (options.has_skill_modified) return 'skill.development';
+
+    // ── Named orchestrator types ─────────────────────────────────────────
+    // Detect specific multi-agent frameworks before generic campaign routing.
+    // Each requires a strong, framework-specific fingerprint.
+
+    // RuFlo Mode B orchestrator: CLAUDE.local.md or .appydave/* loaded at session
+    // start (has_ruflo_context) + at least one subagent spawned. The lead Claude Code
+    // session in a RuFlo swarm — researcher, planner, parallel coders all fire here.
+    // Requires subagent_start because probe sessions also have has_ruflo_context.
+    if (options.has_ruflo_context && (options.subagent_start_count ?? 0) >= 1) {
+      return 'build.ruflo_orchestrator';
+    }
+
+    // Ralphy campaign: /appydave:ralphy or /ralphy prefix.
+    // Ralphy is a parallel multi-agent orchestrator for AppyDave content pipelines.
+    // Strong fingerprint — no other skill family uses this prefix.
+    if (prompt.match(/^\/(?:appydave:)?ralphy\b/)) {
+      return 'build.ralphy_campaign';
+    }
+
+    // Note: BMAD orchestrator vs BMAD agent sessions can't be reliably split by
+    // prompt alone (both use /bmad-* prefixes). BMAD sessions route through
+    // build.campaign via skillInvocation + workflow overlay (workflow_role/identity).
+    // LLM enrichment promotes the lead session to build.bmad_orchestrator where needed.
 
     // Orchestrated campaign: skill invocation OR multi-agent coordination
     if (
