@@ -3,15 +3,18 @@ import type { AngelEyeEvent, SessionClass } from '@appystack/shared';
 // Cwd matches a Paperclip workspace dir — Claude is running inside the platform.
 const PAPERCLIP_WORKSPACE_RE = /\/\.paperclip\/instances\/[^/]+\/workspaces\/[a-f0-9-]{36}\/?$/i;
 
-// Slash-commands that trigger orchestrator skills (Ralphy, BMAD lifecycle, etc).
-// Match with or without the appydave: namespace prefix.
+// Trigger commands that mark orchestrator skills (Ralphy, BMAD lifecycle, etc).
+// trigger_command is stored without the leading `/` (e.g. 'ralphy',
+// 'appydave:bmad-story-lifecycle'). Match with or without appydave: prefix.
 const ORCHESTRATOR_TRIGGER_RE =
-  /^\/(appydave:)?(ralphy|bmad-(pm|sm|dev|dr|sat|ux-designer|e0)|bmad-story-lifecycle)$/i;
+  /^(appydave:)?(ralphy|bmad-(pm|sm|dev|dr|sat|ux-designer|e0|story-lifecycle))$/i;
 
 // Tool-use to user-prompt ratio at which we promote a session from dialog to
-// agent_run. Empirical starting point — calibrate after backfill if borderline
-// cases prove it wrong. See requirement doc 2026-05-07-schema-session-class.md.
-const TOOL_TO_PROMPT_AGENT_RUN_THRESHOLD = 30;
+// agent_run. Calibrated against the heaviest Ralphy session in the corpus
+// (08fbfe17 = 3565 tool_use / 183 user_prompt = 19.48). Threshold of 10 gives
+// clear separation between dialog (<5 typical) and agent_run (>10) without
+// requiring an exact ratio fit. Re-tune if borderline cases surface.
+const TOOL_TO_PROMPT_AGENT_RUN_THRESHOLD = 10;
 
 /**
  * Cheap cwd check usable at session_start — before events arrive.
