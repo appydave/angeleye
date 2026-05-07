@@ -288,7 +288,17 @@ export interface RegistryEntry {
   // Detected at SessionStart; backfilled by scripts/audits/backfill-session-kind.ts
   session_kind?: 'main' | 'subagent' | 'subprocess';
   teammate_id?: string | null; // observed values: 'team-lead'
+  // Who-drove-this dimension, orthogonal to session_kind and is_junk.
+  //  'dialog'         — human-initiated, conversation-shaped
+  //  'agent_run'      — human-initiated, autonomous after kickoff (Ralphy, BMAD orchestrators)
+  //  'machine_signal' — machine-initiated, no human in the loop (probes, heartbeats)
+  //  'subagent_leg'   — subagent execution leg (mirrors session_kind === 'subagent')
+  // API filters default to ('dialog', 'agent_run'). See requirement doc
+  // docs/requirements/2026-05-07-schema-session-class.md.
+  session_class?: SessionClass;
 }
+
+export type SessionClass = 'dialog' | 'agent_run' | 'machine_signal' | 'subagent_leg';
 
 export interface WorkspaceEntry {
   id: string;

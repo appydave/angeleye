@@ -9,7 +9,8 @@ import {
 } from '../services/sessions.service.js';
 import { readEnrichmentHistory, appendEnrichmentPass } from '../services/enrichment.service.js';
 import { readWorkspaces } from '../services/workspace.service.js';
-import type { EnrichmentPass, RegistryEntry } from '@appystack/shared';
+import { computeSessionClass } from '../services/session-class.service.js';
+import type { EnrichmentPass, RegistryEntry, SessionClass } from '@appystack/shared';
 
 const router = Router();
 
@@ -32,6 +33,28 @@ function applySessionFilters(
   const subtypePrefix = query.subtype_prefix ? String(query.subtype_prefix) : undefined;
   const enrichedParam = query.enriched;
   const enriched = enrichedParam === 'true' ? true : enrichedParam === 'false' ? false : undefined;
+
+  // session_class: orthogonal to session_kind / is_junk. Default filter is the
+  // user-driven set ('dialog', 'agent_run'). Override via ?session_class=<one>
+  // (specific class) or ?include_classes=<csv> (default + extras). Sessions
+  // without session_class set are treated as 'dialog' for backwards compat —
+  // existing rows pass the default filter until backfill populates them.
+  const sessionClassParam = query.session_class ? String(query.session_class) : undefined;
+  const includeClassesParam = query.include_classes ? String(query.include_classes) : undefined;
+  let allowedClasses: Set<SessionClass>;
+  if (sessionClassParam) {
+    allowedClasses = new Set([sessionClassParam as SessionClass]);
+  } else if (includeClassesParam) {
+    allowedClasses = new Set<SessionClass>(['dialog', 'agent_run']);
+    for (const c of includeClassesParam
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean)) {
+      allowedClasses.add(c as SessionClass);
+    }
+  } else {
+    allowedClasses = new Set<SessionClass>(['dialog', 'agent_run']);
+  }
 
   // Build a project matcher closure (only when project filter is active).
   let projectMatcher: ((v: string) => boolean) | undefined;
@@ -67,6 +90,9 @@ function applySessionFilters(
       const isEnriched = (s.enrichment_version ?? 0) > 0;
       if (enriched !== isEnriched) return false;
     }
+    // session_class filter — undefined treated as 'dialog' for backwards compat
+    const cls: SessionClass = s.session_class ?? 'dialog';
+    if (!allowedClasses.has(cls)) return false;
     return true;
   });
 }
@@ -443,6 +469,57 @@ router.post('/api/registry/backfill-silent', async (req, res, next) => {
     apiSuccess(res, { scanned, flagged, dry_run: false });
   } catch (err) {
     logger.error({ err }, 'Backfill silent failed');
+    next(err);
+  }
+});
+
+// POST /api/registry/backfill-class — populate session_class on historic rows
+//
+// Iterates the registry, reads events per session, recomputes session_class
+// via the canonical detection rules in session-class.service.ts, and writes
+// back where the value differs from what's stored. Idempotent — re-running
+// with no changes in the registry is a no-op.
+//
+// Body: { dry_run?: boolean } — preview without writing.
+//
+// Implementation note: this is O(N) over the registry with per-session event
+// reads. For ~2,500 sessions expect ~30-60 seconds wall-clock. Acceptable for
+// a one-shot backfill; not a hot path.
+router.post('/api/registry/backfill-class', async (req, res, next) => {
+  try {
+    const { dry_run = false } = req.body as { dry_run?: boolean };
+    const registry = await readRegistry();
+    const summary = {
+      total: 0,
+      dialog: 0,
+      agent_run: 0,
+      machine_signal: 0,
+      subagent_leg: 0,
+      changed: 0,
+    };
+    const updates: Array<{ id: string; cls: SessionClass }> = [];
+    for (const [id, entry] of Object.entries(registry)) {
+      summary.total++;
+      const events = await getSessionEvents(id);
+      const cls = computeSessionClass({
+        events,
+        cwd: entry.project_dir,
+        session_kind: entry.session_kind,
+        trigger_command: entry.trigger_command,
+      });
+      summary[cls]++;
+      if (entry.session_class !== cls) updates.push({ id, cls });
+    }
+    if (dry_run) {
+      return apiSuccess(res, { ...summary, would_change: updates.length, dry_run: true });
+    }
+    for (const { id, cls } of updates) {
+      await updateRegistry(id, { session_class: cls });
+      summary.changed++;
+    }
+    apiSuccess(res, { ...summary, dry_run: false });
+  } catch (err) {
+    logger.error({ err }, 'Backfill class failed');
     next(err);
   }
 });

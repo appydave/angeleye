@@ -15,6 +15,10 @@ import { classifySession, findFirstRealPrompt } from '../services/classifier.ser
 import { auditPayload } from '../services/schema-auditor.service.js';
 import { detectTeammate } from '../services/teammate-detection.service.js';
 import { detectSubprocess } from '../services/subprocess-detection.service.js';
+import {
+  computeSessionClass,
+  detectMachineSignalFromCwd,
+} from '../services/session-class.service.js';
 
 const EVENT_MAP: Record<string, AngelEyeEventType> = {
   // Original 7
@@ -199,6 +203,14 @@ export function createHooksRouter(io: Server): Router {
         // the JSONL may not yet contain the teammate-message line. Backfill script
         // catches misses. See known-issues.md#subagent-detection.
         const teammate = detectTeammate(sessionId, cwd);
+        // Initial session_class — set only the deterministic cases (subagent leg
+        // or Paperclip workspace cwd). Leave undefined for the common case;
+        // session_end will compute the final value with full event context.
+        const initial_class = teammate.is_subagent
+          ? ('subagent_leg' as const)
+          : detectMachineSignalFromCwd(cwd)
+            ? ('machine_signal' as const)
+            : undefined;
         await updateRegistry(sessionId, {
           session_id: sessionId,
           project,
@@ -212,6 +224,7 @@ export function createHooksRouter(io: Server): Router {
           source: 'hook',
           session_kind: teammate.is_subagent ? 'subagent' : 'main',
           ...(teammate.teammate_id !== undefined && { teammate_id: teammate.teammate_id }),
+          ...(initial_class !== undefined && { session_class: initial_class }),
         });
       } else if (eventType === 'stop') {
         const allEvents = await getSessionEvents(sessionId);
@@ -250,10 +263,22 @@ export function createHooksRouter(io: Server): Router {
         const silentOverride = hasNoUserPrompt
           ? { is_junk: true, session_subtype: 'meta.silent_session' }
           : {};
+        // Compute final session_class with full event context. computeSessionClass
+        // returns 'machine_signal' for zero-prompt sessions, so it stays consistent
+        // with the silent_session override above.
+        const registryNow = await readRegistry();
+        const existingNow = registryNow[sessionId];
+        const session_class = computeSessionClass({
+          events: allEvents,
+          cwd,
+          session_kind: existingNow?.session_kind,
+          trigger_command: classification.trigger_command,
+        });
         await updateRegistry(sessionId, {
           status: 'ended',
           last_active: ts,
           ...classification,
+          session_class,
           ...silentOverride,
         });
         await archiveSession(sessionId);

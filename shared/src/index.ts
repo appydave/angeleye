@@ -25,6 +25,7 @@ export type {
   AffinityConfidence,
   DelegationStyle,
   InitiationSource,
+  SessionClass,
   SessionContinuity,
   OpeningStyle,
   ClosingStyle,
