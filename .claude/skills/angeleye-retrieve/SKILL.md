@@ -33,17 +33,18 @@ Examples:
 
 The API caps at 200 per page; pagination uses `data.cursor` + `data.hasMore`. Pre-filter while paging to avoid holding the full corpus in memory.
 
-Default host: `http://localhost:5051` (when running on the M4 Mini where AngelEye lives). Cross-machine fallback: `http://100.82.235.39:5051` (Tailscale).
+**Default host: `http://100.82.235.39:5051` (Tailscale IP for M4 Mini).** AngelEye's server lives on M4 Mini — always hit it via the Tailscale IP unless you're certain you're invoking this skill on the M4 Mini itself, in which case `http://localhost:5051` works as a marginal optimisation. When in doubt, use the Tailscale IP — it works from any machine on the Tailnet, including M4 Mini hitting its own address.
 
 ```bash
 node -e "
 async function fetchAll() {
+  const HOST = 'http://100.82.235.39:5051';
   const matches = [];
   let cursor = null;
   while (true) {
     const url = cursor
-      ? 'http://localhost:5051/api/sessions?limit=200&after=' + encodeURIComponent(cursor)
-      : 'http://localhost:5051/api/sessions?limit=200';
+      ? HOST + '/api/sessions?limit=200&after=' + encodeURIComponent(cursor)
+      : HOST + '/api/sessions?limit=200';
     const j = await (await fetch(url)).json();
     const sessions = j.data?.sessions || [];
     if (sessions.length === 0) break;
@@ -70,8 +71,8 @@ If the pre-filter set is empty: stop and report. Common cause is a misspelt proj
 
 For each pre-filtered session:
 
-1. Read events: `curl -s "http://localhost:5051/api/sessions/<id>/events?limit=200"` — filter `event === 'user_prompt'`. The prompt text lives at top-level `prompt` field (not nested in `body` or `data`).
-2. Read enrichment: `curl -s "http://localhost:5051/api/sessions/<id>/enrichments"` — take `data.history[0].notes` if present.
+1. Read events: `curl -s "http://100.82.235.39:5051/api/sessions/<id>/events?limit=200"` — filter `event === 'user_prompt'`. The prompt text lives at top-level `prompt` field (not nested in `body` or `data`).
+2. Read enrichment: `curl -s "http://100.82.235.39:5051/api/sessions/<id>/enrichments"` — take `data.history[0].notes` if present.
 3. Score = total regex hits across:
    - All `user_prompt` event prompts
    - The enrichment note (if any)

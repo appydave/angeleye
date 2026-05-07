@@ -13,14 +13,76 @@ import type { EnrichmentPass, RegistryEntry } from '@appystack/shared';
 
 const router = Router();
 
+// Apply optional, additive filters to a list of sessions.
+// Filters are pure functions of req.query — absent params are no-ops, so existing
+// callers that pass no filter params see identical behaviour. include_junk defaults
+// to true (preserves the pre-filter behaviour where junk was always included).
+function applySessionFilters(
+  sessions: RegistryEntry[],
+  query: Record<string, unknown>
+): RegistryEntry[] {
+  const since = query.since ? String(query.since) : undefined;
+  const until = query.until ? String(query.until) : undefined;
+  const project = query.project ? String(query.project) : undefined;
+  const projectMatchMode = query.project_match ? String(query.project_match) : 'exact';
+  const projectDir = query.project_dir ? String(query.project_dir) : undefined;
+  const kind = query.kind ? String(query.kind) : undefined;
+  const includeJunk = query.include_junk !== 'false'; // default true — preserves existing behaviour
+  const subtype = query.subtype ? String(query.subtype) : undefined;
+  const subtypePrefix = query.subtype_prefix ? String(query.subtype_prefix) : undefined;
+  const enrichedParam = query.enriched;
+  const enriched = enrichedParam === 'true' ? true : enrichedParam === 'false' ? false : undefined;
+
+  // Build a project matcher closure (only when project filter is active).
+  let projectMatcher: ((v: string) => boolean) | undefined;
+  if (project) {
+    if (projectMatchMode === 'glob') {
+      const escaped = project.replace(/[.+^${}()|[\]\\]/g, '\\$&');
+      const pattern = '^' + escaped.replace(/\*/g, '.*').replace(/\?/g, '.') + '$';
+      const re = new RegExp(pattern, 'i');
+      projectMatcher = (v) => re.test(v);
+    } else if (projectMatchMode === 'regex') {
+      try {
+        const re = new RegExp(project, 'i');
+        projectMatcher = (v) => re.test(v);
+      } catch {
+        // Bad regex — fall back to exact match rather than 500
+        projectMatcher = (v) => v === project;
+      }
+    } else {
+      projectMatcher = (v) => v === project;
+    }
+  }
+
+  return sessions.filter((s) => {
+    if (since && (s.started_at || '') < since) return false;
+    if (until && (s.started_at || '') > until) return false;
+    if (projectMatcher && !projectMatcher(s.project || '')) return false;
+    if (projectDir && !(s.project_dir || '').includes(projectDir)) return false;
+    if (kind && kind !== 'all' && s.session_kind !== kind) return false;
+    if (!includeJunk && s.is_junk === true) return false;
+    if (subtype && s.session_subtype !== subtype) return false;
+    if (subtypePrefix && !(s.session_subtype || '').startsWith(subtypePrefix)) return false;
+    if (enriched !== undefined) {
+      const isEnriched = (s.enrichment_version ?? 0) > 0;
+      if (enriched !== isEnriched) return false;
+    }
+    return true;
+  });
+}
+
 router.get('/api/sessions', async (req, res, next) => {
   try {
     const registry = await readRegistry();
-    const allSessions = Object.values(registry).sort(
+    let allSessions = Object.values(registry).sort(
       (a, b) => new Date(b.last_active).getTime() - new Date(a.last_active).getTime()
     );
 
-    // If no limit param, return all sessions (backward compatible)
+    // Apply optional filters (since/until/project/project_match/project_dir/kind/
+    // include_junk/subtype/subtype_prefix/enriched). All absent → no-op.
+    allSessions = applySessionFilters(allSessions, req.query as Record<string, unknown>);
+
+    // If no limit param, return all (filtered) sessions (backward compatible).
     const limitParam = req.query.limit;
     if (limitParam === undefined) {
       apiSuccess(res, { sessions: allSessions });
@@ -45,6 +107,133 @@ router.get('/api/sessions', async (req, res, next) => {
     apiSuccess(res, { sessions: page, cursor, hasMore, total: allSessions.length });
   } catch (err) {
     logger.error({ err }, 'Failed to read sessions registry');
+    next(err);
+  }
+});
+
+// GET /api/search?q=<regex>&fields=<csv>&limit=N + all filters from /api/sessions
+//
+// Full-text search over session fields. Default fields are cheap (registry-only,
+// no extra file reads). Including `notes` in the fields list reads enrichment
+// files per filtered session (slower; prefer narrowing with filters first).
+//
+// `prompts_all` is reserved for future per-session events scanning — not yet wired.
+router.get('/api/search', async (req, res, next) => {
+  try {
+    const q = req.query.q ? String(req.query.q) : '';
+    if (!q) return apiFailure(res, 'q parameter required', 400);
+
+    let regex: RegExp;
+    try {
+      regex = new RegExp(q, 'gi');
+    } catch {
+      return apiFailure(res, 'Invalid regex in q parameter', 400);
+    }
+
+    const defaultFields = 'notes,first_prompt,name,subtype,trigger_command';
+    const fieldsParam = req.query.fields ? String(req.query.fields) : defaultFields;
+    const fields = new Set(
+      fieldsParam
+        .split(',')
+        .map((f) => f.trim())
+        .filter(Boolean)
+    );
+
+    const limitParam = req.query.limit ? parseInt(String(req.query.limit), 10) : 20;
+    const limit = Math.min(Math.max(1, isNaN(limitParam) ? 20 : limitParam), 100);
+
+    const registry = await readRegistry();
+    let sessions = Object.values(registry).sort(
+      (a, b) => new Date(b.last_active).getTime() - new Date(a.last_active).getTime()
+    );
+    sessions = applySessionFilters(sessions, req.query as Record<string, unknown>);
+
+    type Hit = {
+      session: RegistryEntry;
+      score: number;
+      matched_fields: string[];
+      enrichment_note?: string;
+    };
+    const hits = new Map<string, Hit>();
+
+    function bump(s: RegistryEntry, field: string, count: number) {
+      const existing = hits.get(s.session_id);
+      if (existing) {
+        existing.score += count;
+        if (!existing.matched_fields.includes(field)) existing.matched_fields.push(field);
+      } else {
+        hits.set(s.session_id, { session: s, score: count, matched_fields: [field] });
+      }
+    }
+
+    // Cheap fields — single-pass over the filtered set, no I/O.
+    for (const s of sessions) {
+      if (fields.has('name') && s.name) {
+        const c = (s.name.match(regex) || []).length;
+        if (c > 0) bump(s, 'name', c);
+      }
+      if (fields.has('first_prompt') && s.first_real_prompt) {
+        const c = (s.first_real_prompt.match(regex) || []).length;
+        if (c > 0) bump(s, 'first_prompt', c);
+      }
+      if (fields.has('subtype') && s.session_subtype) {
+        const c = (s.session_subtype.match(regex) || []).length;
+        if (c > 0) bump(s, 'subtype', c);
+      }
+      if (fields.has('subtype_heuristic') && s.subtype_heuristic) {
+        const c = (s.subtype_heuristic.match(regex) || []).length;
+        if (c > 0) bump(s, 'subtype_heuristic', c);
+      }
+      if (fields.has('trigger_command') && s.trigger_command) {
+        const c = (s.trigger_command.match(regex) || []).length;
+        if (c > 0) bump(s, 'trigger_command', c);
+      }
+    }
+
+    // Notes — opt-in; reads enrichment file per filtered session.
+    // Iterates over the FULL filtered set so notes-only matches surface
+    // (not just sessions that already scored on cheap fields).
+    if (fields.has('notes')) {
+      for (const s of sessions) {
+        try {
+          const history = await readEnrichmentHistory(s.session_id);
+          const note = history[0]?.notes;
+          if (note) {
+            const c = (note.match(regex) || []).length;
+            if (c > 0) {
+              bump(s, 'notes', c);
+              const h = hits.get(s.session_id);
+              if (h) h.enrichment_note = note;
+            }
+          }
+        } catch {
+          // missing/unreadable enrichment file — skip silently
+        }
+      }
+    }
+
+    const sorted = Array.from(hits.values()).sort(
+      (a, b) =>
+        b.score - a.score ||
+        new Date(b.session.last_active).getTime() - new Date(a.session.last_active).getTime()
+    );
+    const top = sorted.slice(0, limit);
+
+    apiSuccess(res, {
+      results: top.map((h) => ({
+        session_id: h.session.session_id,
+        score: h.score,
+        matched_fields: h.matched_fields,
+        session: h.session,
+        enrichment_note: h.enrichment_note,
+        first_prompt_excerpt: h.session.first_real_prompt?.slice(0, 250),
+      })),
+      total: sorted.length,
+      scanned: sessions.length,
+      fields: Array.from(fields),
+    });
+  } catch (err) {
+    logger.error({ err }, 'Search failed');
     next(err);
   }
 });
