@@ -73,19 +73,27 @@ The historic queue is cleared. New sessions ingested from this point forward wil
 
 ## What's open and what to do next
 
-### The big architectural realisation from today
+### The big architectural realisation — corrected 2026-05-07 by deeper research
 
-**AngelEye already has the workflow infrastructure** — `WorkflowType`, `StationConfig`, `WorkflowInstance`, `StationInstance`, `AffinityGroup` (with `story_unit` / `epic_sprint` / `project_phase` types), `WorkflowDomain` with `role_mappings`. The factory workflow model exists. **The classifier just isn't using it yet.**
+**Earlier framing was wrong.** I previously characterised the workflow infrastructure (`WorkflowType`, `StationConfig`, `WorkflowInstance`, `StationInstance`, `AffinityGroup`, `DomainOverlay`) as "a designed factory model that the classifier just isn't using yet." David's correction: it was always a UI visualisation hack — a way to render something workflow-shaped in `WorkflowsView`. Not a designed analysis model. Not load-bearing. Treat it as a sketch, not a foundation.
 
-That's the gap, not "we need to build configuration."
+**Terminology error:** the type is `DomainOverlay`, not `WorkflowDomain`. Grep confirmed (`shared/src/angeleye.ts:324`).
 
-The classifier should:
+**Actual state:** the classifier already names `build.bmad_orchestrator`, `build.bmad_agent`, `build.ruflo_orchestrator`, `build.ralphy_campaign` in `subtype_heuristic` (`classifier.service.ts:1123-1147`). Recognition is solved. What's _not_ designed is how those signals should map to a representation that supports analysis (lifecycle clustering, per-workflow rubrics, time-aware metrics).
 
-1. Detect BMAD phase sessions via `trigger_command` matching `/bmad-(pm|sm|dev|dr|sat|ux-designer|e0)/`
-2. Group them into `AffinityGroup` instances with `group_type: 'story_unit'`
-3. Link each phase to the parent `bmad_orchestrator` session that spawned it (probably a `parent_orchestrator_session_id` field, or via the AffinityGroup membership)
+**Two research docs written 2026-05-07:**
 
-This would solve the "BMAD has 10+ concepts and the taxonomy can't keep up" problem we kept hitting.
+- `docs/intelligence/workflow-infrastructure-research.md` — full inventory: 2,349 LOC across 14 files, single-button trigger via `WorkflowsView.tsx:73`, persistence files (`workflows.json`, `affinity-groups.json`) never written to disk. The whole layer is gated behind two manual HTTP endpoints. Multiple type variants (`epic_sprint`, `project_phase`, `BacktrackRecord`, `CeremonyLevel`, `SkipRule`, `StationState='skipped'/'backtracked'`) are declared but never produced anywhere.
+- `docs/intelligence/ruflo-topology-research.md` — claude-flow / Ruflo architecture (renamed upstream, v3.6.27). Four canonical topologies (hierarchical/mesh/ring/star) plus adaptive. The "JSON team config" lives ephemerally as live tool-call arguments (`mcp__ruv-swarm__swarm_init({...}) + Task({...}) × N`), not as a persisted file. Detection is fully deterministic at sync time — no LLM needed for structural classification.
+
+**The open architectural question:** design a clean representation for BMAD lifecycles AND Ruflo swarm runs from scratch (or extend the viz-hack model deliberately). Four shape decisions queued — none answered yet:
+
+1. Topology — first-class `WorkflowType` field vs `metadata`
+2. BMAD phase primitive — new `WorkflowPhase` interface above `StationConfig` vs evolved `WorkflowType` (the model has no "phase" concept today, only `StationConfig.position: number`)
+3. Ruflo workers — one `StationInstance` with `subagent_count: N` vs N separate `StationInstance`s
+4. Pre-built Ruflo templates (`feature`, `security`, `refactor`, `bugfix`) — each a `WorkflowType` registration vs only ad-hoc swarms
+
+These are downstream of the bigger choice: **extend the existing sketch deliberately, or design a fresh model and let the viz hack continue running in its own corner.**
 
 ### Three requirement docs to write (David approved direction, didn't approve writing yet)
 
