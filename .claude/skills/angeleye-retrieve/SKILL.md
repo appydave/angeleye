@@ -7,93 +7,110 @@ description: Search the AngelEye session corpus by project, date range, and keyw
 
 Search the AngelEye session corpus to find past conversations by project + date + keyword. Returns ranked sessions with citation-grade evidence (session_id, started_at, key prompts, enrichment notes).
 
+This skill calls the server-side `/api/search` endpoint — single network call, sub-second response. The earlier client-side paging implementation was retired when the API gained search support (commit `2c1a438` on 2026-05-07).
+
 ## Hard boundary
 
 **Read-only.** Never modify session data, enrichments, registry, or any code. If the search surfaces a structural retrieval gap (e.g. "the keyword I want is in tool calls, not prompts, and tool content isn't searchable"), append a one-line observation to `docs/intelligence/observations.jsonl` with `category: retrieval_gap`. Don't change indexers or schemas — write a requirement doc if a code change is needed.
 
+## Host configuration — Tailscale by default
+
+**Default: `http://100.82.235.39:5051`** (Tailscale IP for M4 Mini, where AngelEye's server lives).
+
+Use the Tailscale IP from any machine on the Tailnet — it works from Roamy, M4 Mini hitting its own address, anywhere. `localhost:5051` is only correct when this skill is invoked **on the M4 Mini itself** as a marginal latency optimisation. When in doubt, use Tailscale.
+
+This is one of three AngelEye skills with the dual-mode (Tailscale-vs-localhost) concern:
+
+| Skill                      | Current default host           | Notes                                       |
+| -------------------------- | ------------------------------ | ------------------------------------------- |
+| `angeleye-retrieve`        | Tailscale `100.82.235.39:5051` | This skill                                  |
+| `angeleye-enrichment-loop` | `localhost:5051`               | Designed for M4 Mini-local invocation today |
+| `angeleye-dreaming`        | (uses retrieve internally)     | Inherits whichever host its callees use     |
+
+When the canonical invocation site shifts entirely to M4 Mini, all three should switch to `localhost` together. Until then, prefer Tailscale for portability.
+
 ## Arguments
 
 ```
-/angeleye-retrieve [query] [project=...] [since=...] [until=...] [limit=10]
+/angeleye-retrieve [query] [project=...] [project_match=exact|glob|regex] [since=...] [until=...] [limit=10] [fields=...] [subtype=...] [subtype_prefix=...]
 ```
 
-- `query` — keyword(s) to search for. Treated as a case-insensitive regex. Multiple keywords joined with `|` (e.g. `harness|rigid|flexible`).
-- `project` — optional. Regex on `project` and `project_dir`. Examples: `appystack`, `appy(stack|sentinal)`, `bmad`. Leave empty to search all projects.
-- `since` / `until` — optional ISO date prefixes (e.g. `2026-04-01`). Compared lexically against `started_at`, so `2026-04` works as a "month" filter.
-- `limit` — max sessions returned (default 10).
-- Implicit defaults: skips `is_junk: true` sessions and `session_kind: subagent`/`subprocess`. To override, mention `include_junk` or `kind=all` in the query and the skill will adjust.
+- `query` — case-insensitive regex. Multiple keywords joined with `|` (e.g. `harness|rigid|flexible`). URL-encode special characters (`|` → `%7C`, space → `%20`).
+- `project` — filter on `project` field. Default match is exact; pass `project_match=glob` (`*` and `?`) or `project_match=regex` for fuzzy.
+- `since` / `until` — ISO date prefixes (e.g. `2026-04-01`). Lex-compared against `started_at`, so `2026-04` works as a "month" filter.
+- `limit` — max sessions returned (default 10, max 100).
+- `fields` — comma list of fields to search. Default: `notes,first_prompt,name,subtype,trigger_command`. Add `subtype_heuristic` to catch heuristic-only matches. `notes` reads the enrichment file per filtered session — opt out for speed if scanning a large unfiltered set.
+- `subtype` / `subtype_prefix` — narrow by `session_subtype` exact or prefix match.
+- Implicit defaults: skips `is_junk: true` sessions and only returns `session_kind: 'main'`. Override via `?include_junk=true` or `?kind=all`.
 
 Examples:
 
-- `/angeleye-retrieve "harness|rigid|flexible" project=appy(stack|sentinal) since=2026-04-01`
-- `/angeleye-retrieve "ralphy|ralph wiggum"`
-- `/angeleye-retrieve "BMAD orchestrator" since=2026-04-01 until=2026-04-30`
+- `/angeleye-retrieve "harness|rigid|flexible" project=appy* project_match=glob since=2026-04-01`
+- `/angeleye-retrieve "ralphy"`
+- `/angeleye-retrieve "BMAD" since=2026-04-01 until=2026-04-30 subtype_prefix=build.bmad_`
 
-## Step 1 — Page the corpus and pre-filter
+## Step 1 — Single search call
 
-The API caps at 200 per page; pagination uses `data.cursor` + `data.hasMore`. Pre-filter while paging to avoid holding the full corpus in memory.
-
-**Default host: `http://100.82.235.39:5051` (Tailscale IP for M4 Mini).** AngelEye's server lives on M4 Mini — always hit it via the Tailscale IP unless you're certain you're invoking this skill on the M4 Mini itself, in which case `http://localhost:5051` works as a marginal optimisation. When in doubt, use the Tailscale IP — it works from any machine on the Tailnet, including M4 Mini hitting its own address.
+Build the URL with all filters; one `curl`. URL-encode the query.
 
 ```bash
-node -e "
-async function fetchAll() {
-  const HOST = 'http://100.82.235.39:5051';
-  const matches = [];
-  let cursor = null;
-  while (true) {
-    const url = cursor
-      ? HOST + '/api/sessions?limit=200&after=' + encodeURIComponent(cursor)
-      : HOST + '/api/sessions?limit=200';
-    const j = await (await fetch(url)).json();
-    const sessions = j.data?.sessions || [];
-    if (sessions.length === 0) break;
-    for (const s of sessions) {
-      if (PROJECT_RE && !PROJECT_RE.test(s.project || '') && !PROJECT_RE.test(s.project_dir || '')) continue;
-      if (!INCLUDE_JUNK && s.is_junk) continue;
-      if (KIND_FILTER !== 'all' && s.session_kind !== KIND_FILTER) continue;
-      if (SINCE && (s.started_at || '') < SINCE) continue;
-      if (UNTIL && (s.started_at || '') > UNTIL) continue;
-      matches.push(s);
-    }
-    if (!j.data?.hasMore) break;
-    cursor = j.data?.cursor;
-    if (!cursor) break;
-  }
-  return matches;
-}
-"
+curl -sS 'http://100.82.235.39:5051/api/search?q=<URL-encoded-regex>&fields=<comma-list>&limit=<N>&since=<date>&until=<date>&project=<value>&project_match=<mode>&kind=main'
 ```
 
-If the pre-filter set is empty: stop and report. Common cause is a misspelt project — list all projects first via a count-by-project pass before guessing.
+Response shape:
 
-## Step 2 — Score by keyword match
+```json
+{
+  "status": "success",
+  "data": {
+    "results": [
+      {
+        "session_id": "...",
+        "score": 12,
+        "matched_fields": ["notes", "first_prompt"],
+        "session": {
+          /* full RegistryEntry */
+        },
+        "enrichment_note": "<full notes>",
+        "first_prompt_excerpt": "<first 250 chars of first_real_prompt>"
+      }
+    ],
+    "total": 76,
+    "scanned": 1170,
+    "fields": ["notes", "first_prompt", "name", "subtype", "trigger_command"]
+  }
+}
+```
 
-For each pre-filtered session:
+If `data.total === 0`: stop and report. Common causes:
 
-1. Read events: `curl -s "http://100.82.235.39:5051/api/sessions/<id>/events?limit=200"` — filter `event === 'user_prompt'`. The prompt text lives at top-level `prompt` field (not nested in `body` or `data`).
-2. Read enrichment: `curl -s "http://100.82.235.39:5051/api/sessions/<id>/enrichments"` — take `data.history[0].notes` if present.
-3. Score = total regex hits across:
-   - All `user_prompt` event prompts
-   - The enrichment note (if any)
-   - `name`, `first_real_prompt`, `session_subtype`, `subtype_heuristic`, `trigger_command`
-4. Rank by score descending; tie-break on most recent `started_at`.
+- Misspelled project name (the user said "api-sentinel" but it's `appysentinal`)
+- Keyword exists only in tool calls (Bash commands, file reads), which the API doesn't index
+- Query too restrictive (try widening the date range or removing the project filter)
 
-Skip score=0. Take the top `limit`.
+## Step 2 — Optional deep-dive (only when score-ranking is unclear)
+
+For the top 1–3 results, fetch `user_prompt` events to surface the exact phrasing that matched the regex:
+
+```bash
+curl -sS "http://100.82.235.39:5051/api/sessions/<session_id>/events?limit=200"
+```
+
+Filter `event === 'user_prompt'` (the prompt text lives at top-level `prompt` field — not nested in `body` or `data`). Find prompts whose text matches the regex. Useful when the user wants to see exact prior wording.
+
+Skip Step 2 if the `enrichment_note` from Step 1 already gives enough context.
 
 ## Step 3 — Output format
-
-Print a summary table with citations, then per-session detail for the top 3:
 
 ```markdown
 ## Found N matching sessions for "<query>"
 
-(Search ran across <total> pre-filtered sessions; <pre_filter_count> matched filters before keyword scoring.)
+(Server scanned <scanned> sessions after filters; top <limit> shown by score.)
 
-| Date       | Project      | Subtype        | Hits | Session  |
-| ---------- | ------------ | -------------- | ---- | -------- |
-| 2026-04-28 | appysentinal | build.refactor | 20   | 8f2325dd |
-| ...        | ...          | ...            | ...  | ...      |
+| Date       | Project      | Subtype        | Score | Matched            | Session  |
+| ---------- | ------------ | -------------- | ----- | ------------------ | -------- |
+| 2026-04-28 | appysentinal | build.refactor | 20    | notes,first_prompt | 8f2325dd |
+| ...        | ...          | ...            | ...   | ...                | ...      |
 
 ### Top sessions
 
@@ -101,24 +118,26 @@ Print a summary table with citations, then per-session detail for the top 3:
 
 **Enrichment note:** Major architecture refactor for appysentinal — 506 events, reading architecture-refactor-v2.md, tagging strategy.
 
-**Key prompts (with hits):**
+**Excerpt:** Handover prompt: Read /Users/davidcruwys/dev/ad/apps/appysentinal/docs/architecture-refactor-v2.md in full ...
 
-- P1 (01:16): "Handover prompt: Read /Users/davidcruwys/dev/ad/apps/appysentinal/docs/architecture-refactor-v2.md in full ..."
-- P3 (02:04): "When I read 'What is AppySentinel?', I love it from my perspective. But I can't go to a client with this. Because it's very technology-oriented ..."
+(Optional, from Step 2 — only when prompts add value beyond the note)
+
+- P1 (01:16): "<prompt text matching regex>"
+- P3 (02:04): "<prompt text matching regex>"
 ```
 
-Trim each prompt excerpt to ~250 chars, replace newlines with spaces. Show only prompts that actually matched the regex; if a session ranked high purely on the enrichment note or name, surface that explicitly.
+Trim excerpts to ~250 chars and replace newlines with spaces. Always include the full session_id (in backticks) so it's copyable.
 
 ## Step 4 — Spot retrieval gaps
 
 If the search returned nothing, returned the wrong sessions, or the user follow-ups suggest the answer was elsewhere:
 
-| Symptom                                                    | Likely cause                                                                  | Action                                                  |
-| ---------------------------------------------------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------- |
-| Zero results despite known conversation                    | Wrong project name (e.g. you searched `api-sentinel` but it's `appysentinal`) | Run a project-list scan, retry                          |
-| Keywords are about a tool action (file edit, bash command) | Tool content isn't surfaced in prompts or notes                               | Log observation, suggest broader scope (raw transcript) |
-| Right sessions found but excerpts unhelpful                | Enrichment notes thin or generic                                              | Suggest re-running enrichment on those sessions         |
-| Hits mostly in handover-paste prompts                      | Search matched the paste, not the working prompts                             | Filter handover language out of scoring (TODO)          |
+| Symptom                                               | Likely cause                                                              | Action                                                                      |
+| ----------------------------------------------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| Zero results despite known conversation               | Wrong project name (e.g. searched `api-sentinel` but it's `appysentinal`) | Hit `/api/sessions?limit=200` and group by `project` to see canonical names |
+| Keywords about tool actions (file edit, bash command) | Tool content isn't indexed by the search                                  | Log observation, suggest fetching the raw transcript instead                |
+| Right sessions, unhelpful excerpts                    | Enrichment notes thin or generic                                          | Suggest re-running enrichment on those sessions                             |
+| Hits mostly in handover-paste prompts                 | Search matched the paste, not the working prompts                         | Note as future-improvement — filter handover language from scoring          |
 
 When you spot a gap, append one line to `docs/intelligence/observations.jsonl`:
 
@@ -133,14 +152,9 @@ When you spot a gap, append one line to `docs/intelligence/observations.jsonl`:
 
 Don't change code. Notable patterns of gaps over time become a requirement doc input.
 
-## Future API improvements
-
-This skill works client-side because the API doesn't yet support search-friendly filters. Once `/api/sessions` gains `?since=&until=&project=&kind=&subtype=` filters and a new `/api/search?q=` endpoint is shipped, this skill should be updated to call them — collapses 13+ network calls into 1.
-
-Tracking doc: `docs/requirements/2026-05-07-api-search-and-time-filters.md`.
-
 ## Reference
 
-- API endpoints + shapes — same set as `angeleye-enrichment-loop`'s `references/api.md`
-- Pagination: `data.cursor` (next), `data.hasMore` (bool)
-- Session shape: 50+ fields including `session_kind`, `is_junk`, `enrichment_version`, `subtype_heuristic`, `session_subtype`, `name`, `first_real_prompt`, `trigger_command`, `project`, `project_dir`, `started_at`
+- **API endpoints**: `/api/search` (this skill), `/api/sessions/:id/events`, `/api/sessions/:id/enrichments`
+- **Spec for the search endpoint**: `docs/requirements/2026-05-07-api-search-and-time-filters.md`
+- **Pagination on /api/sessions** (if you ever need it): `data.cursor` (next), `data.hasMore` (bool)
+- **Session shape**: 50+ fields including `session_kind`, `is_junk`, `enrichment_version`, `subtype_heuristic`, `session_subtype`, `name`, `first_real_prompt`, `trigger_command`, `project`, `project_dir`, `started_at`
