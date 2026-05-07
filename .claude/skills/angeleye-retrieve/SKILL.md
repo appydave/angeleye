@@ -41,13 +41,17 @@ When the canonical invocation site shifts entirely to M4 Mini, all three should 
 - `limit` — max sessions returned (default 10, max 100).
 - `fields` — comma list of fields to search. Default: `notes,first_prompt,name,subtype,trigger_command`. Add `subtype_heuristic` to catch heuristic-only matches. `notes` reads the enrichment file per filtered session — opt out for speed if scanning a large unfiltered set.
 - `subtype` / `subtype_prefix` — narrow by `session_subtype` exact or prefix match.
-- Implicit defaults: skips `is_junk: true` sessions and only returns `session_kind: 'main'`. Override via `?include_junk=true` or `?kind=all`.
+- `session_class` — filter to a specific class: `dialog` (conversations), `agent_run` (autonomous campaigns like Ralphy/BMAD), `machine_signal` (probes/heartbeats), or `subagent_leg`. By default the API filters to user-driven only (`dialog + agent_run`) — passing `session_class=` overrides that.
+- `include_classes` — CSV; ADDS to the default user-driven set. e.g. `?include_classes=machine_signal,subagent_leg` returns everything.
+- Implicit defaults: skips `is_junk: true` sessions, only returns `session_kind: 'main'`, only returns user-driven `session_class` (`dialog + agent_run`). Override individually as above.
 
 Examples:
 
 - `/angeleye-retrieve "harness|rigid|flexible" project=appy* project_match=glob since=2026-04-01`
-- `/angeleye-retrieve "ralphy"`
+- `/angeleye-retrieve "ralphy"` — defaults to user-driven only
 - `/angeleye-retrieve "BMAD" since=2026-04-01 until=2026-04-30 subtype_prefix=build.bmad_`
+- `/angeleye-retrieve "appyctrl" session_class=machine_signal` — investigate harness signals
+- `/angeleye-retrieve "ralphy" session_class=agent_run` — only autonomous campaigns, no chat-about-Ralphy noise
 
 ## Step 1 — Single search call
 
