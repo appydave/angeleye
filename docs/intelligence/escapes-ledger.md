@@ -129,3 +129,25 @@ All 8 sessions found, with citations:
 - Each evidence entry cites a specific session_id; full session_dir is queryable from the registry
 
 This doc is canonical. Conversations that produced it are not authoritative.
+
+---
+
+## E6: Bad project field (undefined/null/empty)
+
+**Rule:** `session_kind === 'main'` AND (`project === undefined` OR `project === null` OR `project === ''` OR `project === 'undefined'`).
+
+**What it usually means:** the hook fired without a usable `cwd`, or the cwd was the literal string `"undefined"` (likely a launchd or detached process where env vars weren't set). Project derivation produced nothing usable.
+
+**Why it's an escape:** these sessions can't be filtered by project, can't be queried by project, and clutter the UI with empty-string projects.
+
+### E6 evidence (scan run: 2026-05-07)
+
+| Count | Sessions                                                                       |
+| ----- | ------------------------------------------------------------------------------ |
+| 2     | `bbc86dc1-5776-4545-9d13-bd05dda100cd`, `f1aee1fc-e54d-4c42-8386-3c64845a7b94` |
+
+Both have `project_dir === "undefined"` (literal string), suggesting the cwd captured at session_start was an env-var miss rather than a real path. Likely happened during background/detached agent invocations where `cwd` wasn't propagated.
+
+### Recommended fix
+
+In `hooks.ts` at `session_start`, validate that `cwd` is a real path (starts with `/`, not the string `"undefined"`). If invalid, mark `session_kind: 'subprocess'` and `project: 'unknown-cwd'` rather than letting it through as `main` with bogus data.
