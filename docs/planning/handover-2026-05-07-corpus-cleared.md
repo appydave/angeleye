@@ -86,6 +86,17 @@ The historic queue is cleared. New sessions ingested from this point forward wil
 - `docs/intelligence/workflow-infrastructure-research.md` — full inventory: 2,349 LOC across 14 files, single-button trigger via `WorkflowsView.tsx:73`, persistence files (`workflows.json`, `affinity-groups.json`) never written to disk. The whole layer is gated behind two manual HTTP endpoints. Multiple type variants (`epic_sprint`, `project_phase`, `BacktrackRecord`, `CeremonyLevel`, `SkipRule`, `StationState='skipped'/'backtracked'`) are declared but never produced anywhere.
 - `docs/intelligence/ruflo-topology-research.md` — claude-flow / Ruflo architecture (renamed upstream, v3.6.27). Four canonical topologies (hierarchical/mesh/ring/star) plus adaptive. The "JSON team config" lives ephemerally as live tool-call arguments (`mcp__ruv-swarm__swarm_init({...}) + Task({...}) × N`), not as a persisted file. Detection is fully deterministic at sync time — no LLM needed for structural classification.
 
+**Harness-archetype map (updated 2026-05-13)** — added ALS delamain after the 6-day enrichment pass surfaced 73 worker legs:
+
+| #   | Archetype        | Harness technique                                | Detection signal                                                         |
+| --- | ---------------- | ------------------------------------------------ | ------------------------------------------------------------------------ |
+| 1   | BMAD             | N coordinated tmux processes                     | `trigger_command =~ /(appydave:)?bmad-*/`                                |
+| 2   | Ruflo            | 1 process + N `Task` subagents (claude-flow MCP) | `Task({subagent_type})` + `mcp__ruv-swarm__swarm_init`                   |
+| 3   | Ralphy           | Autonomous batch coordinator loop                | `trigger_command =~ /(appydave:)?ralphy/`                                |
+| 4   | Paperclip        | Multi-workspace hosting                          | cwd `~/.paperclip/instances/*/workspaces/*`                              |
+| 5   | AppyCtrl         | Scheduled T3 capability probes                   | zero `user_prompt` events; ~657/week cadence                             |
+| 6   | **ALS delamain** | **Worktree-isolated worker swarm**               | **cwd `~/.worktrees/delamain/*/`; canonicalised project `als-delamain`** |
+
 **The open architectural question:** design a clean representation for BMAD lifecycles AND Ruflo swarm runs from scratch (or extend the viz-hack model deliberately). Four shape decisions queued — none answered yet:
 
 1. Topology — first-class `WorkflowType` field vs `metadata`
