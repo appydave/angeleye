@@ -18,6 +18,7 @@ import { detectSubprocess } from '../services/subprocess-detection.service.js';
 import {
   computeSessionClass,
   detectMachineSignalFromCwd,
+  canonicalProjectFromCwd,
 } from '../services/session-class.service.js';
 
 const EVENT_MAP: Record<string, AngelEyeEventType> = {
@@ -197,8 +198,12 @@ export function createHooksRouter(io: Server): Router {
       await writeEvent(event);
 
       if (eventType === 'session_start') {
-        const project =
+        // Project name: canonicalise harness-hosted sessions (Paperclip, ALS
+        // delamain) so they don't accumulate as UUID/hex pseudo-projects.
+        // Fall through to the default last-path-segment derivation otherwise.
+        const defaultProject =
           cwd !== undefined && cwd.length > 0 ? (cwd.split('/').filter(Boolean).pop() ?? cwd) : '';
+        const project = canonicalProjectFromCwd(cwd) ?? defaultProject;
         // Detect Mechanism B subagents (Agent Teams). Best-effort at SessionStart —
         // the JSONL may not yet contain the teammate-message line. Backfill script
         // catches misses. See known-issues.md#subagent-detection.

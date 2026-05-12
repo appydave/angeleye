@@ -3,6 +3,10 @@ import type { AngelEyeEvent, SessionClass } from '@appystack/shared';
 // Cwd matches a Paperclip workspace dir — Claude is running inside the platform.
 const PAPERCLIP_WORKSPACE_RE = /\/\.paperclip\/instances\/[^/]+\/workspaces\/[a-f0-9-]{36}\/?$/i;
 
+// Cwd matches an ALS delamain worker worktree — dispatcher-driven worker leg.
+// See docs/requirements/2026-05-13-detect-als-delamain-workers.md.
+const ALS_DELAMAIN_WORKER_RE = /\/\.worktrees\/delamain\/[^/]+\//i;
+
 // Trigger commands that mark orchestrator skills (Ralphy, BMAD lifecycle, etc).
 // trigger_command is stored without the leading `/` (e.g. 'ralphy',
 // 'appydave:bmad-story-lifecycle'). Match with or without appydave: prefix.
@@ -21,7 +25,23 @@ const TOOL_TO_PROMPT_AGENT_RUN_THRESHOLD = 10;
  */
 export function detectMachineSignalFromCwd(cwd: string | undefined | null): boolean {
   if (!cwd) return false;
-  return PAPERCLIP_WORKSPACE_RE.test(cwd);
+  return PAPERCLIP_WORKSPACE_RE.test(cwd) || ALS_DELAMAIN_WORKER_RE.test(cwd);
+}
+
+/**
+ * Resolve a canonical project name when cwd matches a known harness pattern.
+ * Returns null when no harness pattern matches — caller should fall through to
+ * the default project-name derivation (last path segment of cwd).
+ *
+ * Without this, harness-hosted sessions accumulate as pseudo-projects under
+ * UUIDs or hex IDs (e.g. `cfcc0c4b-...` for Paperclip workspaces, `d-0b426...`
+ * for ALS delamain workers), polluting project enumerations.
+ */
+export function canonicalProjectFromCwd(cwd: string | undefined | null): string | null {
+  if (!cwd) return null;
+  if (PAPERCLIP_WORKSPACE_RE.test(cwd)) return 'paperclip';
+  if (ALS_DELAMAIN_WORKER_RE.test(cwd)) return 'als-delamain';
+  return null;
 }
 
 /**

@@ -45,6 +45,10 @@ process.stdin.on('end', () => {
   const eligible = (data.sessions || []).filter(s =>
     s.session_kind === 'main' &&
     !s.is_junk &&
+    // session_class filter: only enrich user-driven sessions. Harness signals
+    // (machine_signal, subagent_leg) aren't worth LLM cycles — they're probes,
+    // heartbeats, or worker legs of an orchestrated run.
+    (s.session_class === 'dialog' || s.session_class === 'agent_run' || s.session_class === undefined) &&
     (s.enrichment_version === undefined || s.enrichment_version === null || s.enrichment_version < VERSION)
   ).slice(0, BATCH);
   console.log(JSON.stringify(eligible.map(s => ({
