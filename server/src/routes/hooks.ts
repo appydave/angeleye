@@ -203,14 +203,16 @@ export function createHooksRouter(io: Server): Router {
         // the JSONL may not yet contain the teammate-message line. Backfill script
         // catches misses. See known-issues.md#subagent-detection.
         const teammate = detectTeammate(sessionId, cwd);
-        // Initial session_class — set only the deterministic cases (subagent leg
-        // or Paperclip workspace cwd). Leave undefined for the common case;
-        // session_end will compute the final value with full event context.
+        // Initial session_class — default to 'dialog' so stale-active sessions
+        // (where session_end never fires) still have a usable class. session_end
+        // refinement upgrades to 'agent_run' or 'machine_signal' with full event
+        // context. Deterministic cases (subagent leg, Paperclip cwd) are set
+        // here at session_start so they're never wrong even if session_end runs.
         const initial_class = teammate.is_subagent
           ? ('subagent_leg' as const)
           : detectMachineSignalFromCwd(cwd)
             ? ('machine_signal' as const)
-            : undefined;
+            : ('dialog' as const);
         await updateRegistry(sessionId, {
           session_id: sessionId,
           project,
@@ -224,7 +226,7 @@ export function createHooksRouter(io: Server): Router {
           source: 'hook',
           session_kind: teammate.is_subagent ? 'subagent' : 'main',
           ...(teammate.teammate_id !== undefined && { teammate_id: teammate.teammate_id }),
-          ...(initial_class !== undefined && { session_class: initial_class }),
+          session_class: initial_class,
         });
       } else if (eventType === 'stop') {
         const allEvents = await getSessionEvents(sessionId);
