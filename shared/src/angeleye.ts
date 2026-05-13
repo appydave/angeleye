@@ -25,7 +25,10 @@ export type AngelEyeEventType =
   | 'config_change'
   | 'elicitation'
   | 'elicitation_result'
-  | 'file_changed';
+  | 'file_changed'
+  // v2.1.84+ — added 2026-05-13
+  | 'task_created'
+  | 'permission_denied';
 
 export interface AngelEyeEvent {
   id: string;

@@ -48,6 +48,9 @@ const EVENT_MAP: Record<string, AngelEyeEventType> = {
   Elicitation: 'elicitation',
   ElicitationResult: 'elicitation_result',
   FileChanged: 'file_changed',
+  // v2.1.84+ — added 2026-05-13
+  TaskCreated: 'task_created',
+  PermissionDenied: 'permission_denied',
 };
 
 function summariseTool(
@@ -71,6 +74,18 @@ function summariseTool(
 
 export function createHooksRouter(io: Server): Router {
   const router = Router();
+
+  // Source-of-truth endpoint — the angeleye-install skill calls this to learn
+  // which hook events to subscribe Claude Code to. Eliminates the parallel-list
+  // problem (skill + EVENT_MAP + AngelEyeEventType all kept in sync by hand).
+  // Skill falls back to its embedded list if this endpoint is unreachable.
+  router.get('/api/hooks/supported', (_req, res) => {
+    res.json({
+      events: Object.keys(EVENT_MAP),
+      count: Object.keys(EVENT_MAP).length,
+      transport_url_template: 'http://localhost:5051/hooks/{event}',
+    });
+  });
 
   router.post('/hooks/:event', async (req, res) => {
     try {
