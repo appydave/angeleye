@@ -140,41 +140,68 @@ export async function getRawTranscript(
 }
 
 export async function backupUpstreamJSONL(sessionId: string, projectDir: string): Promise<void> {
+  if (!projectDir) {
+    logger.warn({ sessionId }, 'backupUpstreamJSONL skipped: empty projectDir');
+    return;
+  }
   const expandedDir = projectDir.startsWith('~') ? homedir() + projectDir.slice(1) : projectDir;
   const encoded = expandedDir.replace(/\//g, '-');
   const upstreamPath = join(homedir(), '.claude', 'projects', encoded, `${sessionId}.jsonl`);
 
-  if (!existsSync(upstreamPath)) return;
-
-  const destPath = join(_rawTranscriptsDir(), `${sessionId}.jsonl`);
-  if (existsSync(destPath)) return;
-
-  const raw = await readFile(upstreamPath, 'utf-8');
-  await writeFile(destPath, raw, 'utf-8');
-
-  // Scan for types not in our known set and log them for discovery
-  const unknownTypes = new Set<string>();
-  for (const line of raw.split('\n').filter((l) => l.trim())) {
-    try {
-      const parsed = JSON.parse(line) as Record<string, unknown>;
-      const type = typeof parsed.type === 'string' ? parsed.type : null;
-      if (type && !KNOWN_UPSTREAM_TYPES.has(type)) unknownTypes.add(type);
-    } catch {
-      // skip malformed lines
-    }
+  if (!existsSync(upstreamPath)) {
+    // Most common failure mode — Claude Code purged the JSONL before session_end
+    // fired, OR the cwd encoding doesn't match Claude Code's actual path scheme.
+    // Log both inputs so we can diagnose which case from the logs.
+    logger.warn(
+      { sessionId, projectDir, upstreamPath },
+      'backupUpstreamJSONL skipped: upstream JSONL not found'
+    );
+    return;
   }
 
-  if (unknownTypes.size > 0) {
-    const entry = {
-      session_id: sessionId,
-      observed_at: new Date().toISOString(),
-      unknown_types: [...unknownTypes],
-    };
-    await appendFile(_schemaObservationsPath(), JSON.stringify(entry) + '\n', 'utf-8');
+  const destPath = join(_rawTranscriptsDir(), `${sessionId}.jsonl`);
+  // Overwrite if already backed up — Claude Code may have appended content since
+  // the previous backup (e.g. backup fired at `stop`, more activity, now at
+  // `session_end`). The latest copy is always the most complete.
+
+  try {
+    const raw = await readFile(upstreamPath, 'utf-8');
+    await writeFile(destPath, raw, 'utf-8');
     logger.info(
-      { sessionId, unknownTypes: [...unknownTypes] },
-      'New JSONL types observed in upstream backup'
+      { sessionId, destPath, bytes: raw.length },
+      'backupUpstreamJSONL ok: upstream JSONL backed up'
     );
+
+    // Scan for types not in our known set and log them for discovery
+    const unknownTypes = new Set<string>();
+    for (const line of raw.split('\n').filter((l) => l.trim())) {
+      try {
+        const parsed = JSON.parse(line) as Record<string, unknown>;
+        const type = typeof parsed.type === 'string' ? parsed.type : null;
+        if (type && !KNOWN_UPSTREAM_TYPES.has(type)) unknownTypes.add(type);
+      } catch {
+        // skip malformed lines
+      }
+    }
+
+    if (unknownTypes.size > 0) {
+      const entry = {
+        session_id: sessionId,
+        observed_at: new Date().toISOString(),
+        unknown_types: [...unknownTypes],
+      };
+      await appendFile(_schemaObservationsPath(), JSON.stringify(entry) + '\n', 'utf-8');
+      logger.info(
+        { sessionId, unknownTypes: [...unknownTypes] },
+        'New JSONL types observed in upstream backup'
+      );
+    }
+  } catch (err) {
+    logger.error(
+      { err, sessionId, upstreamPath, destPath },
+      'backupUpstreamJSONL failed: I/O error'
+    );
+    throw err;
   }
 }
 
