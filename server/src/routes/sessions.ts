@@ -9,7 +9,7 @@ import {
 } from '../services/sessions.service.js';
 import { readEnrichmentHistory, appendEnrichmentPass } from '../services/enrichment.service.js';
 import { readWorkspaces } from '../services/workspace.service.js';
-import { computeSessionClass } from '../services/session-class.service.js';
+import { computeSessionClass, canonicalProjectFromCwd } from '../services/session-class.service.js';
 import type { EnrichmentPass, RegistryEntry, SessionClass } from '@appystack/shared';
 
 const router = Router();
@@ -520,6 +520,52 @@ router.post('/api/registry/backfill-class', async (req, res, next) => {
     apiSuccess(res, { ...summary, dry_run: false });
   } catch (err) {
     logger.error({ err }, 'Backfill class failed');
+    next(err);
+  }
+});
+
+// POST /api/registry/backfill-project-canonical — collapse harness pseudo-projects
+//
+// Sessions started before the Phase 1.1 fix (commit 07314f3) still have their
+// project field set to the derived last-path-segment (e.g. `d-<hex>` for ALS
+// delamain workers, workspace UUIDs for Paperclip). This endpoint walks the
+// registry and applies canonicalProjectFromCwd to each entry — if the cwd
+// matches a known harness pattern (Paperclip workspace or ALS delamain
+// worktree), the project is renamed to the canonical form ('paperclip' or
+// 'als-delamain').
+//
+// Idempotent — entries already at canonical names are no-ops.
+//
+// Body: { dry_run?: boolean } — preview without writing.
+router.post('/api/registry/backfill-project-canonical', async (req, res, next) => {
+  try {
+    const { dry_run = false } = req.body as { dry_run?: boolean };
+    const registry = await readRegistry();
+    const updates: Array<{ id: string; from: string; to: string }> = [];
+    for (const [id, entry] of Object.entries(registry)) {
+      const canonical = canonicalProjectFromCwd(entry.project_dir);
+      if (canonical && entry.project !== canonical) {
+        updates.push({ id, from: entry.project, to: canonical });
+      }
+    }
+    if (dry_run) {
+      return apiSuccess(res, {
+        scanned: Object.keys(registry).length,
+        would_change: updates.length,
+        sample: updates.slice(0, 5),
+        dry_run: true,
+      });
+    }
+    for (const u of updates) {
+      await updateRegistry(u.id, { project: u.to });
+    }
+    apiSuccess(res, {
+      scanned: Object.keys(registry).length,
+      changed: updates.length,
+      dry_run: false,
+    });
+  } catch (err) {
+    logger.error({ err }, 'Backfill project canonical failed');
     next(err);
   }
 });
