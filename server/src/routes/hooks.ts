@@ -289,10 +289,15 @@ export function createHooksRouter(io: Server): Router {
           ...silentOverride,
         });
         await archiveSession(sessionId);
-        // Back up upstream JSONL before Claude Code purges it — fire-and-forget
-        backupUpstreamJSONL(sessionId, cwd ?? '').catch((err) =>
-          logger.warn({ err, sessionId }, 'backupUpstreamJSONL failed (non-fatal)')
-        );
+        // Back up upstream JSONL before Claude Code purges it — fire-and-forget.
+        // Skip for machine_signal: zero-prompt sessions (AppyCtrl probes etc.)
+        // have no upstream JSONL to back up; the call would just emit "not found"
+        // warnings every ~5 min, drowning real failures in the logs.
+        if (session_class !== 'machine_signal') {
+          backupUpstreamJSONL(sessionId, cwd ?? '').catch((err) =>
+            logger.warn({ err, sessionId }, 'backupUpstreamJSONL failed (non-fatal)')
+          );
+        }
       } else {
         await updateRegistry(sessionId, {
           last_active: ts,
