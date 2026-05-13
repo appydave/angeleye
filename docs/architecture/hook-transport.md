@@ -1,65 +1,125 @@
 # Hook Transport — HTTP vs Curl
 
-**Status:** HTTP transport adopted 2026-05-13 (Claude Code v2.1.63+ supports `type: "http"` hooks natively)
+**Status:** **HTTP transport REJECTED after live test on 2026-05-13.** AngelEye uses curl-based command hooks. This doc captures what was tried, what broke, and how to revisit safely later.
 
-**Decision:** AngelEye's `angeleye-install` skill writes HTTP-typed hooks into `~/.claude/settings.json`. Claude Code POSTs event JSON directly to `http://localhost:5051/hooks/<EventName>` — no curl subprocess per hook trigger.
-
----
-
-## Why HTTP transport
-
-| Property             | Curl transport (legacy)                                                         | HTTP transport (current)                                             |
-| -------------------- | ------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| Process model        | Fork curl subprocess per hook, per session                                      | Native HTTP from Claude Code's own runtime                           |
-| Per-session overhead | 24-26 subprocess spawns (one per subscribed event)                              | 0 subprocesses; direct HTTP from one process                         |
-| Failure surfacing    | `\|\| true` suffix swallows all errors silently                                 | Claude Code surfaces transport errors back to the user               |
-| Timeout behaviour    | No native timeout — curl hangs the calling chain if server hangs                | Native `timeout: 30` per hook in config                              |
-| Payload contract     | Same — POST JSON to URL, response shape unchanged                               | Same — POST JSON to URL, response shape unchanged                    |
-| Config form          | `{"type":"command","command":"curl … http://localhost:5051/hooks/X \|\| true"}` | `{"type":"http","url":"http://localhost:5051/hooks/X","timeout":30}` |
-| Detection by skill   | Substring `localhost:5051` appears inside `command` field                       | Substring `localhost:5051` appears inside `url` field                |
-
-**Net result:** HTTP transport removes 24-26 subprocess spawns per Claude Code session. The brain reference (`~/dev/ad/brains/anthropic-claude/claude-code/hooks-reference.md` §"HTTP Hooks (v2.1.63)") confirms the payload and response contract are identical.
+**Decision:** The `angeleye-install` skill writes curl-based command hooks (`type: "command"`) into `~/.claude/settings.json`. Each AngelEye hook is a `curl -s -X POST … http://localhost:5051/hooks/<EventName> || true` invocation. HTTP-typed hooks (`type: "http"`) are documented and supported by Claude Code v2.1.63+, but dropped a critical event in our live test — see "What broke" below.
 
 ---
 
-## Known risk vectors (why this document exists)
+## What was tried
 
-The transport change is small surface-area but carries unknowns we haven't seen in production yet:
+On 2026-05-13, M4 Mini's `~/.claude/settings.json` was migrated from curl to HTTP transport for all 24 AngelEye hooks. AppyCtrl T3 capability probes fire every ~5 minutes on M4, giving a fast and deterministic test signal.
 
-| Risk                                          | Worst-case symptom                                                                                | How you'd notice                                                                              |
-| --------------------------------------------- | ------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| Slow-response handling differs                | Claude Code blocks longer than expected on hook response, slowing every user turn                 | UI feels sluggish; `responseTime` log entries grow                                            |
-| Non-200 surfacing differs                     | Curl swallowed errors with `\|\| true`; HTTP transport may surface 4xx/5xx as turn-level warnings | User sees red banner / error toast in Claude Code on every prompt if AngelEye is misbehaving  |
-| Retry semantics differ                        | Curl had no retry; HTTP transport behaviour on transient failure is per-Anthropic-version         | Duplicate events in `~/.claude/angeleye/sessions/`                                            |
-| Header / encoding differences                 | Claude Code may not send `Content-Type: application/json` the same way; server may misparse       | New "schema-auditor unknown shape" rows in `_unknownHooksPath`                                |
-| Server unreachable on Roamy when sessions run | Curl `\|\| true` made this invisible; HTTP transport may surface "connection refused" per turn    | User sees connection errors on every prompt — same as Risk 2 but specifically when server off |
+| Probe time (Bangkok)  | Transport | Archive size | InstructionsLoaded | SessionStart   | SessionEnd |
+| --------------------- | --------- | ------------ | ------------------ | -------------- | ---------- |
+| 18:29                 | curl      | 2351 B       | ✅ 5×              | ✅             | ✅         |
+| **18:34**             | **HTTP**  | **2133 B**   | ✅ 5×              | ❌ **dropped** | ✅         |
+| **18:39**             | **HTTP**  | **2133 B**   | ✅ 5×              | ❌ **dropped** | ✅         |
+| **18:44**             | **HTTP**  | **2133 B**   | ✅ 5×              | ❌ **dropped** | ✅         |
+| 18:49 (post-rollback) | curl      | 2351 B       | ✅ 5×              | ✅             | ✅         |
 
-None of these have been observed yet. They're hypothetical based on the surface area of the change. **First-week monitoring** should look at `responseTime` on `/hooks/*` POSTs, `_unknownHooksPath` write count, and duplicate session-event audits.
+Server-side request logs confirmed **zero** `POST /hooks/SessionStart` requests arrived during HTTP-transport probes — the requests weren't sent (or failed at transport before reaching the server; no errors logged either way). All other subscribed events arrived with `200 OK`.
+
+## What broke
+
+**Claude Code's HTTP-typed hooks do not deliver `SessionStart` events** — at least for AppyCtrl probe-style invocations on Claude Code v2.1.89 (the version active on M4 at test time). The pattern was deterministic across three back-to-back probes.
+
+Probable cause (not confirmed):
+
+SessionStart fires extremely early in Claude Code's session lifecycle — possibly before the HTTP-hook transport is fully initialised. Command-typed hooks shell out to a subprocess (curl), which has its own setup latency that may inadvertently mask the issue. The brain reference (`~/dev/ad/brains/anthropic-claude/claude-code/hooks-reference.md` §"HTTP Hooks") states payload equivalence between curl and HTTP hooks, but does NOT claim lifecycle equivalence.
+
+**Impact if we had shipped HTTP:**
+
+- AppyCtrl probes: cosmetic loss — `session_end` carries enough metadata to classify them.
+- **Real human sessions: severe loss.** SessionStart is where AngelEye captures the first cwd, the project canonicalisation, `session_kind` defaults, and the seed for `first_real_prompt`. Losing it would degrade the classifier and corrupt downstream session-class derivation.
+
+For these reasons, M4 was rolled back to curl transport at 18:48 (Bangkok) and Roamy was never migrated.
 
 ---
 
-## Rollback — switching back to curl transport
+## Why HTTP transport remains attractive
 
-If any of the risks above materialise and HTTP transport needs to be reverted, the procedure is:
+| Property                  | Curl transport (current)                                                 | HTTP transport (potential, currently blocked)                          |
+| ------------------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
+| Process model             | Fork curl subprocess per hook, per session                               | Native HTTP from Claude Code's own runtime                             |
+| Per-session overhead      | 24-26 subprocess spawns (one per subscribed event)                       | 0 subprocesses; direct HTTP from one process                           |
+| Failure surfacing         | `\|\| true` suffix swallows all errors silently                          | Claude Code surfaces transport errors back to the user                 |
+| Timeout behaviour         | No native timeout — curl hangs the calling chain if server hangs         | Native `timeout: 30` per hook in config                                |
+| Payload contract          | Same — POST JSON to URL, response shape unchanged                        | Same — POST JSON to URL, response shape unchanged                      |
+| **Lifecycle reliability** | **All events deliver** (verified across 1378+ M4 sessions to date)       | **SessionStart drops in v2.1.89** (verified 3-of-3 in 2026-05-13 test) |
+| Config form               | `{"type":"command","command":"curl … localhost:5051/hooks/X \|\| true"}` | `{"type":"http","url":"http://localhost:5051/hooks/X","timeout":30}`   |
+| Detection by skill        | Substring `localhost:5051` appears inside `command` field                | Substring `localhost:5051` appears inside `url` field                  |
 
-### Step 1 — Edit `~/.claude/settings.json` directly
+The transport-overhead argument hasn't gone away — 24-26 subprocess spawns per session is real cost. If a future Claude Code version fixes the SessionStart-drop issue, revisiting this is worthwhile.
 
-For each AngelEye event entry, replace the HTTP shape:
+---
 
-```json
-{
-  "matcher": "",
-  "hooks": [
-    {
-      "type": "http",
-      "url": "http://localhost:5051/hooks/<EventName>",
-      "timeout": 30
-    }
-  ]
-}
+## When to revisit
+
+Re-test HTTP transport when ONE of the following changes:
+
+1. **Anthropic ships a Claude Code release** with notes mentioning hook lifecycle / HTTP transport reliability / SessionStart timing. Check the brain reference at `~/dev/ad/brains/anthropic-claude/claude-code/hooks-reference.md` for updates.
+2. **The brain reference itself updates** with explicit guidance about HTTP hook lifecycle behaviour. The current doc (last updated 2026-04-02) doesn't address it.
+3. **Curl transport becomes operationally painful** — e.g., disk I/O storms from subprocess spawns, observable user-facing latency, or AngelEye sessions that need sub-millisecond hook delivery.
+
+### How to re-test (procedure)
+
+1. Read this doc top to bottom first — the bug shape is specific and may have evolved.
+2. On M4 Mini (NOT Roamy — M4 has the AppyCtrl pulse and isn't your primary work machine), back up `~/.claude/settings.json` to `~/.claude/settings.json.bak-<date>-pre-http`.
+3. Run the migration script preserved in §"Migration script — preserved for re-test" below to switch all AngelEye hooks from `type: "command"` (curl) to `type: "http"`.
+4. Wait 3 AppyCtrl probe cycles (~15 minutes) and compare archive entries to the table above. If file size is back to 2351 B and `session_start` events are present, the bug is fixed.
+5. If still broken, restore from backup immediately. Update this doc with the new test results.
+
+### Migration script — preserved for re-test
+
+```python
+import json
+from pathlib import Path
+
+SETTINGS = Path.home() / ".claude" / "settings.json"
+d = json.loads(SETTINGS.read_text())
+
+# Discover events from running AngelEye server, fall back to embedded list
+import urllib.request
+try:
+    with urllib.request.urlopen("http://localhost:5051/api/hooks/supported", timeout=2) as r:
+        EVENTS = json.load(r)["events"]
+except Exception:
+    EVENTS = ["SessionStart","UserPromptSubmit","PostToolUse","Stop","SessionEnd","SubagentStart","SubagentStop","PostToolUseFailure","StopFailure","WorktreeCreate","WorktreeRemove","CwdChanged","PreToolUse","InstructionsLoaded","PreCompact","PostCompact","PermissionRequest","Notification","TeammateIdle","TaskCompleted","ConfigChange","Elicitation","ElicitationResult","FileChanged","TaskCreated","PermissionDenied"]
+
+hooks = d.setdefault("hooks", {})
+for ev in EVENTS:
+    entries = hooks.get(ev, [])
+    new_entries = []
+    for entry in entries:
+        hook_list = entry.get("hooks", [])
+        is_angel = any("localhost:5051" in (h.get("command","") + h.get("url","")) for h in hook_list)
+        if not is_angel:
+            new_entries.append(entry)
+    new_entries.append({
+        "matcher": "",
+        "hooks": [{"type": "http", "url": f"http://localhost:5051/hooks/{ev}", "timeout": 30}]
+    })
+    hooks[ev] = new_entries
+
+SETTINGS.write_text(json.dumps(d, indent=2) + "\n")
+print("Migration done. Restart Claude Code or wait for the next session.")
 ```
 
-…with the legacy curl shape:
+---
+
+## Current rollback procedure (if HTTP gets re-tried and breaks)
+
+If you re-run the migration script above and need to roll back fast:
+
+```bash
+# Restore from your pre-test backup
+cp ~/.claude/settings.json.bak-<date>-pre-http ~/.claude/settings.json
+```
+
+That's the only step needed — Claude Code reads settings on session start, so the next AppyCtrl probe (or your next Claude Code restart) picks up curl transport again.
+
+If the backup is missing or corrupt, the canonical curl entry shape is:
 
 ```json
 {
@@ -73,35 +133,29 @@ For each AngelEye event entry, replace the HTTP shape:
 }
 ```
 
-The `localhost:5051/hooks/<EventName>` URL identifies the entry — leave non-AngelEye hooks (anything not containing that substring) untouched.
+Use the discovery endpoint to learn which events to subscribe to:
 
-### Step 2 — Update the skill to write curl by default
+```bash
+curl -s http://localhost:5051/api/hooks/supported | jq -r '.events[]'
+```
 
-Edit `~/.claude/skills/angeleye-install/SKILL.md`:
+…and write one entry like the above for each event into `~/.claude/settings.json` under `hooks.<EventName>`.
 
-- Change the "Entry shape" section back to the curl form
-- Re-running the skill will then upgrade any HTTP entries back to curl (since the safety scan identifies entries by `localhost:5051` in either `command` or `url`)
+---
 
-### Step 3 — Restart Claude Code
+## Why we keep curl's `|| true` silent-failure pattern
 
-Hook config is read at session start. Restart any active Claude Code sessions to pick up the change.
+It's a tradeoff, and the tradeoff still works in curl's favour:
 
-### Step 4 — Verify
+- **Pro** of silent failure: when AngelEye is genuinely down (server crashed, machine offline), every Claude Code prompt would otherwise surface a connection error to the user. With `|| true`, the user keeps working uninterrupted.
+- **Con** of silent failure: when AngelEye is silently misbehaving (server up but a specific endpoint broken), the user has no in-Claude-Code signal — they discover it later from corpus gaps.
 
-Trigger a manual SessionEnd (close + open a session) and confirm AngelEye's archive directory at `~/.claude/angeleye/archive/` gets a new entry. If yes, transport is working.
+The con is real (it's how we discovered the AppyCtrl backup bug earlier in this session), but the pro outweighs it: AngelEye must not interrupt the user's coding flow on its own outages. Discovery of silent failures is what the `/diagnostics` view and `_unknownHooksPath` log are for.
 
 ---
 
 ## Mixed-transport state
 
-The skill's safety scan tolerates mixed transport — it identifies AngelEye entries by `localhost:5051` appearing in either `command` (curl) or `url` (http) — so running the skill multiple times during a partial rollback is safe and idempotent.
+The skill's safety scan identifies AngelEye entries by `localhost:5051` appearing in either `command` (curl) or `url` (http). This means: even though HTTP is currently rejected, running the skill on a machine that somehow still has HTTP-shaped entries (from an aborted migration) is safe — they'll be replaced with curl-shaped entries cleanly.
 
-If you find yourself in a state where some machines run HTTP transport and others run curl, that's fine: AngelEye's server endpoint is unchanged. The transport is purely a client-side concern.
-
----
-
-## Why we didn't keep the curl `|| true` silent-failure pattern
-
-Curl's `|| true` made AngelEye outages invisible — the user got no signal that their hooks were dropping. The HTTP transport's louder failure mode is a feature, not a bug: if AngelEye is broken, the user notices immediately rather than discovering weeks later that the archive is incomplete.
-
-If the noise becomes intolerable in practice, the right fix is to **make AngelEye more reliable**, not to re-introduce silent failure. The rollback above exists for cases where HTTP transport itself misbehaves at the protocol level, not for muting AngelEye outage signals.
+If a future re-test re-introduces HTTP and you have machines that disagree on transport, that's also fine — AngelEye's server endpoint is unchanged. Transport is purely a client-side concern.
