@@ -264,6 +264,28 @@ router.get('/api/search', async (req, res, next) => {
   }
 });
 
+// Rejects prototype-pollution names like __proto__, __defineGetter__, etc.
+// Session IDs are UUID-style; they never legitimately start with double underscores.
+const SAFE_SESSION_ID = /^(?!__)([a-zA-Z0-9_-]+)$/;
+
+router.get('/api/sessions/:id/liveness', async (req, res, next) => {
+  try {
+    if (!SAFE_SESSION_ID.test(req.params.id)) return apiFailure(res, 'Invalid session id', 400);
+    const registry = await readRegistry();
+    const entry = registry[req.params.id];
+    if (!entry) return apiFailure(res, 'session not found', 404);
+    apiSuccess(res, {
+      session_id: entry.session_id,
+      last_active: entry.last_active,
+      status: entry.status,
+      server_now: new Date().toISOString(),
+    });
+  } catch (err) {
+    logger.error({ err, sessionId: req.params.id }, 'Failed to read session liveness');
+    next(err);
+  }
+});
+
 router.get('/api/sessions/:id/events', async (req, res, next) => {
   try {
     const events = await getSessionEvents(req.params.id);
@@ -273,8 +295,6 @@ router.get('/api/sessions/:id/events', async (req, res, next) => {
     next(err);
   }
 });
-
-const SAFE_SESSION_ID = /^[a-zA-Z0-9_-]+$/;
 
 router.get('/api/sessions/:id/enrichments', async (req, res, next) => {
   try {

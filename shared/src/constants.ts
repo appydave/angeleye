@@ -40,4 +40,12 @@ export const ANGELEYE_EVENTS = {
   ELICITATION: 'elicitation',
   ELICITATION_RESULT: 'elicitation_result',
   FILE_CHANGED: 'file_changed',
+  // v2.1.84+ — added 2026-05-13
+  TASK_CREATED: 'task_created',
+  PERMISSION_DENIED: 'permission_denied',
+  // v2.1.167 canonical reconcile — added 2026-06-07
+  SETUP: 'setup',
+  USER_PROMPT_EXPANSION: 'user_prompt_expansion',
+  POST_TOOL_BATCH: 'post_tool_batch',
+  MESSAGE_DISPLAY: 'message_display',
 } as const;

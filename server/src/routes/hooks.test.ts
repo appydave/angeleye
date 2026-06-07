@@ -484,7 +484,7 @@ describe('Wave 11 — common fields stripped from payload', () => {
   });
 });
 
-describe('Wave 11 — all 24 EVENT_MAP entries resolve', () => {
+describe('Wave 11 + canonical reconcile — all 30 EVENT_MAP entries resolve', () => {
   const ALL_HOOKS = [
     'SessionStart',
     'UserPromptSubmit',
@@ -510,6 +510,12 @@ describe('Wave 11 — all 24 EVENT_MAP entries resolve', () => {
     'Elicitation',
     'ElicitationResult',
     'FileChanged',
+    'TaskCreated',
+    'PermissionDenied',
+    'Setup',
+    'UserPromptExpansion',
+    'PostToolBatch',
+    'MessageDisplay',
   ];
 
   it.each(ALL_HOOKS)('%s is accepted (not unknown)', async (hookName) => {
@@ -522,5 +528,67 @@ describe('Wave 11 — all 24 EVENT_MAP entries resolve', () => {
     // If it were unknown, mockIo.emit would NOT be called
     expect(mockIo.emit).toHaveBeenCalled();
     mockIo.emit.mockClear();
+  });
+});
+
+describe('GET /api/hooks/supported — registration source of truth', () => {
+  it('returns all 30 events but a register list that excludes unsafe/opt-in hooks', async () => {
+    const res = await request(app).get('/api/hooks/supported');
+    expect(res.status).toBe(200);
+
+    // Backward-compatible fields: the full set the server can ingest.
+    expect(res.body.count).toBe(30);
+    expect(res.body.events).toHaveLength(30);
+    expect(res.body.events).toContain('WorktreeCreate');
+    expect(res.body.events).toContain('MessageDisplay');
+
+    // register = what the install skill should wire as command hooks.
+    expect(res.body.register).toHaveLength(28);
+    expect(res.body.register).not.toContain('WorktreeCreate');
+    expect(res.body.register).not.toContain('MessageDisplay');
+    expect(res.body.register).toContain('WorktreeRemove'); // observer-only — safe
+    expect(res.body.register).toContain('SessionStart');
+  });
+
+  it('explains each exclusion and marks WorktreeCreate as a hard (non-optional) exclude', async () => {
+    const res = await request(app).get('/api/hooks/supported');
+    expect(res.body.excluded.WorktreeCreate.optional).toBe(false); // never register
+    expect(res.body.excluded.WorktreeCreate.reason).toMatch(/worktree/i);
+    expect(res.body.excluded.MessageDisplay.optional).toBe(true); // opt-in only
+    // every excluded event is absent from register
+    for (const ev of Object.keys(res.body.excluded)) {
+      expect(res.body.register).not.toContain(ev);
+    }
+  });
+
+  it('register equals events minus excluded (set arithmetic)', async () => {
+    const res = await request(app).get('/api/hooks/supported');
+    expect(res.status).toBe(200);
+    const { events, register, excluded } = res.body as {
+      events: string[];
+      register: string[];
+      excluded: Record<string, unknown>;
+    };
+    const expected = events.filter((e) => !Object.keys(excluded).includes(e));
+    expect(new Set(register)).toEqual(new Set(expected));
+    expect(register.length).toBe(events.length - Object.keys(excluded).length);
+  });
+
+  it('every excluded key is a real event in events (no ghost exclusions)', async () => {
+    const res = await request(app).get('/api/hooks/supported');
+    expect(res.status).toBe(200);
+    const { events, excluded } = res.body as {
+      events: string[];
+      excluded: Record<string, unknown>;
+    };
+    for (const key of Object.keys(excluded)) {
+      expect(events).toContain(key);
+    }
+  });
+
+  it('WorktreeCreate is absent from register regardless of excluded-map state', async () => {
+    const res = await request(app).get('/api/hooks/supported');
+    expect(res.status).toBe(200);
+    expect(res.body.register).not.toContain('WorktreeCreate');
   });
 });

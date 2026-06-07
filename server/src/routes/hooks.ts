@@ -3,6 +3,7 @@ import type { Server } from 'socket.io';
 import type { AngelEyeEvent, AngelEyeEventType } from '@appystack/shared';
 import { SOCKET_EVENTS } from '@appystack/shared';
 import { logger } from '../config/logger.js';
+import { env } from '../config/env.js';
 import { appendFile } from 'node:fs/promises';
 import {
   writeEvent,
@@ -30,7 +31,7 @@ const EVENT_MAP: Record<string, AngelEyeEventType> = {
   SessionEnd: 'session_end',
   SubagentStart: 'subagent_start',
   SubagentStop: 'subagent_stop',
-  // Wave 11 — full hook coverage (17 new)
+  // Wave 11 + v2.1.167 canonical reconcile — full hook coverage (21 new, 30 total)
   PostToolUseFailure: 'tool_failure',
   StopFailure: 'stop_failure',
   WorktreeCreate: 'worktree_create',
@@ -51,6 +52,38 @@ const EVENT_MAP: Record<string, AngelEyeEventType> = {
   // v2.1.84+ — added 2026-05-13
   TaskCreated: 'task_created',
   PermissionDenied: 'permission_denied',
+  // v2.1.167 canonical reconcile — added 2026-06-07
+  Setup: 'setup',
+  UserPromptExpansion: 'user_prompt_expansion',
+  PostToolBatch: 'post_tool_batch',
+  // display-only (per-message-render); high-volume — candidate for sampling/exclusion if event volume becomes a problem
+  MessageDisplay: 'message_display',
+};
+
+// Events the server CAN receive (all of EVENT_MAP) but that must NOT be wired as
+// passthrough command hooks in settings.json. The /api/hooks/supported endpoint
+// surfaces these so the angeleye-install skill never re-registers them. EVENT_MAP
+// deliberately keeps them — the mapping is harmless and lets the server ingest the
+// event if it ever arrives via another mechanism.
+const HOOK_REGISTRATION_EXCLUSIONS: Record<string, { reason: string; optional: boolean }> = {
+  // HARD exclude (optional:false) — registering this breaks worktree creation.
+  // WorktreeCreate REPLACES git's worktree workflow: Claude Code reads the hook's
+  // stdout as the worktree path, so a `curl … || true` hook feeds the response body
+  // ("{"continue":true}") in as a path → ENOENT, breaking bg-isolated sessions.
+  // There is no observer-only mode. Verified 2026-05-19. See docs/architecture/hook-transport.md.
+  WorktreeCreate: {
+    reason:
+      'Replaces git worktree creation entirely; a passthrough command hook makes Claude Code read the curl response body as the worktree path (ENOENT). No observer-only mode — never register.',
+    optional: false,
+  },
+  // SOFT exclude (optional:true) — safe to register, but opt-in only.
+  // Fires on every assistant-message render (highest-frequency hook) and is
+  // display-only, so it duplicates the assistant text already captured at Stop.
+  MessageDisplay: {
+    reason:
+      'Fires per message render (highest frequency, display-only) and duplicates assistant text already captured at Stop. Opt-in only to avoid per-render curl overhead.',
+    optional: true,
+  },
 };
 
 function summariseTool(
@@ -80,10 +113,16 @@ export function createHooksRouter(io: Server): Router {
   // problem (skill + EVENT_MAP + AngelEyeEventType all kept in sync by hand).
   // Skill falls back to its embedded list if this endpoint is unreachable.
   router.get('/api/hooks/supported', (_req, res) => {
+    const events = Object.keys(EVENT_MAP);
+    // `register` is the set the install skill should wire as command hooks:
+    // everything the server handles MINUS the registration exclusions above.
+    const register = events.filter((e) => !(e in HOOK_REGISTRATION_EXCLUSIONS));
     res.json({
-      events: Object.keys(EVENT_MAP),
-      count: Object.keys(EVENT_MAP).length,
-      transport_url_template: 'http://localhost:5051/hooks/{event}',
+      events, // all events the server can ingest (backward compatible)
+      count: events.length, // backward compatible
+      register, // events SAFE to wire as command hooks (use this for install)
+      excluded: HOOK_REGISTRATION_EXCLUSIONS, // event -> { reason, optional }
+      transport_url_template: `http://localhost:${env.PORT}/hooks/{event}`,
     });
   });
 
@@ -207,7 +246,7 @@ export function createHooksRouter(io: Server): Router {
         }
       }
 
-      // Non-blocking schema audit (runs for all 24 events)
+      // Non-blocking schema audit (runs for all 30 events)
       auditPayload(hookEventName, eventType, body).catch(() => {});
 
       await writeEvent(event);

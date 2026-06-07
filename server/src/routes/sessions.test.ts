@@ -274,6 +274,65 @@ describe('GET /api/sessions/:id/events', () => {
   });
 });
 
+// ── GET /api/sessions/:id/liveness ───────────────────────────────────────────
+
+describe('GET /api/sessions/:id/liveness', () => {
+  it('returns 200 with session_id, last_active, status, and server_now for a seeded session', async () => {
+    const sessionId = 'ses-liveness-1';
+    await updateRegistry(sessionId, {
+      session_id: sessionId,
+      project_dir: '/projects/liveness',
+      last_active: '2026-05-01T12:00:00.000Z',
+      status: 'active',
+    });
+
+    const res = await request(app).get(`/api/sessions/${sessionId}/liveness`);
+
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe('ok');
+    expect(res.body.data).toHaveProperty('session_id', sessionId);
+    expect(res.body.data.last_active).toBe('2026-05-01T12:00:00.000Z');
+    expect(res.body.data.status).toBe('active');
+    expect(res.body.data).toHaveProperty('server_now');
+    // server_now must be a valid ISO 8601 date
+    expect(new Date(res.body.data.server_now as string).toISOString()).toBe(
+      res.body.data.server_now
+    );
+  });
+
+  it('rejects __proto__ session id with 400 (prototype pollution guard)', async () => {
+    const res = await request(app).get('/api/sessions/__proto__/liveness');
+
+    expect(res.status).toBe(400);
+    expect(res.body.status).toBe('error');
+    expect(res.body.error).toMatch(/invalid session id/i);
+  });
+
+  it('last_active in response equals the seeded entry last_active', async () => {
+    const sessionId = 'ses-liveness-2';
+    const seededLastActive = '2026-04-20T08:30:00.000Z';
+    await updateRegistry(sessionId, {
+      session_id: sessionId,
+      project_dir: '/projects/liveness',
+      last_active: seededLastActive,
+      status: 'ended',
+    });
+
+    const res = await request(app).get(`/api/sessions/${sessionId}/liveness`);
+
+    expect(res.status).toBe(200);
+    expect(res.body.data.last_active).toBe(seededLastActive);
+  });
+
+  it('returns 404 for an unknown session id', async () => {
+    const res = await request(app).get('/api/sessions/ses-does-not-exist/liveness');
+
+    expect(res.status).toBe(404);
+    expect(res.body.status).toBe('error');
+    expect(res.body.error).toMatch(/session not found/i);
+  });
+});
+
 // ── PATCH /api/sessions/:id ────────────────────────────────────────────────────
 
 describe('PATCH /api/sessions/:id', () => {

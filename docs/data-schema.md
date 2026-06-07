@@ -225,25 +225,25 @@ The subtype layer uses a three-field model. `subtype_heuristic` is written by th
 
 One JSON object per line. Append-only. Written by the hooks handler and the backfill service.
 
-| Field          | Type                       | Required | Description                                              |
-| -------------- | -------------------------- | -------- | -------------------------------------------------------- |
-| `id`           | string                     | yes      | `crypto.randomUUID()`                                    |
-| `session_id`   | string                     | yes      | Matches the registry key                                 |
-| `ts`           | string (ISO)               | yes      | Event timestamp                                          |
-| `source`       | `'hook'` or `'transcript'` | yes      | Origin of the event                                      |
-| `event`        | `AngelEyeEventType`        | yes      | One of 24 event type values                              |
-| `cwd`          | string                     | no       | Working directory at time of event                       |
-| `agent_id`     | string                     | no       | Set for subagent events                                  |
-| `prompt`       | string                     | no       | User prompt text (`user_prompt` events)                  |
-| `tool`         | string                     | no       | Tool name (`tool_use` events)                            |
-| `tool_use_id`  | string                     | no       | Claude Code tool use correlation ID                      |
-| `tool_summary` | object                     | no       | Structured summary — `file`, `command` etc.              |
-| `result`       | string                     | no       | Tool result snippet                                      |
-| `reason`       | string                     | no       | Stop reason                                              |
-| `last_message` | string                     | no       | Last assistant message (`stop` / `subagent_stop` events) |
-| `agent_type`   | string                     | no       | Type of subagent                                         |
-| `payload`      | object                     | no       | Generic bucket for Wave 11 event-specific data           |
-| `error`        | string                     | no       | Error message (`tool_failure`, `stop_failure` events)    |
+| Field          | Type                       | Required | Description                                                                                  |
+| -------------- | -------------------------- | -------- | -------------------------------------------------------------------------------------------- |
+| `id`           | string                     | yes      | `crypto.randomUUID()`                                                                        |
+| `session_id`   | string                     | yes      | Matches the registry key                                                                     |
+| `ts`           | string (ISO)               | yes      | Event timestamp                                                                              |
+| `source`       | `'hook'` or `'transcript'` | yes      | Origin of the event                                                                          |
+| `event`        | `AngelEyeEventType`        | yes      | One of the supported event type values (see `AngelEyeEventType` in `shared/src/angeleye.ts`) |
+| `cwd`          | string                     | no       | Working directory at time of event                                                           |
+| `agent_id`     | string                     | no       | Set for subagent events                                                                      |
+| `prompt`       | string                     | no       | User prompt text (`user_prompt` events)                                                      |
+| `tool`         | string                     | no       | Tool name (`tool_use` events)                                                                |
+| `tool_use_id`  | string                     | no       | Claude Code tool use correlation ID                                                          |
+| `tool_summary` | object                     | no       | Structured summary — `file`, `command` etc.                                                  |
+| `result`       | string                     | no       | Tool result snippet                                                                          |
+| `reason`       | string                     | no       | Stop reason                                                                                  |
+| `last_message` | string                     | no       | Last assistant message (`stop` / `subagent_stop` events)                                     |
+| `agent_type`   | string                     | no       | Type of subagent                                                                             |
+| `payload`      | object                     | no       | Generic bucket for Wave 11 event-specific data                                               |
+| `error`        | string                     | no       | Error message (`tool_failure`, `stop_failure` events)                                        |
 
 ### archive/
 
@@ -514,19 +514,19 @@ Stored in `data/affinity-groups/`. Cluster related sessions without requiring wo
 
 ## Canonical Sources
 
-| Schema                                   | Canonical location                                                |
-| ---------------------------------------- | ----------------------------------------------------------------- |
-| All TypeScript types (enums, interfaces) | `shared/src/angeleye.ts`                                          |
-| Hook schema expectations + common fields | `server/src/services/schema-auditor.service.ts`                   |
-| All classification detection functions   | `server/src/services/classifier.service.ts`                       |
-| Backfill / JSONL parsing logic           | `server/src/services/backfill.service.ts`                         |
-| Registry read/write + path constants     | `server/src/services/registry.service.ts`                         |
-| Domain overlay resolution                | `server/src/services/overlay.service.ts`                          |
-| Workflow type configs                    | `server/src/config/workflows/*.json`                              |
-| Overlay configs                          | `server/src/config/overlays/*.json`                               |
-| Signal reliability data (924-session)    | `docs/intelligence/PATTERNS.md`                                   |
-| Hook pipeline architecture               | `~/dev/ad/brains/angeleye/ingestion-architecture.md`              |
-| Claude Code JSONL entry types            | `~/dev/ad/brains/anthropic-claude/claude-code/observability.md`   |
-| All 25 hook events + input format        | `~/dev/ad/brains/anthropic-claude/claude-code/hooks-reference.md` |
-| Workflow domain model (conceptual)       | `~/dev/ad/brains/angeleye/workflow-model.md`                      |
-| Enrichment pipeline (Tier 1–3 design)    | `~/dev/ad/brains/angeleye/enrichment-pipeline.md`                 |
+| Schema                                   | Canonical location                                                       |
+| ---------------------------------------- | ------------------------------------------------------------------------ |
+| All TypeScript types (enums, interfaces) | `shared/src/angeleye.ts`                                                 |
+| Hook schema expectations + common fields | `server/src/services/schema-auditor.service.ts`                          |
+| All classification detection functions   | `server/src/services/classifier.service.ts`                              |
+| Backfill / JSONL parsing logic           | `server/src/services/backfill.service.ts`                                |
+| Registry read/write + path constants     | `server/src/services/registry.service.ts`                                |
+| Domain overlay resolution                | `server/src/services/overlay.service.ts`                                 |
+| Workflow type configs                    | `server/src/config/workflows/*.json`                                     |
+| Overlay configs                          | `server/src/config/overlays/*.json`                                      |
+| Signal reliability data (924-session)    | `docs/intelligence/PATTERNS.md`                                          |
+| Hook pipeline architecture               | `~/dev/ad/brains/angeleye/ingestion-architecture.md`                     |
+| Claude Code JSONL entry types            | `~/dev/ad/brains/anthropic-claude/claude-code/observability.md`          |
+| All 30 hook events + input format        | `~/dev/ad/brains/anthropic-claude/claude-code/hooks/events-reference.md` |
+| Workflow domain model (conceptual)       | `~/dev/ad/brains/angeleye/workflow-model.md`                             |
+| Enrichment pipeline (Tier 1–3 design)    | `~/dev/ad/brains/angeleye/enrichment-pipeline.md`                        |

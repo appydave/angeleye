@@ -1,7 +1,7 @@
 # Project Backlog — AngelEye
 
-**Last updated**: 2026-05-06
-**Total**: 82 | Pending: 7 | In Progress: 0 | Done: 71 | Deferred: 2 | Removed: 3 | Withdrawn: 3 (B075/B078/B081 — already in place)
+**Last updated**: 2026-06-08
+**Total**: 86 | Pending: 7 | In Progress: 0 | Done: 75 | Deferred: 2 | Removed: 3 | Withdrawn: 3 (B075/B078/B081 — already in place)
 
 ## Pending
 
@@ -44,6 +44,10 @@ Background and full design: [`docs/planning/enrichment-loop-design.md`](enrichme
 
 ## Done
 
+- [x] B083 — Hook coverage reconciled to canonical 30 events (v2.1.167) across EVENT_MAP + AngelEyeEventType + ANGELEYE_EVENTS; docs corrected, deprecated hooks-reference.md citations repointed | Completed: angeleye-live-hook-liveness
+- [x] B084 — Live command-hook wired (28 events, port 5051) in ~/.claude/settings.json; WorktreeCreate (hard) + MessageDisplay (opt-in) excluded; exclusions enforced at /api/hooks/supported register/excluded; install skill updated | Completed: angeleye-live-hook-liveness
+- [x] B085 — Per-session liveness endpoint `GET /api/sessions/:id/liveness` → {session_id, last_active, status, server_now} for external reaper; HANDBACK contract written | Completed: angeleye-live-hook-liveness
+- [x] B086 — Hook-exclusion rationale made discoverable (hook-transport.md, known-issues.md, origin write-up brought into repo, CLAUDE.md pointer) | Completed: angeleye-live-hook-liveness
 - [x] B026 — Update create-appystack template: dotenv override:true fix | Completed: 2026-03-30
 - [x] B063 — Add `project_dir` field to WorkflowInstance shared type | Completed: commit 1efe57b5
 - [x] B065 — stats.ts DRY fix: use countByType() import | Completed: angeleye-phase3-propagation

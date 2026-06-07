@@ -44,7 +44,7 @@ Interrogatable history. Filter by tool type, event type, workspace, tag. Chain e
 
 ### Source 1: Claude Code Hook Events (real-time, interactive sessions)
 
-Claude Code fires 25 hook events total (as of v2.1.83). AngelEye subscribes to all 25 (expanded in Wave 11 from the original 7). All delivered as JSON via stdin to command hooks.
+Claude Code fires 30 hook events total (as of v2.1.167). AngelEye subscribes to all 30 (expanded in Wave 11 from the original 7). All delivered as JSON via stdin to command hooks.
 
 **Common fields on every event**: `session_id`, `transcript_path`, `cwd`, `hook_event_name`, `agent_id`, `agent_type` (v2.1.69+)
 
@@ -75,7 +75,7 @@ Claude Code fires 25 hook events total (as of v2.1.83). AngelEye subscribes to a
 | `PreCompact`    | Before context compaction              | Preserve critical context                   |
 | `PostCompact`   | After context compaction               | Recovery tasks                              |
 
-**Full hook reference**: `~/dev/ad/brains/anthropic-claude/claude-code/hooks-reference.md` — 25 events, all schemas, all versions.
+**Full hook reference**: `~/dev/ad/brains/anthropic-claude/claude-code/hooks/events-reference.md` — all 30 events, schemas, and versions.
 
 **Tool summarisation before storage** (not raw):
 
@@ -198,14 +198,14 @@ Session shapes are precomputed by `compute-session-shape.py` during backfill —
 
 ## Hook Ingestion — Decision: Command Hooks
 
-**Canonical reference**: `~/dev/ad/brains/anthropic-claude/claude-code/hooks-reference.md`
+**Canonical reference**: `~/dev/ad/brains/anthropic-claude/claude-code/hooks/` (INDEX.md for overview, events-reference.md for per-event schemas)
 
 ### Chosen: Command hooks with curl (B024 — completed)
 
 AngelEye uses `curl ... || true` command hooks configured in `~/.claude/settings.json`. Each hook event fires a curl POST to the AngelEye Express server. The `|| true` ensures hooks never block Claude Code if the server is down.
 
 ```
-Hook event → curl POST to localhost:5501/hooks/:event || true → Express → JSONL write + Socket.io push
+Hook event → curl POST to localhost:5051/hooks/:event || true → Express → JSONL write + Socket.io push
 ```
 
 The `/angeleye:install` skill writes this configuration automatically.
@@ -402,7 +402,7 @@ All items below were completed during the analysis-1 campaign:
 
 - `brains/angeleye/` — full domain knowledge (concepts, data model, ingestion architecture, ambient intelligence)
 - `brains/angeleye/analysis/` — per-wave findings from 924-session analysis campaign
-- `brains/anthropic-claude/claude-code/hooks-reference.md` — **all 25 hook events + schemas** (canonical hook reference)
+- `brains/anthropic-claude/claude-code/hooks/` — **all 30 hook events + schemas** (canonical hook reference; use `events-reference.md` for per-event detail)
 - `brains/anthropic-claude/claude-code/observability.md` — hook input formats, 4 data streams, JSONL format
 - `brains/anthropic-claude/claude-code/session-management.md` — session resume, /rename, /fork behaviour
 - `brains/agentic-os/communication-architecture.md` — Supabase schema (future cold path if needed)

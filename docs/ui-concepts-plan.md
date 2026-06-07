@@ -80,7 +80,7 @@ Total: ~3.5h for a complete dialogue view.
 
 ### The problem it solves
 
-We are currently subscribed to 7 of the 22 available Claude Code hooks. The other 15 are firing in every session and we are seeing nothing. Some of them are clearly useful (PermissionRequest, PreCompact, Notification). Others are unknown quantities — we don't know what their payloads look like in practice, or whether they fire often enough to be worth subscribing to.
+We are currently subscribed to 7 of the 30 available Claude Code hooks. The other 23 are firing in every session and we are seeing nothing. Some of them are clearly useful (PermissionRequest, PreCompact, Notification). Others are unknown quantities — we don't know what their payloads look like in practice, or whether they fire often enough to be worth subscribing to.
 
 Before wiring up new hooks, we need a way to see them. A development/evaluation UI that catches everything, shows raw payloads, and helps answer: "is this field useful? should we capture it?"
 
@@ -88,7 +88,7 @@ This is not a user-facing production view. It is a diagnostic tool for evaluatin
 
 ### What this view would show
 
-**Hook coverage dashboard**: A table of all 22 hooks showing for each one:
+**Hook coverage dashboard**: A table of all 30 hooks showing for each one:
 
 - Is it subscribed? (yes / no)
 - How many times has it fired this session? (live counter)
@@ -120,7 +120,7 @@ Useful for catching "I didn't know this field existed" moments.
 
 ### Hooks worth subscribing to (from gap analysis)
 
-These are the highest-value additions identified from the 22 available hooks:
+These are the highest-value additions identified from the 30 available hooks:
 
 | Hook                | Why it's useful                                                  |
 | ------------------- | ---------------------------------------------------------------- |
@@ -143,10 +143,10 @@ This is a separate view from the Observer, not a panel within it. Could be acces
 
 | File                                 | Change                                                                                                                                      |
 | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `server/src/routes/hooks.ts`         | Add a parallel "catch-all" endpoint for the Signal Lab that receives all 22 hooks without normalising them — stores raw payloads separately |
+| `server/src/routes/hooks.ts`         | Add a parallel "catch-all" endpoint for the Signal Lab that receives all 30 hooks without normalising them — stores raw payloads separately |
 | `client/src/views/SignalLabView.tsx` | New view: hook coverage table, live raw event stream, payload inspector                                                                     |
 | `client/src/App.tsx`                 | Add Signal Lab route/tab                                                                                                                    |
-| `hooks.ts` (Claude Code config)      | Add all 22 hook subscriptions pointing to a `/events/raw` endpoint alongside the existing `/events` endpoint                                |
+| `hooks.ts` (Claude Code config)      | Add all 30 hook subscriptions pointing to a `/events/raw` endpoint alongside the existing `/events` endpoint                                |
 
 **Alternative approach** (lower complexity): Instead of a parallel raw endpoint, add a `raw_payload` field to every stored event and surface it in a "developer panel" expandable within the existing observer. Less surgical but simpler.
 
@@ -174,7 +174,7 @@ The natural sequence: build Concept 1 tonight (it's lower effort and higher imme
 ## Reference
 
 - **Gap analysis**: `docs/gap-analysis-data-capture.md` — full breakdown of all 7 gaps
-- **Hook reference**: `~/dev/ad/brains/anthropic-claude/claude-code/hooks-reference.md` — all 22 hooks with versions and payloads
+- **Hook reference**: `~/dev/ad/brains/anthropic-claude/claude-code/hooks/events-reference.md` — all 30 hooks with versions and payloads
 - **Key files to change**: `client/src/views/ObserverView.tsx`, `server/src/routes/hooks.ts`, shared types
 
 ---

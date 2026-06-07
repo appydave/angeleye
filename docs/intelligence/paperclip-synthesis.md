@@ -188,7 +188,7 @@ The proposed E1 fix (set `session_kind: 'subprocess'` and `project: 'paperclip'`
 
 1. **Prompt template** (highest): `^-?\nYou are agent [a-f0-9-]{36} \(.+\)\. Continue your Paperclip work\.$` — Paperclip's deterministic wake-up. 18/18 hosted hits in corpus.
 2. **Workspace cwd**: `cwd ~ ^.+/\.paperclip/instances/[^/]+/workspaces/[a-f0-9-]{36}/?$` — catches fallback-workspace runs (8/8 in escape ledger).
-3. **PAPERCLIP\_\* env vars at session_start**: per the adapters doc, every Paperclip-spawned `claude` invocation has `PAPERCLIP_AGENT_ID`, `PAPERCLIP_COMPANY_ID`, `PAPERCLIP_RUN_ID` set. AngelEye's hooks could capture these at `session_start` for an authoritative signal — _if_ Claude Code's session_start hook input includes env. (Worth checking against `~/dev/ad/brains/anthropic-claude/claude-code/hooks-reference.md`.)
+3. **PAPERCLIP\_\* env vars at session_start**: per the adapters doc, every Paperclip-spawned `claude` invocation has `PAPERCLIP_AGENT_ID`, `PAPERCLIP_COMPANY_ID`, `PAPERCLIP_RUN_ID` set. AngelEye's hooks could capture these at `session_start` for an authoritative signal — _if_ Claude Code's session_start hook input includes env. (Worth checking against `~/dev/ad/brains/anthropic-claude/claude-code/hooks/events-reference.md`.)
 4. **`--resume` invocation**: heartbeat reuses the same session ID across wake-ups. Multiple sessions with the same JSONL would actually be _one_ logical agent's heartbeat history. AngelEye currently treats each as separate.
 
 Combining 1+2 catches all known evidence. Adding 3 would make detection bulletproof and would surface the company/agent/run linkage in the registry itself.

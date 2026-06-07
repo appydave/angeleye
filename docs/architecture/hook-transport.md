@@ -8,7 +8,7 @@
 
 ## What was tried
 
-On 2026-05-13, M4 Mini's `~/.claude/settings.json` was migrated from curl to HTTP transport for all 24 AngelEye hooks. AppyCtrl T3 capability probes fire every ~5 minutes on M4, giving a fast and deterministic test signal.
+On 2026-05-13, M4 Mini's `~/.claude/settings.json` was migrated from curl to HTTP transport for all 24 AngelEye hooks (28 as of 2026-06-07; 30 canonical events, 2 deliberately excluded — see §"Events we deliberately don't register"). AppyCtrl T3 capability probes fire every ~5 minutes on M4, giving a fast and deterministic test signal.
 
 | Probe time (Bangkok)  | Transport | Archive size | InstructionsLoaded | SessionStart   | SessionEnd |
 | --------------------- | --------- | ------------ | ------------------ | -------------- | ---------- |
@@ -26,7 +26,7 @@ Server-side request logs confirmed **zero** `POST /hooks/SessionStart` requests 
 
 Probable cause (not confirmed):
 
-SessionStart fires extremely early in Claude Code's session lifecycle — possibly before the HTTP-hook transport is fully initialised. Command-typed hooks shell out to a subprocess (curl), which has its own setup latency that may inadvertently mask the issue. The brain reference (`~/dev/ad/brains/anthropic-claude/claude-code/hooks-reference.md` §"HTTP Hooks") states payload equivalence between curl and HTTP hooks, but does NOT claim lifecycle equivalence.
+SessionStart fires extremely early in Claude Code's session lifecycle — possibly before the HTTP-hook transport is fully initialised. Command-typed hooks shell out to a subprocess (curl), which has its own setup latency that may inadvertently mask the issue. The brain reference (`~/dev/ad/brains/anthropic-claude/claude-code/hooks/configuration-reference.md` §"HTTP Hooks") states payload equivalence between curl and HTTP hooks, but does NOT claim lifecycle equivalence.
 
 **Impact if we had shipped HTTP:**
 
@@ -39,18 +39,18 @@ For these reasons, M4 was rolled back to curl transport at 18:48 (Bangkok) and R
 
 ## Why HTTP transport remains attractive
 
-| Property                  | Curl transport (current)                                                 | HTTP transport (potential, currently blocked)                          |
-| ------------------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
-| Process model             | Fork curl subprocess per hook, per session                               | Native HTTP from Claude Code's own runtime                             |
-| Per-session overhead      | 24-26 subprocess spawns (one per subscribed event)                       | 0 subprocesses; direct HTTP from one process                           |
-| Failure surfacing         | `\|\| true` suffix swallows all errors silently                          | Claude Code surfaces transport errors back to the user                 |
-| Timeout behaviour         | No native timeout — curl hangs the calling chain if server hangs         | Native `timeout: 30` per hook in config                                |
-| Payload contract          | Same — POST JSON to URL, response shape unchanged                        | Same — POST JSON to URL, response shape unchanged                      |
-| **Lifecycle reliability** | **All events deliver** (verified across 1378+ M4 sessions to date)       | **SessionStart drops in v2.1.89** (verified 3-of-3 in 2026-05-13 test) |
-| Config form               | `{"type":"command","command":"curl … localhost:5051/hooks/X \|\| true"}` | `{"type":"http","url":"http://localhost:5051/hooks/X","timeout":30}`   |
-| Detection by skill        | Substring `localhost:5051` appears inside `command` field                | Substring `localhost:5051` appears inside `url` field                  |
+| Property                  | Curl transport (current)                                                   | HTTP transport (potential, currently blocked)                          |
+| ------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| Process model             | Fork curl subprocess per hook, per session                                 | Native HTTP from Claude Code's own runtime                             |
+| Per-session overhead      | 28 subprocess spawns (one per registered event; 30 canonical − 2 excluded) | 0 subprocesses; direct HTTP from one process                           |
+| Failure surfacing         | `\|\| true` suffix swallows all errors silently                            | Claude Code surfaces transport errors back to the user                 |
+| Timeout behaviour         | No native timeout — curl hangs the calling chain if server hangs           | Native `timeout: 30` per hook in config                                |
+| Payload contract          | Same — POST JSON to URL, response shape unchanged                          | Same — POST JSON to URL, response shape unchanged                      |
+| **Lifecycle reliability** | **All events deliver** (verified across 1378+ M4 sessions to date)         | **SessionStart drops in v2.1.89** (verified 3-of-3 in 2026-05-13 test) |
+| Config form               | `{"type":"command","command":"curl … localhost:5051/hooks/X \|\| true"}`   | `{"type":"http","url":"http://localhost:5051/hooks/X","timeout":30}`   |
+| Detection by skill        | Substring `localhost:5051` appears inside `command` field                  | Substring `localhost:5051` appears inside `url` field                  |
 
-The transport-overhead argument hasn't gone away — 24-26 subprocess spawns per session is real cost. If a future Claude Code version fixes the SessionStart-drop issue, revisiting this is worthwhile.
+The transport-overhead argument hasn't gone away — 28 subprocess spawns per session is real cost. If a future Claude Code version fixes the SessionStart-drop issue, revisiting this is worthwhile.
 
 ---
 
@@ -58,8 +58,8 @@ The transport-overhead argument hasn't gone away — 24-26 subprocess spawns per
 
 Re-test HTTP transport when ONE of the following changes:
 
-1. **Anthropic ships a Claude Code release** with notes mentioning hook lifecycle / HTTP transport reliability / SessionStart timing. Check the brain reference at `~/dev/ad/brains/anthropic-claude/claude-code/hooks-reference.md` for updates.
-2. **The brain reference itself updates** with explicit guidance about HTTP hook lifecycle behaviour. The current doc (last updated 2026-04-02) doesn't address it.
+1. **Anthropic ships a Claude Code release** with notes mentioning hook lifecycle / HTTP transport reliability / SessionStart timing. Check the brain reference at `~/dev/ad/brains/anthropic-claude/claude-code/hooks/configuration-reference.md` for updates.
+2. **The brain reference itself updates** with explicit guidance about HTTP hook lifecycle behaviour. The current doc (`hooks/configuration-reference.md`) may not yet address lifecycle ordering — check `hooks/events-reference.md` as well.
 3. **Curl transport becomes operationally painful** — e.g., disk I/O storms from subprocess spawns, observable user-facing latency, or AngelEye sessions that need sub-millisecond hook delivery.
 
 ### How to re-test (procedure)
@@ -85,7 +85,9 @@ try:
     with urllib.request.urlopen("http://localhost:5051/api/hooks/supported", timeout=2) as r:
         EVENTS = json.load(r)["events"]
 except Exception:
-    EVENTS = ["SessionStart","UserPromptSubmit","PostToolUse","Stop","SessionEnd","SubagentStart","SubagentStop","PostToolUseFailure","StopFailure","WorktreeCreate","WorktreeRemove","CwdChanged","PreToolUse","InstructionsLoaded","PreCompact","PostCompact","PermissionRequest","Notification","TeammateIdle","TaskCompleted","ConfigChange","Elicitation","ElicitationResult","FileChanged","TaskCreated","PermissionDenied"]
+    # 28 events: 30 canonical (v2.1.167) minus WorktreeCreate and MessageDisplay (excluded — see §"Events we deliberately don't register")
+    # Canonical full list: ~/dev/ad/brains/anthropic-claude/claude-code/hooks/events-reference.md
+    EVENTS = ["SessionStart","UserPromptSubmit","UserPromptExpansion","PostToolUse","PostToolBatch","Stop","SessionEnd","SubagentStart","SubagentStop","PostToolUseFailure","StopFailure","WorktreeRemove","CwdChanged","PreToolUse","InstructionsLoaded","PreCompact","PostCompact","PermissionRequest","PermissionDenied","Notification","TeammateIdle","TaskCompleted","TaskCreated","ConfigChange","Elicitation","ElicitationResult","FileChanged","Setup"]
 
 hooks = d.setdefault("hooks", {})
 for ev in EVENTS:
@@ -140,6 +142,21 @@ curl -s http://localhost:5051/api/hooks/supported | jq -r '.events[]'
 ```
 
 …and write one entry like the above for each event into `~/.claude/settings.json` under `hooks.<EventName>`.
+
+---
+
+## Events we deliberately don't register (and why)
+
+AngelEye handles **30 hook events** (canonical spec v2.1.167 — see `~/dev/ad/brains/anthropic-claude/claude-code/hooks/events-reference.md` for the full list with payloads). Of those, **28 are wired as live command hooks** in `~/.claude/settings.json`. Two are deliberately excluded:
+
+| Event            | Status                        | Reason                                                                                                                                                                                                                                                                                                                                                                    |
+| ---------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `WorktreeCreate` | **HARD EXCLUDE — never wire** | Replaces git's worktree creation entirely (no observer-only mode). A passthrough `curl \|\| true` hook causes Claude Code to read the curl response body as the worktree path → `ENOENT`, breaking background-isolated sessions. Confirmed production bug on M4 Mini (2026-05-19). See `docs/architecture/worktree-hook-passthrough-fix.md` for full root-cause write-up. |
+| `MessageDisplay` | Opt-in only                   | Fires on every message render — highest-frequency hook, display-only. Duplicates assistant text already captured at `Stop`. Excluded to avoid per-render subprocess overhead. Add deliberately (with sampling) only if render-level events are a wanted feature.                                                                                                          |
+
+`WorktreeRemove` IS wired (observer-only, safe — failures are logged but no path/decision output is required).
+
+The exclusions are enforced at the **source of truth**: `GET /api/hooks/supported` returns a `register` list (the 28 safe events) plus an `excluded` list with reasons. The `angeleye-install` skill wires only the `register` list, so a future re-install cannot silently re-introduce the WorktreeCreate bug.
 
 ---
 

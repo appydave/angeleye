@@ -27,17 +27,19 @@ read `docs/architecture/known-issues.md` first. Highlights as of 2026-05-04:
 - **Enrichment scripts read raw JSONL only** — should fall back to AngelEye archive (761 archive-only rows would otherwise be invisible).
 - **Upstream JSONLs disappear over time** — likely Claude Code auto-purges old sessions. AngelEye's own archive is the long-term source of truth, not `~/.claude/projects/`.
 
+- **Hook registration excludes WorktreeCreate (hard — breaks worktrees) + MessageDisplay (opt-in only)** — rationale, root-cause reproduction, and "what not to do" in `docs/architecture/hook-transport.md` §"Events we deliberately don't register" and `docs/architecture/worktree-hook-passthrough-fix.md`. Exclusions enforced at `/api/hooks/supported` (register list) and `HOOK_REGISTRATION_EXCLUSIONS` in `server/src/routes/hooks.ts` — 28 events wired, not 30.
+
 Diagnostics view at `/diagnostics` in the running app surfaces live counts. Run `npm run audit:registry` to refresh `~/.claude/angeleye/diagnostics-snapshot.json`.
 
 ## 📚 Claude Code Internals — Canonical Documentation
 
 AngelEye reads and writes Claude Code's own data files. Before implementing anything that touches JSONL transcripts, session naming, hooks, or storage layout, check the canonical brain docs first:
 
-| Topic                                                            | Canonical location                                                   |
-| ---------------------------------------------------------------- | -------------------------------------------------------------------- |
-| JSONL entry types, streaming dedup, tool pairing, session naming | `~/dev/ad/brains/anthropic-claude/claude-code/observability.md`      |
-| Hook events (all 25), hook input format, env vars                | `~/dev/ad/brains/anthropic-claude/claude-code/hooks-reference.md`    |
-| Session resume, /rename, /fork, /rewind behaviour                | `~/dev/ad/brains/anthropic-claude/claude-code/session-management.md` |
+| Topic                                                            | Canonical location                                                                                                               |
+| ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| JSONL entry types, streaming dedup, tool pairing, session naming | `~/dev/ad/brains/anthropic-claude/claude-code/observability.md`                                                                  |
+| Hook events (all 30, v2.1.167), hook input format, env vars      | `~/dev/ad/brains/anthropic-claude/claude-code/hooks/events-reference.md` (⚠️ `hooks-reference.md` is DEPRECATED — never cite it) |
+| Session resume, /rename, /fork, /rewind behaviour                | `~/dev/ad/brains/anthropic-claude/claude-code/session-management.md`                                                             |
 
 **Key facts for AngelEye agents** (don't re-discover these):
 

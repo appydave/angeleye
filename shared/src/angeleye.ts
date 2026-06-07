@@ -28,7 +28,12 @@ export type AngelEyeEventType =
   | 'file_changed'
   // v2.1.84+ — added 2026-05-13
   | 'task_created'
-  | 'permission_denied';
+  | 'permission_denied'
+  // v2.1.167 canonical reconcile — added 2026-06-07
+  | 'setup'
+  | 'user_prompt_expansion'
+  | 'post_tool_batch'
+  | 'message_display';
 
 export interface AngelEyeEvent {
   id: string;
