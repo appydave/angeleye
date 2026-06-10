@@ -92,6 +92,8 @@ If `data.total === 0`: stop and report. Common causes:
 - Keyword exists only in tool calls (Bash commands, file reads), which the API doesn't index
 - Query too restrictive (try widening the date range or removing the project filter)
 
+> **Note — `appysentinal` → `appysentinel` rename (2026-06-11):** the AppySentinel project's folder/repo was corrected from the misspelled `appysentinal` to `appysentinel` (now at `apps/appysentinel`). Sessions recorded **before** the rename remain tagged `appysentinal` in the registry; sessions after it are tagged `appysentinel`. To retrieve the project's full history, **search both names**. The historical examples below intentionally retain the `appysentinal` tag — that is the real recorded project name for those sessions, not a typo to fix.
+
 ## Step 2 — Optional deep-dive (only when score-ranking is unclear)
 
 For the top 1–3 results, fetch `user_prompt` events to surface the exact phrasing that matched the regex:
