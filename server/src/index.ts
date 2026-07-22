@@ -194,8 +194,8 @@ if (!env.isTest) {
       .catch((err: unknown) => {
         logger.warn({ err }, 'Startup backfill failed (non-fatal)');
       });
-    httpServer.listen(env.PORT, () => {
-      logger.info(`Server running on http://localhost:${env.PORT}`);
+    httpServer.listen(env.PORT, env.HOST, () => {
+      logger.info(`Server running on http://localhost:${env.PORT} (bound to ${env.HOST})`);
       logger.info(`Client URL: ${env.CLIENT_URL}`);
     });
   })();
