@@ -88,7 +88,7 @@ This is not a user-facing production view. It is a diagnostic tool for evaluatin
 
 ### What this view would show
 
-**Hook coverage dashboard**: A table of all 30 hooks showing for each one:
+**Hook coverage dashboard**: A table of all 31 hooks showing for each one:
 
 - Is it subscribed? (yes / no)
 - How many times has it fired this session? (live counter)
@@ -143,10 +143,10 @@ This is a separate view from the Observer, not a panel within it. Could be acces
 
 | File                                 | Change                                                                                                                                      |
 | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `server/src/routes/hooks.ts`         | Add a parallel "catch-all" endpoint for the Signal Lab that receives all 30 hooks without normalising them — stores raw payloads separately |
+| `server/src/routes/hooks.ts`         | Add a parallel "catch-all" endpoint for the Signal Lab that receives all 31 hooks without normalising them — stores raw payloads separately |
 | `client/src/views/SignalLabView.tsx` | New view: hook coverage table, live raw event stream, payload inspector                                                                     |
 | `client/src/App.tsx`                 | Add Signal Lab route/tab                                                                                                                    |
-| `hooks.ts` (Claude Code config)      | Add all 30 hook subscriptions pointing to a `/events/raw` endpoint alongside the existing `/events` endpoint                                |
+| `hooks.ts` (Claude Code config)      | Add all 31 hook subscriptions pointing to a `/events/raw` endpoint alongside the existing `/events` endpoint                                |
 
 **Alternative approach** (lower complexity): Instead of a parallel raw endpoint, add a `raw_payload` field to every stored event and surface it in a "developer panel" expandable within the existing observer. Less surgical but simpler.
 
@@ -174,7 +174,7 @@ The natural sequence: build Concept 1 tonight (it's lower effort and higher imme
 ## Reference
 
 - **Gap analysis**: `docs/gap-analysis-data-capture.md` — full breakdown of all 7 gaps
-- **Hook reference**: `~/dev/ad/brains/anthropic-claude/claude-code/hooks/events-reference.md` — all 30 hooks with versions and payloads
+- **Hook reference**: `~/dev/ad/brains/anthropic-claude/claude-code/hooks/events-reference.md` — all 31 hooks with versions and payloads
 - **Key files to change**: `client/src/views/ObserverView.tsx`, `server/src/routes/hooks.ts`, shared types
 
 ---

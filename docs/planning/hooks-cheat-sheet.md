@@ -1,10 +1,24 @@
 # Claude Code Hooks Cheat Sheet — AngelEye Reference
 
-**Source docs**: `brains/anthropic-claude/claude-code/hooks-reference.md`, `observability.md`, `background-agents.md`
+> ## ⛔ SUPERSEDED (2026-07-25) — do not use as a hook reference
+>
+> **This file lists 25 events. There are 31** (as of Claude Code v2.1.219). It also cites
+> `brains/anthropic-claude/claude-code/hooks-reference.md`, which is **deprecated and known-wrong**.
+>
+> **Canonical source**: `~/dev/ad/brains/anthropic-claude/claude-code/hooks/events-reference.md`
+> — per-event signatures, matcher targets, version provenance, plus a machine-readable
+> `hooks.schema.json`.
+>
+> **Not rewritten to 31 rows deliberately.** Maintaining a second copy of a fast-moving list is
+> what let this one drift by six events without anyone noticing. One canonical owner, pointers
+> everywhere else. Kept for history — the 2026-03-29 snapshot is still an accurate record of what
+> we believed then.
+
+**Source docs**: ⛔ see banner above — `hooks/events-reference.md` is canonical
 **AngelEye hook handler**: `server/src/routes/hooks.ts`
-**Total hook events**: 25
+**Total hook events**: ~~25~~ → **31** (v2.1.219)
 **Hook default timeout**: 10 minutes (v2.1.2+)
-**Last updated**: 2026-03-29
+**Last updated**: 2026-03-29 (superseded 2026-07-25)
 
 ---
 

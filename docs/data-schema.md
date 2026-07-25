@@ -527,6 +527,6 @@ Stored in `data/affinity-groups/`. Cluster related sessions without requiring wo
 | Signal reliability data (924-session)    | `docs/intelligence/PATTERNS.md`                                          |
 | Hook pipeline architecture               | `~/dev/ad/brains/angeleye/ingestion-architecture.md`                     |
 | Claude Code JSONL entry types            | `~/dev/ad/brains/anthropic-claude/claude-code/observability.md`          |
-| All 30 hook events + input format        | `~/dev/ad/brains/anthropic-claude/claude-code/hooks/events-reference.md` |
+| All 31 hook events + input format        | `~/dev/ad/brains/anthropic-claude/claude-code/hooks/events-reference.md` |
 | Workflow domain model (conceptual)       | `~/dev/ad/brains/angeleye/workflow-model.md`                             |
 | Enrichment pipeline (Tier 1–3 design)    | `~/dev/ad/brains/angeleye/enrichment-pipeline.md`                        |

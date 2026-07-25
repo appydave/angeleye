@@ -14,15 +14,15 @@ When working on workflow configs, workflow types, or the session-to-station rout
 
 Before implementing anything involving agent orchestration or hook-driven automation, read:
 
-| Topic                             | Location                                                                    |
-| --------------------------------- | --------------------------------------------------------------------------- |
-| All 25 hook events + input format | `~/dev/ad/brains/anthropic-claude/claude-code/hooks-reference.md`           |
-| Background agent patterns         | `~/dev/ad/brains/anthropic-claude/claude-code/background-agents.md`         |
-| Swarm teams + SendMessage         | `~/dev/ad/brains/anthropic-claude/claude-code/claude-code-swarm-teams.md`   |
-| Task management (persistent)      | `~/dev/ad/brains/anthropic-claude/claude-code/task-management-system-v2.md` |
-| Full brain index                  | `~/dev/ad/brains/anthropic-claude/INDEX.md`                                 |
-| Workflow domain model             | `~/dev/ad/brains/angeleye/workflow-model.md`                                |
-| Architecture doc                  | `docs/planning/workflow-automation-harness.md`                              |
+| Topic                             | Location                                                                                                                           |
+| --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| All 31 hook events + input format | `~/dev/ad/brains/anthropic-claude/claude-code/hooks/events-reference.md` ⚠️ **NOT** `hooks-reference.md` — that path is deprecated |
+| Background agent patterns         | `~/dev/ad/brains/anthropic-claude/claude-code/background-agents.md`                                                                |
+| Swarm teams + SendMessage         | `~/dev/ad/brains/anthropic-claude/claude-code/claude-code-swarm-teams.md`                                                          |
+| Task management (persistent)      | `~/dev/ad/brains/anthropic-claude/claude-code/task-management-system-v2.md`                                                        |
+| Full brain index                  | `~/dev/ad/brains/anthropic-claude/INDEX.md`                                                                                        |
+| Workflow domain model             | `~/dev/ad/brains/angeleye/workflow-model.md`                                                                                       |
+| Architecture doc                  | `docs/planning/workflow-automation-harness.md`                                                                                     |
 
 ## Key Harness Capabilities for Workflows
 

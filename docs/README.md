@@ -36,7 +36,7 @@ Built on AppyStack (RVETS: React 19 + Vite 7 + Express 5 + TypeScript + Socket.i
 | Topic                                        | Location                                                                 |
 | -------------------------------------------- | ------------------------------------------------------------------------ |
 | JSONL format, entry types, streaming, naming | `~/dev/ad/brains/anthropic-claude/claude-code/observability.md`          |
-| Hook events and payloads (all 30)            | `~/dev/ad/brains/anthropic-claude/claude-code/hooks/events-reference.md` |
+| Hook events and payloads (all 31)            | `~/dev/ad/brains/anthropic-claude/claude-code/hooks/events-reference.md` |
 | Session lifecycle (/rename, /fork, /rewind)  | `~/dev/ad/brains/anthropic-claude/claude-code/session-management.md`     |
 | AngelEye domain knowledge                    | `~/dev/ad/brains/angeleye/`                                              |
 | Analysis index (924 entries)                 | `~/dev/ad/brains/angeleye/analysis/session-index.jsonl`                  |

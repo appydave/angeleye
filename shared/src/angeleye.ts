@@ -33,7 +33,12 @@ export type AngelEyeEventType =
   | 'setup'
   | 'user_prompt_expansion'
   | 'post_tool_batch'
-  | 'message_display';
+  | 'message_display'
+  // v2.1.219 — added 2026-07-25. The 31st canonical hook event.
+  // Fires when the session's working-directory SET grows (/add-dir or the SDK
+  // register_repo_root control request) — distinct from cwd_changed, which fires
+  // when the session moves WITHIN the roots it already has.
+  | 'directory_added';
 
 export interface AngelEyeEvent {
   id: string;

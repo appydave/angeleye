@@ -15,7 +15,7 @@ Map Claude Code harness capabilities to AngelEye's factory workflow model. Each 
 
 ## H1 — Hook-Driven Station Transitions
 
-**Harness feature**: 25 hook events fire as Claude Code operates. Five are directly useful for workflow automation.
+**Harness feature**: 31 hook events fire as Claude Code operates (v2.1.219). Five are directly useful for workflow automation.
 
 | Hook Event      | AngelEye Action                                                                   | Workflow Phase |
 | --------------- | --------------------------------------------------------------------------------- | -------------- |

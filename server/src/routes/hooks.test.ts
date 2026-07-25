@@ -484,7 +484,7 @@ describe('Wave 11 — common fields stripped from payload', () => {
   });
 });
 
-describe('Wave 11 + canonical reconcile — all 30 EVENT_MAP entries resolve', () => {
+describe('Wave 11 + canonical reconcile — all 31 EVENT_MAP entries resolve', () => {
   const ALL_HOOKS = [
     'SessionStart',
     'UserPromptSubmit',
@@ -516,6 +516,8 @@ describe('Wave 11 + canonical reconcile — all 30 EVENT_MAP entries resolve', (
     'UserPromptExpansion',
     'PostToolBatch',
     'MessageDisplay',
+    // v2.1.219
+    'DirectoryAdded',
   ];
 
   it.each(ALL_HOOKS)('%s is accepted (not unknown)', async (hookName) => {
@@ -532,22 +534,23 @@ describe('Wave 11 + canonical reconcile — all 30 EVENT_MAP entries resolve', (
 });
 
 describe('GET /api/hooks/supported — registration source of truth', () => {
-  it('returns all 30 events but a register list that excludes unsafe/opt-in hooks', async () => {
+  it('returns all 31 events but a register list that excludes unsafe/opt-in hooks', async () => {
     const res = await request(app).get('/api/hooks/supported');
     expect(res.status).toBe(200);
 
     // Backward-compatible fields: the full set the server can ingest.
-    expect(res.body.count).toBe(30);
-    expect(res.body.events).toHaveLength(30);
+    expect(res.body.count).toBe(31);
+    expect(res.body.events).toHaveLength(31);
     expect(res.body.events).toContain('WorktreeCreate');
     expect(res.body.events).toContain('MessageDisplay');
 
     // register = what the install skill should wire as command hooks.
-    expect(res.body.register).toHaveLength(28);
+    expect(res.body.register).toHaveLength(29);
     expect(res.body.register).not.toContain('WorktreeCreate');
     expect(res.body.register).not.toContain('MessageDisplay');
     expect(res.body.register).toContain('WorktreeRemove'); // observer-only — safe
     expect(res.body.register).toContain('SessionStart');
+    expect(res.body.register).toContain('DirectoryAdded');
   });
 
   it('explains each exclusion and marks WorktreeCreate as a hard (non-optional) exclude', async () => {

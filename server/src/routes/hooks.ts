@@ -58,6 +58,11 @@ const EVENT_MAP: Record<string, AngelEyeEventType> = {
   PostToolBatch: 'post_tool_batch',
   // display-only (per-message-render); high-volume — candidate for sampling/exclusion if event volume becomes a problem
   MessageDisplay: 'message_display',
+  // v2.1.219 canonical reconcile — added 2026-07-25 (31st event).
+  // Workspace SCOPE change: the session's root set grew via /add-dir (source:
+  // "slash_command") or the SDK register_repo_root control request (source:
+  // "register_repo_root"). Non-blocking; payload carries `directory` + `source`.
+  DirectoryAdded: 'directory_added',
 };
 
 // Events the server CAN receive (all of EVENT_MAP) but that must NOT be wired as
@@ -246,7 +251,7 @@ export function createHooksRouter(io: Server): Router {
         }
       }
 
-      // Non-blocking schema audit (runs for all 30 events)
+      // Non-blocking schema audit (runs for all 31 events)
       auditPayload(hookEventName, eventType, body).catch(() => {});
 
       await writeEvent(event);
