@@ -15,8 +15,8 @@ requested_by: david
 ---
 
 > **Scope.** Design-and-prep document. **Nothing here is implemented.** Claims are tagged
-> `verified(path)` / `inference` / `unknown`. Three decisions are surfaced in §6 rather than
-> assumed — they change the build materially.
+> `verified(path)` / `inference` / `unknown`. §6 records the decisions — **Q2 and Q3 were settled by
+> David on 2026-07-25**; Q1 (transport) is leaning spool with the discussion open.
 
 ---
 
@@ -73,9 +73,9 @@ Found while researching this. These are real holes, not nitpicks:
 
 1. **No guidance on hook fan-out cost.** Nothing anywhere quantifies "you registered 29 hooks; `PreToolUse`+`PostToolUse` fire per tool call; a long session is hundreds of subprocess spawns." The hooks brain treats hooks as individually cheap and never addresses the aggregate. AngelEye is the fleet's heaviest hook consumer and this was never costed. `inference`
 
-2. **Nothing on degraded-dependency hook design.** `hooks/patterns.md` has recipes and anti-patterns but says nothing about _"what should a hook do when the thing it talks to is down."_ That's the entire subject of §3 below, and it is generic knowledge — it belongs in the brain, not buried in an AngelEye doc. **→ follow-up: add a "degraded dependency" pattern to `hooks/patterns.md`.**
+2. **Nothing on degraded-dependency hook design.** `hooks/patterns.md` has recipes and anti-patterns but says nothing about _"what should a hook do when the thing it talks to is down."_ That's the entire subject of §3 below, and it is generic knowledge — it belongs in the brain, not buried in an AngelEye doc. **✅ DONE 2026-07-25** — added as "Degraded dependencies" in `hooks/patterns.md`, carrying the measurements from §3 so the next reader gets the numbers, not the opinion.
 
-3. **`userConfig` × shell-form restriction is not connected.** The brain has both facts (`plugins/manifest-reference.md` §1.3, and the v2.1.207 changelog entry) but never joins them into "if you want configurable hooks, you cannot use shell form." Anyone building a configurable hook plugin walks into it. **→ follow-up: cross-link them.**
+3. **`userConfig` × shell-form restriction is not connected.** The brain has both facts (`plugins/manifest-reference.md` §1.3, and the v2.1.207 changelog entry) but never joins them into "if you want configurable hooks, you cannot use shell form." Anyone building a configurable hook plugin walks into it. **✅ DONE 2026-07-25** — cross-linked in `plugins/manifest-reference.md` §1.3 with the three ways through (read `$CLAUDE_PLUGIN_OPTION_*` inside the script being the cleanest, and the _only_ route for `sensitive` values).
 
 4. **`bin/` PATH scope is ambiguous for hooks.** The brain says `bin/` executables are "added to the **Bash tool's** PATH". It does **not** say whether hook subprocesses inherit that PATH. `unknown` — so this design uses explicit `${CLAUDE_PLUGIN_ROOT}/bin/…` paths and never relies on bare-name resolution. Worth confirming and recording either way.
 
@@ -188,11 +188,38 @@ hook stdout as the worktree path), `MessageDisplay` (soft — per-render volume)
 
 Four options. One is a trap and one is the answer.
 
+### ⏱ Measured first — the numbers change the argument
+
+Benchmarked on Roamy (base M4), 50 iterations each, against the live AngelEye server. `verified(2026-07-25)`
+
+| Hook body                     | Cost per fire                                  |
+| ----------------------------- | ---------------------------------------------- |
+| bare fork (`/bin/echo`)       | **1.67 ms** ← the floor for any `command` hook |
+| write one file (`cat > file`) | **2.16 ms**                                    |
+| `curl` → **live** server      | **51 ms** ⚠️                                   |
+| `curl` → **dead** port        | **6.5 ms**                                     |
+
+Two things fall out of this, and both were counter to my prior assumptions:
+
+1. **A live server costs ~8× a dead one.** `curl`'s own write-out: `connect=0.26 ms, total=48.6 ms`. The connection is instant; **~48 ms is the server doing synchronous work** — registry read/update, JSONL write, session-class resolution, socket broadcast — while the session waits.
+2. **The fork is the floor, not the network.** A dead port costs 6.5 ms, of which ~1.7 ms is the fork. So skipping the request when the server is known-down saves ~5 ms. That kills option C below.
+
+**Sized against real sessions** (195 sampled from the live store): median 30 events, p90 314, max 1648.
+
+|        | events | @51 ms (today) | @2.2 ms (spool) |
+| ------ | -----: | -------------: | --------------: |
+| median |     30 |          1.5 s |           0.1 s |
+| p90    |    314 |       **16 s** |           0.7 s |
+| max    |   1648 |       **84 s** |           3.6 s |
+
+Your heaviest sessions are paying well over a minute of wall-clock to the collector. That is a
+latency problem that exists **right now, while the server is healthy** — entirely separate from the
+resilience problem this section set out to solve.
+
 ### A. Today — `curl … || true`
 
-Forks curl per event; `|| true` swallows every failure.
-**Cost when the Sentinel is down:** ~29 forks/session, each paying fork+exec (~3–5ms) before an instant `ECONNREFUSED`. `inference`
-**The actual harm is not latency — it is silence.** You go dark and nothing tells you. This is exactly what cost four weeks on M4.
+Forks curl per event; `|| true` swallows every failure. **51 ms/fire against a healthy server.**
+**The harm when it's down is not latency — it is silence.** You go dark and nothing tells you. That is what cost four weeks on M4.
 
 ### B. Native `http` hook type
 
@@ -202,7 +229,14 @@ But `SessionStart` cannot use it (`command`/`mcp_tool` only, `verified(code.clau
 ### C. Circuit breaker in a wrapper script — ⚠️ **the trap**
 
 Tempting: script checks a breaker file, exits early when the Sentinel is known-dead.
-**It saves almost nothing.** The dominant cost is the _fork_, which you pay regardless; you only skip an already-instant failed connect. You buy complexity and a staleness bug (how long is the breaker good for?) for a rounding error. **Do not build this.**
+**Measured saving: ~5 ms of a 6.5 ms dead-port call** — you still pay the 1.67 ms fork, and the failed connect to localhost was already instant. You'd buy complexity and a staleness bug (how long is the breaker good for?) to avoid a cost that barely exists. **Do not build this.**
+
+### C2. Make the receiver answer immediately — worth doing _regardless_
+
+Independent of transport: the server currently does its whole job before responding. Answering
+`202` and doing the work off the response path takes **51 ms → ~6.5 ms** without touching a single
+hook. If the spool decision stalls for any reason, **this one still stands on its own** and is the
+cheapest win available.
 
 ### D. Spool to disk; Sentinel drains — ✅ **recommended**
 
@@ -290,13 +324,52 @@ Nothing else is needed. Deliberately not designing the fleet layer.
 
 ---
 
-## 6. Open decisions — I need your call
+## 6. Decisions — resolved 2026-07-25 unless marked open
 
-**Q1 — Transport: spool or HTTP?** §3 recommends spool. It is the only option where "server down" stops being a question, and it makes the daemon restartable with zero loss — which matters because you'll iterate on it. The cost is diverging from AppySentinel's HTTP `hook-receiver` recipe. _If you'd rather stay on the paved road, say so and I'll spec the HTTP variant instead — it's a worse failure mode but a shorter path._
+**Q1 — Transport: spool or HTTP? → LEANING SPOOL, discussion open.**
+David: _"Happy to go with it. I'm not wedded to HTTP."_ The measurements above strengthen the case
+well beyond resilience — spool is ~23× cheaper per fire than the current path. Remaining question is
+whether to ALSO do C2 (fast receiver) so the HTTP path stays viable as a fallback. **Recommend: yes,
+do C2 anyway** — it is independent, cheap, and de-risks the spool work.
 
-**Q2 — Does the Sentinel classify, or only capture?** The June spec puts `session-class.service.ts` in the Sentinel but the classifier/correlator in the Control Plane. Today those are entangled: session-class resolution fires **during ingest** on `stop`/`session_end`. So either the Sentinel does interpretive work (violating "collector, not interpreter"), or classification moves to read-time in AngelEye (a bigger change). This is the one place the split gets genuinely tricky, and getting it wrong means re-splitting later.
+**Q2 — Does the Sentinel classify, or only capture? → ✅ CAPTURE ONLY.**
+David, on what AngelEye is actually for:
 
-**Q3 — Scaffold a new Sentinel, or carve out of AngelEye?** June said carve out (v1, least risk). That predates `create-appysentinel` shipping, the recipes existing, and the forensic doc being written. I now lean **scaffold fresh** — you get launchd, the Signal envelope, lifecycle and atomic writes for free, and AngelEye's ingest code is the thing we're deprecating anyway. But it's a bigger up-front step and you're tired; carve-out is defensible.
+> _"AngelEye just captures… there's no real business intelligence. It's just bringing together stuff
+> you don't currently get with sessions that are longer term (so greater than 30 days) and the hooks
+> as they fire."_
+
+That settles it. The product is **long-term retention + aggregation**, not interpretation — Claude
+Code's own session history ages out, and this is the durable record. So:
+
+- **AngelSentinel = capture + retain + serve.** No interpretation on the ingest path.
+- Classification/correlation are _"other stuff we might do later"_ — they stay in AngelEye and can run
+  at read time. They are explicitly **not load-bearing**, which removes the entanglement that made
+  this question hard.
+- The June spec's placement of `session-class.service.ts` in the Sentinel should be **revisited** on
+  this basis — it is interpretation, and it currently runs synchronously on the ingest path (part of
+  the measured 48 ms).
+
+**Q3 — Scaffold fresh or carve out? → ✅ TWO APPS, SENTINEL IS NEW.**
+David: _"AngelEye was the old application, and it will probably still exist as an application, just
+without all the internal receiving of hooks. And then… AngelEye Sentinel, which is what you would be
+creating."_ Confirms the June naming and settles the build path: **AngelSentinel is a new app**
+(scaffolded from `create-appysentinel`, which now exists); **AngelEye persists as the viewer**, losing
+only its ingestion.
+
+---
+
+## 6b. Still open
+
+**Spool retention / janitor policy.** The one way the recommended design can hurt you: a permanently
+dead Sentinel fills the disk. Needs a cap + eviction rule before build. Not hard, must not be skipped.
+
+**Does `async: true` still deliver stdin?** `unknown`. If yes, it takes hooks off the critical path
+entirely and composes with either transport. Test early — it is cheap and could make the latency
+question moot.
+
+**Does an empty stdout make `WorktreeCreate` safe to register?** `unknown`. Spooling writes nothing to
+stdout, which is what made it dangerous under curl. Test deliberately; do not infer.
 
 ---
 
