@@ -765,12 +765,16 @@ export function classifySession(
   const has_task_orchestration = detectHasTaskOrchestration(events);
   // RuFlo context: CLAUDE.local.md or .appydave/* paths in instructions_loaded events.
   // Distinguishes RuFlo-enabled sessions from standard Claude Code sessions.
-  const has_ruflo_context = events.some(
-    (e) =>
-      e.event === 'instructions_loaded' &&
-      (e.payload?.file_path?.includes('.appydave/') ||
-        e.payload?.file_path?.endsWith('CLAUDE.local.md'))
-  );
+  const has_ruflo_context = events.some((e) => {
+    if (e.event !== 'instructions_loaded') return false;
+    // payload is Record<string, unknown>, so narrow before calling string
+    // methods — a non-string file_path would otherwise throw at runtime.
+    const filePath = e.payload?.file_path;
+    return (
+      typeof filePath === 'string' &&
+      (filePath.includes('.appydave/') || filePath.endsWith('CLAUDE.local.md'))
+    );
+  });
   // Count subagent_start events — proxy for how many subagents were spawned.
   const subagent_start_count = events.filter((e) => e.event === 'subagent_start').length;
   const has_git_outcome = detectHasGitOutcome(events);
@@ -824,6 +828,10 @@ export function classifySession(
       has_ruflo_context,
       subagent_start_count,
       trigger_command,
+      // Was computed and returned but never passed here, so the Playwright
+      // disambiguation below never ran in production — only under tests that
+      // set it directly. TS flagged this as a missing option field.
+      has_playwright_calls,
     }
   );
 
@@ -1029,6 +1037,7 @@ export function detectSessionSubtype(
     has_ruflo_context?: boolean;
     subagent_start_count?: number;
     trigger_command?: string | null;
+    has_playwright_calls?: boolean;
   }
 ): SessionSubtype | undefined {
   const prompt = options.first_real_prompt ?? '';
