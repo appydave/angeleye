@@ -22,6 +22,7 @@
     "typecheck": "npm run typecheck -w shared -w server -w client",
     "clean": "rm -rf node_modules shared/dist server/dist client/dist",
     "prepare": "husky",
+    "mcp": "tsx server/src/mcp/angeleye-mcp.ts",
     "customize": "tsx scripts/customize.ts",
     "audit:registry": "tsx scripts/audits/registry-health.ts",
     "audit:backfill-session-kind": "tsx scripts/audits/backfill-session-kind.ts",
