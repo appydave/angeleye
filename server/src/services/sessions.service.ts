@@ -10,6 +10,7 @@ import {
   _rawTranscriptsDir,
   _schemaObservationsPath,
 } from './registry.service.js';
+import { appendToIndex } from './event-index.service.js';
 
 export async function writeEvent(event: AngelEyeEvent): Promise<void> {
   const filePath = join(_sessionsDir(), `session-${event.session_id}.jsonl`);
@@ -19,6 +20,10 @@ export async function writeEvent(event: AngelEyeEvent): Promise<void> {
     logger.error({ err, session_id: event.session_id }, 'Failed to write event');
     throw err;
   }
+  // Keep the cross-session index current. Deliberately after the event is
+  // durable and non-throwing: a missed index row is fixable with a reindex,
+  // a thrown error here would lose the event.
+  await appendToIndex(event);
 }
 
 export async function getSessionEvents(sessionId: string): Promise<AngelEyeEvent[]> {
