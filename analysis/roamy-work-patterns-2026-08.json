@@ -1,0 +1,3060 @@
+{
+  "corpus": "roamy",
+  "generated": "2026-08-02",
+  "machine": "macbook-pro (Roamy)",
+  "purpose": "Recurring work-pattern activities mined from Roamy's Claude Code session corpus on 2026-08-01. Recovered 2026-08-02 from the originating workflow journal — the run committed only its synthesis report, not the raw roster, which left the M4 comparison half-missing. Counterpart to m4-work-patterns-2026-08.json.",
+  "corpus_stats": {
+    "candidates_at_100k_threshold": 149,
+    "sessions_mined": 87,
+    "batches": 9,
+    "raw_observation_count": 65,
+    "note": "Un-merged. These are per-batch observations; the same activity may appear more than once across batches. M4's file merged 89 raw -> 46. Merge before comparing counts.",
+    "filters_applied": [
+      "top-level sessions only (excluded */subagents/* and */workflows/* paths)",
+      "size > 100,000 bytes (4,600 of 4,770 files on this machine were 10-line queue stubs)",
+      ">= 4 real human turns (string content only, not tool results, not '<'-prefixed)"
+    ]
+  },
+  "comparison_notes": "Diff against m4-work-patterns-2026-08.json. Do NOT merge into one list. Two schema differences to handle: (1) this file is UN-MERGED per-batch observations (65) while M4's is merged (46 from 89 raw) — normalise before comparing frequencies; (2) this file carries has_stream / output_is_material / shape_guess / candidate_lenses / candidate_pin, which M4's run did not emit — those fields are absent, not false, on the M4 side.",
+  "activities": [
+    {
+      "id": "roamy-000",
+      "label": "kdd-corpus-reconstruction-review",
+      "description": "David points a pipeline at a large body of his own past Claude sessions (97 Cortex transcripts, then SupportSignal, then POEM, then KyberAgent Enterprise) and it surfaces candidate learnings, patterns and decisions as review cards. He sits for hours and works the cards one at a time — accept, merge, reject — and keeps interrogating whether the review actually stuck. He explicitly wants to resume the same run from a new window/machine, so it is a long-lived body of work, not a one-shot.",
+      "corpus": "roamy",
+      "frequency": null,
+      "projects": ["-Users-davidcruwys-dev-ad-brains"],
+      "evidence": [
+        {
+          "session_date": "2026-06-29",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "at what point does the human check work and do I have to read a long document or is there another technique"
+        },
+        {
+          "session_date": "2026-06-29",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "yes, run the 4 cards one at a time"
+        },
+        {
+          "session_date": "2026-06-29",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "Before you give me a recommendation, what do you mean by 88 unreviewed? I remember sitting there and watching cards and reviewing why you're saying they're unreviewed."
+        },
+        {
+          "session_date": "2026-06-29",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "I'd be happy to sit here for two or three d[ays]... we should be able to open up new windows and just kick on from wherever, so we need to understand restarting."
+        },
+        {
+          "session_date": "2026-06-29",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "when doing learnings/patterns we keep a track of where it happened, maybe file specific & posibly git id, I think we do that so we have providence chain to why we came up with the learning or pattern"
+        },
+        {
+          "session_date": "2026-06-29",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "Yeah, what do you think about the ADRs? I think there were already ADRs as part of Cortex anyway, so have we just created a lot of lies by doing those ADRs"
+        },
+        {
+          "session_date": "2026-06-29",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "Let's say I accept what you said. Why do we have the word CAD in there if CAD has been deprecated?"
+        },
+        {
+          "session_date": "2026-06-29",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "I'm thinking of starting a brand new session where we do everything we did here, which we did against Cortex, but instead I want you to do it against KBDE KyberAgent Enterprise"
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "A corpus of past session transcripts being worked through over multiple days and multiple machines, with persisted run state (.kdd-run/, resumable, 'accept' decisions accumulating). He returns to it and re-points it at new projects — Cortex, then SupportSignal, then POEM, then KyberAgent Enterprise.",
+      "output_is_material": "yes",
+      "candidate_lenses": [
+        "is-this-a-learning-vs-a-pattern-vs-a-decision (he explicitly asked for a classifier)",
+        "provenance — can I trace this back to a file / commit / session",
+        "supersession — does this contradict or deprecate something already written (the CAD and ADR challenges)",
+        "completeness — is the code example still attached, or did we drop the thing that mattered",
+        "did-we-search-everywhere — 'is there anywhere else we should have searched?'",
+        "novelty vs restating what the existing docs already say"
+      ],
+      "candidate_pin": "His accept/reject/merge verdict on each candidate, plus the reason class behind it (already-covered / deprecated / no-provenance / thin-without-code). Today those verdicts evaporate — he had to argue about '88 unreviewed' after having reviewed all day — and the same rejected shapes come back on the next run against a new repo.",
+      "shape_guess": "lens-room"
+    },
+    {
+      "id": "roamy-001",
+      "label": "ecosystem-boundary-and-naming-arbitration",
+      "description": "Whenever a new capability appears, David spends turns deciding where it belongs, who owns it, whether it duplicates something he already has, and what it is called. He rejects generic names, rejects invented metaphor families, and repeatedly re-asserts ownership lines the agent keeps getting wrong. He is arbitrating over an ecosystem of ~100 skills, plugins and brains that he can no longer hold in his head.",
+      "corpus": "roamy",
+      "frequency": null,
+      "projects": [
+        "-Users-davidcruwys-dev-ad-appydave-plugins",
+        "-Users-davidcruwys-dev-ad-brains"
+      ],
+      "evidence": [
+        {
+          "session_date": "2026-07-13",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "Yeah, but Observations is way too generic when I've got a hundred skills. we need a Double barrel."
+        },
+        {
+          "session_date": "2026-07-13",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "I did **not** mean \"go invent a cute metaphor family and give me a cast of character names.\" Orchard/Grafter/Gleaner, Prospect/Rig/Assay, Percolator/Tamp/Draw — that is not what I'm asking for and it's noise."
+        },
+        {
+          "session_date": "2026-06-29",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "it is not a Lexi-KDD feature. It is a Lisa-KDD feature. Lisa is in charge of KDD, not Lexi."
+        },
+        {
+          "session_date": "2026-06-29",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "Do you think appydave plugins, which is pretty massive, should exist the way it is, or should plugins be a little bit more composable?"
+        },
+        {
+          "session_date": "2026-06-29",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "I don't remember thinking that Lexi and Lisa were near duplicates ... knowledge-driven development I thought was a little bit different from brain development, but I am a bit curious as to how it's different."
+        },
+        {
+          "session_date": "2026-07-22",
+          "project": "-Users-davidcruwys-dev-ad-appydave-plugins",
+          "quote": "the port issue is not a plugger issue, it is a captain log issue. plugger coudl have told me 3 new pluggins entered my folder staructures and fixed"
+        },
+        {
+          "session_date": "2026-07-22",
+          "project": "-Users-davidcruwys-dev-ad-appydave-plugins",
+          "quote": "why did you split them over two plugins"
+        },
+        {
+          "session_date": "2026-07-18",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "I already have a marketplace called appydave-plugins, which has a plugin called appydave. This is where the problem is."
+        },
+        {
+          "session_date": "2026-07-18",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "plugger itself is not so much a public skill ... I'm thinking, like C#, you have private, protected, and public. This, to me, is more like a protected skill."
+        },
+        {
+          "session_date": "2026-07-03",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "beaware that mochichino has some use cases and architecture that is different by design"
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "The ecosystem itself — ~100 skills across several plugins, ~99 brains, several marketplaces — is the in-progress body. It grows every week and he returns to the same boundary questions (Lexi vs Lisa, plugger vs fleet-check vs publicist, appydave-the-plugin vs appydave-the-marketplace) again and again across sessions.",
+      "output_is_material": "yes",
+      "candidate_lenses": [
+        "duplication — does this already exist under another name in the ecosystem",
+        "ownership / single responsibility — which existing agent or plugin should own this verb",
+        "visibility class — public (branded, PII-free) vs protected (shareable internal) vs private",
+        "namespace collision — does this name clash with an existing marketplace/plugin/skill id",
+        "discoverability — will the trigger words actually fire it among a hundred siblings",
+        "naming taste — specific and double-barrel, no generic nouns, no invented character cast"
+      ],
+      "candidate_pin": "The ownership and naming rulings themselves — 'Lisa owns KDD, not Lexi', 'never a plugin named appydave inside the appydave marketplace', 'no metaphor families', 'double-barrel or it's too generic'. He has to re-state each of these multiple times in a single session and again in later sessions; nothing carries them forward.",
+      "shape_guess": "lens-room"
+    },
+    {
+      "id": "roamy-002",
+      "label": "fleet-sync-and-drift-reconciliation",
+      "description": "David works across Roamy, the M4 Mini and the M2 Mini and constantly has to reconcile what is installed, enabled, pulled, cached and stale on each. He asks the agent to sweep the fleet, find what has drifted, and bring the laggard machine up to date — then wants proof it actually landed before he closes the session.",
+      "corpus": "roamy",
+      "frequency": null,
+      "projects": [
+        "-Users-davidcruwys-dev-ad-apps-captains-log",
+        "-Users-davidcruwys-dev-ad-appydave-plugins",
+        "-Users-davidcruwys-dev-ad-brains"
+      ],
+      "evidence": [
+        {
+          "session_date": "2026-07-22",
+          "project": "-Users-davidcruwys-dev-ad-appydave-plugins",
+          "quote": "I have all new pluggins on m4-mini how do I pull them here"
+        },
+        {
+          "session_date": "2026-07-22",
+          "project": "-Users-davidcruwys-dev-ad-appydave-plugins",
+          "quote": "m2 should be very out of sync and you should take that into account, don't just look narrow, look broad with m2 because it does not get much"
+        },
+        {
+          "session_date": "2026-07-22",
+          "project": "-Users-davidcruwys-dev-ad-appydave-plugins",
+          "quote": "Let's just make sure that the M2 is up to date with the Roamy computer. That's all I'm trying to do."
+        },
+        {
+          "session_date": "2026-07-22",
+          "project": "-Users-davidcruwys-dev-ad-appydave-plugins",
+          "quote": "Does Joy on the M2 computer now have all the new videos that I've been uploading onto this computer over the last couple of days? And am I at a point where I can close this conversation?"
+        },
+        {
+          "session_date": "2026-07-25",
+          "project": "-Users-davidcruwys-dev-ad-apps-captains-log",
+          "quote": "beore you move plugins or skills ensure that youy have the latest on this machine"
+        },
+        {
+          "session_date": "2026-07-25",
+          "project": "-Users-davidcruwys-dev-ad-apps-captains-log",
+          "quote": "This is something that you can fix on your side, so I've done a lot of work on the M4 Mini today. There is probably even more stuff out of sync from what you're doing."
+        },
+        {
+          "session_date": "2026-06-29",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "Be aware that the Cortex sessions are on the M4 Mini."
+        }
+      ],
+      "has_stream": "unclear",
+      "stream_description": "The fleet state does evolve continuously, but each session treats it as a snapshot to be reconciled and closed out. There is no accumulating artefact he returns to and refines — he wants the drift gone, not a growing catalogue of it.",
+      "output_is_material": "no",
+      "candidate_lenses": [
+        "installed-vs-enabled",
+        "cached-vs-source version",
+        "uncommitted local work",
+        "upstream tracking / ahead-behind",
+        "deliberate absence vs accidental absence"
+      ],
+      "candidate_pin": "Which absences are correct on purpose (e.g. Captain's Log genuinely should not be on M2) so the sweep stops re-flagging them — but the findings themselves are verifiable on arrival, so this is a sweep, not a room.",
+      "shape_guess": "fan-out"
+    },
+    {
+      "id": "roamy-003",
+      "label": "turn-a-felt-need-into-a-skill-or-plugin",
+      "description": "David notices a repeated manual pain, then drives a design conversation until it becomes a named, scaffolded, committed skill or plugin. He steers hard on structure (orchestrator + children, reference docs, onboarding, report targets) and will not let the agent scaffold until the naming and hierarchy are settled.",
+      "corpus": "roamy",
+      "frequency": null,
+      "projects": [
+        "-Users-davidcruwys-dev-ad-appydave-plugins",
+        "-Users-davidcruwys-dev-ad-brains"
+      ],
+      "evidence": [
+        {
+          "session_date": "2026-07-13",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "what feels like we are missing is the skill that I would be able to apply to any of the applications I build to elicit requirements, so I can inject this capability into any application"
+        },
+        {
+          "session_date": "2026-07-13",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "live-uat / live-uat design / live-uat process ... give me the full hierarchy of what you think you're going to build when we get to the skill-creator section."
+        },
+        {
+          "session_date": "2026-07-13",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "it should have onboarding so that end user can describe where it can learn about them products, sessions etc... it should support a report target."
+        },
+        {
+          "session_date": "2026-07-18",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "I want to name it ChernyWorthy after boris cherny and the idea of are we wrothy."
+        },
+        {
+          "session_date": "2026-06-29",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "build the reconcile-existing verb"
+        },
+        {
+          "session_date": "2026-07-22",
+          "project": "-Users-davidcruwys-dev-ad-appydave-plugins",
+          "quote": "plugger should be telling us when our pluggins and skills need updating, installing etc... its an internal tool for me and I have 2 computers so thtis is a problem"
+        }
+      ],
+      "has_stream": "no",
+      "stream_description": "Each build has a clear start and end — need identified, named, scaffolded, committed, pushed. The ecosystem it lands in is the stream (see ecosystem-boundary-and-naming-arbitration), but the build itself is a bounded job.",
+      "output_is_material": "no",
+      "candidate_lenses": [],
+      "candidate_pin": "n/a — the output is a shipped deliverable, not a supply of candidates.",
+      "shape_guess": "assembly-line"
+    },
+    {
+      "id": "roamy-004",
+      "label": "landscape-research-then-decide-if-it-earns-a-brain",
+      "description": "David hears about something (voice agents, GEPA/prompt-optimisation, Claude Artifacts, Cherny's adoption ladder) and asks for deep research, but the real question underneath is whether it deserves its own brain, whether it overlaps something he already has, and what he should do with it. He pushes back hard when the research is thin or not grounded in primary sources.",
+      "corpus": "roamy",
+      "frequency": null,
+      "projects": ["-Users-davidcruwys-dev-ad-brains"],
+      "evidence": [
+        {
+          "session_date": "2026-07-17",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "should voice agents get there onwn seperate brain if I am going to research voice agents and models ... research first, then decide if it's a brain"
+        },
+        {
+          "session_date": "2026-07-17",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "why is krisp part of this? its a 3rd party tool, for audio cleaning I think, but its not realy part of this problem domain is it?"
+        },
+        {
+          "session_date": "2026-07-03",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "None of this seems right. Artefacts have been in the media. Ian was talking about artefacts today, and you have not produced any evidence of anything new about artefacts in this conversation."
+        },
+        {
+          "session_date": "2026-07-03",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "I want you to go into code documentation from Claude and official primary information, please."
+        },
+        {
+          "session_date": "2026-07-03",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "I want to find out whether artefacts have a lot of similarity ... how artefacts compare to Mochaccinos, and then how we can improve Mochaccinos"
+        },
+        {
+          "session_date": "2026-07-23",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "research the following and tell me how it works and how to used it, do I install is it a prompt is it more"
+        },
+        {
+          "session_date": "2026-07-23",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "tell me in story telling style how and why I would use this"
+        }
+      ],
+      "has_stream": "unclear",
+      "stream_description": "The brains collection is a durable accumulating corpus, but each research thread has a definite end state — brain built, decision made, conversation closed ('Is it all persisted? Could I close this conversation?'). He does not return to refine the same research.",
+      "output_is_material": "no",
+      "candidate_lenses": [
+        "does this overlap an existing brain",
+        "is the claim grounded in a primary source or only in a brain/artifact",
+        "what would I actually do with this"
+      ],
+      "candidate_pin": "The routing decision (own brain vs fold into an existing one) and the scope boundary he draws — but it resolves once and the thread ends.",
+      "shape_guess": "none"
+    },
+    {
+      "id": "roamy-005",
+      "label": "brain-corpus-quality-audit-and-schema-migration",
+      "description": "David runs health audits over his ~99-brain markdown collection — frontmatter compliance, tag ontology, category drift, duplicate detection, missing types — and then executes bulk migrations (legacy summary to description, OKF type field, stripping redundant body headers). He demands surety and both-ways verification after a multi-day refactor.",
+      "corpus": "roamy",
+      "frequency": null,
+      "projects": ["-Users-davidcruwys-dev-ad-brains"],
+      "evidence": [
+        {
+          "session_date": "2026-06-29",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "go ahead, run the Lexi full health audit"
+        },
+        {
+          "session_date": "2026-06-29",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "leave them, so what else would you do to ensure we have a sound refactor of brains to OKF, it has been a 2 day refactor and we need surety and review"
+        },
+        {
+          "session_date": "2026-06-29",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "The 99 index.md file she's using legacy summary needs an upgrade as well. Now, I don't know whether it's as simple as just renaming them to description, or there is more to do."
+        },
+        {
+          "session_date": "2026-06-29",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "fix the 7 category fields then regenerate lets remove the script unwired."
+        },
+        {
+          "session_date": "2026-06-29",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "what does the idea of . folders in general mean to the tool and the scripts we have with lexi?"
+        }
+      ],
+      "has_stream": "unclear",
+      "stream_description": "The brain corpus is durable and he returns to it, but the audit output is a fix-list that gets burned down and closed. The value is in clearing it, not in accumulating it.",
+      "output_is_material": "no",
+      "candidate_lenses": [
+        "frontmatter compliance",
+        "tag ontology conformance",
+        "category drift vs curated index",
+        "duplicate / SRP violation",
+        "orphan and dead-link"
+      ],
+      "candidate_pin": "Deliberate exceptions ('leave them', 'leave it as-is') so the next audit stops re-raising them — but findings here are mechanically verifiable, which makes this a sweep.",
+      "shape_guess": "fan-out"
+    },
+    {
+      "id": "roamy-006",
+      "label": "session-continuity-handover-and-recovery",
+      "description": "David hits context limits, accidentally kills terminals, and moves work between machines. He routinely asks for a paste-able handover before compacting, asks whether everything is persisted before he closes a conversation, and asks how to reconstruct the tab layout of sessions he lost. He treats each conversation as a unit of work that must survive being closed.",
+      "corpus": "roamy",
+      "frequency": null,
+      "projects": [
+        "-Users-davidcruwys-dev-ad-apps-captains-log",
+        "-Users-davidcruwys-dev-ad-brains",
+        "-Users-davidcruwys-dev-ad-joy-websites-joy-juice"
+      ],
+      "evidence": [
+        {
+          "session_date": "2026-07-24",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "I accidently closed terminal and I had to sessions running a chaperone and a swaggr building code how do I recover"
+        },
+        {
+          "session_date": "2026-07-24",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "most tabs represent a unit of work or project with different sessions ... how do I do it easily is it a script or will you give me a bunch of copy and paste statements"
+        },
+        {
+          "session_date": "2026-07-09",
+          "project": "-Users-davidcruwys-dev-ad-joy-websites-joy-juice",
+          "quote": "at 74 % toeksn, I need a handover that I can paste in after compact"
+        },
+        {
+          "session_date": "2026-07-17",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "I think this is great information around voice agents. Is it all persisted? Could I close this conversation?"
+        },
+        {
+          "session_date": "2026-06-29",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "I want you to do it against the M4 Mini because that's where I'm doing all the work, but I feel like we need a handover document to do it in a different session."
+        },
+        {
+          "session_date": "2026-07-25",
+          "project": "-Users-davidcruwys-dev-ad-apps-captains-log",
+          "quote": "there should be a simple little handover from today that you can read in?"
+        }
+      ],
+      "has_stream": "no",
+      "stream_description": "Each recovery/handover is a bounded transaction — write the doc, resume elsewhere, done. The thing being carried forward is a stream, but the activity itself is a one-shot with a clear end.",
+      "output_is_material": "no",
+      "candidate_lenses": [],
+      "candidate_pin": "n/a — the output is a single directive document, not a supply of candidates.",
+      "shape_guess": "none"
+    },
+    {
+      "id": "roamy-007",
+      "label": "shape-catalogue-adjudication",
+      "description": "David works through a standing catalogue of candidate model shapes (northern-lights `.mochaccino/05-shape-catalogue`) and rules on them one at a time — FITS / doesn't fit / reframe — typing his verdict and reasoning directly into the Mochaccino artefact rather than the chat. He expects those verdicts to be treated as instructions that rewrite the model, not as notes filed alongside it. The catalogue is never finished: 20 shapes, ~12 judged, 8 never reached.",
+      "corpus": "roamy",
+      "frequency": 2,
+      "projects": ["brains"],
+      "evidence": [
+        {
+          "session_date": "2026-07-31",
+          "project": "brains",
+          "quote": "What I want you to now do is have a look at this information that I typed directly into the Mochaccino. Shape catalogue review — northern-lights/.mochaccino 05-shape-catalogue FITS NORTHERN LIGHTS: - S3 TICKET MOBILITY —"
+        },
+        {
+          "session_date": "2026-07-31",
+          "project": "brains",
+          "quote": "Hold on, weren't they my positions if I wrote them into the Mochaccino system? What do you mean? You've held the review as evidence and not rewritten the model. When I was writing in Di Mochaccino, I was giving instruction."
+        },
+        {
+          "session_date": "2026-07-31",
+          "project": "brains",
+          "quote": "S9 MERGE, SPLIT, MOVE — I'm not sure how we should think of this... We got to also remember that the user interface has to be fairly simple."
+        },
+        {
+          "session_date": "2026-07-31",
+          "project": "brains",
+          "quote": "Say the shape and the count: \"20 shapes, 12 judged\", \"16 rejections\", \"4 contradictions, none resolved\"."
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "The northern-lights object model — an in-progress design for tickets/requirements/stories/quests that David returns to across many sessions. The shape catalogue is an accumulating body of candidate shapes he grinds through; unresolved items (file-vs-database, the hub graph, provenance chains) carry forward and get revisited.",
+      "output_is_material": "yes",
+      "candidate_lenses": [
+        "agent mobility / who can pick this up",
+        "file-on-disk vs database-as-state (the live contradiction)",
+        "multi-user vs sole-operator",
+        "provenance chain — can I trace where this came from",
+        "UI simplicity — does this survive a simple interface",
+        "staleness / queryability of dead work"
+      ],
+      "candidate_pin": "David's per-shape verdict (fits / doesn't fit / reframed-as) plus the standing rulings it implies — e.g. 'no database first', 'tickets don't move, they become information for a new ticket', 'AppyDave is light theme'. His complaint is exactly that these did NOT persist: the review was held as evidence instead of rewriting the model.",
+      "shape_guess": "lens-room"
+    },
+    {
+      "id": "roamy-008",
+      "label": "pressure-test-the-decision-before-committing",
+      "description": "Before an irreversible structural move (three repos → monorepo, splitting a shared core package, collapsing two brand repos into one), David explicitly asks for the decision to be attacked from several standing angles — architecture, logic, documentation, devil's advocate — and asks the assistant to defend a position pro AND con even when he doesn't want anything changed. He then locks a subset of decisions and moves.",
+      "corpus": "roamy",
+      "frequency": 3,
+      "projects": ["brains", "joy"],
+      "evidence": [
+        {
+          "session_date": "2026-07-19",
+          "project": "brains",
+          "quote": "use soe of my skills for testing architecture, or logic or documentation or just play devils advocate on what we are about to do and help me decide if this is a smart path"
+        },
+        {
+          "session_date": "2026-07-19",
+          "project": "brains",
+          "quote": "What benefit does appysentinel-core give you then if you have a base at the sentinel? I say this not because I need you to change anything, only to defend your position, both pro and con."
+        },
+        {
+          "session_date": "2026-07-19",
+          "project": "brains",
+          "quote": "At the moment, we are about to go away from three repos to this big mono-repo. That is a lot of refactoring of just those codebases themselves."
+        },
+        {
+          "session_date": "2026-07-19",
+          "project": "brains",
+          "quote": "lock the 5 decisions and build v1"
+        },
+        {
+          "session_date": "2026-07-23",
+          "project": "joy",
+          "quote": "it feels like you have two many levesl joy-brands/brands/beauty-and-joy joy-brands/brands/joy-juice would be better, do you agreee"
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "A live architecture decision that evolves over days across sessions — the AppyStack/AppySentinel/AppyTron/@appydave/core convergence ran across at least two sessions in this batch, with earlier decisions ('yesterday's decision') explicitly reopened. The decision set accumulates: some locked, some parked, some reversed.",
+      "output_is_material": "yes",
+      "candidate_lenses": [
+        "architecture / coupling",
+        "logic + internal consistency",
+        "documentation impact",
+        "devil's advocate — argue the opposite",
+        "migration cost & git history damage",
+        "future-me: can I still build apps cheaply on this"
+      ],
+      "candidate_pin": "Which objections David has already accepted or dismissed, and the decisions he has LOCKED ('keep repo as foundation', 'self-contained boilerplate subtrees', 'changesets later', 'migrate first') — so the same objection is not re-litigated next session and a locked decision is not silently reopened.",
+      "shape_guess": "lens-room"
+    },
+    {
+      "id": "roamy-009",
+      "label": "design-fan-then-pick-and-refine",
+      "description": "When a UI or product shape is undecided, David asks for several parallel design points-of-view — usually built by background agents into Mochaccino mockups — explicitly including 'the one you think I want' plus four others. He then reacts across the whole fan at once (likes #2 and #3, doesn't resonate with #4 or #5) and demands the winner be refined, never replaced with a fresh #6.",
+      "corpus": "roamy",
+      "frequency": 4,
+      "projects": ["apps", "brains"],
+      "evidence": [
+        {
+          "session_date": "2026-07-18",
+          "project": "brains",
+          "quote": "I would personally do a design using Mochaccino.In fact, if you were to do it in a background agent, I wouldn't mind you doing four or five different points of view. Do the one you think I want, and then do four others"
+        },
+        {
+          "session_date": "2026-07-18",
+          "project": "brains",
+          "quote": "I feel that number two, the chat dominant, is better than number one... when I look at number three, the pipeline factory, I really like that I'd be able to see the stuff that's been coming through... I don't really resonate with number four or five"
+        },
+        {
+          "session_date": "2026-07-18",
+          "project": "brains",
+          "quote": "When I pick something, refine THAT — never replace it... Every time I express a preference and you hand me something totally new, you've made it worse. Iterate on the chosen thing only."
+        },
+        {
+          "session_date": "2026-07-18",
+          "project": "brains",
+          "quote": "Keep a running list of these rules and re-apply them every time, so I never have to say them twice."
+        },
+        {
+          "session_date": "2026-06-26",
+          "project": "brains",
+          "quote": "Not sure if you were gonna give it to me as some sort of HTML page where I could look through a few things, or whether it was just that one image that I saw."
+        },
+        {
+          "session_date": "2026-07-22",
+          "project": "apps",
+          "quote": "give me an opinion of what are five different directions we could go in based on this information. Keep them short headlines with short descriptions."
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "An app design David returns to over multiple sessions (ImageDrip's cockpit UI; the storyline table-read visualisation). The design converges rather than completing — he picks a direction, adds constraints, and comes back. But each fan itself is a batch of finished mockups.",
+      "output_is_material": "yes",
+      "candidate_lenses": [
+        "chat-dominant vs control-dominant layout",
+        "what we do NOT control (native ChatGPT panel)",
+        "pipeline visibility / what's queued vs harvested",
+        "brand conformance (light theme, AppyDave palette)",
+        "collapsibility / mode switching"
+      ],
+      "candidate_pin": "The standing design rules David has already given and refuses to repeat — 'AppyDave is light theme, always', 'the ChatGPT panel is native, we don't design it', 'we can't show Generating, only Queued and Harvested' — plus which numbered option is the current winner.",
+      "shape_guess": "fan-out"
+    },
+    {
+      "id": "roamy-010",
+      "label": "cross-session-state-reconciliation",
+      "description": "David regularly loses track of which of his many parallel Claude sessions holds the live state. He hands over a list of session IDs and asks for their order, whether they flow on, what should be consolidated, and which is 'more current' — then asks for a topic map with status glyphs so he can see what is settled, open, parked, or exists only in a transcript and never landed on disk.",
+      "corpus": "roamy",
+      "frequency": 5,
+      "projects": ["apps", "brains"],
+      "evidence": [
+        {
+          "session_date": "2026-07-31",
+          "project": "brains",
+          "quote": "What is the order of each of these sessions? Are they in the order that they were done, and do they seem to flow on from one to the next? Consolidation of any of them"
+        },
+        {
+          "session_date": "2026-07-31",
+          "project": "brains",
+          "quote": "I'm really trying to get to where the final document is so that I can continue working, I guess. I'm not sure what session it was. I just closed down three sessions related to Agent Buss"
+        },
+        {
+          "session_date": "2026-07-18",
+          "project": "brains",
+          "quote": "what is the relationship of this convo and this convo: Session name: Build Batch Runner v1 with domain and Pipeline cockpit ... and which is the more current"
+        },
+        {
+          "session_date": "2026-06-26",
+          "project": "brains",
+          "quote": "I haven't looked at this conversation in a little while. Should we be closing it down? What's going on here that I need to be aware Keep it simple."
+        },
+        {
+          "session_date": "2026-07-22",
+          "project": "apps",
+          "quote": "do you think I did the work on m4 from this information"
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "The sprawl of concurrent sessions and machines is itself the accumulating thing — but the useful output is a single reconciled answer (this is the live one, here is the order, here is the doc to resume from), not a supply of candidates to choose among.",
+      "output_is_material": "no",
+      "candidate_lenses": [],
+      "candidate_pin": "Which session/document is canonical for a given track, and which tracks have been ruled out-of-scope ('Tony was a mistake by me', 'Agent Bus is a different vector') — so a later session doesn't drag them back in.",
+      "shape_guess": "none"
+    },
+    {
+      "id": "roamy-011",
+      "label": "replace-a-paid-tool-with-an-agent-drivable-oss-one",
+      "description": "When a subscription comes up for renewal, David fires parallel background research agents at each product he wants to drop (Loom→Cap, Ecamm→OBS, Gling→video-use), with a hard filter: the replacement must be drivable from Claude Code (CLI / API / MCP). He then pulls the winner's repo down locally, prompt-injection-scans it, and reads the code to verify the claims before believing them.",
+      "corpus": "roamy",
+      "frequency": 2,
+      "projects": ["brains", "tools-one"],
+      "evidence": [
+        {
+          "session_date": "2026-07-05",
+          "project": "brains",
+          "quote": "There are three different products that I want to replace, if possible. Two of them have come up for a renewal. So one of them is Loom, and I think there's a product you can replace it with called Cap."
+        },
+        {
+          "session_date": "2026-07-05",
+          "project": "brains",
+          "quote": "Can you bring the upstream recode down to the computer and evaluate it for Cap And evaluate it as a multi-scene recorder if we ever wanted to do so, similar to eCamm. You probably have to read some of the code"
+        },
+        {
+          "session_date": "2026-07-05",
+          "project": "brains",
+          "quote": "how do we test vide-use or any tool that does what gling does"
+        },
+        {
+          "session_date": "2026-07-03",
+          "project": "tools-one",
+          "quote": "get api key, read readme, get me installed and setup"
+        }
+      ],
+      "has_stream": "no",
+      "stream_description": "Each evaluation has a start and an end — the renewal date. Findings are verifiable on arrival (does it have a CLI, is it MIT, did the probe pass). It closes with a brain update and a decision to let the subscription lapse.",
+      "output_is_material": "no",
+      "candidate_lenses": [],
+      "candidate_pin": "The standing filter itself: 'must be agent-drivable, open-source preferred, Apple Silicon native' — plus the verdict per product so a lapsed subscription isn't re-researched.",
+      "shape_guess": "fan-out"
+    },
+    {
+      "id": "roamy-012",
+      "label": "fleet-hygiene-sweep",
+      "description": "Habitually, before or after a work block, David asks whether every machine (Roamy, M4 Mini, M2 Mini) is up to date, committed and pushed — then works the dirty-tree list repo by repo, diffing local changes against origin to work out whether he did real work on another machine or left junk behind.",
+      "corpus": "roamy",
+      "frequency": 3,
+      "projects": ["brains", "joy"],
+      "evidence": [
+        {
+          "session_date": "2026-07-19",
+          "project": "brains",
+          "quote": "we should resolve the dirty: watchtower ⚠️ skipped — DIRTY (4 files) angeleye ⚠️ skipped — DIRTY (1 file) deckhand ⚠️ skipped — DIRTY (28 files!) through investigation (m4 mini vs roamy)"
+        },
+        {
+          "session_date": "2026-07-19",
+          "project": "brains",
+          "quote": "did I just do lots of work on deckhand yesterday on m4 mini?"
+        },
+        {
+          "session_date": "2026-07-19",
+          "project": "brains",
+          "quote": "yes, diff Roamy's 28 files against origin"
+        },
+        {
+          "session_date": "2026-07-23",
+          "project": "joy",
+          "quote": "Is currently the M4 Mini up to date, and is everything committed and pushed?"
+        },
+        {
+          "session_date": "2026-07-05",
+          "project": "brains",
+          "quote": "what are the recent upstream repos we found look on this computer and m4-minit if it is availabe"
+        }
+      ],
+      "has_stream": "no",
+      "stream_description": "A recurring maintenance ritual with a clean end state (all trees clean, all pushed). It repeats, but each run terminates rather than accumulating.",
+      "output_is_material": "no",
+      "candidate_lenses": [],
+      "candidate_pin": "Which dirty trees are known-junk vs known-real-work, so the same 28 files aren't re-investigated next sweep.",
+      "shape_guess": "assembly-line"
+    },
+    {
+      "id": "roamy-013",
+      "label": "persist-my-view-into-the-second-brain",
+      "description": "At the end of a long thinking session David demands the position he has argued be written into a brain document — but he then argues about WHERE it lives and under whose name, rejecting placements that make it findable only under a brand ('this isn't an AppyDave thing at all'). He explicitly asks 'what are my views on X' as a retrieval question over the conversation.",
+      "corpus": "roamy",
+      "frequency": 3,
+      "projects": ["brains"],
+      "evidence": [
+        {
+          "session_date": "2026-07-19",
+          "project": "brains",
+          "quote": "I need to write up good quality documentation in the second brain somewhere related to what we're talking about with plugins. It's not about chernyworthy. It's just about my view on plugins."
+        },
+        {
+          "session_date": "2026-07-19",
+          "project": "brains",
+          "quote": "I almost have a problem with you calling it the AppyDave plugin ecosystem. This is more best practises... plugins almost have their own brain, or they can fit in with the prompt patterns"
+        },
+        {
+          "session_date": "2026-07-05",
+          "project": "brains",
+          "quote": "Yes, update the brain and commit it"
+        },
+        {
+          "session_date": "2026-06-26",
+          "project": "brains",
+          "quote": "why did it take us so much time to figure out that we were using qwen model and the python scripts for reading files, were the scripts missing, was the brain not written correctly"
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "The brain collection accumulates continuously and David returns to it, but each write-up is a transformation of one conversation into one canonical document — a pipeline with a defined end (written, placed, committed, pushed).",
+      "output_is_material": "no",
+      "candidate_lenses": [],
+      "candidate_pin": "The canonical placement decision (which brain owns this topic, and why not the brand brain) — a routing judgement he re-makes and re-argues every time.",
+      "shape_guess": "assembly-line"
+    },
+    {
+      "id": "roamy-014",
+      "label": "session-closeout-triage",
+      "description": "Near the end of almost every working session, David stops the work and asks the session to account for itself: what got decided, what is still open, what has been persisted, and whether anything was decided on his behalf that he'd disagree with. He then wants the residue turned into a handover so another machine or session can resume. He does this habitually — it is his standard closing move, not a one-off.",
+      "corpus": "roamy",
+      "frequency": 6,
+      "projects": [
+        "brains (northern-lights)",
+        "brains (npx skills)",
+        "brains (opus-5 docs)",
+        "brains (plaud)",
+        "dark-factory"
+      ],
+      "evidence": [
+        {
+          "session_date": "2026-07-03",
+          "project": "dark-factory",
+          "quote": "so I can close the convo or are there loose ends"
+        },
+        {
+          "session_date": "2026-07-30",
+          "project": "brains (opus-5 docs)",
+          "quote": "I haven't read any of this. Can we close this conversation? Have you saved things? Have you made decisions on my behalf that I'd be happy with?"
+        },
+        {
+          "session_date": "2026-07-01",
+          "project": "brains (npx skills)",
+          "quote": "Should we be updating anything? I want to close this conversation, so I'm just checking in with you."
+        },
+        {
+          "session_date": "2026-07-30",
+          "project": "brains (northern-lights)",
+          "quote": "ok, so what do I do to close this sessio nand continue with my NL conversation? do I need to persist anything and are you going to give me the handover prompt inside the claude command line"
+        },
+        {
+          "session_date": "2026-07-05",
+          "project": "brains (plaud)",
+          "quote": "lets capture decissions, push the repo and give me the instruiction to resume on m4"
+        },
+        {
+          "session_date": "2026-07-03",
+          "project": "dark-factory",
+          "quote": "I don't know, what is the northstar of this conversation in general?"
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "The live, in-progress conversation itself — it accumulates decisions, half-decisions, deferred items and side-quests over dozens of turns, and David returns to it repeatedly (and across machines) rather than finishing it in one pass.",
+      "output_is_material": "yes",
+      "candidate_lenses": [
+        "decisions actually taken (vs discussed)",
+        "things decided on David's behalf without his sign-off",
+        "knowledge generated here that is not yet persisted to a brain/repo",
+        "drift from the session's stated northstar",
+        "cross-machine consequences (does this have to move to M4?)",
+        "parked / abandoned threads worth resurrecting"
+      ],
+      "candidate_pin": "Per surfaced item: 'decided — ratify it', 'parked — carry to handover', or 'dead — stop resurfacing it'. The ratified/parked status should persist and shape what the next closeout surfaces, and what lands in the handover doc.",
+      "shape_guess": "lens-room"
+    },
+    {
+      "id": "roamy-015",
+      "label": "drift-chaperoning-a-running-session",
+      "description": "David runs a second session (or intervenes himself) whose only job is to watch a working session's growing transcript and flag when it wanders off the agreed plan — re-litigating a dead route, re-opening a settled premise, or quietly expanding scope. He gets visibly annoyed when he has to do this manually, and the standing set of things-to-flag gets amended mid-run when a finding changes what counts as drift.",
+      "corpus": "roamy",
+      "frequency": 2,
+      "projects": ["dark-factory", "ecamm-bridge"],
+      "evidence": [
+        {
+          "session_date": "2026-07-20",
+          "project": "ecamm-bridge",
+          "quote": "CHAPERONE TICK (watching ecamm-bridge-d3). State: LAST_LINE=68. ... assessing ... Do a tick: (1) `wc -l` the transcript. If missing → reschedule ~600s silent."
+        },
+        {
+          "session_date": "2026-07-20",
+          "project": "ecamm-bridge",
+          "quote": "MAJOR CONTEXT UPDATE: worker found the live scene TREE is in prefs `SCENES` (NSUserDefaults), NOT Shows/*.plist. This CORRECTS the oracle's \"plist editing dead\" premise ... flag 1 (PLIST-RELAPSE) now means ONLY"
+        },
+        {
+          "session_date": "2026-07-20",
+          "project": "ecamm-bridge",
+          "quote": "You know that thing that you said about The p-list is getting overwritten when we close Ecamm live. We'd already worked that out, and I'd told you about that early in the conversation."
+        },
+        {
+          "session_date": "2026-07-03",
+          "project": "dark-factory",
+          "quote": "The only thing that you're doing is writing knowledge-driven development documentation based on the Dark Factory. Nothing else. I think there's a second time I've had to bring you into alignment"
+        },
+        {
+          "session_date": "2026-07-20",
+          "project": "ecamm-bridge",
+          "quote": "hae you been watching Session ID: 26c288cb-1bfc-4fbf-898b-263d7ebfd5db"
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "Another Claude session's transcript, growing line by line over hours. The chaperone reads only the new lines each tick and re-assesses against a spine of standing concerns; the spine itself is amended when the watched session discovers something that invalidates a prior premise.",
+      "output_is_material": "yes",
+      "candidate_lenses": [
+        "scope creep beyond the stated task",
+        "relapse to a route already proven dead",
+        "re-litigating a decision David already made",
+        "claiming done without reaching real state / verifying",
+        "inventing a path, file or fact",
+        "token/time burn disproportionate to the remaining unknown"
+      ],
+      "candidate_pin": "A standing ruling — 'prefs SCENES is the live route, Shows/*.plist is dead', 'writing KDD docs only, no SDLC gates' — that persists and redefines what subsequent ticks treat as drift versus legitimate progress.",
+      "shape_guess": "lens-room"
+    },
+    {
+      "id": "roamy-016",
+      "label": "naming-and-boundary-deliberation",
+      "description": "When a new tool, agent or client structure appears, David works a naming and boundary question over multiple turns: he asks for several concept candidates, rejects ones that collide with existing terms in his ecosystem, tests each against both his own POV and the client's POV, and keeps going until one locks. He treats naming as a structural decision (namespace vs multi-tenancy vs folder layout), not cosmetics.",
+      "corpus": "roamy",
+      "frequency": 3,
+      "projects": ["brains (challenge-dv)", "brains (northern-lights)", "brains (plaud)"],
+      "evidence": [
+        {
+          "session_date": "2026-07-05",
+          "project": "brains (plaud)",
+          "quote": "I think it should be something like \"field notes\" or \"in the field\" or something like that. What are four concepts about someone who's dictating out in the field and needs to deal with that?"
+        },
+        {
+          "session_date": "2026-07-05",
+          "project": "brains (plaud)",
+          "quote": "I think Despatch is too general as a term, and it's going to get mixed up with stuff in the Dart factory. I suppose you locked in or something when I told you to give me ideas."
+        },
+        {
+          "session_date": "2026-07-28",
+          "project": "brains (challenge-dv)",
+          "quote": "What would they want it called? What would I want it called if I was building an agent for them? What do I want to call it if I'm using my own internal agent?"
+        },
+        {
+          "session_date": "2026-07-28",
+          "project": "brains (challenge-dv)",
+          "quote": "No, I don't like Rhett. That doesn't make any sense. One of the problems with multi-client agents is the problem of enforcing multi-tenancy. That's why we don't do that."
+        },
+        {
+          "session_date": "2026-07-30",
+          "project": "brains (northern-lights)",
+          "quote": "The intended shape is **one literal column + three metaphor columns**, with the colony as a **fifth column of a different kind**"
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "An evolving naming/structure scheme (the Captain's Log family, the client-agent folder taxonomy, the Northern Lights metaphor grid) that David returns to across sessions and keeps amending — candidates accumulate, some lock, some are permanently banned.",
+      "output_is_material": "yes",
+      "candidate_lenses": [
+        "the client's / external reader's POV",
+        "David's own internal-operator POV",
+        "collision with terms already used elsewhere in the ecosystem",
+        "metaphor coherence — does it survive being extended?",
+        "structural implication (namespace, folder, repo visibility)",
+        "shareability — can this ship publicly under a brand?"
+      ],
+      "candidate_pin": "'Captain's Log — locked', 'Despatch — banned, collides with Dark Factory', 'no multi-tenancy, ever'. Locked and banned names must persist so later candidate generation never re-offers them.",
+      "shape_guess": "lens-room"
+    },
+    {
+      "id": "roamy-017",
+      "label": "corpus-mining-for-reusable-patterns",
+      "description": "David points at a body of his own accumulated material — dozens of past sessions, a repo he built, a tool a peer built — and asks not what it does but what transferable pattern is buried in it and what could be built from that pattern. He is explicit that the specific application is uninteresting; the extractable shape is the prize.",
+      "corpus": "roamy",
+      "frequency": 3,
+      "projects": ["brains", "brains (npx skills)", "dark-factory"],
+      "evidence": [
+        {
+          "session_date": "2026-08-01",
+          "project": "brains",
+          "quote": "it's not that I'm interested in the table read application. I'm interested in the pattern I came up with. If we find it and we understand it, t"
+        },
+        {
+          "session_date": "2026-08-01",
+          "project": "brains",
+          "quote": "We have a lot of conversations on this computer. ... If we were to scan them looking for the patterns We might be able to figure out one, two, three, maybe even a dozen different applications that could be built tomorrow"
+        },
+        {
+          "session_date": "2026-07-03",
+          "project": "dark-factory",
+          "quote": "Reconstruct the Dark Factory KDD ... Recon's done (99 decisions); this is the deep run — union 62 sessions across Roamy+M4, extract→cluster→emit→reconcile"
+        },
+        {
+          "session_date": "2026-07-01",
+          "project": "brains (npx skills)",
+          "quote": "please trim matts skills how does matts skill compare against my prompt patterns brain?"
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "An accumulating corpus he keeps returning to — hundreds of session transcripts, 62 unioned sessions across two machines, his own repos. It genuinely grows between passes. But each mining run has a start and an end and produces a findings list that is verifiable on arrival, which is why this reads fan-out rather than lens-room.",
+      "output_is_material": "yes",
+      "candidate_lenses": [
+        "what shape recurs across instances",
+        "what would break if you lifted it out of its app",
+        "who else could use it",
+        "what it competes with in his existing toolkit"
+      ],
+      "candidate_pin": "'this pattern is real and named' vs 'this was one-off scaffolding' — a judgement that should stop the same candidate being re-surfaced on the next mining pass.",
+      "shape_guess": "fan-out"
+    },
+    {
+      "id": "roamy-018",
+      "label": "cross-machine-repo-and-asset-reconciliation",
+      "description": "David repeatedly notices that something exists on one Mac and not the other — a client repo, a new org's repos, a brain update, an agent folder — and asks the session to find the gap and close it. It bleeds into almost every session regardless of topic, usually as an aside near the start or the end.",
+      "corpus": "roamy",
+      "frequency": 4,
+      "projects": ["brains", "brains (challenge-dv)", "brains (plaud)", "joy"],
+      "evidence": [
+        {
+          "session_date": "2026-07-28",
+          "project": "brains (challenge-dv)",
+          "quote": "On the M4 Mini, I have a Challenge DV directory for clients. I don't have it here. Is it something I've got to clone? What's the situation like?"
+        },
+        {
+          "session_date": "2026-08-01",
+          "project": "brains",
+          "quote": "Do you have access to both the repos that we did in this organisation? Can you make sure they are both on my computer and up to date"
+        },
+        {
+          "session_date": "2026-07-09",
+          "project": "joy",
+          "quote": "have we got any updates in any of the repos here that could land on the m4 mini? If so, could you do it"
+        },
+        {
+          "session_date": "2026-07-05",
+          "project": "brains (plaud)",
+          "quote": "But because we're having this conversation on Roamy, we're going to have to figure out how to get this knowledge over in a consumable fashion on m4, so that I can just start a session and resume"
+        }
+      ],
+      "has_stream": "no",
+      "stream_description": "No stream — each instance is a discrete 'is it here, if not clone/pull/push it' request with a definite end state. The output is an executed action (clone, commit, push), not a supply of candidates.",
+      "output_is_material": "no",
+      "candidate_lenses": null,
+      "candidate_pin": null,
+      "shape_guess": "none"
+    },
+    {
+      "id": "roamy-019",
+      "label": "vetting-a-third-party-tool-then-landing-it-in-a-brain",
+      "description": "David encounters a device, CLI, docs release or someone else's skill pack, and runs it through the same arc: what is it, what can it actually do for my stack, can I ship it to my audience, and then write the distilled findings into the correct brain and create or update the matching skill. He explicitly asks for a comparison against what he already owns before adopting.",
+      "corpus": "roamy",
+      "frequency": 3,
+      "projects": ["brains (npx skills)", "brains (opus-5 docs)", "brains (plaud)"],
+      "evidence": [
+        {
+          "session_date": "2026-07-05",
+          "project": "brains (plaud)",
+          "quote": "You know about my OMI device. What do you know about Plaud"
+        },
+        {
+          "session_date": "2026-07-05",
+          "project": "brains (plaud)",
+          "quote": "what is your view on using tthis as a plugin or skill that I can share with people on my tube channel? also this looks very specific to me: how does this resolve for other users?"
+        },
+        {
+          "session_date": "2026-07-01",
+          "project": "brains (npx skills)",
+          "quote": "Can you let me know whether this is a technique I'll want to do for publishing my skills with people? I don't even know what this npx skills is all about."
+        },
+        {
+          "session_date": "2026-07-01",
+          "project": "brains (npx skills)",
+          "quote": "what is your opnion about writinggreatskills and skill-creator?"
+        },
+        {
+          "session_date": "2026-07-30",
+          "project": "brains (opus-5 docs)",
+          "quote": "identify what is genuinely NEW for the Claude 5 generation (Opus 5 / Fable 5 era) and land it in the right brains. Do not paraphrase the docs into a new page — extract the deltas."
+        }
+      ],
+      "has_stream": "no",
+      "stream_description": "Each vetting run is self-contained — investigate, decide, write the brain file, update the skill, close. The brain is a durable destination but the work is a sequential transformation of one subject through fixed stages, and the output is a finished document, not a menu of candidates.",
+      "output_is_material": "no",
+      "candidate_lenses": null,
+      "candidate_pin": null,
+      "shape_guess": "assembly-line"
+    },
+    {
+      "id": "roamy-020",
+      "label": "reframing-a-research-question-after-rejecting-the-answer",
+      "description": "When a research pass comes back, David does not accept or reject the findings — he attacks the framing that produced them and re-issues the question from a different starting point, explicitly forbidding the previous pass's artefacts from being carried forward. He has done this three times running on the same underlying question.",
+      "corpus": "roamy",
+      "frequency": 2,
+      "projects": ["brains", "dark-factory"],
+      "evidence": [
+        {
+          "session_date": "2026-08-01",
+          "project": "brains",
+          "quote": "Drop the agent framing and the Standing Room artefacts entirely. Do not carry the four mechanics forward as the research spine — they are one implementation's answers, and reusing them as the question would pre-bake the conclusion."
+        },
+        {
+          "session_date": "2026-08-01",
+          "project": "brains",
+          "quote": "Prior research passes came back with graded evidence and no build guidance, which is a framing failure, not a finding"
+        },
+        {
+          "session_date": "2026-07-03",
+          "project": "dark-factory",
+          "quote": "propose one canonical ADR format for the repo but also consider it from this pov ... with research backed thinking from both internet and my own pr"
+        },
+        {
+          "session_date": "2026-07-03",
+          "project": "dark-factory",
+          "quote": "did you also check thouroughly app.supportsignal.com? becuase it was tested over 3months of near daily ticket creation."
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "A standing question he keeps returning to across passes, with a growing pile of evidence and rejected framings behind it. What is unclear is condition B: he says he wants 'buildable specification, not an evidence audit' — a deliverable — yet what he actually consumes each round is a set of candidate framings and angles he picks among.",
+      "output_is_material": "unclear",
+      "candidate_lenses": [
+        "is the question correlational or causal/constructive?",
+        "whose implementation's answers are being smuggled in as the question?",
+        "what evidence from David's own systems contradicts the external literature?",
+        "what would this look like as something buildable on a Tuesday?",
+        "what is the disconfirming case"
+      ],
+      "candidate_pin": "'this framing is dead — do not re-run it' and 'this claim survives / is disputed'. Killed framings must persist so the next pass cannot regenerate them.",
+      "shape_guess": "lens-room"
+    },
+    {
+      "id": "roamy-021",
+      "label": "mine-own-session-history-for-patterns",
+      "description": "David points Claude at his own accumulated Claude Code session corpus (last 100, then 1000 sessions; or greps across specific project histories) and asks it to surface what's there — without knowing in advance what he's looking for. He explicitly wants breadth of angles, iterative re-querying with better keywords, and quality filtering rather than one answer. The output feeds system-improvement decisions he then rules on one at a time.",
+      "corpus": "roamy",
+      "frequency": 2,
+      "projects": ["brains"],
+      "evidence": [
+        {
+          "session_date": "2026-07-06",
+          "project": "brains",
+          "quote": "I want you to go through the last 100 sessions of Claude Code, and I want you to analyse them. I don't know what I'm looking for, to be honest."
+        },
+        {
+          "session_date": "2026-07-06",
+          "project": "brains",
+          "quote": "I wouldn't mind if you topped it up with a thousand sessions. It's just that I want the good quality sessions. It's not a thousand shitty ones again."
+        },
+        {
+          "session_date": "2026-07-13",
+          "project": "brains",
+          "quote": "once you've greped and found really useful keywords, you can do a second pass of grep to find out if there are other sessions that you might have missed the first time around"
+        },
+        {
+          "session_date": "2026-07-13",
+          "project": "brains",
+          "quote": "I wouldn't mind seeing all the different angles I've done this in the past."
+        },
+        {
+          "session_date": "2026-07-13",
+          "project": "brains",
+          "quote": "keep in mind there are many other sessions and projects you could search for, especially if you've got better keywords to search after you first pass"
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "His own session history — a corpus that grows every day, that he returns to repeatedly (twice in this batch alone, weeks apart), and that he never finishes reading. Each pass re-reads the same evolving body of material with a different question.",
+      "output_is_material": "yes",
+      "candidate_lenses": [
+        "recurring friction / the same problem re-solved",
+        "harness + tooling gaps (what should be a skill)",
+        "naming & terminology drift across capabilities",
+        "cross-project pattern reuse (what I built here also applies there)",
+        "cost / model-routing waste",
+        "abandoned threads worth resurrecting"
+      ],
+      "candidate_pin": "Which surfaced findings David has already ruled on — accepted, rejected, or already fixed — so a later pass over the same growing corpus never re-offers them. Also his standing quality bar for which sessions count as worth mining (\"not a thousand shitty ones\").",
+      "shape_guess": "lens-room"
+    },
+    {
+      "id": "roamy-022",
+      "label": "design-interview-before-building",
+      "description": "Before letting Claude build or redesign a working surface (the video review app, the vOz cost display), David asks to be interviewed — he wants a supply of questions put to him one at a time, with a recommendation attached to each, so he can talk each one through. He explicitly rejects the AskUserQuestion picker in favour of conversational back-and-forth.",
+      "corpus": "roamy",
+      "frequency": 3,
+      "projects": ["brains", "joy-media"],
+      "evidence": [
+        {
+          "session_date": "2026-07-26",
+          "project": "joy-media",
+          "quote": "before you even do that, I want you to have a little bit of an interview with me about what I might want from the video system"
+        },
+        {
+          "session_date": "2026-07-26",
+          "project": "joy-media",
+          "quote": "I pressed Escape and declined to answer because I don't find the Ask User tool to be helpful. But one question at a time because I want to talk about each of them."
+        },
+        {
+          "session_date": "2026-07-26",
+          "project": "brains",
+          "quote": "okay, ask me very specific questions and give me recommendations so I can answer them for you so we can move forward"
+        },
+        {
+          "session_date": "2026-07-26",
+          "project": "brains",
+          "quote": "I think you can use frontend design. I'm just going to say, \"Use frontend design skill to look at this system,\" but I think you need to interview me a bit."
+        },
+        {
+          "session_date": "2026-07-26",
+          "project": "brains",
+          "quote": "even making a statement like \"Backup Challenge DV\", I don't know what machine or what you're backing up or why you're backing up"
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "The app/capability under design — joy-media's video review surface, the vOz cost model, client-context. He returns to the same in-progress thing across sessions and the interview resumes where the design stands, not from scratch.",
+      "output_is_material": "yes",
+      "candidate_lenses": [
+        "human workflow / what the person is actually doing at the screen",
+        "data model + labelling strategy (who names things, machine or human)",
+        "cost & model routing (free/local vs paid)",
+        "what already exists that this duplicates",
+        "defensibility to a third party (client/teammate must read it too)",
+        "operational reality — sync, other machines, non-English users"
+      ],
+      "candidate_pin": "Answers already given and rulings already made (\"quiet by default\", \"derived-in-snake-case\", \"the image system is too complex, don't copy it\") so the next interview round never re-asks a settled question and builds on top of it.",
+      "shape_guess": "lens-room"
+    },
+    {
+      "id": "roamy-023",
+      "label": "name-the-capability",
+      "description": "When a capability crystallises, David refuses to let it stay unnamed or generically named. He rejects proposals as too generic against his ~100-skill namespace, rejects metaphor families outright, asks for variations of a phrase, and keeps pushing until a name he can live with lands (\"Live UAT\", \"as story-time:\"). He treats naming as the thing that determines whether he can find and reuse it later.",
+      "corpus": "roamy",
+      "frequency": 2,
+      "projects": ["brains"],
+      "evidence": [
+        {
+          "session_date": "2026-07-13",
+          "project": "brains",
+          "quote": "I don't even know where you came up with a term called installer and reader, because they're so generic. Like, install what?"
+        },
+        {
+          "session_date": "2026-07-13",
+          "project": "brains",
+          "quote": "Yeah, but Observations is way too generic when I've got a hundred skills. we need a Double barrel."
+        },
+        {
+          "session_date": "2026-07-13",
+          "project": "brains",
+          "quote": "I also want to, just before you set on Observation Log, say \"app usage logged\" and tell me what variations of that you can think of."
+        },
+        {
+          "session_date": "2026-07-13",
+          "project": "brains",
+          "quote": "I love continuous UAT. In fact, I like Live UAT."
+        },
+        {
+          "session_date": "2026-07-25",
+          "project": "brains",
+          "quote": "totallyt different use cases, I useually just trying to understand WTF I was looking at also I have another idea for output and that as teacher:"
+        }
+      ],
+      "has_stream": "unclear",
+      "stream_description": "The naming episode itself is bounded — it ends when a name sticks. But the namespace it must not collide with (100+ skills, the /btw mode family) is a real accumulating body he keeps returning to, and the constraints he applies are the same every time.",
+      "output_is_material": "yes",
+      "candidate_lenses": [
+        "collision + discoverability against the existing skill namespace",
+        "specificity (does the noun say what it actually does)",
+        "trigger words a user would actually type",
+        "no-metaphor / plain-English constraint",
+        "audience — is this for David, a teammate, or a client"
+      ],
+      "candidate_pin": "The standing naming constitution: double-barrel, no cute metaphor families, no generic nouns like 'observation'/'installer'/'reader', plus the running list of names already rejected and why.",
+      "shape_guess": "lens-room"
+    },
+    {
+      "id": "roamy-024",
+      "label": "generate-variants-so-i-can-pick",
+      "description": "David repeatedly asks for a batch of rendered options — 5, 10, 29 short videos using different editing techniques; 3 Mochaccino design mockups — explicitly so he can look at them and choose. He watches them, names the ones he likes, kills the rest, and expects the winning technique to get encoded back into the skill.",
+      "corpus": "roamy",
+      "frequency": 2,
+      "projects": ["joy"],
+      "evidence": [
+        {
+          "session_date": "2026-06-22",
+          "project": "joy",
+          "quote": "I'm trying to get lots of examples of great hyperframes, and you never do it. I don't know why you can't do this. I don't know why you can't give me good examples that I can pick from. Choice options"
+        },
+        {
+          "session_date": "2026-06-22",
+          "project": "joy",
+          "quote": "but I want more examples where you change things around, so I can see new examples"
+        },
+        {
+          "session_date": "2026-06-22",
+          "project": "joy",
+          "quote": "None of this is right. You went absolutely against what we did in number 19."
+        },
+        {
+          "session_date": "2026-06-22",
+          "project": "joy",
+          "quote": "I like the punch-in. I think it's a really cool effect. I think we should almost have it as part of our skill."
+        },
+        {
+          "session_date": "2026-06-22",
+          "project": "joy",
+          "quote": "Okay, so number 19: Can we go and create 10 videos? Let's go from 20 through to 29, and let's use the new Beauty & Joy colour ideas."
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "The accumulating library of rendered examples plus the brand's evolving visual language — he returns to it across sessions, references earlier numbered outputs (\"number 19\"), and folds accepted techniques into the skill.",
+      "output_is_material": "no",
+      "candidate_lenses": [
+        "lower thirds / captions",
+        "b-roll cutaways",
+        "picture-in-picture and talking-head shrink",
+        "punch-in / motion",
+        "colour grade"
+      ],
+      "candidate_pin": "Which techniques he has already accepted (punch-in, b-roll cutaways) or rejected (lower third centred, subtle warm grade), plus which b-roll clips are banned — but the outputs are finished deliverables, not judgements, so this is generation fan-out, not a Lens Room.",
+      "shape_guess": "fan-out"
+    },
+    {
+      "id": "roamy-025",
+      "label": "audit-my-sprawl-and-show-me-the-shape",
+      "description": "David regularly stops and asks Claude to walk the actual filesystem/repos and tell him what exists, where, and what's wrong with it — vOz folders, Joy root folders, every client-related file on the machine. He insists on a compact hierarchical list he can eyeball and verify, not prose, and expects duplicates/leftovers/deprecated copies to be named.",
+      "corpus": "roamy",
+      "frequency": 3,
+      "projects": ["brains", "joy"],
+      "evidence": [
+        {
+          "session_date": "2026-07-26",
+          "project": "brains",
+          "quote": "Just check in with me on the folders for vOz. We should have a brain videos folder. There, we get 2 or 3 other folders. Just help me understand where they're located"
+        },
+        {
+          "session_date": "2026-07-26",
+          "project": "brains",
+          "quote": "You haven't given me a nice, formatted list of all the files that you found related to all my clients. It's like it's a wall of text at the moment."
+        },
+        {
+          "session_date": "2026-06-22",
+          "project": "joy",
+          "quote": "there is a lot of other stuff in the joy-footage folder, there still seems to be mixed shapes and artifacts lying around in the footage forlder, can we both clean and document"
+        },
+        {
+          "session_date": "2026-06-22",
+          "project": "joy",
+          "quote": "when you think of Joy and all the files, the root-level folders, what are they all for? What prob"
+        }
+      ],
+      "has_stream": "unclear",
+      "stream_description": "The filesystem does keep changing, and he re-audits it — but each audit is a bounded 'what's true on disk right now' question with a verifiable answer, not an accumulating body of judgement.",
+      "output_is_material": "no",
+      "candidate_lenses": [
+        "duplicates / leftovers",
+        "deprecated-vs-live",
+        "what's in git vs what isn't",
+        "cross-machine divergence"
+      ],
+      "candidate_pin": "Rulings about which folder is canonical (joy-brand is the single brand repo; the standalone joy-juice is a leftover) — but findings are verifiable on arrival, so this is fan-out.",
+      "shape_guess": "fan-out"
+    },
+    {
+      "id": "roamy-026",
+      "label": "fleet-sync-and-handover",
+      "description": "David constantly checks whether Roamy, M2, M4 and the team's machines (Jan, Mary) have the same code, media and skills, has Claude reconcile them, and then asks for a handover message so the work can continue in another window, machine or person's hands. He wants absolute paths and prescriptive next steps, not a recap.",
+      "corpus": "roamy",
+      "frequency": 5,
+      "projects": ["brains", "joy", "joy-juice website"],
+      "evidence": [
+        {
+          "session_date": "2026-06-22",
+          "project": "joy",
+          "quote": "can you make sure that M4 Mini is up to date with all the work we're doing here and with M2 Mini? Plus, can you have a look to see if there's anything on the M4 Mini that I need to merge correctly"
+        },
+        {
+          "session_date": "2026-06-22",
+          "project": "joy",
+          "quote": "You'd be better off just writing a handover message and telling me what to look for."
+        },
+        {
+          "session_date": "2026-07-14",
+          "project": "joy-juice website",
+          "quote": "Can you write that up as an issue, put it into some sort of document, and then give me the absolute path to that file with a little bit of a handover message? I'll take it to another conversation."
+        },
+        {
+          "session_date": "2026-07-26",
+          "project": "brains",
+          "quote": "Should we create a new conversation from all of this, a handover?"
+        },
+        {
+          "session_date": "2026-07-26",
+          "project": "brains",
+          "quote": "Give me a small handover to tell it what folder to stay away from Cause I think its working on a few areas"
+        }
+      ],
+      "has_stream": "no",
+      "stream_description": "No stream. Each sync/handover is a bounded state-reconciliation with a definite done condition. High frequency, but the output is a single artefact, not a supply of options.",
+      "output_is_material": "no",
+      "candidate_lenses": [],
+      "candidate_pin": "None persistent beyond machine topology facts already captured in CLAUDE.md.",
+      "shape_guess": "assembly-line"
+    },
+    {
+      "id": "roamy-027",
+      "label": "capture-the-manual-workflow-as-a-skill",
+      "description": "After doing something by hand once (pulling footage off the DJI, pulling images off a Samsung, capturing in-app feedback, loading a client profile), David immediately asks for it to become a reusable skill via /skill-creator — and he polices it, asking mid-task whether a skill was used or whether Claude \"just went straight to bash\".",
+      "corpus": "roamy",
+      "frequency": 4,
+      "projects": ["brains", "joy"],
+      "evidence": [
+        {
+          "session_date": "2026-06-22",
+          "project": "joy",
+          "quote": "use /skill-creator to build a skill"
+        },
+        {
+          "session_date": "2026-06-22",
+          "project": "joy",
+          "quote": "By the way, what skill are you using to work through these nine images?Did you even use a skill to do the work, or did you just go straight to bash?"
+        },
+        {
+          "session_date": "2026-06-22",
+          "project": "joy",
+          "quote": "Have you been using the skill creator skill to make sure that those are good quality skills?"
+        },
+        {
+          "session_date": "2026-07-13",
+          "project": "brains",
+          "quote": "go ahead and scaffold live-uat"
+        },
+        {
+          "session_date": "2026-07-04",
+          "project": "brains",
+          "quote": "yes, /skill-creator"
+        }
+      ],
+      "has_stream": "no",
+      "stream_description": "The skill library accumulates, but each capture is a one-shot transformation of a known manual procedure into a packaged artefact with a clear done condition.",
+      "output_is_material": "no",
+      "candidate_lenses": [],
+      "candidate_pin": "The skill-ownership map (which skill owns which job, and where it lives) — David explicitly complains he re-learns this every clean session, so it should persist, but the activity itself is pipeline-shaped.",
+      "shape_guess": "assembly-line"
+    },
+    {
+      "id": "roamy-028",
+      "label": "build-a-defensible-cost-model-with-verified-numbers",
+      "description": "David works a client fee/cost breakdown into something both he and the client can look at — feeding real invoice amounts in piece by piece, demanding provenance for any figure he didn't supply, ordering invented numbers deleted, and driving toward a visual surface (Mochaccino, then an artifact) he can adjust live.",
+      "corpus": "roamy",
+      "frequency": 1,
+      "projects": ["brains"],
+      "evidence": [
+        {
+          "session_date": "2026-07-26",
+          "project": "brains",
+          "quote": "Where are you seeing $100 vs. $105.18? What's the evidence of the $105.18? Where's that coming from?"
+        },
+        {
+          "session_date": "2026-07-26",
+          "project": "brains",
+          "quote": "Yes, delete all the invented numbers and rebuild it annual I have to understand my costs versus what I'm receiving from voz, but it's also got to be defendable to voz."
+        },
+        {
+          "session_date": "2026-07-26",
+          "project": "brains",
+          "quote": "Do you think the Mochaccino should be reinstated in Git? What are your thoughts? Just think through it from different angles if you like."
+        },
+        {
+          "session_date": "2026-07-26",
+          "project": "brains",
+          "quote": "This is an absolute mess. I can't fucking read anything, wall of text.Plus, I don't know why I keep seeing unverified shit. I've fucking verified so much."
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "The cost ledger is genuinely in-progress and returned to across sessions — numbers arrive from Jan, from email, from David's memory, and the model converges. But it converges on ONE artefact.",
+      "output_is_material": "no",
+      "candidate_lenses": [
+        "my-cost view vs client-defensible view",
+        "verified vs unverified provenance",
+        "monthly vs annual normalisation"
+      ],
+      "candidate_pin": "Verification status per line item — David states a number as verified and is furious when it re-appears as unverified. That pin is real, but the output is a single converging deliverable, so this is an assembly line with a verification gate, not a Lens Room.",
+      "shape_guess": "assembly-line"
+    },
+    {
+      "id": "roamy-029",
+      "label": "chaperone-drift-watch-on-a-live-build-session",
+      "description": "David runs a second Claude session whose only job is to watch ANOTHER in-flight session's transcript as it grows, and hold it against a fixed set of named drift flags (12 of them, \"locked\" up front). Each tick reads only the new lines and returns a verdict; drift becomes numbered advisories that David then decides whether to relay to the orchestrator. He explicitly wants it silent unless something fires.",
+      "corpus": "roamy",
+      "frequency": null,
+      "projects": ["brains", "imagedrip"],
+      "evidence": [
+        {
+          "session_date": "2026-07-24",
+          "project": "brains",
+          "quote": "there is meant to be 6 seperate agents in 6 folders... I suggest we use the chapperone skill here and the swager in another convo, but you can review"
+        },
+        {
+          "session_date": "2026-07-24",
+          "project": "brains",
+          "quote": "wc -l the file; if grown, spawn ONE Explore subagent to read only the new lines and return the compact JSON verdict against the 12 locked drift flags"
+        },
+        {
+          "session_date": "2026-07-24",
+          "project": "brains",
+          "quote": "what do I need to ntoify swagger about?"
+        },
+        {
+          "session_date": "2026-07-24",
+          "project": "brains",
+          "quote": "advisory.0002 RESOLVED (Swagger adopted 'commit on gate pass' for builds 3-6 — do not re-flag commits unless it lapses)"
+        },
+        {
+          "session_date": "2026-07-24",
+          "project": "brains",
+          "quote": "David has now been told TWICE (advisory.0007 + a one-line confirmation); do NOT ping the stall again. If still frozen, stay SILENT"
+        },
+        {
+          "session_date": "2026-07-28",
+          "project": "imagedrip",
+          "quote": "Read chaperone-advisory-1 in blackboard channel imagedrip-v2 and apply it all. Don't start WP6."
+        },
+        {
+          "session_date": "2026-07-28",
+          "project": "imagedrip",
+          "quote": "You are being watched: an Opus 5 chaperone in session imagedrip-orc holds your work against those requirements and reports drift to David"
+        },
+        {
+          "session_date": "2026-07-24",
+          "project": "brains",
+          "quote": "I have no idea what you just said. I'm used to you writing your advisories for other people.I don't know what you're after from me, to be honest."
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "A live, growing session transcript (`many-agent-orc`, `imagedrip-v2-usability`) that David returns to over hours across many ticks. The watcher carries LAST_LINE forward and only ever reads the delta — the WIP is literally an append-only stream he keeps re-reading.",
+      "output_is_material": "yes",
+      "candidate_lenses": [
+        "parallel system / duplicate work started",
+        "scope or plan collapse",
+        "phase jump (skipped a gate)",
+        "unverified claim / prose-only evidence",
+        "green-proof against the wrong runtime",
+        "tar-pit (stuck loop, no forward motion)",
+        "client leak (private material into a client artefact)",
+        "orchestrator drift (orchestrator started doing worker work)",
+        "brand invention (facts asserted that aren't in the specs)",
+        "stall / idle worker with no successor"
+      ],
+      "candidate_pin": "\"Stop flagging this.\" Once David (or the orchestrator) rules on an advisory — a defer-all-commits policy was declared, the bridge was verified and then killed on purpose, the stall has been reported twice — that ruling must persist so the same observation is never re-raised. Every single tick in this session re-states a growing list of these suppressions by hand; that hand-carried list IS the pin.",
+      "shape_guess": "lens-room"
+    },
+    {
+      "id": "roamy-030",
+      "label": "conversation-closeout-and-loose-end-audit",
+      "description": "Before killing a long session, David asks the same question every time: what did we actually decide, what is still dangling, and has the knowledge landed somewhere durable. He names the candidate destinations himself (the repo, the brain, a handover doc) and wants a plan he can approve before anything is written. He has started wanting this done retrospectively across several finished sessions at once.",
+      "corpus": "roamy",
+      "frequency": null,
+      "projects": ["brains", "ecamm-bridge"],
+      "evidence": [
+        {
+          "session_date": "2026-07-20",
+          "project": "ecamm-bridge",
+          "quote": "can this convo be closed now, is it persisted where it matters? ecamm-bridgte, deckhand, brain?"
+        },
+        {
+          "session_date": "2026-07-18",
+          "project": "brains",
+          "quote": "Can we close down this conversation now? A lot of the knowledge that's in this conversation is persisted somewhere. There are at least two places that you should consider:"
+        },
+        {
+          "session_date": "2026-07-06",
+          "project": "brains",
+          "quote": "any loose ends here, can we close the convo"
+        },
+        {
+          "session_date": "2026-07-18",
+          "project": "brains",
+          "quote": "Bank the map and close down when research lands, we are sitting at 69% context, how do we handover to a new session or should we just compacyt"
+        },
+        {
+          "session_date": "2026-07-31",
+          "project": "brains",
+          "quote": "an ordered list of human questions and turns, decisions, and understand the regression path... So that I can figure out where the loose ends are"
+        },
+        {
+          "session_date": "2026-07-31",
+          "project": "brains",
+          "quote": "is this a pattern I want to do in the future? I think it is. Is it a pattern I want as a skill? That's something you can tell me."
+        },
+        {
+          "session_date": "2026-07-18",
+          "project": "brains",
+          "quote": "What are we up to now?"
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "The conversation itself is the WIP — an accumulating body he returns to and periodically asks \"what's in here that isn't banked yet\". In the 2026-07-31 session he generalises it to three past conversations read together as one corpus.",
+      "output_is_material": "yes",
+      "candidate_lenses": [
+        "decisions actually made (vs assumed)",
+        "open questions never answered",
+        "things deliberately parked, and why",
+        "assumptions baked in without being checked",
+        "regression path — where the conversation went backwards or re-litigated",
+        "knowledge earned the hard way that isn't written down anywhere",
+        "destination routing: does this belong in the repo, the brain, or a handover"
+      ],
+      "candidate_pin": "\"Parked, deliberately\" vs \"still open\". David repeatedly parks items (Apple signing, npx publish, ImageDrip, @appydave/config) and does not want them re-surfaced as loose ends next time. The persisting judgement is the closed/parked/still-open status of each thread, plus which destination already owns it.",
+      "shape_guess": "lens-room"
+    },
+    {
+      "id": "roamy-031",
+      "label": "delegate-parallel-research-then-rule-on-the-reports",
+      "description": "David spawns several background/teammate agents at once on distinct research questions (best-in-class logging, config/validation, how KyberBot self-updates, what the brandy sessions teach about eve), lets them run long-horizon without check-ins, then reads the returned reports and issues a ruling — usually a standing criterion rather than a pick.",
+      "corpus": "roamy",
+      "frequency": null,
+      "projects": ["brains"],
+      "evidence": [
+        {
+          "session_date": "2026-07-18",
+          "project": "brains",
+          "quote": "The reality is it's your core call. I'd rather this be long-horizon stuff where you just work and work and work.The only reason to talk to me is if you've got questions along the way."
+        },
+        {
+          "session_date": "2026-07-18",
+          "project": "brains",
+          "quote": "don't pick technology because 2 stacks use it and 1 stack doesn't, always research and pick best technique for a shared stacks."
+        },
+        {
+          "session_date": "2026-07-18",
+          "project": "brains",
+          "quote": "Can I get you to do background research on all of that, actually? That's the pattern I want to follow, and I'm hoping it doesn't cost me $99"
+        },
+        {
+          "session_date": "2026-07-23",
+          "project": "brains",
+          "quote": "have you read any of the brandy sessions in detail, you will learn alot about eve, about using eve with claude code, about building an eve agent... this would be a good background agent task right now"
+        },
+        {
+          "session_date": "2026-07-18",
+          "project": "brains",
+          "quote": "I have not reviewed your conversgence map or decissions, but I will say the following:"
+        }
+      ],
+      "has_stream": "unclear",
+      "stream_description": "Each research question has a start and an end and the answers arrive verifiable. The design doc they feed does evolve, but the research fan-out itself is not the stream — it is dispatched, returned, and closed.",
+      "output_is_material": "no",
+      "candidate_lenses": [],
+      "candidate_pin": "The selection criterion, not the selection: \"best-in-class for a SHARED stack, prefer common third-party libraries, majority-usage is not evidence.\" He wants that rule applied to every future pick without re-stating it.",
+      "shape_guess": "fan-out"
+    },
+    {
+      "id": "roamy-032",
+      "label": "correcting-the-assistants-model-of-my-ecosystem",
+      "description": "Mid-design, David keeps catching the assistant holding the wrong mental model of his own estate and stops to re-draw the boundary — boilerplates are not applications, AppyTron is not an evolution of AppyStack, that repo is Arcana not Kybernesis, a shared library must not carry a product prefix. He is explicit that both parties have been conflating things.",
+      "corpus": "roamy",
+      "frequency": null,
+      "projects": ["brains"],
+      "evidence": [
+        {
+          "session_date": "2026-07-18",
+          "project": "brains",
+          "quote": "But you're missing something. AppySentinel, AppyTron, and AppyStack are not installable applications.They are boilerplates."
+        },
+        {
+          "session_date": "2026-07-18",
+          "project": "brains",
+          "quote": "AppyStack and AppySentinal are both stacks that I use with different use cases, AppyTron is not an evolution, it is just a different use case."
+        },
+        {
+          "session_date": "2026-07-18",
+          "project": "brains",
+          "quote": "No, you didn't, mainly maybe because I didn't. Both of us have been conflating ideas."
+        },
+        {
+          "session_date": "2026-07-18",
+          "project": "brains",
+          "quote": "Which should not be prefixed with AppySentinel or AppyTron because it's shared between any of these boiler plates"
+        },
+        {
+          "session_date": "2026-07-06",
+          "project": "brains",
+          "quote": "Hold on, that's not true. That's an Arcana repo Both on my computer as an address at dev kyber need his Arcana on m4 mini and as a repository, so make sure you're not confused there"
+        },
+        {
+          "session_date": "2026-07-18",
+          "project": "brains",
+          "quote": "Can you give me a visualisation, probably a list or hierarchy or something like that, of AppyDave? The organisation and how its repos... I just want to see it visually."
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "The ecosystem model (repos, boilerplates, shared packages, naming) is a long-lived thing he returns to across months and sessions — but the correction is David supplying truth downstream, not the assistant supplying candidates.",
+      "output_is_material": "no",
+      "candidate_lenses": [],
+      "candidate_pin": "The boundary rulings themselves — \"these three are boilerplates, not apps\", \"shared code carries no product prefix\", \"jky is the umbrella, everything else lives under it\". Each is stated once, expensively, and should never need re-stating.",
+      "shape_guess": "none"
+    },
+    {
+      "id": "roamy-033",
+      "label": "evaluate-a-tool-for-fit-with-my-existing-system",
+      "description": "When a new tool crosses his path (SilverBullet, Codex, Hermes, evestudio, promptfoo) David does not ask \"is it good\" — he asks whether it fits HIS setup (git-synced plain files across five Macs, Claude Code + Obsidian, his brain conventions), asks for it in story form, and asks up front how he would judge in a week whether it earned its place.",
+      "corpus": "roamy",
+      "frequency": null,
+      "projects": ["brains"],
+      "evidence": [
+        {
+          "session_date": "2026-07-23",
+          "project": "brains",
+          "quote": "I'm wondering if I should install and use and if I did how do I eval in a week if it is good for me, pionted at my brain"
+        },
+        {
+          "session_date": "2026-07-23",
+          "project": "brains",
+          "quote": "can you confirm that it is no good for git folders:"
+        },
+        {
+          "session_date": "2026-07-23",
+          "project": "brains",
+          "quote": "in story style, why and what is it for me"
+        },
+        {
+          "session_date": "2026-07-23",
+          "project": "brains",
+          "quote": "did you research this (is it anthropic) and what does it mean for me?"
+        },
+        {
+          "session_date": "2026-07-18",
+          "project": "brains",
+          "quote": "can you tell me if you can see a stack for electron apps that could be similar to Ian's evestudio application that he bought, but not including vercel eve stull"
+        },
+        {
+          "session_date": "2026-07-23",
+          "project": "brains",
+          "quote": "can you check my hermes upstream folder, can we update it if it is old"
+        }
+      ],
+      "has_stream": "no",
+      "stream_description": "Each tool evaluation is a self-contained question with a verdict at the end. His system is stable background context, not an evolving artefact he is working through.",
+      "output_is_material": "no",
+      "candidate_lenses": null,
+      "candidate_pin": "His standing fit criteria — plain files, git-synced, five machines, must not want to own the space, must not compete with the brain query layer. Applied every time, restated every time.",
+      "shape_guess": "none"
+    },
+    {
+      "id": "roamy-034",
+      "label": "turn-session-friction-into-my-own-tooling",
+      "description": "When something in a session was painful or unusually good, David immediately asks whether it should become a durable asset — a preference rule, a skill, a documented pattern, a runbook — and he explicitly invites pushback on whether it warrants a skill at all. He distinguishes \"a pattern I want documented\" from \"a skill I want built\".",
+      "corpus": "roamy",
+      "frequency": null,
+      "projects": ["brains", "ecamm-bridge"],
+      "evidence": [
+        {
+          "session_date": "2026-07-31",
+          "project": "brains",
+          "quote": "Now's the time, I think, to think of a new skill. I don't know what plug-in you'd put it into, and you might push back and say we don't need it, but the way you formatted that run book handover was beautiful."
+        },
+        {
+          "session_date": "2026-07-31",
+          "project": "brains",
+          "quote": "something we might be missing in the prompt patterns and the agent's patterns, is skill workflows: how do you run a bunch of skills in a certain workflow?"
+        },
+        {
+          "session_date": "2026-07-23",
+          "project": "brains",
+          "quote": "let me share a pattern I do, I will be in a btw and I want to respond to the current context with a powerful prompt"
+        },
+        {
+          "session_date": "2026-07-23",
+          "project": "brains",
+          "quote": "can you open my claude preferences in vscode and then updated it with the new change"
+        },
+        {
+          "session_date": "2026-07-18",
+          "project": "brains",
+          "quote": "I'm just wondering whether it would make sense to document how we could develop a skill for dealing with recipes, that is, extraction of recipes from implemented applications."
+        },
+        {
+          "session_date": "2026-07-20",
+          "project": "ecamm-bridge",
+          "quote": "this is where another one of my skills should be used, and that's /lexi With some sort of onboarding technique to get KDD in place, because a lot of the stuff, like the RE, is all knowledge-driven development that we learnt the hard way"
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "His skill/preference/pattern library is a genuinely accumulating body he returns to — but each individual \"should this be a skill\" question resolves to a build-or-don't decision and then a written artefact.",
+      "output_is_material": "unclear",
+      "candidate_lenses": [
+        "is this already covered by an existing skill",
+        "is it a pattern (document it) or a skill (build it)",
+        "which plugin / is it too coupled to his private brain to publish",
+        "does it need to reach /btw (structurally impossible for skills)"
+      ],
+      "candidate_pin": "\"We decided this does NOT need a skill\" — the rejected-skill list, so the same idea doesn't get re-proposed. Also which plugin owns which capability.",
+      "shape_guess": "assembly-line"
+    },
+    {
+      "id": "roamy-035",
+      "label": "critique-the-running-app-against-a-reference",
+      "description": "David loads the WIP site himself, screenshots it, and comes back with a batch of objections spanning several unrelated dimensions at once — framework integration, visual style vs a reference design, light/dark theme, English/Thai i18n and whether content was hardcoded instead of extracted to schema — then tells the assistant which of his own evaluation skills to run against it.",
+      "corpus": "roamy",
+      "frequency": null,
+      "projects": ["beauty-joy"],
+      "evidence": [
+        {
+          "session_date": "2026-07-09",
+          "project": "beauty-joy",
+          "quote": "I would argue there are two big problems. It looks like... you put an HTML file in and put it in the middle of the page. This means you have not considered the integration aspect"
+        },
+        {
+          "session_date": "2026-07-09",
+          "project": "beauty-joy",
+          "quote": "It also doesn't have a look. It doesn't look like the example I gave you. The style and design were important, and I'm after a light theme anyway."
+        },
+        {
+          "session_date": "2026-07-09",
+          "project": "beauty-joy",
+          "quote": "this is where you want I want you to use /frontend-design To help you evaluate everything you see"
+        },
+        {
+          "session_date": "2026-07-09",
+          "project": "beauty-joy",
+          "quote": "I think we don't have good separation of English and Thai because I think we are writing English directly into the HTML page. We haven't extracted the proper schema and JSON documents"
+        },
+        {
+          "session_date": "2026-07-09",
+          "project": "beauty-joy",
+          "quote": "So I just realised you've done a design that doesn't look anything like the one I had in 4321."
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "The running site at localhost is a WIP he returns to repeatedly across the session, screenshotting each new state — but only one session in this batch shows it, so the recurrence is inferred from his purpose-built /frontend-design and /ux-review skills rather than proven here.",
+      "output_is_material": "no",
+      "candidate_lenses": [
+        "framework integration (is it grafted on or native)",
+        "visual fidelity to the reference design",
+        "theme / light-dark correctness",
+        "i18n separation — is copy hardcoded or schema-driven",
+        "data provenance — does content trace to the real catalog"
+      ],
+      "candidate_pin": "Style verdicts that shouldn't be re-argued: light theme, no 'powered by' badge, follow the ONE framework's conventions rather than dropping standalone HTML in.",
+      "shape_guess": "fan-out"
+    },
+    {
+      "id": "roamy-036",
+      "label": "joy-domain-truth-reconciliation",
+      "description": "David runs a live till/ledger app (joy-daybook) for Joy's two Chiang Mai shops, and the product/pricing data in it is constantly wrong in ways only Joy can settle. He works the data with Claude, collects the points where the system has *assumed* something (a price, a surcharge, a container, a Thai label), and carries those to Joy in person — then comes back and rules on them. He explicitly wants the uncertain points surfaced as flags and wants them phrased as questions he can ask her in Thai.",
+      "corpus": "roamy",
+      "frequency": null,
+      "projects": ["joy", "joy-daybook"],
+      "evidence": [
+        {
+          "session_date": "2026-07-10",
+          "project": "joy-daybook",
+          "quote": "I confirmed with joy that she does not charge 10 baht for a bag, so it is some other charge, I guess I need to see examples where you think it has a bag with the price + english + th labels"
+        },
+        {
+          "session_date": "2026-07-10",
+          "project": "joy-daybook",
+          "quote": "when it comes to mixed berry, why did you say it was 70 baht when I asked Joy? She said that it was 65 baht. Have you guys been had? Have they been selling it for 70 baht, and how often have they done that"
+        },
+        {
+          "session_date": "2026-07-10",
+          "project": "joy-daybook",
+          "quote": "name the 2 questions for joy in thai"
+        },
+        {
+          "session_date": "2026-07-10",
+          "project": "joy-daybook",
+          "quote": "We're finished with flags that I've read. Can we have an ability to clear them? Even a bulk clear, or no? I just want you to clear them for now because you got flags in a blue, and we've already asked and answered."
+        },
+        {
+          "session_date": "2026-07-10",
+          "project": "joy-daybook",
+          "quote": "I've just dropped a whole lot of images into the downloads directory... if you read them all, you might be able to analyse every menu item and every drink and every price and come up with patterns"
+        },
+        {
+          "session_date": "2026-07-07",
+          "project": "joy",
+          "quote": "extract all and then see if there is a schema gap analysys, you may need to check all 36 entries"
+        },
+        {
+          "session_date": "2026-07-07",
+          "project": "joy",
+          "quote": "Is the schema still up to date based on the data?"
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "The Joy product/pricing ontology is genuinely in-progress and returns-to daily: it lives across joy-daybook JSON, two websites, photographed physical menus, and Joy's own head. It grows every time a new product family appears (soda, binsu, nail work) and every time a real transaction contradicts the model. David comes back to it session after session, in multiple windows.",
+      "output_is_material": "yes",
+      "candidate_lenses": [
+        "price-truth (what does she actually charge, vs what the data says)",
+        "channel markup (Grab +40% vs shop price — is this price inflated?)",
+        "Thai↔English naming semantics (ถุง, blended vs smoothie, binsu names)",
+        "structural integrity (is this a new product or a variant/size of an existing one?)",
+        "operator reality (can Joy actually do this at the till — nails prices are negotiated, not fixed)",
+        "physical evidence (does the shopfront menu photo agree with the database?)"
+      ],
+      "candidate_pin": "Joy's confirmed ruling on a specific point — 'no 10฿ bag charge', 'mixed berry is 65 not 70', 'lime soda is +5', 'nail prices are a standard that gets adjusted up or down'. Once she has ruled, it must never be re-asked or silently re-inferred, and every downstream artefact (data, website menu, mock till) must inherit it. David's flag-clearing request is exactly this: 'we've already asked and answered.'",
+      "shape_guess": "lens-room"
+    },
+    {
+      "id": "roamy-037",
+      "label": "transcript-corpus-knowledge-reconstruction",
+      "description": "David treats his own accumulated Claude session transcripts as the primary record and mines them for decisions, learnings, patterns and contradictions — insisting on reading the actual .jsonl, not reconstructing from the files those sessions produced. He then triages the candidate findings himself: accept, reject as noise, mark as duplicate, or escalate a conflict. He wants the rejections remembered so the next run doesn't re-surface them.",
+      "corpus": "roamy",
+      "frequency": null,
+      "projects": ["KyberAgent-Enterprise", "brains", "brains/northern-lights"],
+      "evidence": [
+        {
+          "session_date": "2026-07-02",
+          "project": "KyberAgent-Enterprise",
+          "quote": "do the adversarial pass over the 17 duplicates + 3 noise"
+        },
+        {
+          "session_date": "2026-07-02",
+          "project": "KyberAgent-Enterprise",
+          "quote": "accept all, and show me the 19 recurring learnings"
+        },
+        {
+          "session_date": "2026-07-02",
+          "project": "KyberAgent-Enterprise",
+          "quote": "I thought there was Human Gate Checking going on. Where does Human Gate Checking happen in this? Have we checked all these decisions, learnings, patterns?"
+        },
+        {
+          "session_date": "2026-07-02",
+          "project": "KyberAgent-Enterprise",
+          "quote": "I'm just curious about namespace per run versus cache only. Is the reason you prefer cache only so that you've always got knowledge of the past?"
+        },
+        {
+          "session_date": "2026-07-30",
+          "project": "brains/northern-lights",
+          "quote": "Retrace how Northern Lights reached its current documentation by **reading the actual session transcripts** — not by reconstructing from the files those sessions produced."
+        },
+        {
+          "session_date": "2026-07-24",
+          "project": "brains",
+          "quote": "Park the two-session lookup for a moment and turn the *method* we just used into a reusable capability."
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "The transcript corpus itself is the accumulating body of material — 58 .jsonl for KBDE, 62 across two machines for dark-factory, three named sessions for Northern Lights — and it keeps growing every day he works. He returns to it repeatedly, on different projects, with the same method.",
+      "output_is_material": "yes",
+      "candidate_lenses": [
+        "decision archaeology (what was actually decided, in what order)",
+        "rejection trace (what he asked for and then killed — this is the part he says exists nowhere else)",
+        "duplicate/prior-art detection against the already-canonical docs",
+        "conflict hunting (staged ADR-0087 contradicts doc 41 §9)",
+        "recurring-learning extraction (what keeps coming up across runs)",
+        "noise discrimination (is this a decision or just chatter?)"
+      ],
+      "candidate_pin": "The human gate verdict on each candidate — accepted / dropped as noise / demoted to duplicate / flagged as conflict — plus the reasoning. David explicitly asks where the human sign-off happens, and explicitly wants a future run to be able to open the last run and say 'already considered, already dropped' rather than re-triaging the same 44 items.",
+      "shape_guess": "lens-room"
+    },
+    {
+      "id": "roamy-038",
+      "label": "domain-vocabulary-adjudication",
+      "description": "Across two very different projects David repeatedly stops the work to settle what a word means in his own system. In Joy it's Base/Form/Addon/Size and blended-vs-smoothie-vs-frappe; in Northern Lights it's feature, epic, quest, hub, ticket, wave, layer, foundation. He does not want a glossary generated for him — he wants the definitions that HE accumulated across sessions pulled back out, with the ability to annotate and correct each one.",
+      "corpus": "roamy",
+      "frequency": null,
+      "projects": ["brains/northern-lights", "joy-daybook"],
+      "evidence": [
+        {
+          "session_date": "2026-07-10",
+          "project": "joy-daybook",
+          "quote": "What do these values mean? Base, Form, Addon , Size"
+        },
+        {
+          "session_date": "2026-07-10",
+          "project": "joy-daybook",
+          "quote": "what's the difference between Thai tea blended and Thai tea poured? What's the difference between pink milk blended and pink milk smoothie? What do the words really mean in these different cases?"
+        },
+        {
+          "session_date": "2026-07-10",
+          "project": "joy-daybook",
+          "quote": "I think the place where we're doing the word \"blended\" should really be called Smoothie. What do you think? We use a blender, but what we're really making is a smoothie, would you agree?"
+        },
+        {
+          "session_date": "2026-07-30",
+          "project": "brains/northern-lights",
+          "quote": "What I want is the accumulated definitions. Across those sessions I asked questions, you answered, and I added detail on top — feature, epic, ⟦BLOCK⟧, quest, hub, ⟦ENVELOPE⟧, ticket, wave, layer, foundation"
+        },
+        {
+          "session_date": "2026-07-30",
+          "project": "brains/northern-lights",
+          "quote": "Now use the UX design and make sure I can add data to any of these values because I'm still really confused by a lot of stuff and I've got no way to annotate it."
+        },
+        {
+          "session_date": "2026-07-30",
+          "project": "brains/northern-lights",
+          "quote": "its for me to understand the data shapes we have been collecting, why we did it, what they do for us but they have to have descirptions"
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "Both vocabularies are live and unfinished — the Joy product ontology and the Northern Lights object model. Terms get added, split, renamed and re-argued session after session, and David keeps returning to the same set to push it further. The Northern Lights ask is literally 'give me back everything we defined across three sessions so I can add to it.'",
+      "output_is_material": "yes",
+      "candidate_lenses": [
+        "what the term means to the operator/user in practice",
+        "what it means structurally in the data (is Size a product or an attribute?)",
+        "where the term collides or overlaps with a neighbour term",
+        "metaphor fit — the same model re-skinned as skyscraper / factory / fantasy",
+        "what evidence in the corpus backs this definition",
+        "what breaks downstream if the definition changes"
+      ],
+      "candidate_pin": "A ruled definition — 'blended means X, smoothie means Y, and green tea is one product with sizes, not three products'. Once pinned it must propagate into the data model, the UI labels, the website menu and every later session, and must not silently drift back.",
+      "shape_guess": "lens-room"
+    },
+    {
+      "id": "roamy-039",
+      "label": "multi-window-drift-control",
+      "description": "David runs many Claude windows against the same project at once and periodically opens one window purely as a control room — pulling the other sessions' transcripts in, checking whether they diverged, and issuing handover messages back out to keep them aligned. He worries specifically about one window re-deciding something another window already settled.",
+      "corpus": "roamy",
+      "frequency": null,
+      "projects": ["joy", "joy-daybook"],
+      "evidence": [
+        {
+          "session_date": "2026-07-10",
+          "project": "joy-daybook",
+          "quote": "I've got multiple builds and concepts going on in multiple windows. Sometimes what they do is they repeat information that should have happened in other windows, so sometimes we get conceptual drift from different systems. I wouldn't mind trying to rein that in"
+        },
+        {
+          "session_date": "2026-07-10",
+          "project": "joy-daybook",
+          "quote": "I asked another conversation which started the conversation about schema and asked it to look at this conversation and it came up with potentially 3 concepts."
+        },
+        {
+          "session_date": "2026-07-07",
+          "project": "joy",
+          "quote": "give me the handover message taht I can use in both bj & jj to decide how we are going to build the new sites using the strength of the one ontology and the info we already gathered for bj & jj. I'm expecting two handover messages"
+        },
+        {
+          "session_date": "2026-07-07",
+          "project": "joy",
+          "quote": "has the schema needed updatating based on this conversation? and if yes, do we do it here or in the other conversation?"
+        },
+        {
+          "session_date": "2026-07-10",
+          "project": "joy-daybook",
+          "quote": "you don't need to build the page. I'll do that over on the juice shop, but you can give all the instructions over to it... If you just did all that, give it to me for the clipboard. I'll take it over there."
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "The parallel-window fleet is ongoing, but the audit output is mostly verifiable on arrival — 'both are commit 26272de', 'CONFIRMED, no drift, it read components.json directly'. The stream exists; the output is answers, not candidates.",
+      "output_is_material": "no",
+      "candidate_lenses": [
+        "did this window read canonical data or invent its own?",
+        "did two windows fork the same file?",
+        "which window holds the newest truth?"
+      ],
+      "candidate_pin": "Which repo/file is canonical for a given concept, so no window re-decides it",
+      "shape_guess": "fan-out"
+    },
+    {
+      "id": "roamy-040",
+      "label": "unattended-run-then-risk-debrief",
+      "description": "David deliberately hands a session a long block of work and leaves — a meeting, an afternoon — with instructions to push as far as possible without checking in. When he returns he does not want a status report; he wants an honest, risk-ranked list of what the autonomous run got away with, worked through one question at a time.",
+      "corpus": "roamy",
+      "frequency": null,
+      "projects": ["KyberAgent-Enterprise", "joy-daybook", "joy-footage"],
+      "evidence": [
+        {
+          "session_date": "2026-07-10",
+          "project": "joy-daybook",
+          "quote": "What I want you to do is move forward as deep as you can with as much information as you can without my guidance. I'm going into a meeting for an hour. I'll be able to look at everything if you write it up properly at the end anyway."
+        },
+        {
+          "session_date": "2026-07-26",
+          "project": "joy-footage",
+          "quote": "Run the Joy b-roll pipeline forward this afternoon without checking in. Everything below is already built, committed and pushed — you are extending it, not rebuilding it."
+        },
+        {
+          "session_date": "2026-07-26",
+          "project": "joy-footage",
+          "quote": "I let you do a whole lot of work without me being unattended... I'd like you to work with me one-on-one, so one question at a time, and help me resolve whatever I've got to resolve."
+        },
+        {
+          "session_date": "2026-07-02",
+          "project": "KyberAgent-Enterprise",
+          "quote": "Well, so I remember the process of working through this in the Cortex and KBDE to be quite long. Everything was going very fast. Have we done the proper deep analysis yet?"
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "The build being pushed forward is in-progress, but the debrief items are largely checkable facts about what happened during the run (nobody watched the 15 cutaways; the snapshot drifted 5 days behind live). It's a sweep for exposure, not a supply of angles.",
+      "output_is_material": "unclear",
+      "candidate_lenses": [
+        "what was asserted but never verified by a human eye",
+        "what got built that wasn't asked for",
+        "what data was mutated without a backup"
+      ],
+      "candidate_pin": "Which unattended outputs David has personally signed off on, so the next debrief doesn't re-raise them",
+      "shape_guess": "fan-out"
+    },
+    {
+      "id": "roamy-041",
+      "label": "artefact-placement-and-convention-adjudication",
+      "description": "When a tool starts producing durable output, David stops the work to argue about where it should live and who owns it — repo vs cache vs home dir, .kdd-run vs docs/kdd/.work vs ~/.kdd-cache, whether it's his brain or the company's, and what happens when two machines or three people run it. He pushes back hard when a location is chosen by copying a previous project's habit.",
+      "corpus": "roamy",
+      "frequency": null,
+      "projects": ["KyberAgent-Enterprise", "brains"],
+      "evidence": [
+        {
+          "session_date": "2026-07-02",
+          "project": "KyberAgent-Enterprise",
+          "quote": "now I'm on my team. This is a company project belonging to Kybernesis. My brain is my brain, so that doesn't make any sense... I think you use that location because that's what you did for Cortex as well"
+        },
+        {
+          "session_date": "2026-07-02",
+          "project": "KyberAgent-Enterprise",
+          "quote": "That reconstruction with verdicts, reconcile, classify clusters and provenance, we can have a problem if KDD is running on multiple machines... but then you got Martin and Ian, and it feels like this is going to be a merge nightmare"
+        },
+        {
+          "session_date": "2026-07-02",
+          "project": "KyberAgent-Enterprise",
+          "quote": "When you say that the cache is regenerable I had thought the cache also had human-based decisions along the way. They're not regenerable, are they, or is this cache truly regenerable?"
+        },
+        {
+          "session_date": "2026-07-21",
+          "project": "brains",
+          "quote": "read in brain index, tags, ontology or topology. plus find all my config structures for concepts like apps, locations or wahtever sounds like it can be used to categories how I segment and view the world"
+        },
+        {
+          "session_date": "2026-07-21",
+          "project": "brains",
+          "quote": "I think we can do Two cheap fixes and then for everything else we can jsut document useful stuff for the futuure"
+        }
+      ],
+      "has_stream": "no",
+      "stream_description": "Each of these is a decision with an end state — pick the path, write the convention, move on. There is no accumulating body of candidates he returns to; the output is a single adjudicated answer plus a note for the future.",
+      "output_is_material": "no",
+      "candidate_lenses": null,
+      "candidate_pin": null,
+      "shape_guess": "none"
+    },
+    {
+      "id": "roamy-042",
+      "label": "session-closure-ritual",
+      "description": "David closes almost every substantial session the same way: ask for a conversation name plus a ready-to-run /rename command, check remaining context percentage, decide wind-down vs handover, and demand a handover document with absolute paths plus the folder to jump into next. He treats it as routine and expects Claude to know the drill.",
+      "corpus": "roamy",
+      "frequency": null,
+      "projects": ["KyberAgent-Enterprise", "brains", "brains/northern-lights", "joy"],
+      "evidence": [
+        {
+          "session_date": "2026-07-07",
+          "project": "joy",
+          "quote": "how would you name this convo? give it a rename command"
+        },
+        {
+          "session_date": "2026-07-04",
+          "project": "brains",
+          "quote": "Can you give me a name for this conversation and a rename command so I can run?"
+        },
+        {
+          "session_date": "2026-07-30",
+          "project": "brains/northern-lights",
+          "quote": "What are the next steps I need to do with this conversation? I want you to consider it from a closure point of view. We're sitting at 70%, so we either need to wind down the conversation really quickly or do a handover."
+        },
+        {
+          "session_date": "2026-07-24",
+          "project": "brains",
+          "quote": "You know how I close this conversation now"
+        },
+        {
+          "session_date": "2026-07-02",
+          "project": "KyberAgent-Enterprise",
+          "quote": "once you've written your handover document, give me a handover message and the folder to jump into"
+        },
+        {
+          "session_date": "2026-07-21",
+          "project": "brains",
+          "quote": "Is there anything else to do in this session? Should I close it down now? Have we got any learnings"
+        }
+      ],
+      "has_stream": "no",
+      "stream_description": "A fixed end-of-session procedure with a defined done state — name, handover doc, next folder. Recurs constantly but produces a finished deliverable each time, not candidates to choose among.",
+      "output_is_material": "no",
+      "candidate_lenses": null,
+      "candidate_pin": null,
+      "shape_guess": "assembly-line"
+    },
+    {
+      "id": "roamy-043",
+      "label": "collide-external-material-into-own-corpus",
+      "description": "David pastes in material produced somewhere else — another Claude session's output, a Notion workshop, a vendor release note, someone else's research prompt — and asks what it means for HIS accumulated body of research. He is not asking for a summary of the foreign thing; he wants the collision: what theirs has that his lacks, what it contradicts, what it obsoletes, what should be absorbed. He actively rejects answers that treat the foreign artefact as the subject.",
+      "corpus": "roamy",
+      "frequency": 4,
+      "projects": ["-Users-davidcruwys-dev-ad-brains", "-Users-davidcruwys-dev-kybernesis-cortex"],
+      "evidence": [
+        {
+          "session_date": "2026-07-25",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "I think you've taken this in the wrong direction. I've given you the Joy information because they went off and did independent research on a problem that they have that we have already done a whole lot of research on"
+        },
+        {
+          "session_date": "2026-07-21",
+          "project": "-Users-davidcruwys-dev-kybernesis-cortex",
+          "quote": "I was priming you because I had a convo come up with this information based on my tags, ontology, toplogy in my systems plus extra questions and it got me think how could this infomration be used to improve cortex?"
+        },
+        {
+          "session_date": "2026-07-25",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "Do I have to update the Angel Eye app based on the new 1 (or maybe more hooks) and if we look at plugins and what I have been doing, shoudl we be refactoring the way I do hooks for Angel Eye"
+        },
+        {
+          "session_date": "2026-07-25",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "Nowhere are we talking about the new skills we've done for transcription, so we have some really powerful skills that can delegate to Groq... Make sure that that's referenced"
+        },
+        {
+          "session_date": "2026-07-30",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "keep track of learnings about lean canvas, that I could use for AppyDave"
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "The in-progress thing is his own ~99-brain research corpus plus the live systems built on it (AngelEye, cortex, voice brains, plugins). It evolves constantly, and foreign material keeps arriving from other sessions, vendors, and third parties. Each collision is a new pass over the same evolving body, not a fresh question.",
+      "output_is_material": "yes",
+      "candidate_lenses": [
+        "what theirs covers that ours does not",
+        "what ours already covers better (so ignore theirs)",
+        "what this contradicts in an existing brain doc",
+        "what this makes stale or obsolete",
+        "which brain/file owns the delta",
+        "cheap-to-absorb vs expensive-to-absorb"
+      ],
+      "candidate_pin": "The standing authority verdict on the foreign source ('this artefact is a claim, not my verified strategy'; 'ours is deeper on X, theirs is deeper on Y') plus which deltas were absorbed and which were deliberately declined — so the next collision with the same source does not re-litigate it. This pin already exists informally in his memory as 'external artifacts are not gospel'.",
+      "shape_guess": "lens-room"
+    },
+    {
+      "id": "roamy-044",
+      "label": "adjudicate-a-domain-fact-corpus",
+      "description": "David works through an accumulating catalogue of real-world facts (the Joy Juice / Beauty & Joy menu: drinks, prices, add-ons, categories) that the assistant has extracted from photographed menu boards and a product database. He does not accept the extraction — he corrects it from lived knowledge, challenges provenance ('where did you find that price'), explains the rule behind an apparent discrepancy, and rules on which gaps matter.",
+      "corpus": "roamy",
+      "frequency": 1,
+      "projects": ["-Users-davidcruwys-dev-ad-joy"],
+      "evidence": [
+        {
+          "session_date": "2026-07-13",
+          "project": "-Users-davidcruwys-dev-ad-joy",
+          "quote": "so shaved ice is actually 35 baht And it pretty much has the same flavours as soda."
+        },
+        {
+          "session_date": "2026-07-13",
+          "project": "-Users-davidcruwys-dev-ad-joy",
+          "quote": "Where did you find the canceller at different prices? Is it in the image I sent you, or is it in the database? Are you able to bring it up for me if it is an image as well?"
+        },
+        {
+          "session_date": "2026-07-13",
+          "project": "-Users-davidcruwys-dev-ad-joy",
+          "quote": "Don't worry too much about the discrepancies. She might want to change things. I think what you can consider is that there can be a base. I think any price can have a shift, and there are legitimate reasons."
+        },
+        {
+          "session_date": "2026-07-13",
+          "project": "-Users-davidcruwys-dev-ad-joy",
+          "quote": "the reason why the Cantaloupe and Coconut is more expensive is because Cantaloupe is expensive. The one under it that says Coconut and Melon should also be 70 baht because Melon is expensive"
+        },
+        {
+          "session_date": "2026-07-13",
+          "project": "-Users-davidcruwys-dev-ad-joy",
+          "quote": "Be sure also that the iced shaved drinks have the same or similar number of drinks as the soda, since it uses the same syrups, and also consider the add-ons that we talked about."
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "The product catalogue is a long-running, still-wrong dataset feeding the website menus, the till, and product-image generation. It grows as new menu photos arrive and as Joy changes prices in the real shop. David returns to it across sessions; the same corpus is behind the website tasks, the till work, and the b-roll image generation.",
+      "output_is_material": "yes",
+      "candidate_lenses": [
+        "price consistency vs the stated pricing rule",
+        "provenance — which menu photo / DB row does this claim come from",
+        "category parity (soda vs shaved ice should mirror)",
+        "what only Joy can answer (Thai-language / staff knowledge gaps)",
+        "what the website/till would render wrong today",
+        "what is a real business reason vs a data error"
+      ],
+      "candidate_pin": "The pricing model David keeps re-stating and having to re-explain: 'there is a base price and legitimate shifts — averaging two fruit prices is why it is sometimes +5', plus per-item rulings (shaved ice = 35, add-ons = 5 baht and belong ONLY to shaved ice). These should persist so the same discrepancies stop being resurfaced as errors.",
+      "shape_guess": "lens-room"
+    },
+    {
+      "id": "roamy-045",
+      "label": "portfolio-triage-what-should-i-be-building",
+      "description": "David steps back from the sprawl and asks the assistant to tell him what he should actually be building next, explicitly because he has split himself across too many projects. He then rules on the options — declaring what does not matter right now, what is more important than what, and which cross-cutting tasks are worth doing — rather than accepting a plan wholesale.",
+      "corpus": "roamy",
+      "frequency": 3,
+      "projects": [
+        "-Users-davidcruwys-dev-ad-brains",
+        "-Users-davidcruwys-dev-ad-joy",
+        "-Users-davidcruwys-dev-agents"
+      ],
+      "evidence": [
+        {
+          "session_date": "2026-07-13",
+          "project": "-Users-davidcruwys-dev-ad-joy",
+          "quote": "what I really want you to do is think about what it is that I need to be building. What do I need to be doing to make everything start coming together? I'm a bit overloaded... I've split myself between too many projects"
+        },
+        {
+          "session_date": "2026-07-13",
+          "project": "-Users-davidcruwys-dev-ad-joy",
+          "quote": "Deployment of the websites doesn't matter too much right now. That's not the main goal. Video generation is more important than websites"
+        },
+        {
+          "session_date": "2026-07-13",
+          "project": "-Users-davidcruwys-dev-ad-joy",
+          "quote": "The mess is the different brand directions I've been trying to go in. The video generation stuff that I've been doing, there's even mocac"
+        },
+        {
+          "session_date": "2026-07-27",
+          "project": "-Users-davidcruwys-dev-agents",
+          "quote": "Also, we've done Brandy.And we're working on Challenge DV.And you've got an Eve Maker, which is good.I guess the two cross-cutting tasks that would be useful in this se"
+        },
+        {
+          "session_date": "2026-07-30",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "it would be the reason for eople joining the channel"
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "The stream is the live project portfolio itself — multiple half-built things (websites, video generation, image tooling, till, six eve agents, brand directions) that accumulate and shift week to week. David returns to it whenever he feels overloaded; the answer is never final because the portfolio keeps moving.",
+      "output_is_material": "yes",
+      "candidate_lenses": [
+        "what compounds vs what is a one-off",
+        "what is actually blocked on David personally",
+        "what a real user (Joy / a subscriber) would notice tomorrow",
+        "revenue / channel-growth relevance",
+        "what should be killed or parked outright",
+        "what is duplicated across projects and could be built once"
+      ],
+      "candidate_pin": "The standing priority ranking and the explicit demotions — 'websites don't matter right now', 'video generation > websites', 'Joy Juice for now, brand naming stays an open discussion item'. Without a pin these get re-argued every session; with one, later options are pre-filtered against them.",
+      "shape_guess": "lens-room"
+    },
+    {
+      "id": "roamy-046",
+      "label": "route-and-name-new-knowledge",
+      "description": "Whenever a session produces something worth keeping, David stops and asks where it should live and what it should be called — brain vs cortex, new brain vs existing brain, upstream repos vs working folder, staging vs canonical. He treats naming and placement as a real decision with consequences, not bookkeeping, and often asks for the options before choosing.",
+      "corpus": "roamy",
+      "frequency": 5,
+      "projects": ["-Users-davidcruwys-dev-ad-brains", "-Users-davidcruwys-dev-kybernesis-cortex"],
+      "evidence": [
+        {
+          "session_date": "2026-07-21",
+          "project": "-Users-davidcruwys-dev-kybernesis-cortex",
+          "quote": "how about we just call this research for potential system improvement, how would you name it"
+        },
+        {
+          "session_date": "2026-07-21",
+          "project": "-Users-davidcruwys-dev-kybernesis-cortex",
+          "quote": "and where would you put it (cortex or brain_"
+        },
+        {
+          "session_date": "2026-07-26",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "I used this information that you collected for me as a seed for another conversation. Just wondering whether there's useful knowledge here that we should save somewhere, and if so, where?"
+        },
+        {
+          "session_date": "2026-07-30",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "I don't know where to put this information we have grabbed, partly it should be brain, but I want to install a skill temporary in the brain (2 of them) and I think I need a new brain just for this work"
+        },
+        {
+          "session_date": "2026-07-03",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "Usually when I bring down someone's repo, I put it into upstream repos, but today I'm probably just going to use it. In the past I've used one one and one.ie from Tony. What have we got? Is it the same repo?"
+        },
+        {
+          "session_date": "2026-07-25",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "We should go with voice analysis, so option A."
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "The brain collection is genuinely an evolving corpus he returns to. But the work itself resolves to a single placement/naming decision per item — the assistant proposes 2-3 options and David picks one, then it is done. The useful output is a decision, not a standing supply of candidates, so it fails test (B) even though it passes (A).",
+      "output_is_material": "unclear",
+      "candidate_lenses": [
+        "does an existing brain already own this",
+        "is this a topic or an instance of a topic",
+        "staging vs canonical",
+        "will this ever be retrieved, and by what question"
+      ],
+      "candidate_pin": "The routing precedent itself ('third-party repos go to upstream/repos', 'this axis goes in both cortex and brain') — but he already persists these as conventions in CLAUDE.md and memory, so a Lens Room adds little.",
+      "shape_guess": "none"
+    },
+    {
+      "id": "roamy-047",
+      "label": "close-down-without-losing-anything",
+      "description": "Near the end of a session — often when tired — David asks the assistant to sweep for loose ends: outstanding questions he personally has to answer, work not yet done, knowledge not yet persisted, things needing a handover. He wants to be told what remains and to be handed recommendations rather than questions, so he can shut the window safely.",
+      "corpus": "roamy",
+      "frequency": 6,
+      "projects": [
+        "-Users-davidcruwys-dev-ad-brains",
+        "-Users-davidcruwys-dev-ad-joy",
+        "-Users-davidcruwys-dev-agents"
+      ],
+      "evidence": [
+        {
+          "session_date": "2026-07-25",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "get me to a point where I can close this conversation... Do it with recommendations, but otherwise get me to the point where I can close this conversation and we haven't lost anything."
+        },
+        {
+          "session_date": "2026-07-19",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "bank it here, pick up the JSON-template milestone next session, Make sure you give me a clean handover message."
+        },
+        {
+          "session_date": "2026-07-13",
+          "project": "-Users-davidcruwys-dev-ad-joy",
+          "quote": "Is there any outstanding work on this conversation to do?"
+        },
+        {
+          "session_date": "2026-07-13",
+          "project": "-Users-davidcruwys-dev-ad-joy",
+          "quote": "Oh, hold on. I've still gotta build these images somewhere, don't I? And that's for a different conversation, if I remember right. What have we got left in this conversation to do?"
+        },
+        {
+          "session_date": "2026-07-24",
+          "project": "-Users-davidcruwys-dev-agents",
+          "quote": "is there any outstanding question for me to deal with"
+        },
+        {
+          "session_date": "2026-07-25",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "Do I have to do anything, or are we at a point where we close down this folder, this conversation, and push stuff? If we are pushing, are we pushing to both plug in the same brain?"
+        }
+      ],
+      "has_stream": "unclear",
+      "stream_description": "The output IS a supply of items he picks among (open questions, parked decisions, unpersisted knowledge), so it passes test (B). But the subject is a single session he is about to terminate and not return to — the artefact ends. It reads as a terminal extraction over a bounded transcript, which is fan-out, not a standing room over evolving WIP. His existing conversation-triage / session-wind-down skills already serve it.",
+      "output_is_material": "yes",
+      "candidate_lenses": [
+        "decided vs still open",
+        "persisted vs at-risk-of-loss",
+        "blocked on David vs blocked on machine",
+        "parked deliberately vs forgotten"
+      ],
+      "candidate_pin": "'This is parked on purpose — stop resurfacing it' would be the persisting judgement, but it currently dies with the session rather than carrying forward.",
+      "shape_guess": "fan-out"
+    },
+    {
+      "id": "roamy-048",
+      "label": "orchestrate-and-adjudicate-worker-agents",
+      "description": "David launches a Swagger-style orchestrator that fans work out to worker subagents, then sits above it as the gate: reading their evidence reports, catching stalls, spotting when one worker's account contradicts another's, and intervening when something is blocked. His own turns are short rulings and unblocks rather than doing the work.",
+      "corpus": "roamy",
+      "frequency": 2,
+      "projects": ["-Users-davidcruwys-dev-ad-brains", "-Users-davidcruwys-dev-agents"],
+      "evidence": [
+        {
+          "session_date": "2026-07-24",
+          "project": "-Users-davidcruwys-dev-agents",
+          "quote": "You are Swagger — invoke the overwatch:swagger skill and run this program... Build all six agents SEQUENTIALLY — one at a t"
+        },
+        {
+          "session_date": "2026-07-24",
+          "project": "-Users-davidcruwys-dev-agents",
+          "quote": "Design and run an acceptance-test pass over the six eve agents built in this session. Do NOT build anything new, do NOT modify any agent's code or brand snapshots, and do NOT deploy."
+        },
+        {
+          "session_date": "2026-07-27",
+          "project": "-Users-davidcruwys-dev-agents",
+          "quote": "one thing to be aware of: what happened with the challenge DV Is that I had to come in and see it. I think it seemed to be blocked on something in turn."
+        },
+        {
+          "session_date": "2026-07-27",
+          "project": "-Users-davidcruwys-dev-agents",
+          "quote": "using background agetn can you look at the Joy agent and see what improvements it should have based on this conversation and any documents that have been updated"
+        },
+        {
+          "session_date": "2026-07-26",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "Run on m4"
+        }
+      ],
+      "has_stream": "no",
+      "stream_description": "No stream — this is a bounded build-and-verify program with a defined done state (six agents built, gated, acceptance-tested). Each worker returns verifiable evidence (does it chat locally, did the leak probe pass), so findings are checkable on arrival. Classic assembly line with a fan-out verification stage, not a Lens Room.",
+      "output_is_material": "no",
+      "candidate_lenses": [],
+      "candidate_pin": "",
+      "shape_guess": "assembly-line"
+    },
+    {
+      "id": "roamy-049",
+      "label": "capability-currency-probe",
+      "description": "David periodically asks whether his understanding of a tool or platform has gone stale — has Ecamm added an API in the six months he's been away, what changed in the latest Claude release, what would an expert in RAG/vector/temporal memory say about the current brain. He then pushes past 'what changed' to 'what can I now stop doing by hand'.",
+      "corpus": "roamy",
+      "frequency": 3,
+      "projects": ["-Users-davidcruwys-dev-ad-brains", "-Users-davidcruwys-dev-kybernesis-cortex"],
+      "evidence": [
+        {
+          "session_date": "2026-07-19",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "how up to date is our understanding of ecamm automation, I have not used ecamm for 6 months and maybe they have added api or mcp"
+        },
+        {
+          "session_date": "2026-07-19",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "iwqould i be able to stop asking ecamm to do anything and ask claude to do everything? also when you say inject your own code, what does that ereally mean?"
+        },
+        {
+          "session_date": "2026-07-25",
+          "project": "-Users-davidcruwys-dev-ad-brains",
+          "quote": "how do I get my releazse notes for claude what is the tool"
+        },
+        {
+          "session_date": "2026-07-21",
+          "project": "-Users-davidcruwys-dev-kybernesis-cortex",
+          "quote": "if I wanted you to analyise the brain best on an expert of rag, vector, entieis, temporal etc.. with the reasoning of improvingin our current brain/memory systems what skills should you have"
+        }
+      ],
+      "has_stream": "unclear",
+      "stream_description": "The brain doc being refreshed is long-running, but each probe resolves to verifiable facts (does the API exist, what version shipped, what does the binary expose) that are true or false on arrival. It ends in a chosen path and a doc update, not a standing supply of candidate observations. Fan-out feeding an assembly line.",
+      "output_is_material": "no",
+      "candidate_lenses": [
+        "official API surface",
+        "undocumented/RE surface",
+        "what my docs currently claim vs reality",
+        "what this unlocks that I do by hand today"
+      ],
+      "candidate_pin": "The chosen automation path and the paths already ruled impractical (he re-derived that the plist/profile-file route is impractical, which should not have needed re-deriving).",
+      "shape_guess": "fan-out"
+    },
+    {
+      "id": "roamy-050",
+      "label": "chaperone-a-running-worker-session",
+      "description": "David launches a worker session (usually Swagger) to build something against a locked requirements doc, then runs a SEPARATE read-only session whose only job is to tick over the worker's transcript and judge it against a fixed set of numbered drift flags. He locks the flags up front (\"lockit\"), lets the chaperone run for days, and periodically asks it what the worker is really doing versus claiming.",
+      "corpus": "roamy",
+      "frequency": 2,
+      "projects": ["brains (eve agents / ~/dev/agents)", "brains (eve agents)", "imagedrip"],
+      "evidence": [
+        {
+          "session_date": "2026-07-24",
+          "project": "brains (eve agents / ~/dev/agents)",
+          "quote": "plus I want to know if we are planning to open a single swagger comms that then builds out or delagates, I suggest we use the chapperone skill here and the swager in another convo, but you can review"
+        },
+        {
+          "session_date": "2026-07-24",
+          "project": "brains (eve agents)",
+          "quote": "lockit"
+        },
+        {
+          "session_date": "2026-07-28",
+          "project": "imagedrip",
+          "quote": "You can now watch Session name: imagedrip-swag Session ID: dc4acada-c4ef-48ce-b1df-b41671e43380 cwd: /Users/davidcruwys/dev/ad/apps/imagedrip"
+        },
+        {
+          "session_date": "2026-07-28",
+          "project": "imagedrip",
+          "quote": "Get you to check the worker for me, but essentially we've got to finish this stuff off."
+        },
+        {
+          "session_date": "2026-07-28",
+          "project": "imagedrip",
+          "quote": "You did not write up the command the way we would normally do it. Usually, we would have a Claude, a permission mode, a name, a model, and the string all as one line to paste directly into the terminal."
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "The watched worker session's transcript — an actively growing artefact (60 -> 1721 lines over ~2 days) that David returns to repeatedly. The chaperone re-reads only the new lines each tick and carries forward state (which WPs committed, which flags cleared).",
+      "output_is_material": "yes",
+      "candidate_lenses": [
+        "scope/plan collapse (is it building something nobody asked for)",
+        "unverified claim (\"done\" without a real run)",
+        "green-proof / wrong runtime (tests pass but not in the actual app)",
+        "parallel system (a second implementation instead of extending the existing one)",
+        "spec drift (working rules / requirements doc silently edited)",
+        "tar-pit / idleness (holding vs stuck vs abandoned)"
+      ],
+      "candidate_pin": "The standing ruling on what counts as drift versus correct behaviour for THIS program — e.g. \"worker holding ~3h for David's acceptance is compliance, not drift\", \"advisory already raised, do not re-surface before tick 30\", \"program is PARKED, not stuck\". These judgements persist across ticks and change what the next tick reports and how loudly.",
+      "shape_guess": "lens-room"
+    },
+    {
+      "id": "roamy-051",
+      "label": "mine-the-plaud-capture-corpus-for-what-is-in-it",
+      "description": "David has an accumulating body of his own voice captures (85+ Plaud transcripts, 17 hours, feeding Captain's Log) and works through it without knowing in advance what he's looking for. He explicitly asks for a first exploratory pass across the whole corpus to surface projects, ideas, contradictions — then picks which of those threads to formalise into vocabulary and structure.",
+      "corpus": "roamy",
+      "frequency": 3,
+      "projects": ["brains", "captains-log"],
+      "evidence": [
+        {
+          "session_date": "2026-07-21",
+          "project": "captains-log",
+          "quote": "I don't know what we don't want. I don't know whether we're looking for projects. I don't know if we're looking for ideas. I don't know whether we're looking for contradictions or order. I have no idea what"
+        },
+        {
+          "session_date": "2026-07-21",
+          "project": "captains-log",
+          "quote": "do a surface-level scan of the 86 files, look at the synopsis or whatever we've got, come up with some ideas. So that we can extract real intelligence out of the data"
+        },
+        {
+          "session_date": "2026-07-21",
+          "project": "captains-log",
+          "quote": "I only want to analyze files (mostly pluad) so that I can create tickets for captains log, not so that I can build the tool here"
+        },
+        {
+          "session_date": "2026-07-21",
+          "project": "captains-log",
+          "quote": "yes, the move is the atom — go with claim-level"
+        },
+        {
+          "session_date": "2026-07-22",
+          "project": "brains",
+          "quote": "Have you got an ability to use Captains Log to find the conversation that I had last night? It wouldn't be too many conversations to go through related to what we're talking about here"
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "The Captain's Log / Plaud corpus itself — new voice captures land continuously (B304, B309, B329 all referenced days apart across three different sessions) and David keeps returning to the same growing pile. The derived artefacts (thesaurus, identity layer, discovery cards) are WIP he refines rather than finishes.",
+      "output_is_material": "yes",
+      "candidate_lenses": [
+        "recurring refrain (what does he keep saying)",
+        "contradiction (where does today's capture contradict last month's)",
+        "latent project / ticket (what is actually a piece of work)",
+        "vocabulary drift (same idea, different words; false twins like FTE/FDE)",
+        "decision already made (a claim he's committed to and forgotten)",
+        "open question / unresolved fork"
+      ],
+      "candidate_pin": "The canonical vocabulary and atom-size rulings — \"the move is the atom, claim-level\", quest/refrain/move/span definitions, FTE is always a transcription error for FDE. Once pinned, every subsequent pass over the corpus must read it through those terms rather than re-inventing a schema.",
+      "shape_guess": "lens-room"
+    },
+    {
+      "id": "roamy-052",
+      "label": "find-a-name-or-vocabulary-for-a-concept",
+      "description": "Repeatedly, mid-design, David stalls on what to CALL something and demands a spread of alternatives rather than one recommendation — and he rejects candidates that are all variations on the same source metaphor. He wants options drawn from genuinely different domains, plus definitions with story-based examples so he can feel the difference.",
+      "corpus": "roamy",
+      "frequency": 3,
+      "projects": ["appydave-plugins", "brains (OKF)", "captains-log"],
+      "evidence": [
+        {
+          "session_date": "2026-06-27",
+          "project": "brains (OKF)",
+          "quote": "You gave me variations of stigmergy. You didn't give me other words that essentially mean the same thing, but from other domains, not fucking ants."
+        },
+        {
+          "session_date": "2026-06-27",
+          "project": "brains (OKF)",
+          "quote": "I am okay with the concept of you renaming it to a role. But only after two things: 1. You've done a more thorough analysis 2. You've given me two or three other names"
+        },
+        {
+          "session_date": "2026-07-21",
+          "project": "captains-log",
+          "quote": "we do not have a thesaurus, a table of definitions, or whatever it is we need... I'd love a two-pass thesaurus. I want it to be the definition, and then I want it to be the story-based example."
+        },
+        {
+          "session_date": "2026-07-09",
+          "project": "appydave-plugins",
+          "quote": "research good ways of nameing conversations in claude code, think about the fact that you ofent want continuity of a conversation streams in new sessions... think creatively and practically"
+        }
+      ],
+      "has_stream": "unclear",
+      "stream_description": "The stream is the evolving vocabulary of a system he keeps returning to (the brain schema field names, the Captain's Log thesaurus, the session-naming convention) — but each individual naming request has a start and an end. It is WIP-adjacent rather than clearly WIP.",
+      "output_is_material": "yes",
+      "candidate_lenses": [
+        "biology / ecology",
+        "manufacturing & logistics",
+        "music / performance",
+        "library science & archiving",
+        "military / navigation",
+        "plain-English what-would-a-stranger-guess"
+      ],
+      "candidate_pin": "The rejected-name graveyard and why — \"no more ant/stigmergy metaphors\", \"GTD is too person-specific to be a tag\", the accepted convention (stream + phase). Persisting the rejections is what stops the next naming pass regenerating the same discarded family.",
+      "shape_guess": "lens-room"
+    },
+    {
+      "id": "roamy-053",
+      "label": "recall-what-we-already-worked-out",
+      "description": "David starts sessions by trying to recover prior work he half-remembers — a tool, a skill, a brain doc, or a conversation from days ago. He describes it vaguely (\"that video model from China\", \"the tool I use for provisioning, forgotten its name, it's in the brain\") and asks the assistant to go find it rather than telling it where to look.",
+      "corpus": "roamy",
+      "frequency": 5,
+      "projects": ["brains", "imagedrip"],
+      "evidence": [
+        {
+          "session_date": "2026-06-26",
+          "project": "brains",
+          "quote": "we just recently in the brains worked out some stuff, a big part of the video to code... do we use the GLM model or not, one of the models from China? ... What was this information?"
+        },
+        {
+          "session_date": "2026-06-26",
+          "project": "brains",
+          "quote": "is this a value you can figure out from the tool I use for provisioning my machines, forgtton its name its in the brain but it can read and write computer setting"
+        },
+        {
+          "session_date": "2026-07-21",
+          "project": "brains",
+          "quote": "What do we know about Vercel? In particular, Eve, not Vercel, Eve from Vercel and Eve Studio."
+        },
+        {
+          "session_date": "2026-07-28",
+          "project": "imagedrip",
+          "quote": "there's another image trip conversation from a week or two ago on this computer, which I probably need to close down, but I thought you could read it and just see if there's anything useful in it"
+        },
+        {
+          "session_date": "2026-07-28",
+          "project": "imagedrip",
+          "quote": "I've not been reading this conversation, so I don't really know what we've done. I guess you have to give me a bit of a timeline of things we've done, with a bit of a description next to each of them."
+        }
+      ],
+      "has_stream": "no",
+      "stream_description": "No WIP. Each recall is a one-shot lookup against a static archive with a definite right answer — he wants the fact, the path, or the skill name, and then moves on. The archive grows, but he isn't working THROUGH it; he's querying it.",
+      "output_is_material": "no",
+      "candidate_lenses": null,
+      "candidate_pin": null,
+      "shape_guess": "none"
+    },
+    {
+      "id": "roamy-054",
+      "label": "write-a-cross-machine-handover",
+      "description": "Nearly every session ends the same way: David names which machine he is on, asks whether everything has been persisted, and demands a paste-ready block with absolute paths so the other Mac (usually M4 Mini) can pick up without any of this conversation's context. He treats the handover doc as the index of everything produced that day.",
+      "corpus": "roamy",
+      "frequency": 5,
+      "projects": ["brains", "brains (OKF)", "captains-log", "imagedrip"],
+      "evidence": [
+        {
+          "session_date": "2026-07-21",
+          "project": "captains-log",
+          "quote": "It won't have all of your knowledge in this conversation, so that will be an important thing to keep in mind... I'm going to want an index of any documentation we've created today, along with this conversation"
+        },
+        {
+          "session_date": "2026-07-21",
+          "project": "brains",
+          "quote": "I'm going to do all this work on the other computer. My question is: have we persisted everything? Also, can we just note that this is M4 Pro and we did a conversation... so that the other computer could read this"
+        },
+        {
+          "session_date": "2026-07-28",
+          "project": "imagedrip",
+          "quote": "can you just, wherever we're at, I assume it's not on a work tree, can you at least do a commit and push up so I can pull whatever we're up to over onto M4 Mini"
+        },
+        {
+          "session_date": "2026-06-27",
+          "project": "brains (OKF)",
+          "quote": "We're at 47% context. Do you want to do everything here, or do you want to write up a handover and not do it in a new window? Your choice."
+        }
+      ],
+      "has_stream": "no",
+      "stream_description": "The output is a finished, self-contained document produced at a session boundary. It has a clear done-state and is not returned to and evolved — the next session consumes it and writes a new one.",
+      "output_is_material": "no",
+      "candidate_lenses": null,
+      "candidate_pin": null,
+      "shape_guess": "assembly-line"
+    },
+    {
+      "id": "roamy-055",
+      "label": "migrate-the-brain-metadata-against-an-external-standard",
+      "description": "David compares his own knowledge-system conventions (Lexi/INDEX frontmatter) against an external spec (Google's OKF), interrogates every proposed field rename, then drives a staged migration — rubric, vocab, dry run, phase-2 write, full rollout — reviewing each generated proposal batch before approving it.",
+      "corpus": "roamy",
+      "frequency": 1,
+      "projects": ["brains"],
+      "evidence": [
+        {
+          "session_date": "2026-06-27",
+          "project": "brains",
+          "quote": "I'm not necessarily going to fully understand the OKF type kind of concept versus the Lexi type structural role of the brain unless I have a much more thorough gap analysis."
+        },
+        {
+          "session_date": "2026-06-27",
+          "project": "brains",
+          "quote": "When you see 98 summaries and 29 descriptions, is there something about them? Are they the same thing or are they different?"
+        },
+        {
+          "session_date": "2026-06-27",
+          "project": "brains",
+          "quote": "go for the full rollout, show diff-stat before commit"
+        },
+        {
+          "session_date": "2026-06-27",
+          "project": "brains",
+          "quote": "Do I have to eyeball 137 low-confidence files and 126 synthesised descriptions? I'm not going to. What are you trying to say here? Is there a better technique?"
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "The brain corpus (1477 files) is the WIP and he returns to it constantly — but within this activity it moves through fixed sequential stages (rubric → vocab → dry run → phase-2 write → rollout → cleanup pass), each gated by his approval.",
+      "output_is_material": "no",
+      "candidate_lenses": null,
+      "candidate_pin": null,
+      "shape_guess": "assembly-line"
+    },
+    {
+      "id": "roamy-056",
+      "label": "stand-up-and-reset-a-tool-across-the-fleet",
+      "description": "David installs or re-installs third-party agent tooling (Hermes, gbrain, plugins) and fleet plumbing (Tailscale/VNC, gh auth) live, hits a wrong assumption about how it partitions his work, and demands a clean teardown and restart rather than patching. The recurring confusion is always the same shape: how does this tool map onto many projects, many brands, many machines.",
+      "corpus": "roamy",
+      "frequency": 3,
+      "projects": ["brains", "brains (Hermes workshop)"],
+      "evidence": [
+        {
+          "session_date": "2026-07-23",
+          "project": "brains (Hermes workshop)",
+          "quote": "why don't we delete everything related to hermes and jsut start clean (but not my data folders)"
+        },
+        {
+          "session_date": "2026-07-23",
+          "project": "brains (Hermes workshop)",
+          "quote": "I don't understand the working diretory, I have dozeons of projects and a brain so wtf is the working directory"
+        },
+        {
+          "session_date": "2026-07-23",
+          "project": "brains (Hermes workshop)",
+          "quote": "so answeer a question for me if I have a brain and a company 1 and company 2 and I want to work with each of them do I install hermes into each"
+        },
+        {
+          "session_date": "2026-06-26",
+          "project": "brains",
+          "quote": "why does this keep happening, what is the po9int of a virtual network with comuters that turn off, you can't travel to another country to turn the fucking thing on"
+        },
+        {
+          "session_date": "2026-07-21",
+          "project": "brains",
+          "quote": "I'm getting a message from the other computer saying that GitHub protocol SSH clueless-io, which is in the host.yml. There's a problem with GitHub authentication."
+        }
+      ],
+      "has_stream": "no",
+      "stream_description": "Each is a troubleshooting episode with a definite end state (the thing works, or is torn down). No accumulating artefact he returns to and refines.",
+      "output_is_material": "no",
+      "candidate_lenses": null,
+      "candidate_pin": null,
+      "shape_guess": "none"
+    },
+    {
+      "id": "roamy-057",
+      "label": "pattern-scouting-a-living-shape-catalogue",
+      "description": "Against an accumulating pile of ~20 repos and prior experiments, David asks Claude to scout for structural shapes — hierarchies, lifecycles, metaphors, topologies — rather than converge on one answer. He then prunes them by hand ('my con was wrong. Remove it'), argues the vocabulary until it settles, and has the survivors written into files (shape-catalogue.md, metaphor-grid.md, narrative-layer.md) that he returns to and re-scouts in later sessions.",
+      "corpus": "roamy",
+      "frequency": 3,
+      "projects": ["brains (northern-lights)", "brains (software-factory-research)"],
+      "evidence": [
+        {
+          "session_date": "2026-07-28",
+          "project": "brains (northern-lights)",
+          "quote": "I feel like you're trying to hone in on a pattern when really you should be scouting for patterns."
+        },
+        {
+          "session_date": "2026-07-28",
+          "project": "brains (northern-lights)",
+          "quote": "I don't know how many shapes you can see there, but I'm sure there are a few. If you had those shapes and we label"
+        },
+        {
+          "session_date": "2026-07-28",
+          "project": "brains (northern-lights)",
+          "quote": "Revise the shape catalogue against the corrections below, then persist it. The shapes currently exist only in conversation; they are now validated enough to be written to"
+        },
+        {
+          "session_date": "2026-07-28",
+          "project": "brains (northern-lights)",
+          "quote": "Work the terminology problem first, then the diagrams, then re-scout."
+        },
+        {
+          "session_date": "2026-07-28",
+          "project": "brains (northern-lights)",
+          "quote": "Open a **second, parallel track** on Northern Lights: the narrative and naming layer. This does not replace or block the shape-catalogue work — it runs alongside it and feeds it."
+        },
+        {
+          "session_date": "2026-07-30",
+          "project": "brains (northern-lights)",
+          "quote": "Produce three self-contained briefing documents for the **northern-lights** project. These are knowledge packages, not implementation"
+        },
+        {
+          "session_date": "2026-07-26",
+          "project": "brains (software-factory-research)",
+          "quote": "gaps-and-open-questions.md and gen2-topology.md section 9 — those two are the live open-question registers"
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "The Northern Lights concept corpus — shape-catalogue.md, metaphor-grid.md, narrative-layer.md, plus the HANDOVER doc — is explicitly in progress, mined from a moving pile of ~20 repos, and revisited across at least three sessions in this batch. Shapes get added, corrected and deleted; vocabulary gets renegotiated; then he asks for another scouting pass over the same ground.",
+      "output_is_material": "yes",
+      "candidate_lenses": [
+        "SDLC practitioner — what lifecycle / state machine does this shape imply, from our own BMAD-on-SupportSignal practice",
+        "Ontologist / data-modeller — what are the entities and the containment hierarchy (feature / epic / story / ticket)",
+        "Narrative + metaphor — what does this feel like as an 8-bit sim, a game, a movie; what would you name it",
+        "Agent-coordination — who acts on this node, one at a time, and what is the substrate vs the actor",
+        "Repo archaeologist — does this shape actually exist in our 20 repos, or did we just talk about it",
+        "Vocabulary cop — which word is doing too much work here and needs splitting"
+      ],
+      "candidate_pin": "Which shapes are validated versus killed (⑪ THE HUB was explicitly removed), and the settled meaning of contested words — 'feature', 'epic', 'story', 'unit of work'. Both persist and constrain every subsequent scouting pass; he says so directly: settle the vocabulary first, then diagrams, then re-scout.",
+      "shape_guess": "lens-room"
+    },
+    {
+      "id": "roamy-058",
+      "label": "interview-me-to-elicit-direction",
+      "description": "When a design is half-formed and he can feel Claude guessing, David flips the direction of questioning: he asks Claude to generate questions at him, so he can pick which ones to answer and thereby steer toward the northstar he hasn't articulated. He is specific about the delivery format — conversational prose, not the AskUserQuestion picker, and in storytelling mode when he is tired.",
+      "corpus": "roamy",
+      "frequency": 2,
+      "projects": ["brains (northern-lights)", "joy (video pipeline)"],
+      "evidence": [
+        {
+          "session_date": "2026-07-28",
+          "project": "brains (northern-lights)",
+          "quote": "Ask me some questions about g4 to ellicity direction or clarification or example from me"
+        },
+        {
+          "session_date": "2026-07-22",
+          "project": "joy (video pipeline)",
+          "quote": "make sure you ask me a couple of questions so that I can stear you towards the real northstar that I have that would ewlivity the right answer from yopu"
+        },
+        {
+          "session_date": "2026-07-22",
+          "project": "joy (video pipeline)",
+          "quote": "try q&a angain, but in convo, not with ask tool, but also in story telling format because I am to tired"
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "Each time, the questions are asked against an in-progress artefact he keeps returning to — the g4 shape catalogue in one case, Joy's end-to-end video pipeline documentation in the other. The questions exist to move that WIP forward, not to answer a standalone query.",
+      "output_is_material": "yes",
+      "candidate_lenses": [
+        "Northstar / intent — what outcome is this actually for, and who uses it",
+        "Concrete-example hunter — give me one real instance from your own repos or shop footage",
+        "Contradiction spotter — you said X on Thursday and Y today; which holds",
+        "Downstream consumer — what will the agent/Joy/Gow need that you haven't said",
+        "Scope boundary — what is deliberately NOT in this",
+        "Prior-art — where have you already solved this and forgotten"
+      ],
+      "candidate_pin": "Which questions he answered and what the answer was — those become settled direction (e.g. 'Joy reads the question then goes straight into question-answer-solution-outro', 'the agent gets hosted in eve, hermes or kyberbot'). A re-ask of a settled question is the failure mode this would prevent.",
+      "shape_guess": "lens-room"
+    },
+    {
+      "id": "roamy-059",
+      "label": "reframe-and-repin-a-live-build",
+      "description": "Mid-project, David issues a hard corrective that changes what the whole effort is about, and expects it to stick for the rest of the work. Not a tweak — a re-basing: Dark Factory demoted from 'the system' to 'a repo to mine', Gling from 'replace' to 'enhance', the footage router from 'face coverage' to 'that was too strong and today proved it'.",
+      "corpus": "roamy",
+      "frequency": 3,
+      "projects": [
+        "brains (gling-puppeteer)",
+        "brains (northern-lights)",
+        "joy (footage intake)",
+        "joy (scripts)"
+      ],
+      "evidence": [
+        {
+          "session_date": "2026-07-28",
+          "project": "brains (northern-lights)",
+          "quote": "Northern Lights is the project. Dark Factory is a **prior experiment** whose only remaining value is as a source to mine. Reframe accordingly."
+        },
+        {
+          "session_date": "2026-07-28",
+          "project": "brains (northern-lights)",
+          "quote": "Have you been a ssumeing that /Users/davidcruwys/dev/ad/apps/dark-factory is an accurate relflection of what we are building?"
+        },
+        {
+          "session_date": "2026-07-18",
+          "project": "brains (gling-puppeteer)",
+          "quote": "NOT building a Gling Editor replacement. Correct call — that's a huge job, and not today's fight. Enhancing the editor instead"
+        },
+        {
+          "session_date": "2026-07-23",
+          "project": "joy (footage intake)",
+          "quote": "your plan talks about human judgement. I never said human judgement. I don't mind you creating a structure that allows human judgement, but the reason you needed to read transcripts and videos was so that AI could do the judgement."
+        },
+        {
+          "session_date": "2026-07-22",
+          "project": "joy (scripts)",
+          "quote": "You say this, but you never wrote it into the window, so I don't even know what you're talking about."
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "Always fired at something already underway — an app being spec'd, a pipeline being built, a brain being mined. But the output is a corrected direction, not a set of options.",
+      "output_is_material": "no",
+      "candidate_lenses": [],
+      "candidate_pin": "The reframe itself is the pin — it is exactly the durable judgement that should persist and change what comes next. This activity is best read as the pin mechanic for the two lens-room candidates above, not as a lens room in its own right.",
+      "shape_guess": "none"
+    },
+    {
+      "id": "roamy-060",
+      "label": "evidence-graded-research-passes-over-a-corpus",
+      "description": "David runs read-only research passes over a body of repos/sessions with an explicit evidentiary bar — path:line or a commit for every structural claim, [unverified] on anything that can't be demonstrated — producing one report per pass that extends a standing collection. He fires background/teammate agents to independently verify claims and welcomes critical negative findings.",
+      "corpus": "roamy",
+      "frequency": 3,
+      "projects": [
+        "brains (dark-factory)",
+        "brains (gling-puppeteer)",
+        "brains (software-factory-research)"
+      ],
+      "evidence": [
+        {
+          "session_date": "2026-07-26",
+          "project": "brains (software-factory-research)",
+          "quote": "This is a CONTINUOUS research programme, not a build phase: four passes have landed and the next one extends the same artifacts."
+        },
+        {
+          "session_date": "2026-07-26",
+          "project": "brains (software-factory-research)",
+          "quote": "Same evidentiary standard as the previous passes: `path:line` or commit for every structural claim, `[unverified]` on anything you cannot demonstrate, findings must be demonstrable"
+        },
+        {
+          "session_date": "2026-07-28",
+          "project": "brains (dark-factory)",
+          "quote": "Do a **read-only archaeology pass** on the Dark Factory brain and its constellation apps, and produce **one report file**. Do not restructure, move, rename, or create any brain content"
+        },
+        {
+          "session_date": "2026-07-18",
+          "project": "brains (gling-puppeteer)",
+          "quote": "go for the L2 injection spike, also run a bg agent of flihub, you will see that it has some sort of export integration for gling I think"
+        },
+        {
+          "session_date": "2026-07-26",
+          "project": "brains (software-factory-research)",
+          "quote": "go, straight through, commit per pass"
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "The research collection genuinely accumulates — four passes landed, the fifth extends the same artifacts, with two live open-question registers carried forward. But each pass's payload is a verified findings report, not a menu.",
+      "output_is_material": "unclear",
+      "candidate_lenses": [],
+      "candidate_pin": "Which claims are verified versus [unverified], and which open questions are now closed. Note the open-question registers are the one genuinely lens-room-shaped artefact inside this otherwise fan-out activity.",
+      "shape_guess": "fan-out"
+    },
+    {
+      "id": "roamy-061",
+      "label": "recover-prior-work-across-machines-and-sessions",
+      "description": "Very often David starts by trying to find something he already did — a research thread, a session, a file — with only a fuzzy pointer: 'either on this computer or on M4 mini', a partial session id, 'a convo today about scripts with Gow at about 3pm'. He reaches for Captain's Log and session reading across Tailscale rather than redoing the work.",
+      "corpus": "roamy",
+      "frequency": 4,
+      "projects": ["brains (gling)", "brains (northern-lights)", "joy"],
+      "evidence": [
+        {
+          "session_date": "2026-07-18",
+          "project": "brains (gling)",
+          "quote": "I did some research either on this computer or on M4 mini recently. It could be in the brain. It could be in sessions on how it all works and everything about it. Can you find that research, please?"
+        },
+        {
+          "session_date": "2026-07-28",
+          "project": "brains (northern-lights)",
+          "quote": "can you find any conversations on the last 6 days about darkfactory, watch tower, northstart or northern lights on m4 mini captains log"
+        },
+        {
+          "session_date": "2026-07-22",
+          "project": "joy",
+          "quote": "Can you bring up a session? I know you can't open it in floor, but you can at least read it right now. It ends or it starts with A47BC64C. It's on the M4 Mini."
+        },
+        {
+          "session_date": "2026-07-22",
+          "project": "joy",
+          "quote": "can you use captains log skill to read m4-mini at moment"
+        },
+        {
+          "session_date": "2026-07-22",
+          "project": "joy",
+          "quote": "I only need today, not 6 months"
+        }
+      ],
+      "has_stream": "no",
+      "stream_description": "The session/capture archive does accumulate, but David is not working against it as WIP — each request is a lookup with a start and an end ('find that research, please'). The answer is a located artefact, not a supply of candidates.",
+      "output_is_material": "no",
+      "candidate_lenses": [],
+      "candidate_pin": "None persistent — though the recurring pain ('I've delivered a shit load of context to you and its not all in order') suggests the real want is a standing index, not a better search.",
+      "shape_guess": "fan-out"
+    },
+    {
+      "id": "roamy-062",
+      "label": "deciding-where-knowledge-should-live",
+      "description": "Repeatedly David stops mid-work to ask where a piece of knowledge belongs — a brain, a repo file, an app folder, a capture — and whether the system already has a system of record for it. He often discovers the convention exists but nothing owns it, and then asks for the one page that closes the gap.",
+      "corpus": "roamy",
+      "frequency": 4,
+      "projects": ["brains", "brains (northern-lights)", "joy"],
+      "evidence": [
+        {
+          "session_date": "2026-07-11",
+          "project": "brains",
+          "quote": "if we were just to documement this for the future, end of this month, where would you write this?"
+        },
+        {
+          "session_date": "2026-07-23",
+          "project": "brains",
+          "quote": "have we got a brain keeping track of best places for agetns and a system of record for them"
+        },
+        {
+          "session_date": "2026-07-23",
+          "project": "joy",
+          "quote": "where's the best place to keep track of all the different systems we've got for Joy? Should it have been my second brain, or should it have been in here somewhere?"
+        },
+        {
+          "session_date": "2026-07-28",
+          "project": "brains (northern-lights)",
+          "quote": "7 decisions sitting in .audit/, which our own convention labels not knowledge: this n eeds clarity"
+        },
+        {
+          "session_date": "2026-07-11",
+          "project": "brains",
+          "quote": "where is all the notes for autonomous demo furnace is it a brain or a file"
+        }
+      ],
+      "has_stream": "unclear",
+      "stream_description": "The knowledge system itself is long-running and evolving, but each routing question resolves to one decision and one file write. It is a filing decision, not a supply of options he picks among.",
+      "output_is_material": "no",
+      "candidate_lenses": [],
+      "candidate_pin": "The routing convention itself (own agent instances → ~/dev/agents/, frameworks → ~/dev/upstream/repos/, .audit/ is not knowledge). Worth persisting, but as a rule, not as a lens-room pin.",
+      "shape_guess": "none"
+    },
+    {
+      "id": "roamy-063",
+      "label": "close-out-a-session-into-a-resumable-handover",
+      "description": "Near the end of a working session David switches into wind-down mode: write the docs, write the handover with absolute paths, produce the paste-ready claude --model --name --prompt one-liner (cd on its own line so it copies separately), commit and push, and confirm nothing is dangling. He is not asking for an answer — 'I'm looking for it to be finished'.",
+      "corpus": "roamy",
+      "frequency": 3,
+      "projects": ["brains", "brains (gling-puppeteer)", "brains (northern-lights)"],
+      "evidence": [
+        {
+          "session_date": "2026-07-28",
+          "project": "brains (northern-lights)",
+          "quote": "Have we written all the skills and committed and pushed? Is everything closed off on this now? ... I'm not so much looking for an answer. I'm looking for it to be finished."
+        },
+        {
+          "session_date": "2026-07-28",
+          "project": "brains (northern-lights)",
+          "quote": "Once my copy and paste handover, in fact, better still use the Claude --model --name --prompt string format that we've been using in chaperone and different systems so I can just copy one line"
+        },
+        {
+          "session_date": "2026-07-18",
+          "project": "brains (gling-puppeteer)",
+          "quote": "lets tidy up, write up all our docs and get ready to close the conversation"
+        },
+        {
+          "session_date": "2026-07-11",
+          "project": "brains",
+          "quote": "sure And then, if you think it's all finished, let's close this conversation down."
+        },
+        {
+          "session_date": "2026-07-28",
+          "project": "brains (northern-lights)",
+          "quote": "Be careful how much more Q&A you go into. We are meant to be in handover mode."
+        }
+      ],
+      "has_stream": "no",
+      "stream_description": "A terminal ritual with a clear done-state. The output is one finished deliverable (the handover doc plus the launch command), produced through fixed stages — docs, handover, command, commit, push.",
+      "output_is_material": "no",
+      "candidate_lenses": [],
+      "candidate_pin": "The naming/role ontology he was actively negotiating in this batch ({subject}-{role}: watcher / coordinator / orchestrator / worker) — a convention that should persist across sessions, but it belongs in a skill, not a lens room.",
+      "shape_guess": "assembly-line"
+    },
+    {
+      "id": "roamy-064",
+      "label": "build-and-rerun-a-media-production-pipeline",
+      "description": "For Joy's content, David describes a station-by-station pipeline in prose (camera ingest → transcribe → dedupe/group → A-roll vs B-roll routing → tag → review surface → edit → publish), has it built, then re-runs it on each new batch of footage and corrects the automated judgements. Same pattern on the script side: Gow's Thai PDF → 10 scripts → recorded transcripts → evals over time.",
+      "corpus": "roamy",
+      "frequency": 2,
+      "projects": ["joy (footage intake)", "joy (scripts)"],
+      "evidence": [
+        {
+          "session_date": "2026-07-23",
+          "project": "joy (footage intake)",
+          "quote": "Can you open that HTML for me and can you pull in any new videos on the DJI Osmo that came in today and run them through the same process?"
+        },
+        {
+          "session_date": "2026-07-23",
+          "project": "joy (footage intake)",
+          "quote": "If there are any videos on the DJI camera, they all need to be brought over. ... Let's say 22 videos happen to come over. They may only be 10 or 12 that are useful because there might be a whole lot of duplicates"
+        },
+        {
+          "session_date": "2026-07-23",
+          "project": "joy (footage intake)",
+          "quote": "rather than automatically deleting them, you would tag the ones that you think are bad. You would also keep them all together as a little group somehow."
+        },
+        {
+          "session_date": "2026-07-22",
+          "project": "joy (scripts)",
+          "quote": "write the spec and also save the 10 scripts as well, after the videos are recorded, you will receive the full video transcript to link up and then we can do evals over time on every aspect of the script"
+        },
+        {
+          "session_date": "2026-07-22",
+          "project": "joy (scripts)",
+          "quote": "I want to know what the video creation pipeline is for joy topic research, video style, script writing, recording, editing, adding in broll and overlays, publishing."
+        }
+      ],
+      "has_stream": "yes",
+      "stream_description": "The pipeline itself is durable and re-run on each new footage batch, and the corpus of Joy videos accumulates. But each run transforms one artefact set through fixed stages to a finished output.",
+      "output_is_material": "no",
+      "candidate_lenses": [],
+      "candidate_pin": "The routing rules he keeps correcting — 'face coverage was the router, that was too strong', 'AI does the judgement, not a human'. Those corrections should persist into the classifier, which is an eval/tuning loop rather than a lens room.",
+      "shape_guess": "assembly-line"
+    }
+  ]
+}

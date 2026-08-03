@@ -1,0 +1,1085 @@
+{
+  "corpus": "m4-mini",
+  "generated": "2026-08-02",
+  "machine": "mac-mini-m4",
+  "purpose": "Recurring work-pattern activities mined from this machine's Claude Code session corpus, for side-by-side comparison against the Roamy corpus roster (mined 2026-08-01, 87 sessions). The comparison itself is a separate consolidation step once both rosters exist in the repo.",
+  "corpus_stats": {
+    "candidates_at_100k_threshold": 822,
+    "final_size_threshold_bytes": 1800000,
+    "sessions_mined": 100,
+    "batches": 10,
+    "raw_observation_count": 89,
+    "merged_activity_count": 46,
+    "date_range": "2026-07-11 to 2026-08-02 (recency-biased sample, all within the last ~3 weeks)",
+    "filters_applied": [
+      "top-level sessions only (excluded */subagents/* and */workflows/* paths)",
+      "size >= 1,800,000 bytes (raised from the 100k baseline to land the work list in the 80-120 range; at 100k there were 822 candidates)",
+      ">= 4 real human turns (string content only; excluded tool_result blocks and turns whose text starts with '<' or '[Image')",
+      "sorted by mtime descending, took the resulting 100 (recency bias — all fell within Jul 11 - Aug 2 2026)"
+    ]
+  },
+  "comparison_notes": "Roamy's roster (mined 2026-08-01, tagged corpus: roamy) is not present in this repo as of this run. Every activity below is tagged corpus: \"m4-mini\" so it can be diffed against Roamy's roster once that file lands here -- do not merge the two into one undifferentiated list.",
+  "activities": [
+    {
+      "id": "handover-docs-absolute-paths",
+      "label": "Requesting self-contained handover docs with absolute paths before closing/switching a session",
+      "description": "Before closing a window or switching machines, David repeatedly demands a durable, committed handover artifact — one file, absolute path, paste-ready launch line — so a fresh session or collaborator can resume with no access to the current chat.",
+      "corpus": "m4-mini",
+      "frequency": 19,
+      "projects": [
+        "clients/supportingpotential-achieve-mvp",
+        "ad/brains",
+        "kybernesis/cortex",
+        "ad/apps/captains-log",
+        "ad/joy",
+        "kybernesis/KBDE-KyberAgent-Enterprise",
+        "aitldr",
+        "ad/apps/dark-factory",
+        "video-projects/v-aitldr"
+      ],
+      "evidence": [
+        {
+          "session_id": "16b58c2b-a62c-4fce-b49b-e93093ea203f",
+          "project_dir": "ad/apps/captains-log",
+          "quote": "give me a full handover message... with one file, absolutely path written? That's how I'd want to see it."
+        },
+        {
+          "session_id": "e11bff1d-07a8-405f-a0ee-22358decbc89",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "The system that needs your readiness document is not in your folder, so it can't understand a relative path"
+        },
+        {
+          "session_id": "1b97707b-69d6-4bd3-b578-0536827cae25",
+          "project_dir": "ad/apps/captains-log",
+          "quote": "Handover docs must ship with a paste-ready launch line... claude --model claude-fable-5 ..."
+        },
+        {
+          "session_id": "0ecd719d-cb0e-47bc-a6ad-71f95d0daf6b",
+          "project_dir": "clients/supportingpotential-achieve-mvp",
+          "quote": "Is this committed and pushed so that she'll actually see it?"
+        }
+      ]
+    },
+    {
+      "id": "chaperone-watch-loop",
+      "label": "Running a Chaperone watch-loop over another live session",
+      "description": "David repeatedly spins up a separate read-only 'Chaperone' session that tails another running Claude Code session's transcript on a timed loop (checked against a plan/oracle doc) and pings him only on drift, completion, or a push — rather than watching the work himself.",
+      "corpus": "m4-mini",
+      "frequency": 18,
+      "projects": [
+        "kybernesis/KBDE-KyberAgent-Enterprise",
+        "ad/apps/captains-log",
+        "ad/brains",
+        "ad/apps/dark-factory"
+      ],
+      "evidence": [
+        {
+          "session_id": "0fc6e34d-129f-4f1e-ad78-b22f138ce73d",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "watch kbde-swag and tell me when 358 is pushed"
+        },
+        {
+          "session_id": "28cac7c2-ab92-4822-af6c-197c8ff67c0a",
+          "project_dir": "ad/apps/dark-factory",
+          "quote": "Chaperone tick: watching dark-factory-c2 ... Oracle: backlog/2026-07-10-darkfactory-handover.md"
+        },
+        {
+          "session_id": "e45c2c87-1a96-4d27-989c-267875b29319",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "Just watch the conversation every 30 minutes. Place it on a loop... batch them all up"
+        },
+        {
+          "session_id": "ddbcf61a-6d3a-41e1-9c42-3217667eaf8b",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "You are now watched by a read-only CHAPERONE session — an advisor to David, not your boss."
+        }
+      ]
+    },
+    {
+      "id": "pr-merge-linear-sync",
+      "label": "Approving PR merges and syncing Linear tickets via terse go/merge commands",
+      "description": "David reviews proposed PRs/tickets one at a time on KBDE-KyberAgent-Enterprise and greenlights them with short commands ('merge 344', 'go 297'), then has Claude keep Linear tickets and branch status in sync, calling out unmerged branches or stale tickets.",
+      "corpus": "m4-mini",
+      "frequency": 15,
+      "projects": ["kybernesis/KBDE-KyberAgent-Enterprise", "ad/appydave-plugins"],
+      "evidence": [
+        {
+          "session_id": "434da84f-3875-4543-af2c-eb56133614da",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "go 297 ... merge 344 ... merge 349"
+        },
+        {
+          "session_id": "a5f218df-be26-4bcc-abab-b9b5f9b4d804",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "yes, merge it and give me the triage report"
+        },
+        {
+          "session_id": "181a8cfc-2164-4c7d-9bba-acc6b22df925",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "merge #250 and close the ticket"
+        },
+        {
+          "session_id": "7c158411-2dfd-4958-b057-92c79e59c2de",
+          "project_dir": "ad/appydave-plugins",
+          "quote": "Is this branch still open? Why did we not close this branch down when we finished it?"
+        }
+      ]
+    },
+    {
+      "id": "lisa-kdd-capture",
+      "label": "Invoking Lisa (KDD librarian) to capture learnings at the end of a work arc",
+      "description": "At the close of a ticket or session arc David explicitly calls in the Lisa/KDD skill to record a learning, decision, or pattern before moving to the next piece of work, sometimes asking whether KDD has ever been onboarded on a project.",
+      "corpus": "m4-mini",
+      "frequency": 11,
+      "projects": [
+        "kybernesis/KBDE-KyberAgent-Enterprise",
+        "ad/apps/dark-factory",
+        "ad/apps/captains-log",
+        "ad/apps/appystack",
+        "ad/brains"
+      ],
+      "evidence": [
+        {
+          "session_id": "5b73220f-77a7-49a3-b783-cdeffe5eb57f",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "yeah do the KDD capture"
+        },
+        {
+          "session_id": "39d1f1f9-ae2a-48ea-83dd-0a6c25f07868",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "run a Lisa/KDD capture of today's arc before starting anything new"
+        },
+        {
+          "session_id": "fa543bb8-7da0-4023-a2fb-43ee943be89b",
+          "project_dir": "ad/apps/appystack",
+          "quote": "have we ever done knowledge-driven development on this project? Also, I think Lisa can onboard the concept"
+        },
+        {
+          "session_id": "be50cfd2-6422-4b2c-8ee0-de12fdd3537b",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "/lisa to store any learnings from this last part of the conversation."
+        }
+      ]
+    },
+    {
+      "id": "swagger-orchestrator-rulings",
+      "label": "Running Swagger orchestrator sessions and clearing their queue via terse rulings",
+      "description": "David runs 'Swagger' orchestrator personas (kbde-swag, captain-swag, kyber-sdk-swagger) that delegate ticket work to disposable worker subagents; he checks in periodically and issues short go/merge/hold rulings instead of reading long reports.",
+      "corpus": "m4-mini",
+      "frequency": 10,
+      "projects": [
+        "kybernesis/KBDE-KyberAgent-Enterprise",
+        "ad/apps/captains-log",
+        "ad/apps/samantha",
+        "ad/apps"
+      ],
+      "evidence": [
+        {
+          "session_id": "6cf085db-3a68-4375-9f0b-7aa6bc3952d0",
+          "project_dir": "ad/apps/samantha",
+          "quote": "check in where Swagger's are and give me the next set of rulings because they've both given me walls of text"
+        },
+        {
+          "session_id": "e3601f24-8f94-4d40-95ea-94c6dab6cdfa",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "merge #393, hold #394 for review If that's what you think is needed"
+        },
+        {
+          "session_id": "494a1378-c18b-44bd-922c-e8c5d7d6dc5b",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "I've created new agents called kbde-swag and captain-swag ... we should close down chaperone right now"
+        },
+        {
+          "session_id": "827f1d88-82db-460a-b5dd-b506d21bf5eb",
+          "project_dir": "ad/apps",
+          "quote": "the whole idea of setting up swagger to orchestrate things was just for him to move forward"
+        }
+      ]
+    },
+    {
+      "id": "ticket-batch-execution",
+      "label": "Executing numbered ticket batches with test/typecheck/lint gates via terse go/next taps",
+      "description": "David dispatches queues of numbered tickets (W-series, T-series) to be built in strict order, each tested/typechecked/linted and committed separately, keeping the session moving with single-word continuations like 'go' or 'next'.",
+      "corpus": "m4-mini",
+      "frequency": 9,
+      "projects": [
+        "ad/apps/captains-log",
+        "ad/apps/dark-factory",
+        "ad/joy",
+        "kybernesis/KBDE-KyberAgent-Enterprise",
+        "aitldr"
+      ],
+      "evidence": [
+        {
+          "session_id": "c59bcb9b-5c9c-4d09-90f8-6afc94bde3a7",
+          "project_dir": "ad/apps/captains-log",
+          "quote": "Execute W4.1 through W4.6 in order, committing and pushing each ticket separately to main, running npm test..."
+        },
+        {
+          "session_id": "eacae19c-e057-4cb1-9a12-1f2861265d8f",
+          "project_dir": "ad/apps/dark-factory",
+          "quote": "queue T3-03 and T3-04, give me the pool=2 run"
+        },
+        {
+          "session_id": "a2607426-c427-4ba1-8d08-43099fc62b05",
+          "project_dir": "ad/apps/captains-log",
+          "quote": "keep going through T1.5 -> T1.6 -> T2.1"
+        },
+        {
+          "session_id": "4b0fd047-9746-4af1-bb68-d3a9f01d9b75",
+          "project_dir": "aitldr",
+          "quote": "Go, build 1 + the aitldr-mate plugin"
+        }
+      ]
+    },
+    {
+      "id": "reject-wall-of-text-qa",
+      "label": "Rejecting wall-of-text / AskUserQuestion picker answers, demanding one-at-a-time Q&A",
+      "description": "David repeatedly refuses long prose answers and the structured AskUserQuestion picker tool, insisting the agent ask questions conversationally one at a time so he can answer quickly.",
+      "corpus": "m4-mini",
+      "frequency": 8,
+      "projects": ["ad/brains", "ad/apps/captains-log", "kybernesis/KBDE-KyberAgent-Enterprise"],
+      "evidence": [
+        {
+          "session_id": "428a2088-3419-4911-91b5-84bb827a5faa",
+          "project_dir": "ad/brains",
+          "quote": "I declined to answer because you didn't use my preferred format, which is in conversation Q&A."
+        },
+        {
+          "session_id": "3936dd85-cdac-43be-b811-856146676c43",
+          "project_dir": "ad/apps/captains-log",
+          "quote": "go But don't you dare use the ask user tool. It's fucking useless. Keep it conversational."
+        },
+        {
+          "session_id": "c4ff3afb-f9ba-4467-83ba-3d91d4c6f84c",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "I can't really understand what you've told me. It feels like a wall of text."
+        },
+        {
+          "session_id": "c5b7fdb3-5c91-45e6-854a-a3d3babbf06b",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "hit me up with each of the ratifications one at a time in simple format"
+        }
+      ]
+    },
+    {
+      "id": "status-recap-after-absence",
+      "label": "Requesting a status recap or 'helicopter view' after time away",
+      "description": "David repeatedly reopens a long-running thread by asking Claude to summarize current state, pull collaborators' latest commits, and give a plain-language recap before he decides what to do next.",
+      "corpus": "m4-mini",
+      "frequency": 7,
+      "projects": [
+        "clients/supportingpotential-achieve-mvp",
+        "aitldr",
+        "kybernesis/KBDE-KyberAgent-Enterprise",
+        "ad/apps/captains-log"
+      ],
+      "evidence": [
+        {
+          "session_id": "0b7b7ba8-7ade-416d-840e-cc7be59d9f16",
+          "project_dir": "clients/supportingpotential-achieve-mvp",
+          "quote": "remind me of where we are upto, I have not looked since last awee"
+        },
+        {
+          "session_id": "4b0fd047-9746-4af1-bb68-d3a9f01d9b75",
+          "project_dir": "aitldr",
+          "quote": "I'd like you to do a Git pull and bring me up to speed on where we are on things."
+        },
+        {
+          "session_id": "5b73220f-77a7-49a3-b783-cdeffe5eb57f",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "What is going on with this conversation? Where are we at?"
+        },
+        {
+          "session_id": "f9a4e551-c4d3-478c-9b00-91e0d713e5d9",
+          "project_dir": "ad/apps/captains-log",
+          "quote": "I need to understand the helicopter view of what we're doing in this conversation."
+        }
+      ]
+    },
+    {
+      "id": "session-lifecycle-management",
+      "label": "Managing Claude Code session lifecycle — naming, parking, rescuing, mapping windows",
+      "description": "With many parallel terminal windows open, David repeatedly asks for tooling to name sessions, park them before a reboot, rescue/resume by ID or name, and map a session ID back to the correct physical window.",
+      "corpus": "m4-mini",
+      "frequency": 6,
+      "projects": [
+        "ad/brains",
+        "ad/apps/samantha",
+        "kybernesis/KBDE-KyberAgent-Enterprise",
+        "ad/apps/captains-log"
+      ],
+      "evidence": [
+        {
+          "session_id": "c822b910-5678-44c1-9a12-a8d76ad48a2c",
+          "project_dir": "ad/brains",
+          "quote": "What is the skill we use to restart a session? ... will it work with session names rather than session IDs"
+        },
+        {
+          "session_id": "6cf085db-3a68-4375-9f0b-7aa6bc3952d0",
+          "project_dir": "ad/apps/samantha",
+          "quote": "I don't want session class. I want session wind down."
+        },
+        {
+          "session_id": "a6a03442-3146-4094-9c03-7da709d704ad",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "you can't tell which physical window a session id maps to"
+        },
+        {
+          "session_id": "7826f8d4-309c-407d-87e4-660026c791b2",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "I accidentally closed down terminals and crashed the system. Was this session running yesterday..."
+        }
+      ]
+    },
+    {
+      "id": "mining-captures-for-tickets",
+      "label": "Mining Captain's Log/OMI/Plaud captures and past transcripts for new tickets and ideas",
+      "description": "David periodically has Claude sweep the Captain's Log capture backlog, OMI voice notes, or days of past session transcripts to surface forgotten ideas and mint them as new tickets, de-duplicating against what's already built.",
+      "corpus": "m4-mini",
+      "frequency": 6,
+      "projects": [
+        "ad/apps/captains-log",
+        "ad/apps/appydave-hackerthons-08-2026-chaingmai-4seas",
+        "ad/brains",
+        "ad/apps/dark-factory"
+      ],
+      "evidence": [
+        {
+          "session_id": "feb0e197-51ff-400f-a90a-f536b6d7c498",
+          "project_dir": "ad/apps/captains-log",
+          "quote": "compare it to the tickets that we've already implemented on Captain's Log so we can build the gap"
+        },
+        {
+          "session_id": "0b38cc1e-0ebd-45e3-aa9f-9193546048be",
+          "project_dir": "ad/brains",
+          "quote": "We have 1,216 conversations in the Captain's Log... you might be able to come up with a plan"
+        },
+        {
+          "session_id": "c6860e22-f533-4488-9afa-85d876a6c015",
+          "project_dir": "ad/apps/captains-log",
+          "quote": "go over the last three or four days of transcripts... segment them"
+        },
+        {
+          "session_id": "2fdc2412-e422-4343-860a-558191c20bf4",
+          "project_dir": "ad/apps/dark-factory",
+          "quote": "I did say some stuff into my OMI. Can you read that and evaluate it?"
+        }
+      ]
+    },
+    {
+      "id": "captains-log-ingestion-failures",
+      "label": "Diagnosing and fixing Captain's Log / Plaud ingestion pipeline failures",
+      "description": "David repeatedly hunts down failures in the Captain's Log ingestion pipeline — oversized (multi-hour to 24-hour) Plaud recordings that fail transcription, missing files, and Plaud WRT auth-token refresh reliability — demanding plain-English root cause before accepting a fix.",
+      "corpus": "m4-mini",
+      "frequency": 6,
+      "projects": ["ad/apps/captains-log"],
+      "evidence": [
+        {
+          "session_id": "5d353823-93e6-41c1-b381-8e124ab68021",
+          "project_dir": "ad/apps/captains-log",
+          "quote": "The B343 that has just come through is big... We need to be able to process it."
+        },
+        {
+          "session_id": "a0dcec36-805a-4635-9a5e-57c33667bcdc",
+          "project_dir": "ad/apps/captains-log",
+          "quote": "we might actually have to manually process the big one because... it was 24 hours long"
+        },
+        {
+          "session_id": "a2607426-c427-4ba1-8d08-43099fc62b05",
+          "project_dir": "ad/apps/captains-log",
+          "quote": "I don't have any confidence in your WRT setup right now. Sell me on it."
+        },
+        {
+          "session_id": "9ef88d71-b0e2-48e2-bfa0-4d87d7338c2c",
+          "project_dir": "ad/apps/captains-log",
+          "quote": "How is it that we got everything working with the WRT, but it's not gonna work from the server?"
+        }
+      ]
+    },
+    {
+      "id": "kyberagent-daemon-restart-debug",
+      "label": "Restarting and debugging the KyberAgent daemon lifecycle before verifying fixes",
+      "description": "David repeatedly works through killing/restarting the KBDE daemon (dev:clean, dev:verify) to confirm a running process matches the checked-out branch, pushing back when the agent reaches for raw kill commands or a fix doesn't actually reload.",
+      "corpus": "m4-mini",
+      "frequency": 6,
+      "projects": ["kybernesis/KBDE-KyberAgent-Enterprise"],
+      "evidence": [
+        {
+          "session_id": "c5ce8c68-364e-4f6e-8e75-0b5dcc25cfd8",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "Why do we have tools? Why do we keep going to the kill command, and why do you always make that mistake?"
+        },
+        {
+          "session_id": "d6a08e2c-8941-485e-96ae-e0a4dc61c31a",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "That's concerning that we get two demons. Why is it? Why doesn't restarting the app connect to the old daemon?"
+        },
+        {
+          "session_id": "0df1341d-b118-4809-9988-da7ee4af782f",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "Now I just restarted the application one more time, and your fucking fix is not there"
+        },
+        {
+          "session_id": "cb57fd33-6983-4896-9315-b1f90b0f8925",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "Have you killed the daemon before we kick off?"
+        }
+      ]
+    },
+    {
+      "id": "demand-in-app-uat-proof",
+      "label": "Demanding concrete in-app UAT proof before trusting a fix",
+      "description": "David refuses to accept a claim of 'done' at face value, repeatedly asking for explicit UAT steps or a live demonstration he can run himself — building tickets in worktrees and killing the daemon to verify by hand rather than trusting automated tests alone.",
+      "corpus": "m4-mini",
+      "frequency": 5,
+      "projects": ["kybernesis/KBDE-KyberAgent-Enterprise"],
+      "evidence": [
+        {
+          "session_id": "4d233fa6-0786-4a56-8128-eefdac9e87eb",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "Once I do that, what are you going to ask me to go and look at? What are the UAT steps?"
+        },
+        {
+          "session_id": "36a6310e-ab44-44b5-9281-8a070ff69960",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "Feels like you've done a whole lot of stuff, but I don't have a UAT."
+        },
+        {
+          "session_id": "be50cfd2-6422-4b2c-8ee0-de12fdd3537b",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "Does everything work? How do I know it all works?"
+        },
+        {
+          "session_id": "a0ce8772-f6e0-48d9-8f9d-bb819fea2615",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "Can I get you to do this in a work tree? Does that make sense for this ticket?"
+        }
+      ]
+    },
+    {
+      "id": "session-archaeology-reconstruction",
+      "label": "Running session archaeology to reconstruct past decisions and state",
+      "description": "David has Claude read back through recent Claude Code session transcripts to reconstruct what happened, what's outstanding, and whether a skill/decision is still accurate — rather than trusting a single conversation's memory.",
+      "corpus": "m4-mini",
+      "frequency": 4,
+      "projects": [
+        "ad/apps/captains-log",
+        "ad/apps/dark-factory",
+        "kybernesis/KBDE-KyberAgent-Enterprise"
+      ],
+      "evidence": [
+        {
+          "session_id": "1b97707b-69d6-4bd3-b578-0536827cae25",
+          "project_dir": "ad/apps/captains-log",
+          "quote": "run the session Archaeology on these, and I need you to help me get things into alignment"
+        },
+        {
+          "session_id": "2fdc2412-e422-4343-860a-558191c20bf4",
+          "project_dir": "ad/apps/dark-factory",
+          "quote": "give you an archaeology of information from KBDE. Just read it."
+        },
+        {
+          "session_id": "f0700cb8-ee3a-47b3-b919-260ab26b32b0",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "what were the last ten session IDs from Claude? In order, please."
+        },
+        {
+          "session_id": "3815e1fd-71de-4706-aab9-a6373865232b",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "do you think this skill is currently up to date and accurate?"
+        }
+      ]
+    },
+    {
+      "id": "periodic-progress-dashboards",
+      "label": "Demanding periodic visual/tabular progress check-ins on long-running background jobs",
+      "description": "During multi-day brain-ingestion/drain campaigns, David repeatedly asks for a glanceable, tabular progress report at a fixed cadence, adjusting the interval when it feels too slow or too chatty.",
+      "corpus": "m4-mini",
+      "frequency": 4,
+      "projects": ["kybernesis/KBDE-KyberAgent-Enterprise"],
+      "evidence": [
+        {
+          "session_id": "b1136893-16af-441d-9995-6f520a4a4720",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "I can't really read this. Can you make it simpler and more understandable? Maybe more visual."
+        },
+        {
+          "session_id": "02f57ce3-e62a-4024-b580-9fd7bd746955",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "can we make it more tabular so I can the report better on each iteraction"
+        },
+        {
+          "session_id": "d6a08e2c-8941-485e-96ae-e0a4dc61c31a",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "is it draining yet? And are you watching?"
+        },
+        {
+          "session_id": "e8cca4af-d34f-464b-98d1-756127785a2b",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "Are you going to keep watch of this pipeline... every three minutes, please?"
+        }
+      ]
+    },
+    {
+      "id": "brand-token-correction",
+      "label": "Correcting AI-generated visuals/artifacts that drift from AppyDave brand tokens",
+      "description": "David repeatedly notices that generated artifacts, dashboards, or client mockups don't follow his actual brand palette by name and rejects generic/wrong colors, asking for a rebuild against the real brand skill/tokens.",
+      "corpus": "m4-mini",
+      "frequency": 3,
+      "projects": ["ad/brains", "ad/joy", "clients/supportingpotential-achieve-mvp"],
+      "evidence": [
+        {
+          "session_id": "428a2088-3419-4911-91b5-84bb827a5faa",
+          "project_dir": "ad/brains",
+          "quote": "I've got yet another artefact that doesn't follow my AppyDave light brand guidelines. This is the third time this week."
+        },
+        {
+          "session_id": "a47bc64c-28da-43fd-8a4a-becfe993cb59",
+          "project_dir": "ad/joy",
+          "quote": "I'm sure I asked you to get the colour of the artefact right... it's still baby poo brown."
+        },
+        {
+          "session_id": "368f82c9-1268-40c8-b90a-dea703bdde85",
+          "project_dir": "clients/supportingpotential-achieve-mvp",
+          "quote": "redo all the screens using the Mochaccino skill and also the AppyDave branding guidelines"
+        }
+      ]
+    },
+    {
+      "id": "naming-folder-conventions",
+      "label": "Working out naming/folder conventions for new apps, agents, and client-vs-personal boundaries",
+      "description": "David repeatedly stops mid-build to settle naming or folder-ownership questions — what to call a new app, where a client-facing agent vs his own liaison agent should live, or whether to clone vs copy a repo under a new name.",
+      "corpus": "m4-mini",
+      "frequency": 3,
+      "projects": ["ad/apps", "ad/brains"],
+      "evidence": [
+        {
+          "session_id": "827f1d88-82db-460a-b5dd-b506d21bf5eb",
+          "project_dir": "ad/apps",
+          "quote": "If I wanted to do a voice application, I'm going to call it Samantha. Would naming that app as Samantha make sense here"
+        },
+        {
+          "session_id": "081ada78-a3bf-4356-b5ab-ff60e1e95460",
+          "project_dir": "ad/brains",
+          "quote": "if it's an agent of mine for a client, it's called a liaison. If it's an agent for the client, it's got the word agent in it"
+        },
+        {
+          "session_id": "c822b910-5678-44c1-9a12-a8d76ad48a2c",
+          "project_dir": "ad/brains",
+          "quote": "we shouldn't just be cloning or changing the name of this repository... we're going to call it Incident"
+        }
+      ]
+    },
+    {
+      "id": "delegate-parallel-background-agents",
+      "label": "Delegating investigation to parallel background/teammate subagents",
+      "description": "David spins off multiple background agents to research a question in parallel (gap analysis, product research, session archaeology), then has the main session synthesize their reports rather than digging himself.",
+      "corpus": "m4-mini",
+      "frequency": 3,
+      "projects": ["ad/brains", "clients/supportingpotential-achieve-mvp", "aitldr"],
+      "evidence": [
+        {
+          "session_id": "7dd1d3f8-0c57-47d7-b489-b094021e257b",
+          "project_dir": "ad/brains",
+          "quote": "if you did a gap analysis between ecamm-bridge and deckhand... run a background agent or task right now"
+        },
+        {
+          "session_id": "368f82c9-1268-40c8-b90a-dea703bdde85",
+          "project_dir": "clients/supportingpotential-achieve-mvp",
+          "quote": "do a background agent right now and go and research any products that David has done"
+        },
+        {
+          "session_id": "4b0fd047-9746-4af1-bb68-d3a9f01d9b75",
+          "project_dir": "aitldr",
+          "quote": "you can look at any conversation you want right now in a background task using Session Archaeology"
+        }
+      ]
+    },
+    {
+      "id": "coordinate-parallel-worktrees",
+      "label": "Coordinating multiple parallel Claude Code sessions or worktrees on the same repo",
+      "description": "David runs several Claude Code windows against the same KyberAgent repo simultaneously and checks whether one session's merge/branch activity will collide with another's in-flight work, asking for worktrees to isolate them.",
+      "corpus": "m4-mini",
+      "frequency": 3,
+      "projects": ["kybernesis/KBDE-KyberAgent-Enterprise"],
+      "evidence": [
+        {
+          "session_id": "c4ff3afb-f9ba-4467-83ba-3d91d4c6f84c",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "Just at the time we were about to merge, another branch kicked in. I don't know whether it's gonna fuck you up."
+        },
+        {
+          "session_id": "be50cfd2-6422-4b2c-8ee0-de12fdd3537b",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "We wanted to do this work in a work tree so that it wasn't impacting any other work we did on this computer."
+        },
+        {
+          "session_id": "36a6310e-ab44-44b5-9281-8a070ff69960",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "read the last two turns from both of these sessions and tell me whether I can kill them"
+        }
+      ]
+    },
+    {
+      "id": "scoped-subsystem-audit",
+      "label": "Running scoped code-quality/system audits on a subsystem",
+      "description": "David invokes the system-audit skill in scoped mode to run a read-only audit of a specific seam or area (kernel-extension boundary, logging) rather than the whole repo, then decides which findings become tickets.",
+      "corpus": "m4-mini",
+      "frequency": 3,
+      "projects": ["kybernesis/KBDE-KyberAgent-Enterprise"],
+      "evidence": [
+        {
+          "session_id": "c4ff3afb-f9ba-4467-83ba-3d91d4c6f84c",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "run a READ-ONLY scoped seam audit of the kernel-extension-SDK boundary"
+        },
+        {
+          "session_id": "6c07005e-035d-4ba4-93b2-81ba5320d19d",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "How up to date is it with our documentation and our code base"
+        },
+        {
+          "session_id": "be50cfd2-6422-4b2c-8ee0-de12fdd3537b",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "probably what we should do is run a system audit skill... around the area of logging"
+        }
+      ]
+    },
+    {
+      "id": "rca-then-linear-ticket",
+      "label": "Diagnosing production bugs/cost issues via RCA, then shipping a Linear ticket",
+      "description": "When ambient behaviour looks wrong (data-integrity bugs, runaway CI costs), David has a sub-agent do read-only root-cause tracing and requires the fix be written up as a Linear ticket before moving on.",
+      "corpus": "m4-mini",
+      "frequency": 2,
+      "projects": ["kybernesis/KBDE-KyberAgent-Enterprise"],
+      "evidence": [
+        {
+          "session_id": "b1136893-16af-441d-9995-6f520a4a4720",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "if you've identified a bug class that's causing money loss, should we be stopping our search and spinning up a new ticket"
+        },
+        {
+          "session_id": "a5f218df-be26-4bcc-abab-b9b5f9b4d804",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "the problem is that the proof runs in CI, and it's consumed $100 in credits so far."
+        }
+      ]
+    },
+    {
+      "id": "plugin-taxonomy-decisions",
+      "label": "Deciding where a new skill/plugin belongs (internal vs public marketplace)",
+      "description": "David repeatedly works through whether a given skill/plugin should live in a private/internal tier vs the public appydave marketplace, pushing to settle the whole taxonomy in one pass.",
+      "corpus": "m4-mini",
+      "frequency": 2,
+      "projects": ["ad/appydave-plugins"],
+      "evidence": [
+        {
+          "session_id": "ad0eda78-0c4a-42c3-9bb7-4821c79df480",
+          "project_dir": "ad/appydave-plugins",
+          "quote": "Will this be the first time I've ever done a plug-in inside the appydave Plugins marketplace?"
+        },
+        {
+          "session_id": "7c158411-2dfd-4958-b057-92c79e59c2de",
+          "project_dir": "ad/appydave-plugins",
+          "quote": "Sorry, why the private tier? Why not public?"
+        }
+      ]
+    },
+    {
+      "id": "mochaccino-client-mockups",
+      "label": "Building Mochaccino HTML mockups/proposals for client presentations",
+      "description": "David uses the Mochaccino design skill to build one-page proposals and reskinned client mockups (synthetic data only) as pitch/demo artifacts, iterating live before a scheduled client call.",
+      "corpus": "m4-mini",
+      "frequency": 2,
+      "projects": ["clients", "clients/supportingpotential-achieve-mvp"],
+      "evidence": [
+        {
+          "session_id": "9fe25a72-962c-47d1-8675-538b8888ac89",
+          "project_dir": "clients",
+          "quote": "yes, build the one-page proposal"
+        },
+        {
+          "session_id": "7da110a7-8fcc-4d6e-b78d-6bdc8d1a2692",
+          "project_dir": "clients/supportingpotential-achieve-mvp",
+          "quote": "I don't like the boss as the centrepiece. We have a name, actually, which is better for us."
+        }
+      ]
+    },
+    {
+      "id": "omi-plaud-captains-log-build",
+      "label": "Pulling OMI/Plaud transcripts and building the Captain's Log ingestion app",
+      "description": "David runs omi-fetch/plaud-fetch tooling to pull down wearable/recorder transcripts and drives the design of a unifying app (renamed Captain's Log) meant to ingest OMI, Plaud, YouTube and email into one tagged store.",
+      "corpus": "m4-mini",
+      "frequency": 2,
+      "projects": ["ad/brains"],
+      "evidence": [
+        {
+          "session_id": "c940dcc4-b87c-4437-8f54-72c3600e7e9d",
+          "project_dir": "ad/brains",
+          "quote": "Do we usually use omi-fetch here, and can we use it against Plaud?"
+        },
+        {
+          "session_id": "4ce169ad-6f21-49b7-9f59-0b2f4eff62f7",
+          "project_dir": "ad/brains",
+          "quote": "Do we have the tooling in place for both Plaud and OMI ingestion? It could also be called Captain's Log."
+        }
+      ]
+    },
+    {
+      "id": "disk-space-cleanup",
+      "label": "Disk-space cleanup investigation across the machine",
+      "description": "David asks for low-hanging-fruit disk cleanup, pushes for a breakdown rather than a one-line answer, and wants recurring data-regeneration loops fixed at the source instead of deleted once.",
+      "corpus": "m4-mini",
+      "frequency": 2,
+      "projects": ["ad/brains", "kybernesis/cortex"],
+      "evidence": [
+        {
+          "session_id": "5a25febe-3494-4da3-a4b0-d3bbabb588ff",
+          "project_dir": "ad/brains",
+          "quote": "Can you look at low-hanging fruit on disc space? Probably the trash can, but why am I down to 37 GB?"
+        },
+        {
+          "session_id": "5a25febe-3494-4da3-a4b0-d3bbabb588ff",
+          "project_dir": "ad/brains",
+          "quote": "This is a recurring loop, not a one-off glitch. If you just delete the files, they come back"
+        },
+        {
+          "session_id": "b139b85a-dedf-4ae8-bb0b-2590ffbe90e3",
+          "project_dir": "kybernesis/cortex",
+          "quote": "The 80 GB that you just talked about would be a blocker on this..."
+        }
+      ]
+    },
+    {
+      "id": "schema-first-visualization",
+      "label": "Schema-first Mochaccino/brand-design artifacts to visualize data",
+      "description": "David asks for messy information to be structured into a JSON data schema first, then rendered into a branded HTML artifact/visualization, rather than jumping straight to a mockup.",
+      "corpus": "m4-mini",
+      "frequency": 2,
+      "projects": ["ad/brains", "ad/apps/appydave-hackerthons-08-2026-chaingmai-4seas"],
+      "evidence": [
+        {
+          "session_id": "69fa0c28-8ea7-40b1-8489-0cf1c848a32c",
+          "project_dir": "ad/brains",
+          "quote": "create a schema as you go... populate data into a JSON document before you visualise it"
+        },
+        {
+          "session_id": "53337c52-7e14-47c8-a1ce-50726df82831",
+          "project_dir": "ad/apps/appydave-hackerthons-08-2026-chaingmai-4seas",
+          "quote": "give me an artefact so we can visualise this, but before that, give me three different ways it could be visualised"
+        }
+      ]
+    },
+    {
+      "id": "chaperone-swagger-protocol-redesign",
+      "label": "Iteratively redesigning the Chaperone/Swagger message-shape protocol after recurring frustration",
+      "description": "David repeatedly complains that Chaperone/Swagger sessions give inconsistent, unlabeled, wall-of-text reports and drives an iterative redesign process to lock down a consistent ruling/advisory message shape.",
+      "corpus": "m4-mini",
+      "frequency": 2,
+      "projects": ["kybernesis/KBDE-KyberAgent-Enterprise"],
+      "evidence": [
+        {
+          "session_id": "e45c2c87-1a96-4d27-989c-267875b29319",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "It constantly fucks up with instructions to the human... there's absolutely no consistency in the pattern."
+        },
+        {
+          "session_id": "7367468b-e577-4ed6-b524-3fff90cd3c44",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "still not following my damn Patterns: you say \"read ruling\", but you haven't told me who it is"
+        },
+        {
+          "session_id": "e45c2c87-1a96-4d27-989c-267875b29319",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "So we may need a post-mortem skill... a retrospective, like retrospectives in Scrum"
+        }
+      ]
+    },
+    {
+      "id": "repo-pull-report-loop",
+      "label": "Recurring verbatim repo pull-and-report loop",
+      "description": "David issues the exact same instruction to git-pull two hackathon repos with rebase/autostash and report only what changed in plain language, run repeatedly as a standing status check.",
+      "corpus": "m4-mini",
+      "frequency": 1,
+      "projects": ["ad/apps/appydave-hackerthons-08-2026-chaingmai-4seas"],
+      "evidence": [
+        {
+          "session_id": "53337c52-7e14-47c8-a1ce-50726df82831",
+          "project_dir": "ad/apps/appydave-hackerthons-08-2026-chaingmai-4seas",
+          "quote": "Pull both hackathon repos and report what changed... report new commits since last check ... in plain language"
+        }
+      ]
+    },
+    {
+      "id": "family-trip-flight-research",
+      "label": "Fan-out flight/accommodation research for a family trip under a visa deadline",
+      "description": "David uses Claude with Playwright/Expedia/Kiwi connectors to research and fan out multiple flight and accommodation options for a family trip hard-constrained by his DTV visa exit deadline.",
+      "corpus": "m4-mini",
+      "frequency": 1,
+      "projects": ["ad/brains"],
+      "evidence": [
+        {
+          "session_id": "69fa0c28-8ea7-40b1-8489-0cf1c848a32c",
+          "project_dir": "ad/brains",
+          "quote": "Can I get you to fan out and find me three or four options for each of the three flight setups?"
+        }
+      ]
+    },
+    {
+      "id": "vet-third-party-tools",
+      "label": "Vetting third-party tools/repos before adopting their methodology",
+      "description": "David has Claude research an external developer's repo/tool (credibility, star ratings, prompt-injection risk) to decide whether to adopt their approach or build an equivalent in-house.",
+      "corpus": "m4-mini",
+      "frequency": 1,
+      "projects": ["ad/brains"],
+      "evidence": [
+        {
+          "session_id": "528a8e05-94b7-492f-8eee-422a7101bada",
+          "project_dir": "ad/brains",
+          "quote": "Can you check Strika? Is it still a good one?... do they have good star ratings and credibility ratings"
+        }
+      ]
+    },
+    {
+      "id": "challenge-dv-client-research",
+      "label": "Researching client SaaS connectors/costs and producing a branded deliverable (Challenge DV)",
+      "description": "For the Challenge DV nonprofit client, David has research done into what non-technical-friendly systems (HubSpot, SharePoint, MailChimp, Canva) can and can't do, then wants it turned into a branded artefact he can send.",
+      "corpus": "m4-mini",
+      "frequency": 1,
+      "projects": ["clients/challenge-dv"],
+      "evidence": [
+        {
+          "session_id": "e24b6215-2677-4cdd-8d3f-91547081027d",
+          "project_dir": "clients/challenge-dv",
+          "quote": "Read HANDOVER.md and OVERVIEW.md first, then work ledger item 5 ... the connector question."
+        }
+      ]
+    },
+    {
+      "id": "cloud-billing-untangling",
+      "label": "Untangling cloud billing/hosting across Vercel and Supabase",
+      "description": "David works through which of several paid accounts is billing what, and how to downgrade or migrate a closed client's hosting to his own account under a new brand name.",
+      "corpus": "m4-mini",
+      "frequency": 1,
+      "projects": ["ad/brains"],
+      "evidence": [
+        {
+          "session_id": "c822b910-5678-44c1-9a12-a8d76ad48a2c",
+          "project_dir": "ad/brains",
+          "quote": "I want to understand how much this costs me and why I have three different services."
+        }
+      ]
+    },
+    {
+      "id": "npm-alpha-publish-cycle",
+      "label": "Staging and publishing the extension-sdk npm package through successive alpha versions",
+      "description": "David personally runs npm publish from a durable staging dir for @kybernesis/kyberagent-extension-sdk, bumping alpha versions each time a new SDK contract lands.",
+      "corpus": "m4-mini",
+      "frequency": 1,
+      "projects": ["kybernesis/KBDE-KyberAgent-Enterprise"],
+      "evidence": [
+        {
+          "session_id": "434da84f-3875-4543-af2c-eb56133614da",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "npm notice Publishing to https://registry.npmjs.org/ with tag latest and public access"
+        }
+      ]
+    },
+    {
+      "id": "hand-edit-client-emails",
+      "label": "Hand-editing client outreach emails to strip AI-sounding phrasing",
+      "description": "David drafts retainer proposals/emails with the assistant, then rejects phrases that read as AI-generated or awkward, rewriting them in his own voice before sending.",
+      "corpus": "m4-mini",
+      "frequency": 1,
+      "projects": ["clients"],
+      "evidence": [
+        {
+          "session_id": "9fe25a72-962c-47d1-8675-538b8888ac89",
+          "project_dir": "clients",
+          "quote": "This initial phrase doesn't work for me. Let me give you some reasons why I don't like it."
+        }
+      ]
+    },
+    {
+      "id": "coordinate-remote-collaborator-angela",
+      "label": "Coordinating a remote non-technical collaborator (Angela) via git",
+      "description": "David runs git pull/push cycles to sync work with a client-side field tester on Windows, diagnoses crashes from files not committed/wrongly gitignored, and writes plain-language handover notes she can act on.",
+      "corpus": "m4-mini",
+      "frequency": 1,
+      "projects": ["clients/supportingpotential-dsp"],
+      "evidence": [
+        {
+          "session_id": "b681452f-a994-4de2-9349-a93a7926d985",
+          "project_dir": "clients/supportingpotential-dsp",
+          "quote": "can you give me some sort of handover message that I can just paste to Angela, because she does have the repo?"
+        }
+      ]
+    },
+    {
+      "id": "multi-lens-delivery-review",
+      "label": "Running a multi-lens delivery and code-quality review before merge decisions",
+      "description": "David invokes the delivery-review skill (fan-out of background review agents) against a diff, then works through findings deciding case-by-case which to fix now versus note for later.",
+      "corpus": "m4-mini",
+      "frequency": 1,
+      "projects": ["kybernesis/cortex"],
+      "evidence": [
+        {
+          "session_id": "6d083113-3f56-427c-b843-5bba9c0f0293",
+          "project_dir": "kybernesis/cortex",
+          "quote": "I need to do a code quality review. What skills do we have available for us?"
+        }
+      ]
+    },
+    {
+      "id": "eve-brand-agents-build",
+      "label": "Building Eve-based brand agents, then generalizing the pattern across brands",
+      "description": "David has Claude build 'Brandy', an Eve agent acting as a per-brand media-kit agent, then generalizes the build recipe into a plan for parallel agents for his other brands/clients.",
+      "corpus": "m4-mini",
+      "frequency": 1,
+      "projects": ["ad/brains"],
+      "evidence": [
+        {
+          "session_id": "428a2088-3419-4911-91b5-84bb827a5faa",
+          "project_dir": "ad/brains",
+          "quote": "What we're going to be building is just an Eve agent. As a generalised media agent"
+        }
+      ]
+    },
+    {
+      "id": "captains-log-tagging-ontology",
+      "label": "Iterating on tagging/vocabulary/ontology design for Captain's Log captures",
+      "description": "David works through repeated design passes on how captures get tagged and categorized, reacting harshly when generated categories don't reflect his real projects and clients.",
+      "corpus": "m4-mini",
+      "frequency": 1,
+      "projects": ["ad/apps/captains-log"],
+      "evidence": [
+        {
+          "session_id": "3936dd85-cdac-43be-b811-856146676c43",
+          "project_dir": "ad/apps/captains-log",
+          "quote": "The client is totally wrong. It doesn't show any of my clients, doesn't show vOz, doesn't show Support signal"
+        }
+      ]
+    },
+    {
+      "id": "verify-cross-machine-sync",
+      "label": "Verifying commits are pushed and synced across machines",
+      "description": "David periodically asks the agent to confirm that recent work has actually been committed, pushed, and pulled on the other Mac, treating the two-machine setup as needing explicit sync verification.",
+      "corpus": "m4-mini",
+      "frequency": 1,
+      "projects": ["ad/brains"],
+      "evidence": [
+        {
+          "session_id": "5c662967-e20b-4bd9-af35-8811fa188d99",
+          "project_dir": "ad/brains",
+          "quote": "Can you just make sure our systems are committed and push? Probably plugins and brain"
+        }
+      ]
+    },
+    {
+      "id": "cross-repo-architecture-adr",
+      "label": "Reconciling a cross-repo architecture decision via each stakeholder's own session transcript",
+      "description": "Before ratifying a technical decision (better-sqlite3 vs libSQL), David has Claude read separate past sessions representing each collaborator's independent point of view before settling on an ADR.",
+      "corpus": "m4-mini",
+      "frequency": 1,
+      "projects": ["kybernesis/cortex"],
+      "evidence": [
+        {
+          "session_id": "b139b85a-dedf-4ae8-bb0b-2590ffbe90e3",
+          "project_dir": "kybernesis/cortex",
+          "quote": "Firstly, let's look at it from Ian's point of view because he worked on the original KyberAgent"
+        }
+      ]
+    },
+    {
+      "id": "cheap-ai-video-poc",
+      "label": "Building cheap AI video proof-of-concepts to validate a brand style",
+      "description": "David directs a scratch proof-of-concept generating story panels, animating hero frames, recording VO, and assembling with ffmpeg/HyperFrames — explicitly favouring cheap models to validate the pipeline before spending real money.",
+      "corpus": "m4-mini",
+      "frequency": 1,
+      "projects": ["ad/brains"],
+      "evidence": [
+        {
+          "session_id": "ae86fd08-cc93-495a-adc5-fc20fce0b15f",
+          "project_dir": "ad/brains",
+          "quote": "Make sure you're using a really cheap model to test an image... the first test should be cheap image model generators."
+        }
+      ]
+    },
+    {
+      "id": "review-joy-videos-gallery",
+      "label": "Reviewing AI-generated Joy-brand videos and iterating a browser gallery to inspect them",
+      "description": "David watches rendered footage and gives frame-level feedback (caption position, mouth-sync desync, abrupt transitions), then pushes for a web gallery tool to click through raw vs. generated clips.",
+      "corpus": "m4-mini",
+      "frequency": 1,
+      "projects": ["ad/joy"],
+      "evidence": [
+        {
+          "session_id": "f2c8728d-0ded-49aa-9158-01eb0bc1156b",
+          "project_dir": "ad/joy",
+          "quote": "captions should be on the lower side of the screen... B-roll cutaway looked good, but it didn't have any transition."
+        }
+      ]
+    },
+    {
+      "id": "showrunner-hyperframes-teaching",
+      "label": "Running the Showrunner/HyperFrames pipeline and teaching Jan & Mary video production",
+      "description": "David works through a topic-to-script pipeline, critiques the look against a reference creator, and sets up asset structure so Jan and Mary can learn to produce AITLDR videos with HyperFrames.",
+      "corpus": "m4-mini",
+      "frequency": 1,
+      "projects": ["ad/brains"],
+      "evidence": [
+        {
+          "session_id": "02b14396-6fa8-4ca5-8b33-d3c1695105e7",
+          "project_dir": "ad/brains",
+          "quote": "What I really want to do is teach Jan and Mary how to create a video really quickly using HyperFrames"
+        }
+      ]
+    },
+    {
+      "id": "appystack-template-upgrade-bugs",
+      "label": "Running AppyStack's template-upgrade diff and chasing down scaffold bugs it surfaces",
+      "description": "David runs the create-appystack upgrade flow, reviews 'file differs from template' prompts, and reports scaffold bugs (dotenv override breaking env tests, non-self-healing start script) back to the template source.",
+      "corpus": "m4-mini",
+      "frequency": 1,
+      "projects": ["ad/apps/appystack"],
+      "evidence": [
+        {
+          "session_id": "fa543bb8-7da0-4023-a2fb-43ee943be89b",
+          "project_dir": "ad/apps/appystack",
+          "quote": "Two scaffold defects surfaced while building a fresh AppyStack app (captains-log). Both are in the template."
+        }
+      ]
+    },
+    {
+      "id": "catalogue-microapp-ecosystem",
+      "label": "Cataloguing the sprawling micro-app/tool ecosystem and deciding what's alive vs deprecated",
+      "description": "David has the agent build a table of every app/tool he's spun up, reasoning about which are load-bearing data sources for the 'dark factory' vision versus one-off experiments to kill.",
+      "corpus": "m4-mini",
+      "frequency": 1,
+      "projects": ["ad/apps/dark-factory"],
+      "evidence": [
+        {
+          "session_id": "2fdc2412-e422-4343-860a-558191c20bf4",
+          "project_dir": "ad/apps/dark-factory",
+          "quote": "we do not have any understanding of all the micro apps that sit around the dark-factory, or whether any of them are working"
+        }
+      ]
+    },
+    {
+      "id": "cortex-kyberagent-release-coordination",
+      "label": "Coordinating cross-repo dependency releases between Cortex and KyberAgent",
+      "description": "David relays version-bump release notes pasted from a separate Cortex session (an npm brain package) into the KBDE session and has the agent adopt the new version, reinstall, and verify the fix.",
+      "corpus": "m4-mini",
+      "frequency": 1,
+      "projects": ["kybernesis/KBDE-KyberAgent-Enterprise"],
+      "evidence": [
+        {
+          "session_id": "d6a08e2c-8941-485e-96ae-e0a4dc61c31a",
+          "project_dir": "kybernesis/KBDE-KyberAgent-Enterprise",
+          "quote": "This is what I got from Cortex. @kybernesis/brain-*@0.16.0 is published — the KYB-187 fix. Please adopt + verify."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,488 @@
+{"schema_version": 1, "session_id": "30391e74-c705-4b3a-a689-65e8dbb79d98", "machine": "m4-mini", "project": "lars", "project_dir": "/Users/davidcruwys/dev/clients/lars", "session_type_registry": "ORIENTATION", "session_type_analysed": "orientation.cold_start", "file_size_bytes": 8489, "event_count": 17, "disposition": "active", "interest_level": "medium", "notes": "Bookend session: context loading before a 2.5h in-person meeting with Lars, then memory capture after. Two active windows totalling ~1 minute separated by 19 hours. Clean cold_start with closing ceremony and MEMORY.md handover write.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "11553588-c7ab-4e0b-b9bc-23fad00c5fe7", "machine": "m4-mini", "project": "angeleye", "project_dir": "/Users/davidcruwys/dev/ad/apps/angeleye", "session_type_registry": "BUILD", "session_type_analysed": "ORIENTATION / cold_start", "file_size_bytes": 8647, "event_count": 19, "disposition": "active", "interest_level": "medium", "notes": "Misclassified BUILD \u2014 actually a single-turn artifact retrieval session (77 seconds). User searched for a mochaccino HTML mock from a prior session. All 13 tool calls were read-only search (find/ls/glob). Demonstrates that bash-heavy heuristic needs read-vs-write Bash distinction. Proposes new subtype: orientation.artifact_retrieval.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "78f31f8c-83b4-47dd-8366-99d3f6c1e732", "machine": "m4-mini", "project": "brains", "project_dir": "/Users/davidcruwys/dev/ad/brains", "session_type_registry": "BUILD", "session_type_analysed": "orientation.morning_triage", "file_size_bytes": 76670, "event_count": 97, "disposition": "active", "interest_level": "high", "notes": "Morning triage session: /focus + /radar opening, OMI voice memo ingestion for 4 projects, handover email drafting with 3 correction cycles, brain gap analysis via Explore subagent, FliHub research. Zero build execution. Strong evidence BUILD is over-classified \u2014 this is orientation/knowledge work in brains project.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "a080427c-2a23-43ff-a1ca-529ed3ae600d", "machine": "m4-mini", "project": "thumbrack", "project_dir": "/Users/davidcruwys/dev/ad/apps/thumbrack", "session_type_registry": "BUILD", "session_type_analysed": "test.uat_debug_hybrid", "file_size_bytes": 109860, "event_count": 215, "disposition": "active", "interest_level": "high", "notes": "Misclassified as BUILD \u2014 actually a UAT debug loop with 58 Playwright uses and 33 reactive Edits fixing a broken divider drag-and-drop feature. Escalating frustration, regression loop across 4 fix attempts, closing ceremony with memory file extraction. Proposes new test.uat_debug_hybrid subtype.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "59a8f9ac-6609-4d0a-a3eb-5397a21af069", "machine": "m4-mini", "project": "brains", "project_dir": "/Users/davidcruwys/dev/ad/brains", "session_type_registry": "BUILD", "session_type_analysed": "knowledge.methodology_design", "file_size_bytes": 158606, "event_count": 129, "disposition": "active", "interest_level": "high", "notes": "Genesis session for the analysis campaign. Designed the two-pass methodology, schema versioning with migration, brain-app split. Heavy voice transcription with paste-as-context opening. BUILD classification is wrong \u2014 zero application code was written.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "bb44829b-de20-4fb1-89ba-18d723dea4a1", "machine": "m4-mini", "project": "signal-studio", "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/signal-studio", "session_type_registry": "BUILD", "session_type_analysed": "build.migration", "file_size_bytes": 165813, "event_count": 225, "disposition": "active", "interest_level": "high", "notes": "Complete Wave 25 schema migration (escalation field rename) with worktree-based parallel agent execution, Playwright visual verification, and cross-project POEM impact check. Voice-driven, /ralphy planning, /capture-context closing.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "6ba65a37-5b76-47fe-8d6a-c88a8c6be907", "machine": "m4-mini", "project": "app.supportsignal.com.au", "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au", "session_type_registry": "BUILD", "session_type_analysed": "research.workflow-design", "file_size_bytes": 252566, "event_count": 224, "disposition": "active", "interest_level": "high", "notes": "Opens with BMAD skill invocations (bmad-help, sprint-planning) producing sprint-status.yaml, then pivots to 2h deep research comparing BMAD v4 vs v6 workflow patterns across 3 codebases using 6 background agents. Produces 'BMAD Relay' design doc and memory capture. Voice-transcribed prompts throughout. Only 1 write Bash out of 73 \u2014 bash-heavy classification is misleading.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "a4fd902a-cdbe-4533-b563-d9f86a3333a2", "machine": "m4-mini", "project": "app.supportsignal.com.au", "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au", "session_type_registry": "ORIENTATION", "session_type_analysed": "knowledge.advisory", "file_size_bytes": 503991, "event_count": 269, "disposition": "active", "interest_level": "high", "notes": "Multi-day BMAD oversight advisor session. User pastes terminal output from other Claude sessions for review, gets corrections drafted, and navigates BMAD agent orchestration (Winston readiness check, Bob sprint planning). 504KB size driven by subagent_stop events with full MCP research report embedded inline.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "d08d1b10-6a61-467f-84c9-70288e51a50b", "machine": "m4-mini", "project": "flihub", "project_dir": "/Users/davidcruwys/dev/ad/flivideo/flihub", "session_type_registry": "BUILD", "session_type_analysed": "build.campaign", "file_size_bytes": 318558, "event_count": 472, "disposition": "active", "interest_level": "high", "notes": "Two-cycle Ralphy Build session for NFR-146 test coverage + code quality. 21 background agents across 2 campaigns, 75 Edits + 34 Writes. Post-build quality audit reflex pattern observed.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "699cab47-79c9-4f09-8a67-004fa77fddd4", "machine": "m4-mini", "project": "digital-stage-summit-2026", "project_dir": "/Users/davidcruwys/dev/ad/apps/digital-stage-summit-2026", "session_type_registry": "BUILD", "session_type_analysed": "build.campaign", "file_size_bytes": 188643, "event_count": 228, "disposition": "active", "interest_level": "high", "notes": "Ralphy Extend/Build session for Wave 3 \u2014 sync server routes, swagger fix, chokidar watcher, ScriptSyncView UI. Four parallel build agents, then user-QA bug report triggers 3 audit agents (arch/code/test). BLOCKERs fixed, conversational handover closing. Plugin self-assessment feedback loop.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "99b75591-5c74-4342-97cb-2fba77e11d93", "machine": "m4-mini", "project": "digital-stage-summit-2026", "project_dir": "/Users/davidcruwys/dev/ad/apps/digital-stage-summit-2026", "session_type_registry": "BUILD", "session_type_analysed": "BUILD / build.campaign", "file_size_bytes": 128684, "event_count": 232, "disposition": "active", "interest_level": "high", "notes": "Ralphy Build mode session. /ralphy opening, voice-steered orientation, then 'build' trigger dispatches 4 background agents across worktrees for wave 4 subfolder support. 198 tool calls (106 Bash, 40 Read, 32 Edit, 7 Write, 5 Agent). Cross-project side-quest to log plugin issue about Ralphy UX. Task-notification pseudo-prompts (3 of 11 turns). First fully analysed Ralphy Build lifecycle.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "3461a2ff-89f4-4d8e-9397-1193529a48a2", "machine": "m4-mini", "project": "digital-stage-summit-2026", "project_dir": "/Users/davidcruwys/dev/ad/apps/digital-stage-summit-2026", "session_type_registry": "BUILD", "session_type_analysed": "BUILD / campaign", "file_size_bytes": 118400, "event_count": 178, "disposition": "active", "interest_level": "high", "notes": "55-minute Ralphy campaign session. 13 turns, 144 tools (47 Edit, 14 Write, 48 Read, 28 Bash). Voice brain dump opening with cross-session paste. /ralphy skill invoked. Built: Swagger API nav, David-Jan relay folder, Wave 2 scaffolding, NotebookLM export backlog. Provenance chain teaching moment (Turns 9-10) \u2014 David catches Claude authoring content that should only be synced from source brain. Three correction turns (23%) show real-time mental model alignment. Registry classification BUILD confirmed correct.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "79cfee06-28c5-48c0-a19f-885c56b0cf34", "machine": "m4-mini", "project": "angeleye", "project_dir": "/Users/davidcruwys/dev/ad/apps/angeleye", "session_type_registry": "BUILD", "session_type_analysed": "BUILD / build.campaign", "file_size_bytes": 110326, "event_count": 206, "disposition": "active", "interest_level": "high", "notes": "Ralphy Build mode \u2014 Wave 10 Settings Intelligence. 5 features built across 3 waves (WC01-WC05) using 5 parallel worktree agents in 17 minutes of autonomous execution. Self-referential: AngelEye building its own session monitoring features. Session has 3 lifecycle phases: build (17 min), user Q&A about rename visibility (hours later), closing ceremony with backlog/assessment updates. Frontend-design skill used for named-session row mockup. 27 new tests added (170 to 197). Registry classification correct.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "4e8c5897-9951-4e85-aee4-a01ef46df76c", "machine": "m4-mini", "project": "brains", "project_dir": "/Users/davidcruwys/dev/ad/brains", "session_type_registry": "BUILD", "session_type_analysed": "knowledge.brain_update -> orientation.advisory (pivot)", "file_size_bytes": 572148, "event_count": 366, "disposition": "active", "interest_level": "high", "notes": "Canonical Sally/Advisor pattern. Phase 1 (5 min): /refresh-bmad-brain skill updates bmad-method brain v6.0.4->v6.2.0. Session pivots within 2 minutes to advisory role for SupportSignal BMAD planning. Phase 2 (4h): advisor for John the PM building PRD (Steps 1-13). Phase 3 (2.5h, +2 days): advisor for Sally the UX designer building UX spec (14 steps). Phase 4 (40 min, +2 days): meta-reflection formalizes advisory pattern as bmad-oversight command. 101 user prompts (highest seen), 158 tool calls. Brain subfolder: bmad-method. Registry BUILD classification incorrect \u2014 project_dir=brains should block BUILD. Proposed new subtype: orientation.advisory.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "2ed25517-9969-4471-b996-05c7223959bf", "machine": "m4-mini", "project": "brains", "project_dir": "/Users/davidcruwys/dev/ad/brains", "session_type_registry": "TEST", "session_type_analysed": "RESEARCH / research.web_scraping", "file_size_bytes": 298000, "event_count": 722, "disposition": "active", "interest_level": "high", "notes": "Reclassified from TEST to RESEARCH. Marathon Dynamous Circle community scraping \u2014 59 Zoom transcript VTTs downloaded to ~/dev/upstream/community/dynamous/live-events/. 9 context continuations (most in dataset). Playwright used for web scraping not UAT. Phase 4 contains novel brain discoverability eval loop \u2014 5 questions tested in fresh Claude instances with results graded. Credential exposure in prompt (Circle login). Closing ceremony with commit+push. Voice transcription throughout.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "057682ee-cd55-44fd-bf41-8525d627126c", "machine": "m4-mini", "project": "brains", "project_dir": "/Users/davidcruwys/dev/ad/brains", "session_type_registry": "BUILD", "session_type_analysed": "KNOWLEDGE / knowledge.brain_ingestion", "file_size_bytes": 14000, "event_count": 62, "disposition": "active", "interest_level": "low", "notes": "Registry override: BUILD -> KNOWLEDGE. User ingested agentic-os knowledge from a 4000-line SupportSignal workflow file into the agentic-os brain. 5 Task agents for segmented comparison, 28 Edits updating brain files, architecture.json promoted from snapshots to canonical. Voice transcription artifacts in all 4 prompts (agnetic-os = agentic-os). 20-minute focused session, no phase changes. Edit-heavy pattern misclassified as BUILD \u2014 project_dir discriminator corrects to KNOWLEDGE.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "904f0069-500c-44d7-bebd-0bb0dbe42772", "machine": "m4-mini", "project": "brains", "project_dir": "/Users/davidcruwys/dev/ad/brains", "session_type_registry": "KNOWLEDGE", "session_type_analysed": "build.surgical", "reclassified": true, "reclassification_reason": "project_dir false positive \u2014 session invokes rename-images skill on ~/Downloads, never touches brains directory", "file_size_bytes": 7000, "event_count": 32, "disposition": "complete", "interest_level": "low", "skills_used": ["rename-images"], "notes": "Skill-driven session: /rename-images on 14 Ecamm Live presentation PNGs in ~/Downloads. 3 real user prompts. Classifier learning: project_dir needs file-touch guard before using as classification signal.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "40c44dee-3e1c-4b76-8be0-f792e761e6dd", "machine": "m4-mini", "project": "brains", "project_dir": "/Users/davidcruwys/dev/ad/brains", "session_type_registry": "BUILD", "session_type_analysed": "KNOWLEDGE / knowledge.brain_update", "file_size_bytes": 23676, "event_count": 89, "disposition": "active", "interest_level": "low", "notes": "Port registry consolidation session. David needed a port allocation reference after AppyStack prompted for a port number. Claude searched across brain files, discovered fragmented port info, then co-designed a port allocation scheme through 5 iterative voice prompts. Created new port registry doc and updated application registry with cross-references. Registry BUILD classification is incorrect \u2014 this is knowledge.brain_update (all outputs are brain markdown files, project_dir is brains, no product code touched). Voice transcription pervasive with domain-name errors (AngelEye -> 'answer ball', agentic-os -> 'Agentico s', POEM -> 'PIME').", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "4693345b-0260-445b-95e5-01250801e8e7", "machine": "m4-mini", "project": "flihub", "project_dir": "/Users/davidcruwys/dev/ad/flivideo/flihub", "session_type_registry": "BUILD", "session_type_analysed": "build.campaign", "file_size_bytes": 253000, "event_count": 278, "disposition": "active", "interest_level": "medium", "notes": "Handover-driven build session: 3 feature handovers (FR-145, UX batch, FR-144) executed sequentially, then /ralphy Project Heal for backlog reconciliation. 34 Edits, 5 Writes, 4 commits. Skills: /flivideo:dev (context loader, not in lookup), audit skills, /ralphy. Background agent for cross-project port research.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "dc3e550b-0425-4376-a6a7-4aa5a189b4cc", "machine": "m4-mini", "project": "app.supportsignal.com.au", "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au", "session_type_registry": "BUILD", "session_type_analysed": "KNOWLEDGE / knowledge.skill_authoring", "file_size_bytes": 228000, "event_count": 232, "disposition": "active", "interest_level": "medium", "notes": "BMAD PRD creation session for SupportSignal v2. Opened with /bmad-help (orientation), then ran bmad-create-prd 12-step workflow. All 42 Edits target prd.md (a planning artifact), no application source code touched. Greenfield project \u2014 zero source code in target repo. 33 real prompts but 9 are single-char workflow navigation ('c'/'a'). David provided deep NDIS domain expertise through elicitation; 7+ correction prompts fixed Claude's assumptions. Session spans 6 calendar days but only ~4 hours active across 3 work windows on March 16, plus brief returns March 18 (skill debugging: why /Sally doesn't work) and March 20 (context recovery). No closing ceremony. Registry BUILD classification is incorrect \u2014 this is KNOWLEDGE (output is a BMAD planning document, not product code). Skills invoked: bmad-help, bmad-bmm-create-prd, bmad-check-implementation-readiness. Proposes new subtype: knowledge.planning_artifact.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "28779669-f351-4249-8a44-8696766f6bf7", "machine": "mbp", "project": "app.supportsignal.com.au", "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au", "session_type_registry": "BUILD", "session_type_analysed": "KNOWLEDGE / knowledge.pattern_design", "file_size_bytes": 207872, "event_count": 193, "disposition": "active", "interest_level": "medium", "notes": "BMAD multi-persona architecture + epic session for SupportSignal v2. Winston (architect) created architecture.md through 7-step workflow with 6 David corrections. Bob (PM) decomposed into 31 stories across 4 active epics with 8 correction rounds. Persona transition was invisible \u2014 no handoff statement between Winston and Bob. David commissioned a background agent to investigate the missing transition retroactively. All outputs are planning artifacts in _bmad-output/planning-artifacts/ (architecture.md, epics.md). No product source code written. Registry BUILD classification incorrect \u2014 this is knowledge.pattern_design (design documents co-authored through iterative correction-driven refinement). Skills invoked: /bmad-architect, bmad-help, /bmad-create-epics-and-stories.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "2ddee32c-1a89-4e91-8b7b-f9da75f61ddf", "machine": "macbook-pro-m4", "project": "brains", "project_dir": "/Users/davidcruwys/dev/ad/brains", "session_type_registry": "BUILD", "session_type_analysed": "OPERATIONS / ops.machine_provision", "file_size_bytes": 178000, "event_count": 266, "disposition": "active", "interest_level": "medium", "notes": "Registry override: BUILD -> OPERATIONS. David used /focus ansible to orient, then spent ~2 hours live-provisioning Jan's Mac Mini in the Philippines via Tailscale + Ansible. 40+ voice-transcribed prompts in a human relay pattern (David between Claude and Jan). Key events: Tailscale invite flow failed due to identity provider mismatch (@ideasmen.com.au required, Jan has @gmail.com) \u2014 resolved via auth key. PII discovered in public repo \u2014 background agent split inventory into public/private. Oh My Zsh --unattended flag bug and tailscale role scope bug both fixed and pushed. Syncthing setup for file sync initiated. Two subagents: background PII cleanup (general-purpose) and Explore agent for recall failure (boulder synchronisation = Syncthing/FreeFileSync). No closing ceremony \u2014 session trails off mid-Syncthing setup. Skills: /focus.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "73dff618-5eea-4ded-900b-9abdaac1da4d", "machine": "mbp", "project": "app.supportsignal.com.au", "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au", "session_type_registry": "BUILD", "session_type_analysed": "ORIENTATION / orientation.requirements", "file_size_bytes": 116538, "event_count": 87, "disposition": "active", "interest_level": "low", "notes": "BMAD sprint planning \u2014 /bmad-sprint-status then /bmad-create-story (twice, second with abridge override). 31 backlog stories, 0 in-progress. Created story 1-1 (project scaffolding and deployment pipeline, 332 lines). Sprint status updated: epic-1 backlog to in-progress, story 1-1 to ready-for-dev. Read-heavy (60% Reads on planning artifacts). No product code touched. Registry BUILD classification incorrect \u2014 this is orientation/requirements preparation via BMAD skills.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "7bef7cb3-8087-4f0e-ab11-26947622d3f5", "machine": "m4-mini", "project": "deckhand", "project_dir": "/Users/davidcruwys/dev/ad/apps/deckhand", "session_type_registry": "unclassified", "session_type_analysed": "orientation.ideation", "file_size_bytes": 6323200, "event_count": 1394, "disposition": "junk", "interest_level": "low", "notes": "Loop-driven comedy session. /loop cron fired ~685 ASCII art responses over 10 hours with zero human interaction. No files created or modified. Registry correctly flagged is_junk. Proposed new subtype: orientation.loop_runaway.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "59aedbad-6082-4b56-bd79-fe7e795e1074", "machine": "mbp", "project": "prompt.supportsignal.com.au", "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au", "session_type_registry": "BUILD", "session_type_analysed": "build.iterative_design", "file_size_bytes": 262203, "event_count": 319, "disposition": "active", "interest_level": "high", "notes": "Sustained iterative design session on AWB (Agent Workflow Builder) UI. 17 real prompts + 3 compaction summaries. Built Output Files panel, fixed FliHub resume flow (currentStepId, peekPendingIntake, off-by-one step advance), fixed UX highlight button, redesigned DataPanel (Table/Flat/Nested views), added parallel step cancel/timeout. Heavy Playwright MCP usage (38 browser interactions) as design verification loop. Voice-transcribed design critique throughout. Ralphy test campaign planned (wui-round21-tests, 5 work units, 4 waves). 49 Edits across WizardShell.jsx, StepRenderer.jsx, intake.js, LlmStep.jsx. Three context compactions \u2014 longest single session analysed so far. Commit and push at end-of-day (8h gap). No session naming.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "b61d5adf-dfac-46c9-89bc-ce32aacb7c82", "machine": "mbp", "project": "outputs", "project_dir": "/Users/davidcruwys/dev/ad/brains/summits/digital-stage-2026/outputs", "session_type_registry": "BUILD", "session_type_analysed": "BUILD / build.content_production", "file_size_bytes": 243712, "event_count": 265, "disposition": "active", "interest_level": "medium", "notes": "Digital Stage Summit 2026 talk materials \u2014 15 Mochaccino HTML variants (5x3 groups: stack, apps, skills) built via 12 parallel subagents, Playwright visual QA, JSON-canonical data architecture with gap analysis. Created agentic-applications.json, updated personal-agent-stack.json (POEM OS to POEM, workflow engines restructured, Comfy UI added). Remapped stack-v5.html to AppyDave brand palette. Voice-driven session with transcription corrections (N8N, Mochaccino, Samantha). Context exhaustion triggered continuation. Samantha vs KyberBot conflation corrected and committed to memory.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "d154c0ef-b445-4eb7-9333-664fdaa7b946", "machine": "mbp", "project": "supportsignal-v2-planning", "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/supportsignal-v2-planning", "session_type_registry": "BUILD", "session_type_analysed": "PLANNING_SESSION / planning.decision_writeback", "file_size_bytes": 199680, "event_count": 153, "disposition": "ended", "interest_level": "medium", "notes": "6-day span (03-10 to 03-16) but real work is 03-16 only. 22 user prompts, all voice-transcribed. Two phases: (1) strategic planning \u2014 build order, BMAD agent sequence, greenfield decision, engineering constraints; (2) cross-referencing BMAD PRD outputs (FRs/NFRs) against planning docs, finding 7 significant gaps including missing AI layer. David runs dual Claude sessions \u2014 BMAD agents in one, verification in this one. Closes with explicit decision writeback: participant clinical data model closed (Approach B), domain-model.json 8 entities confirmed, build-phases.json Epic 4 expanded to 4a-4f, engineering-principles.md updated with transform-not-copy rule. Commit and push at end. Registry BUILD is wrong \u2014 no product code touched, all edits are planning artifacts. Explore subagent used for BMAD greenfield/brownfield deep research (20+ files read).", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "d7ca10ed-7e18-49ba-b977-10f5c27594f1", "machine": "mbp", "project": "flideck", "project_dir": "/Users/davidcruwys/dev/ad/flivideo/flideck", "session_type_registry": "BUILD", "session_type_analysed": "BUILD / build.migration", "file_size_bytes": 194560, "event_count": 524, "disposition": "active", "interest_level": "high", "notes": "Multi-day Ralphy Mode 3 autonomous migration campaign (3 calendar days, 4 context continuations). Migrated ~519 HTML presentation slides from iframe rendering to harness/web-component system across ~14 decks. Custom toolchain: migrate-type-a.js, migrate-type-b.js, pipeline.js (Playwright pixel-diff verification with quality tiers). Key discoveries: CSS token injection gap (addStyleTag fix), CORS blocker forcing approach change, viewport-lock architectural limitation. Voice-transcribed prompts with 3 frustration/correction episodes. Closing architectural debate: harness injection vs Web Components/Shadow DOM. Tools: Bash x265, Edit x102, Read x47, Agent x17. Used git worktrees for parallel application versions. Highest observed context exhaustion count (4). Skills: ralphy (Mode 2 then 3), plus 4 additional invocations.", "analysed_at": "2026-03-22T00:00:00Z"}
+{
+  "schema_version": 1,
+  "session_id": "798c3fc6-67d8-44fc-ae42-4ee70eeeef1e",
+  "machine": "m4-mini",
+  "project": "signal-studio",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/signal-studio",
+  "session_type_registry": "TEST",
+  "session_type_analysed": "test.uat_with_inline_debug",
+  "file_size_bytes": 176727,
+  "event_count": 474,
+  "disposition": "active",
+  "interest_level": "high",
+  "notes": "Wave 24 UAT execution via Playwright MCP against pre-written workflow documents. Session arc: handover open → UAT strategy debate → CronCreate monitoring loop → playwright-heavy execution → 4x context compaction → inline bug discovery + Edit fixes → second UAT pass → commit/report close. Voice-transcribed throughout (Wiggum loop artifact). 248/459 tool calls are playwright; 65 Edit calls confirm inline code repair. First observed CronCreate-for-UAT-monitoring pattern.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "ee880a6a-2bd2-461a-874a-dd682cf9e1d8",
+  "machine": "m4-mini",
+  "project": "signal-studio",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/signal-studio",
+  "session_type_registry": "TEST",
+  "session_type_analysed": "test.uat_playwright_sequential",
+  "file_size_bytes": 123095,
+  "event_count": 345,
+  "disposition": "active",
+  "interest_level": "high",
+  "notes": "Full 8-workflow UAT campaign (W01–W08) for Signal Studio using Playwright MCP. 3 context overflows in ~55 min. 36-min autonomous execution gap (W07/W08). 9 backlog items found. Loop (CronCreate) set up reactively mid-run, not proactively. File upload workaround via browser_run_code + setInputFiles. David raised loop observability gap in closing prompt — loop ran but output not visible across context boundaries. High interest: longest autonomous gap in campaign, novel file-upload pattern, clear loop observability design finding relevant to AngelEye.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "1fe96bc7-fc4c-4653-88df-fe942ab52d15",
+  "machine": "m4-mini",
+  "project": "signal-studio",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/signal-studio",
+  "session_type_registry": "TEST",
+  "session_type_analysed": "test.uat-narrative",
+  "file_size_bytes": 31428,
+  "event_count": 92,
+  "disposition": "active",
+  "interest_level": "medium-high",
+  "notes": "Three-phase session: (1) wave22 git merge + UAT planning, (2) W01 workflow narrative execution via Playwright MCP (~30 browser interactions, CronCreate for monitoring log), (3) next-morning frustration review + workflow process redesign. First observed test.uat-narrative session — Claude executes human-authored workflow narratives step-by-step using browser_click/fill_form/snapshot, distinct from automated E2E spec execution. Key failure: log wrote 20 identical 'no change' entries instead of human-readable summary grid. Produced 'stop and wait' protocol design for unattended agent runs. CronCreate+CronDelete lifecycle (create monitoring cron, delete after run) — only observed example. Session opens with near-compaction handover paste as context injection. Tools: mcp__playwright__browser_click x18, Bash x17, Edit x10, Read x10, mcp__playwright__browser_fill_form x8.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "54577c11-c22d-4b79-80e3-4c25d2af274d",
+  "machine": "m4-mini",
+  "project": "appydave-plugins",
+  "project_dir": "/Users/davidcruwys/dev/ad/appydave-plugins",
+  "session_type_registry": "TEST",
+  "session_type_analysed": "skill.creation",
+  "file_size_bytes": 16391,
+  "event_count": 60,
+  "disposition": "active",
+  "interest_level": "medium",
+  "notes": "Misclassified as TEST — no assertions or test loop present. Playwright used instrumentally for scraping and live web automation (sola.day calendar app). Primary output is a new skill file (Claude Lab Events / 4Cs trigger). Pattern: skill authored immediately after Claude demonstrates workflow in live browser session. Notable: human-in-the-loop auth handoff (David completed MFA step while Claude waited). Two new tool_pattern subtypes proposed: playwright_as_scraper and playwright_live_automation.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "1c87debe-1895-4e38-abef-8bcd28888f11",
+  "machine": "m4-mini",
+  "project": "brains",
+  "project_dir": "/Users/davidcruwys/dev/ad/brains",
+  "session_type_registry": "RESEARCH",
+  "session_type_analysed": "RESEARCH / research.operational",
+  "file_size_bytes": 23310,
+  "event_count": 67,
+  "disposition": "active",
+  "interest_level": "low-medium",
+  "notes": "No reclassification needed — RESEARCH/websearch-heavy is correct. Session is Philippines hardware procurement research for team members Jan and Mary: Mac Mini M4 x2, 4K monitors (LG 27US500W), Magic Keyboards, peripherals, budget under $2,500 USD. Ran from brains cwd but has zero relation to brain knowledge work — classic cwd=brains-but-not-brain-work pattern. 35+ brave_web_search calls, 8 playwright browser_navigate calls to verify Lazada store URLs. No Write/Edit/git operations — no artefacts produced. Voice transcription throughout. Ends abruptly with currency conversion request, no closing ceremony. New subtype proposed: research.operational (decision-support research producing no knowledge artefacts).",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "b9d30d9f-f624-4457-90e7-6a16dff07f24",
+  "machine": "m4-mini",
+  "project": "brains",
+  "project_dir": "/Users/davidcruwys/dev/ad/brains",
+  "session_type_registry": "RESEARCH",
+  "session_type_analysed": "RESEARCH / research.knowledge-capture",
+  "file_size_bytes": 9000,
+  "event_count": 34,
+  "disposition": "active",
+  "interest_level": "medium-high",
+  "notes": "No reclassification needed — RESEARCH is correct, subtype refined from websearch-heavy to research.knowledge-capture. Two-prompt session: prompt 1 triggers deep web research on Claude Agent SDK + /loop command (21 web tools), prompt 2 commits findings to brain file + injects proactive /loop suggestion rules into ~/.claude/CLAUDE.md. Brain subfolder: anthropic-claude/ (claude-code/ and ralph-wiggum/). CLAUDE.md write is the high-leverage artifact — permanently alters Claude proactive behaviour in all future sessions. Desktop scheduled tasks explicitly deferred by David. Voice transcription throughout (Ralph Wiggum Loop = /loop).",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "3a24ba02-45f3-41bf-8fac-423ceb087189",
+  "machine": "m4-mini",
+  "project": "signal-studio",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/signal-studio",
+  "session_type_registry": "RESEARCH",
+  "session_type_analysed": "research.dev_env_troubleshooting",
+  "file_size_bytes": 7957,
+  "event_count": 27,
+  "disposition": "ended",
+  "interest_level": "medium",
+  "notes": "cwd is signal-studio but zero project files touched — session is entirely personal dev environment troubleshooting (GitHub Copilot removal, Ecamm Live virtual camera in Teams). websearch-heavy pattern confirmed (12 brave_web_search, 52.2% of events). Two frustration prompts signal agent-answer failure and forced search escalation. No artefacts produced (zero writes, edits, commits). Subtype candidate: research.dev_env_troubleshooting. Secondary candidate tag: research.consultative (zero file artefacts). Key classifier signal: cwd alone is not a reliable project indicator when no project files are touched.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "4c858f8a-401d-4983-93c4-5cb6fe97c0dc",
+  "machine": "m4-mini",
+  "project": "appystack",
+  "project_dir": "/Users/davidcruwys/dev/ad/apps/appystack",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "build.template_maintenance",
+  "file_size_bytes": 151362,
+  "event_count": 44,
+  "disposition": "ended",
+  "interest_level": "high",
+  "notes": "Architectural fix: moved data/ from server/src/ to monorepo root to prevent nodemon EADDRINUSE crash. Fix applied to appystack template then propagated to create-appystack CLI generator (cwd shifts at event 25). Session ends with npm publish. Key signals: (1) opening prompt contains full pasted deckhand/Ecamm conversation — false-project-signal via paste injection; (2) 'We're at dots for AppyStack' is clearest command-token voice mistranscription in corpus — 'dot MD' phonetically rendered as 'dots'; (3) close-down prompt at event 34 acts as integration check, surfaces missed generator propagation; (4) David's angry correction at event 37 is a human-feedback-to-agent-error signal. Subtype candidates: build.template_maintenance (primary), build.monorepo_propagation (secondary). Voice artifact signal: voice.mistranscription.command_token.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "2421e5c5-e54d-4348-9118-90e95b207ca1",
+  "machine": "m4-mini",
+  "project": "appystack",
+  "project_dir": "/Users/davidcruwys/dev/ad/apps/appystack",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "build.audit.publish",
+  "file_size_bytes": 98455,
+  "event_count": 182,
+  "disposition": "active",
+  "interest_level": "high",
+  "notes": "Three-phase session: boilerplate gap analysis (46 issues found), Ralphy wave execution A-D in a worktree, then extended NPM publishing friction (OTP confusion, vitest peer version mismatch, distribution mechanism misalignment). Contains context window rollover marker as user_prompt event. Emotional escalation clusters around publish failures, not build waves. Strong candidate for classifier training: multi-label build+audit+publish pattern, context continuation detection, user terminal paste as diagnostic prompt.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "d363ca82-0496-4ff8-8011-d0346b1ae4fb",
+  "machine": "m4-mini",
+  "project": "appydave-plugins",
+  "project_dir": "/Users/davidcruwys/dev/ad/appydave-plugins",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "skill.design",
+  "file_size_bytes": 52000,
+  "event_count": 44,
+  "disposition": "active",
+  "interest_level": "high",
+  "notes": "Registry BUILD classification is wrong — no application code was written. Session is entirely about designing and improving the Ralphy skill (SKILL.md edits in the plugin authoring repo). Key work: four-mode taxonomy (requirements/plan/build/extend), terminology canonicalisation (campaign=worktree=PR), startup directive pattern, and Project Heal capability. Also demonstrates cross-session transcript-review workflow for skill iteration. High AngelEye signal — David explicitly articulates skill discoverability requirements and 'lost learnings' pain point that is central to AngelEye's purpose.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "55dde42d-4022-471c-b321-5d753353ed32",
+  "machine": "m4-mini",
+  "project": "appydave-plugins",
+  "project_dir": "/Users/davidcruwys/dev/ad/appydave-plugins",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "skill.migration",
+  "file_size_bytes": 39645,
+  "event_count": 84,
+  "disposition": "active",
+  "interest_level": "medium",
+  "notes": "Registry BUILD classification is wrong — no application code was written. Session migrated the Ralphy skill from global ~/.claude/skills/ralphy into the appydave-plugins repo (making the plugin the single source of truth), then did a brain-sync audit. Produced commits v1.6.0 and v1.6.1. Direct predecessor to session d363ca82 (findings-w3-10-plugins.md) which did the design overhaul. Key signals: Claude hallucinated that the skill didn't exist (user confronted with 'BULSHIT'), voice-dictation noise in prompts, and a closing prompt explicitly asking about knowledge-decay ('any updates to brains that didn't get into the plugin') — a direct statement of AngelEye's purpose.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "c17de345-db76-4b49-8a83-ca5801785d42",
+  "machine": "m4-mini",
+  "project": "v-appydave",
+  "project_dir": "/Users/davidcruwys/dev/video-projects/v-appydave",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "build.config",
+  "file_size_bytes": 85489,
+  "event_count": 6,
+  "disposition": "ended",
+  "interest_level": "medium-high",
+  "notes": "Misleading event count — 6 registry events but 58KB of prior session transcript embedded in the single user_prompt event via resume-via-transcript-injection pattern. Registry timestamps cover only ~36 seconds (the git commit phase). Real content: design and creation of the POEM YouTube Launch Optimizer (YLO) workflow YAML (442 lines) and 20 co-located JSON schemas for sections 1/2/4/5/6/7. BUILD classification is too coarse — no application code written; all artefacts are pipeline configuration. Correct subtype: build.config. Key signals: bash-heavy reflects git ops only, not compilation. Central design decision: transcriptAbridgement (1-4-abridge-v2) is the pipeline's most critical dependency (15+ consumers). Section 4 content analysis runs as action/llm-parallel producing 12-field shaped data. Two human checkpoint steps. Known open issue: Section 4 HBS templates return fenced code blocks not JSON — needs fixing before compiler run. Compiler not run in this session — explicitly deferred.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "a4dd0a45-95e8-4f68-baa8-8079f40c228c",
+  "machine": "m4-mini",
+  "project": "ansible",
+  "project_dir": "/Users/davidcruwys/dev/ad/agent-os/ansible",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "operations.mac_provisioning",
+  "file_size_bytes": 87457,
+  "event_count": 49,
+  "disposition": "ended",
+  "interest_level": "high",
+  "notes": "Registry BUILD is wrong — this is OPERATIONS. Session drives desired state on three macOS machines (M4 Mac Pro, M4 Mac Mini, M2 Mac) via Ansible playbooks. Tool pattern: Read x14, Edit x14, Task x10, Glob x2. Read/Edit symmetry (both 35%) signals config-authoring with verify cycle, not greenfield development. Task-heavy (25%) reflects subagent shell orchestration. 9 user prompts across 3 active phases (~33 min + ~12 min), separated by ~6.5h overnight gap. Final phase includes aborted ansible-playbook run (User interrupted execution). Subtype candidate: operations.mac_provisioning. Key classifier signal: cwd in agent-os/ansible + playbook edits + ansible-playbook terminal output = OPERATIONS, not BUILD.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "d5fa9524-5648-4a4b-9e82-3e8aa140eb98",
+  "machine": "m4-mini",
+  "project": "ansible",
+  "project_dir": "/Users/davidcruwys/dev/ad/agent-os/ansible",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "operations.provisioning_debug",
+  "file_size_bytes": 76551,
+  "event_count": 33,
+  "disposition": "ended",
+  "interest_level": "medium",
+  "notes": "Reclassified from BUILD to operations.provisioning_debug. Session is entirely about repairing broken Ansible provisioning on mac-mini-m2: Claude not found after SSH, Node missing, Node version divergence across M4 (24.13.0) vs M2 (22.14.0). Run/fail/paste cycle across 14 user prompts in 43 minutes. Frustration burst cluster in minutes 2-4 (4 rapid short angry prompts). Agent reads playbook files (Read x9) and patches them (Edit x4). Minor feature addition (add tmux) at end. Post-session summary prompts (~2h later) are a new pattern — David asking Claude to describe the session, likely for documentation. Committed next day via commit skill. Key classifier signals: (1) ansible cwd + pasted playbook output in prompts = operations not BUILD, (2) frustration burst = operational failure signal, (3) cross-machine state divergence question. Proposed new type: operations.provisioning_debug.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "830bd3ac-f7f5-41a1-adf8-8ded529578d3",
+  "machine": "m4-mini",
+  "project": "brain-dynamous",
+  "project_dir": "/Users/davidcruwys/dev/ad/brain-dynamous",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "setup.onboarding_and_integration",
+  "file_size_bytes": 19335,
+  "event_count": 51,
+  "disposition": "ended",
+  "interest_level": "high",
+  "notes": "brain-dynamous is a personal AI OS scaffold (not the brains/ knowledge base) — hooks, heartbeat.py, Gmail/Calendar/Slack/Asana/Circle integrations, fastembed, SOUL.md/USER.md/MEMORY.md/BOOTSTRAP.md. Session activates the system for the first time: BOOTSTRAP onboarding interview (Phase 1, no tools), memory file writes (Phase 2, Write x2 Edit x4), Gmail/Calendar OAuth wiring (Phase 3, Skill x1 Bash x2 Glob x1), heartbeat test and sqlite_vec debug (Phase 4, Bash x6), cron/Supabase architecture discussion (Phase 5, no tools). Wall clock 22h due to overnight gap — active time ~2-3h. Bash dominates (17/31, 54.8%). Heartbeat cost $0.2231/run noted explicitly. Subtype candidates: setup.scaffold_activation (new), session.overnight_gap (tag). BUILD classification correct; subtype refinement needed.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "8fe1e952-c8c2-4773-b550-b7c4dbb9f532",
+  "machine": "m4-mini",
+  "project": "brain-dynamous",
+  "project_dir": "/Users/davidcruwys/dev/ad/brain-dynamous",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "meta.compaction_flush",
+  "file_size_bytes": 15000,
+  "event_count": 1,
+  "disposition": "ended",
+  "interest_level": "medium",
+  "notes": "Single-event JSONL containing only a pre-compaction memory flush prompt — no tool_use events, no real user prompts, 15 seconds wall clock. Registry BUILD classification is wrong; this is a system-generated artefact, not a work session. The embedded conversation reveals the prior session was brain-dynamous setup work: Google OAuth for Gmail/Calendar, heartbeat.py testing, sqlite_vec fix, and architecture discussion around HEARTBEAT.md vs cron vs Supabase pg_cron. brain-dynamous is David's personal ambient AI OS (Python, uv, Claude Agent SDK, heartbeat-based reasoning, memory indexing). Key classifier finding: pre-compaction flush events must be detected early (look for 'Pre-compaction memory flush' in first user_prompt) and short-circuited to meta.compaction_flush before any tool-pattern analysis runs. Duration ≤30s is a secondary signal. Embedded conversation text has secondary attribution value if the prior session JSONL is missing.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "72977bff-6f26-4b39-8b17-6a25d49b56ed",
+  "machine": "m4-mini",
+  "project": "prompt.supportsignal",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "build.debug_loop",
+  "file_size_bytes": 224428,
+  "event_count": 260,
+  "disposition": "active",
+  "interest_level": "medium-high",
+  "notes": "7-hour debug session on the POEM Executor CLI (Node.js, YAML-compiled workflows, Agent SDK). 53 real prompts + 3 compaction summaries. Opens with prior-session handover paste then immediately pastes error_max_turns CLI output for incident 105. Primary loop: paste CLI error → read source → edit → re-run. Key issues worked: error_max_turns in generate-during-questions substep, run number regression introduced by prior fix, command confusion (run vs compile-run vs execute), double-nesting in output shape, LLM returning prose instead of JSON. Background Task agent used once for file bundling. Late session pivots to architectural discussion about YAML DSL limits and JSON schema auto-injection. 56 Edits total across agent-sdk.js, provider-router.js, output-namer.js, YAML workflow files, CLI command files. 3 context compactions. Session ends open — no commit, no handover, no session naming. Handover-as-bootstrap pattern documented.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "65e82b48-d7a3-4a2a-b7c5-2c837ca76975",
+  "machine": "m4-mini",
+  "project": "prompt.supportsignal",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "build.dsl_refinement",
+  "file_size_bytes": 223712,
+  "event_count": 224,
+  "disposition": "active",
+  "interest_level": "medium-high",
+  "notes": "73-minute POEM OS poem-executor build session. Fixes output schema (nested→flat strings), mock data contamination (care notes), and a compile error. Second half pivots to DSL vocabulary redesign (predicate/observation/category) and integration test scaffolding. One context compaction; duplicate-send after compaction observed. Three Task (subagent) calls in DSL redesign phase. Notable: dual Claude session cross-talk — David pastes Alex agent output from a parallel POEM OS session. DSL vocabulary still unsettling at session end. No session naming.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "05ce5c2a-610d-4c9d-8dbb-8b225f55b583",
+  "machine": "m4-mini",
+  "project": "prompt.supportsignal",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "build.iterative_design",
+  "file_size_bytes": 140556,
+  "event_count": 349,
+  "disposition": "active",
+  "interest_level": "medium-high",
+  "notes": "WUI Display Manifest highlight/inspect feature build for POEM OS. Two worktrees (wui-highlight-inspect, wui-template-modal), two context compactions, 24 user prompts (21 real + 3 compaction). Registry bash-heavy misclassification — Bash inflated by worktree/git overhead, real work is Read/Edit loop. Key signal: cross-session panel placement constraint violated repeatedly after compactions (prompt 12 frustration). No Playwright verification — voice-only feedback loop. 11h gap before final commit cleanup.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "bb54ff44-0b39-48d6-bca4-ec6aa95e371b",
+  "machine": "m4-mini",
+  "project": "v-appydave",
+  "project_dir": "/Users/davidcruwys/dev/video-projects/v-appydave",
+  "session_type_registry": "BUILD",
+  "session_type_analysed": "review.refine",
+  "file_size_bytes": 49043,
+  "event_count": 84,
+  "disposition": "ended",
+  "interest_level": "medium-high",
+  "notes": "Schema audit + workflow gap review for YLO v2. Claude made unauthorised edits early (7 Edits before explicit instruction). Key findings: configure step has no output schema and is effectively broken; video_cta deprecated; createChapters from SRT never worked; content analysis needs 12-parallel redesign; title/thumbnail outputs return freeform text where JSON is required; brandConfig variables unresolved — FliHub publish proposed as the injection mechanism. Session spans two days with long idle gaps; actual working time ~2-3 hours.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "724b1165-684d-4711-906b-8cd7c98937c6",
+  "machine": "m4-mini",
+  "project": "prompt.supportsignal",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+  "session_type_registry": "ORIENTATION",
+  "session_type_analysed": "orientation.artifact_retrieval",
+  "file_size_bytes": 34845,
+  "event_count": 89,
+  "disposition": "active",
+  "interest_level": "medium",
+  "notes": "Oscar orchestration session executing *run 107 (incident workflow). Three-phase: preflight scan (Glob/Grep/Read), parallel agent waves (15 Task + 13 TaskOutput), single Write output. Medication predicate flipped NO→YES vs prior run. Mid-session context compaction at 09:47 (auto-compact summary injected). 18h gap then stale revival (Feb 18 03:42) — AskUserQuestion gate, ends ambiguously with write-or-not unclear. Three-prompt Oscar commit flow (*run → 1 → yes). No handover produced, no /rename. Consider orientation.orchestration_run subtype if Oscar sessions become frequent.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "c3bd8d95-5402-4091-8c87-5432ec3f5479",
+  "machine": "m4-mini",
+  "project": "v-appydave",
+  "project_dir": "/Users/davidcruwys/dev/video-projects/v-appydave",
+  "session_type_registry": "ORIENTATION",
+  "session_type_analysed": "orientation.requirements",
+  "file_size_bytes": 27010,
+  "event_count": 41,
+  "disposition": "ended",
+  "interest_level": "medium-high",
+  "notes": "Third session in the YLO textarea rendering failure arc (follows w3-12, w3-20). David knowledge-checks Claude on YLO schemas, injects prior session analysis as context priming (explicitly instructs Claude NOT to act on it), then points Claude at SupportSignal POEM WUI as a working reference implementation. Session ends with David's sharpest expression of frustration yet: can't get textareas via YAML config changes. Zero edits made — purely observational. Root-cause hypothesis: YAML elicit step configuration differs from JSON schema x-ui-rows annotation. 3-hour idle gap followed by terminal 'x' artifact.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "ecaced22-76f9-4239-b8bf-51cdb12a5ee3",
+  "machine": "m4-mini",
+  "project": "prompt.supportsignal",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+  "session_type_registry": "ORIENTATION",
+  "session_type_analysed": "orientation.bookend",
+  "file_size_bytes": 20177,
+  "event_count": 11,
+  "disposition": "active",
+  "interest_level": "low-medium",
+  "notes": "2-prompt, ~3-minute bookend session. Opens with a full paste of prior-session output from v-appydave (diff of generate-schema.md v1→v2, commit confirmations for both repos, Claude's root-cause analysis of the gap analysis failure). The prior session had already applied the fix and committed — this session does a read-only verification pass (Glob×4, Read×3, Bash×1, zero writes/edits) then closes with 'so are you suggesting any changes or not'. No mutations. File size (20KB) is almost entirely the prior-session paste, not active content. Clean archetype instance of orientation.bookend: cross-project paste as briefing, read-only verification, terse clarifying close. The embedded meta-commentary (Claude analysing its own prior analytical failure on gap analysis) is the only substantive content but belongs to the v-appydave session.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "f6581769-8abe-434f-89bc-81620632ded3",
+  "machine": "m4-mini",
+  "project": "app.supportsignal",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
+  "session_type_registry": "ORIENTATION",
+  "session_type_analysed": "ORIENTATION/cold_start",
+  "file_size_bytes": 12079,
+  "event_count": 45,
+  "disposition": "active",
+  "interest_level": "high",
+  "notes": "17-tool pre-prompt autonomous burst before first user message — clean cold_start exemplar. Compressed prompt shorthand ('11.0' + 'go') signals shared backlog shorthand protocol. Skill invocation mid-session triggers nested orientation sub-burst (8 Read, 5 Grep, 3 Glob in 46s). 9-minute human review pause after read burst. Tail edits (3 Edits) are incidental cleanup, do not override orientation character. 'Deal with it' delegation pattern pre-authorises Claude to fix simple issues without asking. Registry ORIENTATION confirmed; cold_start subtype is best fit.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "38a1c160-dfba-4244-b5c7-adb51664740a",
+  "machine": "m4-mini",
+  "project": "prompt.supportsignal",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+  "session_type_registry": "ORIENTATION",
+  "session_type_analysed": "ORIENTATION.artifact_retrieval",
+  "file_size_bytes": 8905,
+  "event_count": 24,
+  "disposition": "ended",
+  "interest_level": "medium-high",
+  "notes": "Two-burst session spanning ~20 hours. Burst 1 (38 min): documentation archaeology across AWB/POEM WUI docs — Display YAML, N8N alignment rationale, React visualisation library compatibility, doc tree audit. Ends with Write (synthesised research note). Burst 2 (next morning, 3 min): explicit bookend — recap, handoff context, Skill invocation to close. Compound subtype: artifact_retrieval + bookend. Registry classification of ORIENTATION is correct; read-heavy tool pattern confirmed (Read x6, Glob x3, Grep x2). Notable: session opens with a terminology probe ('what do you know it as?') — a deliberate prior-context check before substantive work.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "48b3197d-afe0-4ce6-98c0-3337d48e566a",
+  "machine": "m4-mini",
+  "project": "app.supportsignal.com.au",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au",
+  "session_type_registry": "ORIENTATION",
+  "session_type_analysed": "ORIENTATION / orientation.artifact_retrieval",
+  "file_size_bytes": 8423,
+  "event_count": 32,
+  "disposition": "active",
+  "interest_level": "low",
+  "notes": "Single prompt '11.0' — versioned task reference triggering a skill. Pre-prompt phase (9 tool calls, 38s) is cold_start context loading. Post-prompt: Skill invocation then burst of 16 parallel Reads in 42s, one Write output. Total duration 3m13s. No subagents, no conversation, no closing ceremony. Registry ORIENTATION is correct; subtype refined from read-heavy tool pattern to orientation.artifact_retrieval. Zero-conversation execution pattern — skill deterministic enough that no clarification was needed.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "c67c4aac-5d28-4c0b-afa6-772a9a1bbf78",
+  "machine": "m4-mini",
+  "project": "v-appydave",
+  "project_dir": "/Users/davidcruwys/dev/video-projects/v-appydave",
+  "session_type_registry": "ORIENTATION",
+  "session_type_analysed": "orientation.artifact_retrieval",
+  "file_size_bytes": 7825,
+  "event_count": 31,
+  "disposition": "ended",
+  "interest_level": "low-medium",
+  "notes": "Single-turn YLO YAML/schema audit — David asked Claude to read the full YLO artefact set and assess whether fields needed x-ui-rows (textarea) annotations. Claude ran 26 Read calls + 1 Task subagent in one burst. No writes. 19.5-hour idle gap before a meta-question in Turn 2 (Skill call to re-anchor cold context). This session is the precursor to bb54ff44 where Claude made unauthorised x-ui-rows edits — the orientation here seeded that implicit action queue.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{
+  "schema_version": 1,
+  "session_id": "1604fbd4-7cb4-4246-94a4-bb4bf361acb1",
+  "machine": "m4-mini",
+  "project": "prompt.supportsignal",
+  "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au",
+  "session_type_registry": "ORIENTATION",
+  "session_type_analysed": "orientation.artifact_retrieval",
+  "file_size_bytes": 6157,
+  "event_count": 23,
+  "disposition": "active",
+  "interest_level": "medium",
+  "notes": "7-minute recipe-invocation session. *run 106 prompt triggers POEM OS incident workflow. Pattern: 2 auto-Glob calls before any user prompt, Read×8 orientation burst, mcp__codex__codex×2 recipe lookup, yes confirmation gate at 4-min gap, Task×5 dispatch terminus. Session ends after agent dispatch — no TaskOutput, no commits, no handover. Exemplar of orientation.artifact_retrieval subtype: reads serve dispatch, not exploration. registry read-heavy label accurate but misses the Task-burst terminus as the defining signal.",
+  "analysed_at": "2026-03-22T00:00:00Z"
+}
+
+{"schema_version": 1, "session_id": "58f43cdd-1c86-4082-b89d-ad06dd48283d", "machine": "m4-mini", "project": "brains", "project_dir": "/Users/davidcruwys/dev/ad/brains", "session_type_registry": "KNOWLEDGE", "session_type_analysed": "brand.speaker_submission", "file_size_bytes": 31878, "event_count": 48, "disposition": "active", "interest_level": "medium", "notes": "False positive KNOWLEDGE \u2014 session is brand copywriting for the Digital Stage Summit speaker application (March 2026). Claude reads brand-dave brain files for background context then acts as a copywriter across 27 user prompts. No brain files durably updated except a minor identity-preference Edit (AppyDave over David Cruwys). Form-filling assistant pattern with iterative bio compression. Reveals need for BRAND or CONTENT top-level session type in the taxonomy.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "62b18cd4-6278-4d50-af86-d496f2f4a76d", "machine": "m4-mini", "project": "brains", "project_dir": "/Users/davidcruwys/dev/ad/brains", "session_type_registry": "KNOWLEDGE", "session_type_analysed": "KNOWLEDGE / knowledge.brain_curation", "file_size_bytes": 29725, "event_count": 50, "disposition": "active", "interest_level": "medium-high", "notes": "True positive KNOWLEDGE. Session is an Ansible-companion run: David alternates between running Ansible on a remote machine and asking Claude to read brain files, explain output, and document drift. Primary brain: ansible. Secondary brain: agentic-os. Key output: Edit recording commented-out package drift in ansible brain. Notable patterns: Task as orientation subagent at session start, large pasted prompt as knowledge ingestion event, rapid 4-Read burst as sync-reload, session-as-infrastructure-companion subtype candidate.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "6a2cef50-e29a-4ff7-8dc8-804b0f1641f3", "machine": "m4-mini", "project": "brains", "project_dir": "/Users/davidcruwys/dev/ad/brains", "session_type_registry": "KNOWLEDGE", "session_type_analysed": "knowledge.brain_synthesis", "file_size_bytes": 26968, "event_count": 58, "disposition": "ended", "interest_level": "high", "notes": "Registry KNOWLEDGE is broadly correct but misses the synthesis subtype. Session goal: produce NotebookLM dataset(s) for an Ansible/agentic-OS video. Tool pattern: Read x17 (38.6%), Glob x11 (25.0%), Bash x8 (18.2%), Write x4 (9.1%), ToolSearch x3 (6.8%), Grep x1 (2.3%). Write + Bash(open) = delivery pattern, not code execution. Three deliverables produced: (1) primary consolidated Ansible/agentic-OS NotebookLM doc, (2) machine-specific provisioning doc (5-machine Ansible setup), (3) Ansible terminal commands/live demo doc. ToolSearch x3 early = skill-gap signal; David confirms 'I thought we had this in the skill already'. Brain subfolder: brains/ansible/ with 6+ files. Session has conversational Q&A tail (idempotent definition, vertical vs horizontal stack, Windows compatibility) with no tool calls \u2014 classification stays synthesis. Proposed subtype: knowledge.brain_synthesis (Glob > 6 + Read > 8 + Write > 0 + Bash(open) + NotebookLM reference). Companion sessions: W3-13, W3-14 (OPERATIONS ansible sessions that produced the brain content read here).", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "b6c11972-2315-44b2-b0ca-d74cf52211c0", "machine": "m4-mini", "project": "brains", "project_dir": "/Users/davidcruwys/dev/ad/brains", "session_type_registry": "KNOWLEDGE", "session_type_analysed": "knowledge.survey_and_implement", "file_size_bytes": 21272, "event_count": 64, "disposition": "active", "interest_level": "medium-high", "notes": "Bulk taxonomy survey of all 36 brains (36 Read calls in ~90s burst) followed by architectural recommendation (subfolders vs frontmatter categories) and immediate Task agent dispatch to implement. Claude produced 8-category taxonomy inline in chat; David pasted it back as agent spec \u2014 inline-knowledge anti-pattern. File count discrepancy investigated (590 curated vs 1500 total files) via 6 Bash probes. 13h gap then single 'commit this' close. No /rename, no handover. Proposed new subtype: knowledge.survey_and_implement (survey triggers implementation in same session). KNOWLEDGE label retained as primary; BUILD component present in second half.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "9476dfb9-0a89-42f1-8469-3970268086cf", "machine": "m4-mini", "project": "brains", "project_dir": "/Users/davidcruwys/dev/ad/brains", "session_type_registry": "KNOWLEDGE", "session_type_analysed": "knowledge.personal_advisory", "file_size_bytes": 6588, "event_count": 21, "disposition": "active", "interest_level": "medium", "notes": "Personal family advisory session misclassified as KNOWLEDGE. David asks about Philippines monitor research for Jan and Mary. Brain search phase (Grep\u00d76, Glob\u00d72, Bash\u00d72, Read\u00d73) found no prior research \u2014 knowledge gap, not knowledge retrieval. Session pivots: David pastes live Lazada URL, Claude invokes Playwright to browse product page (mcp__playwright__browser_navigate) for scam verification. Follow-up prompts on pivot/VESA rotation. No brain files written \u2014 research is session-ephemeral. Three classifier learning signals: (1) Playwright = external_research flag; (2) personal names + consumer topic in first prompt \u2192 personal_advisory; (3) empty search result = knowledge gap, not KNOWLEDGE session. Recommended brain file: brains/davidcruwys/personal/philippines-monitor-research.md (does not exist).", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "9fe2fca6-4ced-42ca-bdfa-c2678d4a0aa9", "machine": "m4-mini", "project": "signal-studio", "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/signal-studio", "session_type_registry": "BUILD", "session_type_analysed": "BUILD", "file_size_bytes": 183930, "event_count": 349, "disposition": "ended", "interest_level": "high", "notes": "6-hour product development session building entity CRUD edit flows, relationship filtering, dashboard live counts, and moments UX for signal-studio (SupportSignal NDIS app). 32 user prompts, 106 Edit + 28 Write ops. Two context-limit handovers survived. Notable: task decomposition spike (14 TaskCreate at start), background agent UAT and test runs, live data/git architecture decision (data/ removed from gitignore). BUILD classification confirmed \u2014 this is a client product repo, not tooling.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "da13f544-5151-4536-af37-28e5cd0f6050", "machine": "m4-mini", "project": "signal-studio", "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/signal-studio", "session_type_registry": "BUILD", "session_type_analysed": "debug.e2e_campaign", "file_size_bytes": 148975, "event_count": 379, "disposition": "active", "interest_level": "high", "notes": "14-hour E2E debugging marathon. 45 user prompts, 3 context window continuations, 182 Bash calls (execution-loop bash: test runner, git ops, process mgmt). 24 Agent spawns + 7 CronCreate/Delete pairs show attempted background E2E orchestration. Heavy user frustration throughout \u2014 data state bleed (seeded JSON records regenerated with new IDs on each test run), flaky test timeouts, repeated unmet cleanup requests. Session resolves with test.skip pragmatic park, commit, but untracked data files unresolved at session end. BUILD classification challenged: no feature code written, primary activity is test infrastructure stabilization. Correct subtype: debug.e2e_campaign. Key signals: Angela-feedback vs UAT-testing distinction clarified (prompt 5); Ralph Wiggum worktree E2E pattern proposed but not fully applied; 4-hour idle gap mid-session; final prompt about untracked files with no confirmed resolution.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "f9a685e2-5105-4a5a-883a-25661196d055", "machine": "m4-mini", "project": "signal-studio", "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/signal-studio", "session_type_registry": "BUILD", "session_type_analysed": "MIXED (BUILD + UI_REVIEW + DESIGN_EXPLORATION)", "file_size_bytes": 160877, "event_count": 429, "user_prompt_count": 34, "tool_use_count": 395, "progress_event_count": 0, "disposition": "ended", "interest_level": "high", "date_start": "2026-03-13T06:52:00.127Z", "date_end": "2026-03-14T02:22:14.834Z", "duration_hours": 19.5, "tool_breakdown": {"Bash": 80, "Edit": 66, "Read": 61, "Grep": 47, "mcp__playwright__browser_take_screenshot": 42, "mcp__playwright__browser_navigate": 31, "mcp__playwright__browser_click": 26, "Write": 16, "Glob": 8, "ToolSearch": 6, "Skill": 5, "Agent": 5, "mcp__playwright__browser_snapshot": 1, "mcp__playwright__browser_resize": 1}, "classification_challenged": true, "challenge_reason": "Playwright MCP events = 101 (25.6% of tool_use). Pure BUILD sessions have <5% Playwright. Session spans three distinct phases: AWB feature build, Playwright visual audit of all Signal Studio pages, and design exploration (17 AWB landing page variants + AppyStack recipe formalisation). Registry single-label BUILD captures only the first phase.", "phases": [{"name": "AWB Integration Build", "time_start": "2026-03-13T06:52:00Z", "time_end": "2026-03-13T07:54:00Z", "type": "BUILD", "summary": "Built AWB integration: renamed env var to AWB_URL, implemented POST /api/moments/:id/send-to-awb endpoint, fixed buildPoemPayload() for incidents, resolved EADDRINUSE port conflict"}, {"name": "Playwright UI Audit", "time_start": "2026-03-13T07:54:00Z", "time_end": "2026-03-13T16:33:00Z", "type": "UI_REVIEW", "summary": "42 Playwright screenshots across all Signal Studio pages. Fixed: incident list column widths (dropped Company/Reporter), normalised 'new incident' badge/button colours to brand palette, various style edits driven by visual feedback"}, {"name": "Design Exploration \u2014 AWB Landing Variants", "time_start": "2026-03-14T00:53:00Z", "time_end": "2026-03-14T02:22:00Z", "type": "DESIGN_EXPLORATION", "summary": "Resumed via compaction. Screenshotted 17 AWB mock landing pages (V1\u2013V17). Updated AWB workflow step indicator to V10 Pipeline style. Agent sub-calls produced design preference write-up and AppyStack recipe formalisation (5 archetypes: Split, Tiles, Minimal, Compact, Hero)"}], "notable_events": [{"line": 316, "type": "compaction_resume", "description": "Very long user_prompt containing compaction summary (~700 lines). Detectable by prefix 'This session is being continued from a previous conversation that ran out of context.'"}, {"line": 420, "type": "accidental_prompt", "description": "Voice-to-text artefact: 'Unknown skill: near-compassion'"}, {"line": 36, "type": "accidental_prompt", "description": "Incomplete voice input: 'why? i'"}, {"lines": [403, 419], "type": "agent_sub_calls", "description": "Two Agent tool invocations spawning sub-agents. Companion agent-*.jsonl files expected with isSidechain: true"}], "notes": "High-interest session for AngelEye pattern library. Demonstrates: (1) multi-phase sessions that require multi-label classification, (2) Playwright MCP volume as a UI_REVIEW signal, (3) detectable compaction_resume events, (4) voice-to-text noise patterns, (5) long autonomous blocks (6.5h gap with no user prompts during Playwright audit). BUILD label from registry is accurate but incomplete.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "e73d7fc7-bd73-476c-8454-2fb5fd1ff7a4", "machine": "m4-mini", "project": "ad", "project_dir": "/Users/davidcruwys/dev/ad", "session_type_registry": "BUILD", "session_type_analysed": "research.external_intake", "file_size_bytes": 10385, "event_count": 2, "disposition": "active", "interest_level": "medium", "notes": "27-minute session at ad monorepo root. 2 user_prompt events only \u2014 zero tool calls, zero assistant_response captured. Prompt 1: terminal history of failed git clone attempts against coleam00/dynamous-engine (SSH key missing, bad HTTPS credentials) + full Dynamous Engine README paste + 'Why can't I access it?'. Prompt 2 (22-min gap): naming question for dynamous-community/workshops clone. Session is research intake of Cole Medin Second Brain architecture \u2014 likely inspirational input for AngelEye design. BUILD mis-classification: no construction activity, no tools, 10KB is paste volume not work volume. New subtype proposed: research.external_intake \u2014 large external README paste + interpretive questions, no tool calls. ad-root sessions should be weighted away from BUILD unless Edit/Write/Bash evidence present.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "0aabff8e-6ca4-4e8a-8eaf-96de6b418e29", "machine": "m4-mini", "project": "davidcruwys", "project_dir": "/Users/davidcruwys", "session_type_registry": "BUILD", "session_type_analysed": "SYSOPS/multi-machine-sync", "file_size_bytes": 96828, "event_count": 50, "disposition": "active", "interest_level": "medium", "notes": "Classification challenged: registry says BUILD but no code was written. Session was cross-Mac repo gap analysis and sync between M4 Mini and M4 Pro (source of truth). Generated a removal script (single Write), executed via Bash (24 calls total), deleted stale local repos, pulled/copied missing repos from Pro via SSH. Final 12.6h gap then session resumed next day for unrelated hardware questions (Bluetooth mouse, Samsung monitor resolution). Home-dir project_dir is a reliable SYSOPS/ambient signal. Script-generate-then-execute (Write + Bash) pattern distinct from BUILD.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "bb290809-318a-475f-b0d8-ad06b4de6253", "machine": "m4-mini", "project": "brains", "project_dir": "/Users/davidcruwys/dev/ad/brains", "session_type_registry": "RESEARCH", "session_type_analysed": "RESEARCH / research.quick_lookup", "file_size_bytes": 1811, "event_count": 6, "disposition": "active", "interest_level": "low", "notes": "Single-prompt Loom full-screen behavior lookup. 1 user_prompt + 2 brave_web_search + 3 WebFetch. No response event captured. cwd is brains but incidental \u2014 off-topic question. No reclassification needed. Proposes research.quick_lookup subtype for one-shot websearch sessions. 35-minute gap between last tool event and last_active suggests idle reading time.", "analysed_at": "2026-03-22T00:00:00Z"}
+{"schema_version": 1, "session_id": "fddf773a-3e78-4df1-90b2-40023625bc20", "machine": "m4-mini", "project": "prompt.supportsignal", "project_dir": "/Users/davidcruwys/dev/clients/supportsignal/prompt.supportsignal.com.au", "session_type_registry": "RESEARCH", "session_type_analysed": "research.status_check", "file_size_bytes": 1000, "event_count": 5, "disposition": "active", "interest_level": "low", "notes": "3-minute one-shot status check. Single prompt asking about Anthropic/Claude uptime and news, framed around Trump/Department of War geopolitical context. Pattern: WebFetch\u00d72 + brave_news_search\u00d72 fired in 6-second burst. No project files touched. Session opened in prompt.supportsignal.com.au incidentally \u2014 entirely external to the project. RESEARCH classification confirmed. Subtype research.status_check: targeted operational check, not exploratory research. Dual-channel lookup (direct URL fetch + news search) is the diagnostic signal. Analytically thin but confirms status_check as a real micro-session type.", "analysed_at": "2026-03-22T00:00:00Z"}
