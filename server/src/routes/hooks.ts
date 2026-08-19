@@ -91,6 +91,36 @@ const HOOK_REGISTRATION_EXCLUSIONS: Record<string, { reason: string; optional: b
   },
 };
 
+// Size-bounded deep copy for anything we persist from a raw hook payload.
+//
+// The previous guard only truncated TOP-LEVEL strings (`typeof v === 'string' && v.length > 500`),
+// which is no guard at all for `tool_response` — a Read of a large file arrives as a big string
+// nested one level down and would have been written to the session JSONL whole. Bound depth,
+// array length and string length together so one pathological event cannot blow up the store.
+const MAX_DEPTH = 6;
+const MAX_ARRAY_ITEMS = 50;
+
+function boundValue(value: unknown, maxString: number, depth = 0): unknown {
+  if (typeof value === 'string') {
+    return value.length > maxString
+      ? `${value.slice(0, maxString)}…[+${value.length - maxString}]`
+      : value;
+  }
+  if (value === null || typeof value !== 'object') return value;
+  if (depth >= MAX_DEPTH) return '[truncated: max depth]';
+  if (Array.isArray(value)) {
+    const items = value.slice(0, MAX_ARRAY_ITEMS).map((v) => boundValue(v, maxString, depth + 1));
+    if (value.length > MAX_ARRAY_ITEMS) items.push(`[+${value.length - MAX_ARRAY_ITEMS} more]`);
+    return items;
+  }
+  return Object.fromEntries(
+    Object.entries(value as Record<string, unknown>).map(([k, v]) => [
+      k,
+      boundValue(v, maxString, depth + 1),
+    ])
+  );
+}
+
 function summariseTool(
   toolName: string,
   toolInput: Record<string, unknown>
@@ -162,6 +192,10 @@ export function createHooksRouter(io: Server): Router {
       const ts = new Date().toISOString();
       const cwd = typeof body.cwd === 'string' ? body.cwd : undefined;
       const agentId = typeof body.agent_id === 'string' ? body.agent_id : undefined;
+      // Turn-correlation key — Claude Code stamps this on 14 events since 2026-07-24.
+      const promptId = typeof body.prompt_id === 'string' ? body.prompt_id : undefined;
+      // Claude Code's own session title (SessionStart + UserPromptSubmit).
+      const sessionTitle = typeof body.session_title === 'string' ? body.session_title : undefined;
 
       const event: AngelEyeEvent = {
         id: crypto.randomUUID(),
@@ -171,6 +205,8 @@ export function createHooksRouter(io: Server): Router {
         event: eventType,
         ...(cwd !== undefined && { cwd }),
         ...(agentId !== undefined && { agent_id: agentId }),
+        ...(promptId !== undefined && { prompt_id: promptId }),
+        ...(sessionTitle !== undefined && { session_title: sessionTitle }),
       };
 
       // Attach event-specific payload fields
@@ -200,18 +236,30 @@ export function createHooksRouter(io: Server): Router {
         if (typeof body.tool_name === 'string') {
           event.tool_summary = summariseTool(body.tool_name, toolInput);
         }
-        if (typeof body.tool_result === 'string') {
-          event.result = body.tool_result;
+        // Claude Code sends `tool_response`, NOT `tool_result` — the old read was wrong from
+        // Wave 1 and measured 0/17,108 populated. `tool_response` is usually an object; some
+        // tools send a string. Bounded harder than the residual payload because it is the most
+        // valuable field on the highest-volume event.
+        if (body.tool_response !== undefined && body.tool_response !== null) {
+          event.tool_response = boundValue(body.tool_response, 2000);
+        }
+        if (typeof body.duration_ms === 'number') {
+          event.duration_ms = body.duration_ms;
         }
       }
 
       if (eventType === 'stop' || eventType === 'subagent_stop') {
-        if (typeof body.reason === 'string') {
-          event.reason = body.reason;
-        }
+        // No `reason` here — Stop does not carry one (measured 0/191). It is a SessionEnd field,
+        // handled below. Stop's real payload (background_tasks, session_crons, effort) now
+        // survives via the residual-payload capture.
         if (typeof body.last_assistant_message === 'string') {
           event.last_message = body.last_assistant_message;
         }
+      }
+
+      // SessionEnd is where `reason` actually lives (780 observations in the schema audit).
+      if (eventType === 'session_end' && typeof body.reason === 'string') {
+        event.reason = body.reason;
       }
 
       if (eventType === 'subagent_start' || eventType === 'subagent_stop') {
@@ -220,17 +268,16 @@ export function createHooksRouter(io: Server): Router {
         }
       }
 
-      // Wave 11 — new events: store raw payload with large-field truncation
-      const ORIGINAL_EVENTS = new Set([
-        'session_start',
-        'user_prompt',
-        'tool_use',
-        'stop',
-        'session_end',
-        'subagent_start',
-        'subagent_stop',
-      ]);
+      // Residual payload capture — everything the promoted fields above did not claim.
+      //
+      // This used to be skipped entirely for the seven Wave-1 events, on the assumption that their
+      // promoted fields covered the payload. Claude Code has added fields since: `effort`,
+      // `background_tasks`, `session_crons` and `prompt_id` all arrive on Stop, and every one was
+      // being dropped on the floor. The carve-out now strips only what is genuinely already stored,
+      // so new upstream fields survive by default instead of needing a code change to be noticed.
+      // See docs/architecture/staleness-review.md#a1-4, #a1-5, #a1-6.
       const STRIP_FROM_PAYLOAD = new Set([
+        // envelope — already first-class on the event
         'session_id',
         'cwd',
         'hook_event_name',
@@ -239,16 +286,35 @@ export function createHooksRouter(io: Server): Router {
         'agent_id',
         'agent_type',
         'stop_hook_active',
+        'prompt_id',
+        'session_title',
+        // promoted above AND large — duplicating these would double the store
+        'prompt',
+        'user_prompt',
+        'tool_response',
+        'last_assistant_message',
+        // promoted above and cheap, but stripped because they are pure duplicates
+        'tool_name',
+        'tool_use_id',
+        'duration_ms',
+        // NOTE: `reason` and `error` are deliberately NOT stripped. They are short, and they are
+        // promoted only on the events where they are known to appear (SessionEnd / *_failure).
+        // Leaving them in the residual means an unexpected appearance elsewhere is captured
+        // rather than silently dropped — which is the failure this whole block exists to fix.
+        // already condensed into tool_summary; the raw form is the biggest field on the
+        // highest-volume event and adds nothing the summary does not carry
+        'tool_input',
       ]);
-      if (!ORIGINAL_EVENTS.has(eventType)) {
-        event.payload = Object.fromEntries(
-          Object.entries(body)
-            .filter(([k]) => !STRIP_FROM_PAYLOAD.has(k))
-            .map(([k, v]) => [k, typeof v === 'string' && v.length > 500 ? v.slice(0, 500) : v])
-        );
-        if (eventType === 'tool_failure' || eventType === 'stop_failure') {
-          if (typeof body.error === 'string') event.error = body.error;
-        }
+      const residual = Object.fromEntries(
+        Object.entries(body)
+          .filter(([k]) => !STRIP_FROM_PAYLOAD.has(k))
+          .map(([k, v]) => [k, boundValue(v, 500)])
+      );
+      if (Object.keys(residual).length > 0) event.payload = residual;
+
+      if (eventType === 'tool_failure' || eventType === 'stop_failure') {
+        if (typeof body.error === 'string') event.error = body.error;
+        if (typeof body.duration_ms === 'number') event.duration_ms = body.duration_ms;
       }
 
       // Non-blocking schema audit (runs for all 31 events)

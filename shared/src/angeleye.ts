@@ -52,7 +52,24 @@ export interface AngelEyeEvent {
   tool?: string;
   tool_use_id?: string;
   tool_summary?: Record<string, unknown>;
+  /**
+   * @deprecated Never populated. Claude Code sends `tool_response`, not `tool_result` — this read
+   * was wrong from Wave 1 and measured 0/17,108 on real events. Kept so historic rows still parse;
+   * read `tool_response` instead. See docs/architecture/staleness-review.md#a1-4.
+   */
   result?: string;
+  /** PostToolUse `tool_response`, size-bounded. Usually an object; a string for some tools. */
+  tool_response?: unknown;
+  /** PostToolUse / PostToolUseFailure wall-clock duration in ms. */
+  duration_ms?: number;
+  /**
+   * Turn-correlation key. Claude Code stamps this on 14 hook events (since 2026-07-24) and it is a
+   * better key than anything correlator.service.ts can reconstruct from timestamps.
+   */
+  prompt_id?: string;
+  /** Claude Code's own session title, sent on SessionStart and UserPromptSubmit. */
+  session_title?: string;
+  /** SessionEnd only. Not sent on Stop — the old Stop read measured 0/191. */
   reason?: string;
   last_message?: string;
   agent_type?: string;

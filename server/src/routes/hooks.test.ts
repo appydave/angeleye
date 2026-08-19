@@ -243,7 +243,7 @@ describe('POST /hooks/PostToolUse — MCP', () => {
 // ── Stop (not stop_hook_active) ────────────────────────────────────────────────
 
 describe('POST /hooks/Stop — normal stop', () => {
-  it('stores event with reason and last_message, updates registry', async () => {
+  it('stores last_message and the real Stop payload, updates registry', async () => {
     // Establish the session first
     await request(app).post('/hooks/SessionStart').send({
       session_id: 'ses-stop-1',
@@ -251,11 +251,19 @@ describe('POST /hooks/Stop — normal stop', () => {
     });
     mockIo.emit.mockClear();
 
-    const res = await request(app).post('/hooks/Stop').send({
-      session_id: 'ses-stop-1',
-      reason: 'end_turn',
-      last_assistant_message: 'done',
-    });
+    // Shaped like a real Claude Code 2.1.235 Stop payload. Note there is NO `reason` — that is a
+    // SessionEnd field. The old test sent one and asserted it was promoted, which is why the dead
+    // read survived: it agreed with the code, not with the platform. Measured 0/191 on real events.
+    const res = await request(app)
+      .post('/hooks/Stop')
+      .send({
+        session_id: 'ses-stop-1',
+        last_assistant_message: 'done',
+        prompt_id: 'prm-stop-1',
+        background_tasks: [{ id: 'bg-1', status: 'running' }],
+        session_crons: [],
+        effort: { level: 'high' },
+      });
 
     expect(res.status).toBe(200);
 
@@ -263,8 +271,12 @@ describe('POST /hooks/Stop — normal stop', () => {
     expect(events).toHaveLength(2); // session_start + stop
     const stopEvt = events[1];
     expect(stopEvt?.event).toBe('stop');
-    expect(stopEvt?.reason).toBe('end_turn');
     expect(stopEvt?.last_message).toBe('done');
+    expect(stopEvt?.prompt_id).toBe('prm-stop-1');
+    // The fields that used to be discarded by the ORIGINAL_EVENTS carve-out
+    expect(stopEvt?.payload?.background_tasks).toEqual([{ id: 'bg-1', status: 'running' }]);
+    expect(stopEvt?.payload?.session_crons).toEqual([]);
+    expect(stopEvt?.payload?.effort).toEqual({ level: 'high' });
 
     // Registry updated (last_active changed)
     const registry = await readRegistry();
@@ -456,7 +468,10 @@ describe('Wave 11 — large payload fields truncated', () => {
     expect(res.status).toBe(200);
     const events = await readSessionEvents('ses-w11-trunc');
     const msg = events[0]?.payload?.message as string;
-    expect(msg.length).toBe(500);
+    expect(msg.startsWith('x'.repeat(500))).toBe(true);
+    // The marker records how much was dropped, so a truncated value is never mistaken for a
+    // short one — length is 500 + the marker, not 500.
+    expect(msg).toBe(`${'x'.repeat(500)}\u2026[+500]`);
   });
 });
 
@@ -530,6 +545,143 @@ describe('Wave 11 + canonical reconcile — all 31 EVENT_MAP entries resolve', (
     // If it were unknown, mockIo.emit would NOT be called
     expect(mockIo.emit).toHaveBeenCalled();
     mockIo.emit.mockClear();
+  });
+});
+
+// ── Payload carve-out removal (2026-08-19) ────────────────────────────────────
+// Regression cover for docs/architecture/staleness-review.md #a1-4, #a1-5, #a1-6.
+// Every field asserted here was measured arriving from Claude Code 2.1.235 and being dropped.
+
+describe('PostToolUse — tool_response, not tool_result', () => {
+  it('captures tool_response and ignores the tool_result name that never arrives', async () => {
+    const res = await request(app)
+      .post('/hooks/PostToolUse')
+      .send({
+        session_id: 'ses-tr-1',
+        tool_name: 'Bash',
+        tool_input: { command: 'ls' },
+        tool_response: { success: true, stdout: 'a.txt' },
+        duration_ms: 42,
+        // Claude Code has never sent this key; if it ever does it must not win.
+        tool_result: 'should be ignored',
+      });
+
+    expect(res.status).toBe(200);
+    const evt = (await readSessionEvents('ses-tr-1'))[0];
+    expect(evt?.tool_response).toEqual({ success: true, stdout: 'a.txt' });
+    expect(evt?.duration_ms).toBe(42);
+    // `result` is the deprecated field — it must stay unset rather than quietly resurface.
+    expect(evt?.result).toBeUndefined();
+  });
+
+  it('captures a string tool_response too', async () => {
+    await request(app)
+      .post('/hooks/PostToolUse')
+      .send({
+        session_id: 'ses-tr-2',
+        tool_name: 'Read',
+        tool_input: { file_path: '/a' },
+        tool_response: 'plain string response',
+      });
+    const evt = (await readSessionEvents('ses-tr-2'))[0];
+    expect(evt?.tool_response).toBe('plain string response');
+  });
+});
+
+describe('prompt_id — the turn-correlation key', () => {
+  it('is promoted on every event type, not just the new ones', async () => {
+    const cases: Array<[string, string, Record<string, unknown>]> = [
+      ['UserPromptSubmit', 'ses-pid-1', { prompt: 'hello' }],
+      ['PostToolUse', 'ses-pid-2', { tool_name: 'Bash', tool_input: { command: 'ls' } }],
+      ['SessionStart', 'ses-pid-3', { cwd: '/p' }],
+      ['CwdChanged', 'ses-pid-4', { old_cwd: '/a', new_cwd: '/b' }],
+      ['Stop', 'ses-pid-5', { last_assistant_message: 'done' }],
+    ];
+
+    for (const [path, sid, extra] of cases) {
+      await request(app)
+        .post(`/hooks/${path}`)
+        .send({ session_id: sid, prompt_id: `prm-${sid}`, ...extra });
+      const evt = (await readSessionEvents(sid))[0];
+      expect(evt?.prompt_id).toBe(`prm-${sid}`);
+      // promoted, so it must not also sit in the residual payload
+      expect(evt?.payload?.prompt_id).toBeUndefined();
+    }
+  });
+
+  it('omits payload entirely when nothing survives the strip list', async () => {
+    await request(app).post('/hooks/SessionStart').send({
+      session_id: 'ses-pid-6',
+      cwd: '/p',
+      prompt_id: 'prm-6',
+      hook_event_name: 'SessionStart',
+    });
+    const evt = (await readSessionEvents('ses-pid-6'))[0];
+    expect(evt?.prompt_id).toBe('prm-6');
+    expect(evt?.payload).toBeUndefined();
+  });
+});
+
+describe('session_title — Claude Code\u2019s own session name', () => {
+  it('is captured from SessionStart and UserPromptSubmit', async () => {
+    await request(app)
+      .post('/hooks/SessionStart')
+      .send({ session_id: 'ses-title-1', cwd: '/p', session_title: 'Fix the parser' });
+    expect((await readSessionEvents('ses-title-1'))[0]?.session_title).toBe('Fix the parser');
+
+    await request(app)
+      .post('/hooks/UserPromptSubmit')
+      .send({ session_id: 'ses-title-2', prompt: 'hi', session_title: 'Second one' });
+    expect((await readSessionEvents('ses-title-2'))[0]?.session_title).toBe('Second one');
+  });
+});
+
+describe('SessionEnd — reason lives here, not on Stop', () => {
+  it('promotes reason on SessionEnd', async () => {
+    await request(app).post('/hooks/SessionStart').send({ session_id: 'ses-se-1', cwd: '/p' });
+    await request(app)
+      .post('/hooks/SessionEnd')
+      .send({ session_id: 'ses-se-1', cwd: '/p', reason: 'clear' });
+
+    // SessionEnd archives the session, so read from the archive
+    const raw = await readFile(join(testDir, 'archive', 'session-ses-se-1.jsonl'), 'utf-8');
+    const events = raw
+      .split('\n')
+      .filter((l) => l.trim() !== '')
+      .map((l) => JSON.parse(l) as AngelEyeEvent);
+    const endEvt = events.find((e) => e.event === 'session_end');
+    expect(endEvt?.reason).toBe('clear');
+  });
+});
+
+describe('bounded truncation is deep, not just top-level', () => {
+  it('truncates a long string nested inside tool_response', async () => {
+    await request(app)
+      .post('/hooks/PostToolUse')
+      .send({
+        session_id: 'ses-deep-1',
+        tool_name: 'Read',
+        tool_input: { file_path: '/big' },
+        tool_response: { content: 'y'.repeat(50_000), ok: true },
+      });
+
+    const evt = (await readSessionEvents('ses-deep-1'))[0];
+    const body = evt?.tool_response as { content: string; ok: boolean };
+    // The OLD guard only looked at top-level strings, so a 50k string one level down went to
+    // disk whole. tool_response gets a larger budget than the residual payload, but still bounded.
+    expect(body.content.length).toBeLessThan(2100);
+    expect(body.ok).toBe(true);
+  });
+
+  it('caps long arrays and deep nesting instead of copying them whole', async () => {
+    await request(app)
+      .post('/hooks/Notification')
+      .send({ session_id: 'ses-deep-2', items: Array.from({ length: 500 }, (_, i) => i) });
+
+    const evt = (await readSessionEvents('ses-deep-2'))[0];
+    const items = evt?.payload?.items as unknown[];
+    expect(items).toHaveLength(51); // 50 items + the "+450 more" marker
+    expect(items[50]).toBe('[+450 more]');
   });
 });
 
