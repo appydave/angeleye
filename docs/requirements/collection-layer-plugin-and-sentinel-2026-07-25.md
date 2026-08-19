@@ -11,12 +11,29 @@ evidence_sources:
   - ~/dev/ad/apps/appysentinel (Sentinel boilerplate — published, recipes exist)
   - ~/dev/ad/apps/angeleye/docs/requirements/angelsentinel-split-spec-2026-06-08.md
   - live fleet audit 2026-07-25 (Roamy + M4 Mini)
+  - ~/dev/ad/apps/angeleye/docs/architecture/collection-layer-comparison.md (external prior art, 2026-08-19)
 requested_by: david
 ---
 
 > **Scope.** Design-and-prep document. **Nothing here is implemented.** Claims are tagged
 > `verified(path)` / `inference` / `unknown`. §6 records the decisions — **Q2 and Q3 were settled by
 > David on 2026-07-25**; Q1 (transport) is leaning spool with the discussion open.
+
+> **Update 2026-08-19 — checked against external prior art.**
+> `docs/architecture/collection-layer-comparison.md` compares this design against
+> [`o11y-dev/opentelemetry-hooks`](https://github.com/o11y-dev/opentelemetry-hooks) (hook-transport
+> machinery, MIT) and [`Ax-For/session-observer`](https://github.com/Ax-For/session-observer) (MIT).
+> **Nothing here changed.** §3 option D (spool to disk) is reinforced — the mature project in this
+> space independently arrived at disk buffering, and its retry loop depends on the buffer surviving a
+> failed export. The maildir-over-append choice is now evidence-backed: their append design pays a
+> per-write lock this design avoids. The rejected circuit breaker (§3 C) appears nowhere.
+> **One addition to make**, from `otel_hook.py`'s `_DiagnosticExporter` + `doctor` command: §3 judges
+> options on whether events _survive_, and D's "a growing `incoming/` is the down-signal" never names
+> who reads it. A bounded delivery-health record plus one status command is the missing piece — it is
+> the direct fix for the four-week M4 blackout, and it is orthogonal to the spool decision.
+> The comparison also surfaced `~/.claude/sessions/*.json` — a live session registry Claude Code
+> maintains itself (`status`, `name`, `kind`, `pid`, `bridgeSessionId`) that AngelEye does not read
+> and that needs no hook at all.
 
 ---
 
