@@ -4,6 +4,7 @@
 **Reviewed against**: Claude Code **2.1.235** (installed at `~/.local/share/claude/versions/2.1.235`), plus this machine's live emitted data (456 JSONLs in `~/.claude/projects/`, 52,529 hook-payload audit records in `~/.claude/angeleye/audit/hook-schema-surprises.jsonl`, 18,304 registry rows).
 **Method**: primary source = the installed binary and the real data it wrote. Brain docs used only as pointers.
 **Scope**: survey only. No code changed.
+**Revision**: reviewed at `4f385d4`; rebased onto 6 newer commits from the other machine (through `a8e52bb`, incl. the MCP server and `event-index.service.ts`) and every `file:line` anchor below re-verified against that HEAD. None of those commits changes any finding.
 
 ---
 
@@ -59,9 +60,9 @@ This is the exact risk already specced in `docs/requirements/collection-layer-pl
 
 AngelEye encodes a cwd to a project-dir name with `expandedDir.replace(/\//g, '-')` — slashes only.
 
-- `server/src/services/sessions.service.ts:56` (`writeSessionName`)
-- `server/src/services/sessions.service.ts:100` (`getRawTranscript`)
-- `server/src/services/sessions.service.ts:148` (`backupUpstreamJSONL`)
+- `server/src/services/sessions.service.ts:61` (`writeSessionName`)
+- `server/src/services/sessions.service.ts:105` (`getRawTranscript`)
+- `server/src/services/sessions.service.ts:153` (`backupUpstreamJSONL`)
 - `server/src/services/teammate-detection.service.ts:36`
 
 Claude Code 2.1.235 replaces **every** non-alphanumeric character, dots included:
@@ -79,6 +80,8 @@ AngelEye    →  -Users-davidcruwys-dev-clients-supportsignal-app.supportsignal.
 1. `writeSessionName` hits the `access()` guard, logs `writeSessionName: JSONL not found, skipping`, and returns. Renaming a SupportSignal session from AngelEye **never writes back** — no error surfaces to the caller.
 2. `getRawTranscript` skips the upstream branch and falls through to the archive copy, losing thinking blocks and attachments — the exact content the upstream branch exists to fetch.
 3. `backupUpstreamJSONL` logs `upstream JSONL not found` and backs up nothing. When Claude Code purges that JSONL (see A1-10), the transcript is **permanently lost** for every dotted project. Note the log line for this case is shared with the genuine "already purged" case, so the logs cannot distinguish the bug from the expected condition.
+
+**Why no test caught it**: `server/src/services/angeleye-data.test.ts:330,391` re-derives the expected path with the _same_ expression under test — `projectDir.replace(/\//g, '-')` — against dot-free fixture paths (`/Users/testuser/dev/myproject`). The test asserts that the code agrees with itself, never that it agrees with Claude Code. It will stay green through any fix or any further breakage.
 
 This bug predates the platform drift — it is an inception-era assumption (`sessions.service.ts` unchanged in this respect since March) that was always wrong and has simply never been caught.
 
@@ -152,13 +155,13 @@ Claude Code now generates an LLM session title and persists it as a `type: "ai-t
 AngelEye reads neither:
 
 - `server/src/services/backfill.service.ts:15` — `extractCustomTitle` matches only `type === 'custom-title'`.
-- `server/src/services/sessions.service.ts:82-92` — `KNOWN_UPSTREAM_TYPES` has no `ai-title`, so it is logged as an unknown type and otherwise ignored (191 such observations in `schema-observations.jsonl`).
+- `server/src/services/sessions.service.ts:87-97` — `KNOWN_UPSTREAM_TYPES` has no `ai-title`, so it is logged as an unknown type and otherwise ignored (191 such observations in `schema-observations.jsonl`).
 - `session_title` lands on two `ORIGINAL_EVENTS` and is stripped.
 - `grep -rn "ai-title\|aiTitle\|session_title" server/src client/src shared/src .claude/skills` → **no matches anywhere.**
 
 **Failure scenario**: AngelEye runs an LLM enrichment loop (`.claude/skills/angeleye-enrichment-loop/`, `enrich-subtypes/`) to derive what a session was about, while Claude Code has been handing it a free, already-computed title per session since 2026-06-07. Sessions display as unnamed or fall to heuristics when a title exists on disk.
 
-Note the write-back mechanism itself is **still correct**: `custom-title` + `agent-name` pairs are alive and current (1,721 / 1,718 in the live corpus, same shape as `sessions.service.ts:68-69`). `/rename` has not changed. This finding is about a _new_ signal not being read, not about the existing one breaking.
+Note the write-back mechanism itself is **still correct**: `custom-title` + `agent-name` pairs are alive and current (1,721 / 1,718 in the live corpus, same shape as `sessions.service.ts:73-74`). `/rename` has not changed. This finding is about a _new_ signal not being read, not about the existing one breaking.
 
 ### A1-8 — Accumulating unknown JSONL entry types, including a session-identity concept AngelEye has no model for · **CONFIRMED** · MEDIUM
 
@@ -268,7 +271,7 @@ The mechanism holds. `server/src/services/teammate-detection.service.ts:23` matc
 
 Two `known-issues.md` rows are now **wrong**, not merely open:
 
-- **`subagent-detection`** ("not yet at ingest") — `hooks.ts:264` calls `detectTeammate` at `session_start` and `hooks.ts:296-303` re-detects at `stop`. It _is_ at ingest.
+- **`subagent-detection`** ("not yet at ingest") — `hooks.ts:269` calls `detectTeammate` at `session_start` and `hooks.ts:308` re-detects at `stop`. It _is_ at ingest.
 - **`session-kind-field`** ("not yet added to schema") — `shared/src/angeleye.ts:302-303` defines `session_kind` and `teammate_id`, and the registry is populated: 606 `main`, 102 `subagent`, 13 `subprocess`.
 
 The **33% (454/1,378)** figure quoted in both `known-issues.md` and `CLAUDE.md` is now **8%** — that is a corpus-composition change (the old raw corpus is largely purged), not a detection regression, but the number should not be quoted as current.
@@ -368,7 +371,7 @@ Stated explicitly, because several of the results above are ambiguous by constru
 
 ## 6. Three things most worth fixing first
 
-1. **A1-2 — the dot-in-path encoding bug** (`sessions.service.ts:56,100,148`; `teammate-detection.service.ts:36`). It is the only finding that causes **permanent, ongoing data loss**: 386 registry rows including all of SupportSignal have never had their upstream JSONL backed up, and Claude Code purges those files at ~30 days. Every day it stands, more transcripts become unrecoverable.
+1. **A1-2 — the dot-in-path encoding bug** (`sessions.service.ts:61,105,153`; `teammate-detection.service.ts:36`). It is the only finding that causes **permanent, ongoing data loss**: 386 registry rows including all of SupportSignal have never had their upstream JSONL backed up, and Claude Code purges those files at ~30 days. Every day it stands, more transcripts become unrecoverable.
 
 2. **A1-1 — make the collection layer survive a dead dashboard** (already specced in `docs/requirements/collection-layer-plugin-and-sentinel-2026-07-25.md`). Eighteen days of total silence that reads as "quiet week" is the failure mode that invalidates every other measurement in this repo — and it will recur, because nothing currently distinguishes the two states.
 
