@@ -16,6 +16,7 @@
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
+import { encodeProjectPath } from './claude-paths.js';
 
 const PROJECTS_DIR = join(homedir(), '.claude', 'projects');
 const ANGELEYE_ARCHIVE = join(homedir(), '.claude', 'angeleye', 'archive');
@@ -28,17 +29,9 @@ export interface TeammateDetectionResult {
   teammate_id?: string;
 }
 
-/**
- * Encodes a cwd to Claude Code's `~/.claude/projects/` directory naming.
- * `/Users/davidcruwys/dev/ad/apps/angeleye` → `-Users-davidcruwys-dev-ad-apps-angeleye`
- */
-function encodeCwd(cwd: string): string {
-  return cwd.replace(/\//g, '-');
-}
-
 function findRawJsonlPath(sessionId: string, cwd: string | undefined): string | null {
   if (cwd) {
-    const direct = join(PROJECTS_DIR, encodeCwd(cwd), `${sessionId}.jsonl`);
+    const direct = join(PROJECTS_DIR, encodeProjectPath(cwd), `${sessionId}.jsonl`);
     if (existsSync(direct)) return direct;
   }
   // Fallback: scan all project dirs (rare path — used when cwd isn't passed)

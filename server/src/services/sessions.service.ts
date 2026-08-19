@@ -11,6 +11,7 @@ import {
   _schemaObservationsPath,
 } from './registry.service.js';
 import { appendToIndex } from './event-index.service.js';
+import { encodeProjectPath } from './claude-paths.js';
 
 export async function writeEvent(event: AngelEyeEvent): Promise<void> {
   const filePath = join(_sessionsDir(), `session-${event.session_id}.jsonl`);
@@ -58,7 +59,7 @@ export async function writeSessionName(
   const expandedDir = projectDir.startsWith('~') ? homedir() + projectDir.slice(1) : projectDir;
 
   // Encode path: replace each / with -
-  const encoded = expandedDir.replace(/\//g, '-');
+  const encoded = encodeProjectPath(expandedDir);
 
   const jsonlPath = join(homedir(), '.claude', 'projects', encoded, `${sessionId}.jsonl`);
 
@@ -102,7 +103,7 @@ export async function getRawTranscript(
   projectDir: string
 ): Promise<RawTranscript | null> {
   const expandedDir = projectDir.startsWith('~') ? homedir() + projectDir.slice(1) : projectDir;
-  const encoded = expandedDir.replace(/\//g, '-');
+  const encoded = encodeProjectPath(expandedDir);
   const upstreamPath = join(homedir(), '.claude', 'projects', encoded, `${sessionId}.jsonl`);
 
   // 1. Live upstream Claude Code JSONL (richest — has thinking blocks, attachments)
@@ -150,7 +151,7 @@ export async function backupUpstreamJSONL(sessionId: string, projectDir: string)
     return;
   }
   const expandedDir = projectDir.startsWith('~') ? homedir() + projectDir.slice(1) : projectDir;
-  const encoded = expandedDir.replace(/\//g, '-');
+  const encoded = encodeProjectPath(expandedDir);
   const upstreamPath = join(homedir(), '.claude', 'projects', encoded, `${sessionId}.jsonl`);
 
   if (!existsSync(upstreamPath)) {

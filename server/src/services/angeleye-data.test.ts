@@ -323,11 +323,15 @@ describe('writeSessionName', () => {
 
   it('appends both custom-title and agent-name entries to existing JSONL', async () => {
     // Build the encoded path manually
-    const projectDir = '/Users/testuser/dev/myproject';
+    // Dotted path on purpose: Claude Code slugifies '.' to '-' just like '/'.
+    // The expected name is written out literally, never re-derived from the
+    // expression under test — a test that recomputes the encoding stays green
+    // no matter how wrong the encoding is.
+    const projectDir = '/Users/testuser/dev/my.project.local';
     const sessionId = 'ses-wb02-append';
 
     // Create the JSONL file at the real ~/.claude/projects/<encoded>/<sessionId>.jsonl path
-    const realEncoded = projectDir.replace(/\//g, '-');
+    const realEncoded = '-Users-testuser-dev-my-project-local';
     const sessionDir = join(homedir(), '.claude', 'projects', realEncoded);
     const jsonlPath = join(sessionDir, `${sessionId}.jsonl`);
 
@@ -361,10 +365,12 @@ describe('writeSessionName', () => {
     }
   });
 
-  it('derives the correct encoded path from projectDir (/ replaced with -)', async () => {
-    const projectDir = '/Users/davidcruwys/dev/ad/apps/angeleye';
+  it('derives the correct encoded path from projectDir (every non-alphanumeric becomes -)', async () => {
+    const projectDir = '/Users/davidcruwys/dev/clients/supportsignal/app.supportsignal.com.au';
     const sessionId = 'ses-wb02-encode';
-    const expectedEncoded = '-Users-davidcruwys-dev-ad-apps-angeleye';
+    // Literal, and verified against the real directory Claude Code created on
+    // this machine. Regression guard for docs/architecture/staleness-review.md#a1-2.
+    const expectedEncoded = '-Users-davidcruwys-dev-clients-supportsignal-app-supportsignal-com-au';
     const sessionDir = join(homedir(), '.claude', 'projects', expectedEncoded);
     const jsonlPath = join(sessionDir, `${sessionId}.jsonl`);
 
@@ -386,9 +392,9 @@ describe('writeSessionName', () => {
   });
 
   it('appending twice creates two pairs of entries in the JSONL file', async () => {
-    const projectDir = '/Users/testuser/dev/doublecall';
+    const projectDir = '/Users/testuser/dev/double.call';
     const sessionId = 'ses-wb02-double';
-    const encoded = projectDir.replace(/\//g, '-');
+    const encoded = '-Users-testuser-dev-double-call';
     const sessionDir = join(homedir(), '.claude', 'projects', encoded);
     const jsonlPath = join(sessionDir, `${sessionId}.jsonl`);
 
