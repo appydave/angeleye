@@ -16,7 +16,7 @@ import healthRouter from './routes/health.js';
 import infoRouter from './routes/info.js';
 import sessionsRouter from './routes/sessions.js';
 import workspacesRouter from './routes/workspaces.js';
-import { createHooksRouter } from './routes/hooks.js';
+import { createHooksRouter, drainHookQueue } from './routes/hooks.js';
 import backfillRouter from './routes/backfill.js';
 import syncRouter from './routes/sync.js';
 import statsRouter from './routes/stats.js';
@@ -210,8 +210,16 @@ const shutdown = () => {
   logger.info('Shutting down gracefully...');
   io.close();
   httpServer.close(() => {
-    logger.info('Server closed');
-    process.exit(0);
+    // Hook handlers answer 202 and finish their I/O off the response path, so at
+    // this point there may be acknowledged events not yet written. Flush them
+    // before exiting, or an orderly restart silently loses the tail of every
+    // in-flight session.
+    drainHookQueue()
+      .catch((err: unknown) => logger.warn({ err }, 'Hook queue drain failed on shutdown'))
+      .finally(() => {
+        logger.info('Server closed');
+        process.exit(0);
+      });
   });
 };
 

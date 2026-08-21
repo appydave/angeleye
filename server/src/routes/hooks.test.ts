@@ -7,7 +7,7 @@ import express from 'express';
 import type { AngelEyeEvent, RegistryEntry } from '@appystack/shared';
 import { SOCKET_EVENTS } from '@appystack/shared';
 import { _setDataDir, initAngelEyeDirs } from '../services/registry.service.js';
-import { createHooksRouter } from './hooks.js';
+import { createHooksRouter, drainHookQueue } from './hooks.js';
 
 const mockIo = { emit: vi.fn() };
 
@@ -30,6 +30,9 @@ afterEach(async () => {
 
 // Helper: read the session JSONL file and parse lines
 async function readSessionEvents(sessionId: string): Promise<AngelEyeEvent[]> {
+  // The handler answers 202 and does its I/O off the response path, so a plain
+  // `await request(...)` no longer guarantees the write has landed. Drain first.
+  await drainHookQueue();
   const filePath = join(testDir, 'sessions', `session-${sessionId}.jsonl`);
   const raw = await readFile(filePath, 'utf-8');
   return raw
@@ -40,6 +43,7 @@ async function readSessionEvents(sessionId: string): Promise<AngelEyeEvent[]> {
 
 // Helper: read the registry
 async function readRegistry(): Promise<Record<string, RegistryEntry>> {
+  await drainHookQueue();
   const raw = await readFile(join(testDir, 'registry.json'), 'utf-8');
   return JSON.parse(raw) as Record<string, RegistryEntry>;
 }
@@ -86,7 +90,7 @@ describe('POST /hooks/SessionStart', () => {
       cwd: '/projects/my-cool-app',
     });
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(202);
     expect(res.body).toEqual({ continue: true });
 
     // Event written to JSONL
@@ -106,6 +110,7 @@ describe('POST /hooks/SessionStart', () => {
     expect(entry?.project_dir).toBe('/projects/my-cool-app');
 
     // io.emit called once with correct event name and event object
+    await drainHookQueue();
     expect(mockIo.emit).toHaveBeenCalledOnce();
     const [eventName, emittedEvent] = mockIo.emit.mock.calls[0] as [string, AngelEyeEvent];
     expect(eventName).toBe(SOCKET_EVENTS.ANGELEYE_EVENT);
@@ -124,7 +129,7 @@ describe('POST /hooks/UserPromptSubmit — prompt field', () => {
       prompt: 'What does this file do?',
     });
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(202);
 
     const events = await readSessionEvents('ses-prompt-1');
     expect(events).toHaveLength(1);
@@ -143,7 +148,7 @@ describe('POST /hooks/UserPromptSubmit — user_prompt fallback', () => {
       user_prompt: 'Explain this code please',
     });
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(202);
 
     const events = await readSessionEvents('ses-prompt-2');
     expect(events).toHaveLength(1);
@@ -164,7 +169,7 @@ describe('POST /hooks/PostToolUse — Bash', () => {
         tool_input: { command: 'npm test', env: { NODE_ENV: 'test' } },
       });
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(202);
 
     const events = await readSessionEvents('ses-tool-bash');
     expect(events).toHaveLength(1);
@@ -189,7 +194,7 @@ describe('POST /hooks/PostToolUse — Write', () => {
         tool_input: { file_path: 'src/foo.ts', content: 'x\ny\nz' },
       });
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(202);
 
     const events = await readSessionEvents('ses-tool-write');
     expect(events).toHaveLength(1);
@@ -209,7 +214,7 @@ describe('POST /hooks/PostToolUse — Read', () => {
         tool_input: { file_path: 'src/bar.ts' },
       });
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(202);
 
     const events = await readSessionEvents('ses-tool-read');
     expect(events).toHaveLength(1);
@@ -229,7 +234,7 @@ describe('POST /hooks/PostToolUse — MCP', () => {
         tool_input: { query: 'node.js docs' },
       });
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(202);
 
     const events = await readSessionEvents('ses-tool-mcp');
     expect(events).toHaveLength(1);
@@ -265,7 +270,7 @@ describe('POST /hooks/Stop — normal stop', () => {
         effort: { level: 'high' },
       });
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(202);
 
     const events = await readSessionEvents('ses-stop-1');
     expect(events).toHaveLength(2); // session_start + stop
@@ -299,7 +304,7 @@ describe('POST /hooks/SessionEnd', () => {
       session_id: 'ses-end-1',
     });
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(202);
     expect(res.body).toEqual({ continue: true });
 
     // Registry status set to ended
@@ -327,7 +332,7 @@ describe('Non-SessionStart populates project from cwd', () => {
       prompt: 'hello',
     });
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(202);
 
     const registry = await readRegistry();
     const entry = registry['ses-cwd-1'];
@@ -348,7 +353,7 @@ describe('hook_event_name field in body', () => {
       hook_event_name: 'SessionStart',
     });
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(202);
 
     const events = await readSessionEvents('ses-override-1');
     expect(events).toHaveLength(1);
@@ -373,7 +378,7 @@ describe('POST /hooks/UserPromptSubmit — missing session_id', () => {
       // no session_id field
     });
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(202);
     expect(res.body).toEqual({ continue: true });
 
     // The session file must be session-unknown.jsonl
@@ -393,6 +398,7 @@ describe('io.emit on valid hook', () => {
       prompt: 'test prompt',
     });
 
+    await drainHookQueue();
     expect(mockIo.emit).toHaveBeenCalledOnce();
     const [eventName, emittedEvent] = mockIo.emit.mock.calls[0] as [string, AngelEyeEvent];
     expect(eventName).toBe(SOCKET_EVENTS.ANGELEYE_EVENT);
@@ -415,7 +421,7 @@ describe('Wave 11 — new event accepted', () => {
       error: 'File not found',
     });
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(202);
     expect(res.body).toEqual({ continue: true });
 
     const events = await readSessionEvents('ses-w11-fail');
@@ -433,7 +439,7 @@ describe('Wave 11 — payload stored for new events', () => {
       worktree_branch: 'feature-x',
     });
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(202);
     const events = await readSessionEvents('ses-w11-wt');
     expect(events[0]?.payload).toMatchObject({
       worktree_path: '/tmp/wt-abc',
@@ -450,7 +456,7 @@ describe('Wave 11 — error field promoted for failure events', () => {
       status_code: 429,
     });
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(202);
     const events = await readSessionEvents('ses-w11-sf');
     expect(events[0]?.error).toBe('rate_limit_exceeded');
     expect(events[0]?.payload?.status_code).toBe(429);
@@ -465,7 +471,7 @@ describe('Wave 11 — large payload fields truncated', () => {
       message: longMessage,
     });
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(202);
     const events = await readSessionEvents('ses-w11-trunc');
     const msg = events[0]?.payload?.message as string;
     expect(msg.startsWith('x'.repeat(500))).toBe(true);
@@ -486,7 +492,7 @@ describe('Wave 11 — common fields stripped from payload', () => {
       new_cwd: '/new/dir',
     });
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(202);
     const events = await readSessionEvents('ses-w11-cwd');
     const payload = events[0]?.payload;
     expect(payload).toBeDefined();
@@ -540,9 +546,10 @@ describe('Wave 11 + canonical reconcile — all 31 EVENT_MAP entries resolve', (
       .post(`/hooks/${hookName}`)
       .send({ session_id: `ses-all-${hookName}`, cwd: '/tmp' });
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(202);
     expect(res.body).toEqual({ continue: true });
     // If it were unknown, mockIo.emit would NOT be called
+    await drainHookQueue();
     expect(mockIo.emit).toHaveBeenCalled();
     mockIo.emit.mockClear();
   });
@@ -566,7 +573,7 @@ describe('PostToolUse — tool_response, not tool_result', () => {
         tool_result: 'should be ignored',
       });
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(202);
     const evt = (await readSessionEvents('ses-tr-1'))[0];
     expect(evt?.tool_response).toEqual({ success: true, stdout: 'a.txt' });
     expect(evt?.duration_ms).toBe(42);
@@ -644,6 +651,7 @@ describe('SessionEnd — reason lives here, not on Stop', () => {
       .send({ session_id: 'ses-se-1', cwd: '/p', reason: 'clear' });
 
     // SessionEnd archives the session, so read from the archive
+    await drainHookQueue();
     const raw = await readFile(join(testDir, 'archive', 'session-ses-se-1.jsonl'), 'utf-8');
     const events = raw
       .split('\n')
@@ -745,5 +753,63 @@ describe('GET /api/hooks/supported — registration source of truth', () => {
     const res = await request(app).get('/api/hooks/supported');
     expect(res.status).toBe(200);
     expect(res.body.register).not.toContain('WorktreeCreate');
+  });
+});
+
+// ── Response-first processing (Q1) ─────────────────────────────────────────────
+
+describe('hook handler answers before doing its I/O', () => {
+  it('accepts with 202 { continue: true } and completes the write on drain', async () => {
+    const res = await request(app)
+      .post('/hooks/UserPromptSubmit')
+      .send({ session_id: 'ses-202-1', cwd: '/projects/deferred', prompt: 'hello' });
+
+    // 202 = accepted, not yet processed. The body is still the hook contract
+    // Claude Code parses from curl's stdout.
+    expect(res.status).toBe(202);
+    expect(res.body).toEqual({ continue: true });
+
+    await drainHookQueue();
+
+    const raw = await readFile(join(testDir, 'sessions', 'session-ses-202-1.jsonl'), 'utf-8');
+    const events = raw
+      .split('\n')
+      .filter((l) => l.trim() !== '')
+      .map((l) => JSON.parse(l) as AngelEyeEvent);
+    expect(events).toHaveLength(1);
+    expect(events[0]?.event).toBe('user_prompt');
+    expect(events[0]?.prompt).toBe('hello');
+  });
+
+  it('keeps one session strictly ordered when events are not drained between fires', async () => {
+    // No drain between these three. session_start must reach the registry before
+    // stop reclassifies it, and session_end archives the file the other two wrote
+    // to — the failure this queue exists to prevent is archive-before-append.
+    await request(app)
+      .post('/hooks/SessionStart')
+      .send({ session_id: 'ses-order-1', cwd: '/projects/ordered' });
+    await request(app)
+      .post('/hooks/Stop')
+      .send({ session_id: 'ses-order-1', last_assistant_message: 'mid' });
+    await request(app)
+      .post('/hooks/SessionEnd')
+      .send({ session_id: 'ses-order-1', reason: 'clear' });
+
+    await drainHookQueue();
+
+    const raw = await readFile(join(testDir, 'archive', 'session-ses-order-1.jsonl'), 'utf-8');
+    const events = raw
+      .split('\n')
+      .filter((l) => l.trim() !== '')
+      .map((l) => JSON.parse(l) as AngelEyeEvent);
+    expect(events.map((e) => e.event)).toEqual(['session_start', 'stop', 'session_end']);
+    expect(events[2]?.reason).toBe('clear');
+
+    const registry = await readRegistry();
+    expect(registry['ses-order-1']?.status).toBe('ended');
+  });
+
+  it('drainHookQueue resolves when there is nothing queued', async () => {
+    await expect(drainHookQueue()).resolves.toBeUndefined();
   });
 });

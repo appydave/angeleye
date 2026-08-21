@@ -140,6 +140,48 @@ function summariseTool(
   return { keys: Object.keys(toolInput).slice(0, 5) };
 }
 
+// ── Post-response work queue ─────────────────────────────────────────────────
+//
+// Hook handlers answer 202 immediately and hand their I/O to this queue (see the
+// "Response boundary" comment in the handler for why).
+//
+// Ordering matters and is NOT free: within one session the events are causally
+// ordered — session_start must land in the registry before stop reclassifies it,
+// and session_end archives the JSONL that every earlier event appended to. Running
+// them concurrently would let archiveSession() race an in-flight writeEvent(), or
+// let a stop-time read-modify-write of registry.json clobber session_start's.
+// So: one promise chain per session_id, strictly serial; separate sessions run
+// concurrently.
+const sessionQueues = new Map<string, Promise<void>>();
+
+function enqueue(sessionId: string, work: () => Promise<void>): void {
+  const prev = sessionQueues.get(sessionId) ?? Promise.resolve();
+  const next = prev
+    .then(work)
+    .catch((err: unknown) => {
+      // A failed event must not poison the rest of the session's chain.
+      logger.error({ err, sessionId }, 'Hook post-processing failed (event dropped)');
+    })
+    .finally(() => {
+      // Only clear if nothing was queued behind us.
+      if (sessionQueues.get(sessionId) === next) sessionQueues.delete(sessionId);
+    });
+  sessionQueues.set(sessionId, next);
+}
+
+/**
+ * Resolve once all queued hook work has finished.
+ *
+ * Awaited on graceful shutdown so an orderly stop flushes rather than drops.
+ * Tests use it to restore the read-your-writes guarantee the synchronous handler
+ * used to give for free.
+ */
+export async function drainHookQueue(): Promise<void> {
+  while (sessionQueues.size > 0) {
+    await Promise.all([...sessionQueues.values()]);
+  }
+}
+
 export function createHooksRouter(io: Server): Router {
   const router = Router();
 
@@ -317,137 +359,154 @@ export function createHooksRouter(io: Server): Router {
         if (typeof body.duration_ms === 'number') event.duration_ms = body.duration_ms;
       }
 
-      // Non-blocking schema audit (runs for all 31 events)
-      auditPayload(hookEventName, eventType, body).catch(() => {});
+      // ── Response boundary ──────────────────────────────────────────────────
+      //
+      // Everything above is in-memory parsing. Everything below is I/O: registry
+      // read/modify/write, JSONL append, session-class resolution, archiving.
+      // That work used to run BEFORE the response, so every hook fire blocked the
+      // Claude Code session for ~51 ms (~48 ms of it this block). At a p90 session
+      // of 314 events that is ~16 s of wall-clock the user waits for. Answering
+      // first takes the hook's cost to ~6.5 ms — the bare cost of the curl call.
+      //
+      // Trade-off accepted deliberately: an event acknowledged here but lost to a
+      // crash before its queue slot runs is gone. Durable hand-off is the spool's
+      // job (docs/requirements/collection-layer-plugin-and-sentinel-2026-07-25.md),
+      // not this handler's. `drainHookQueue()` is awaited on shutdown so an orderly
+      // stop loses nothing.
+      res.status(202).json({ continue: true });
 
-      await writeEvent(event);
+      enqueue(sessionId, async () => {
+        // Non-blocking schema audit (runs for all 31 events)
+        auditPayload(hookEventName, eventType, body).catch(() => {});
 
-      if (eventType === 'session_start') {
-        // Project name: canonicalise harness-hosted sessions (Paperclip, ALS
-        // delamain) so they don't accumulate as UUID/hex pseudo-projects.
-        // Fall through to the default last-path-segment derivation otherwise.
-        const defaultProject =
-          cwd !== undefined && cwd.length > 0 ? (cwd.split('/').filter(Boolean).pop() ?? cwd) : '';
-        const project = canonicalProjectFromCwd(cwd) ?? defaultProject;
-        // Detect Mechanism B subagents (Agent Teams). Best-effort at SessionStart —
-        // the JSONL may not yet contain the teammate-message line. Backfill script
-        // catches misses. See known-issues.md#subagent-detection.
-        const teammate = detectTeammate(sessionId, cwd);
-        // Initial session_class — default to 'dialog' so stale-active sessions
-        // (where session_end never fires) still have a usable class. session_end
-        // refinement upgrades to 'agent_run' or 'machine_signal' with full event
-        // context. Deterministic cases (subagent leg, Paperclip cwd) are set
-        // here at session_start so they're never wrong even if session_end runs.
-        const initial_class = teammate.is_subagent
-          ? ('subagent_leg' as const)
-          : detectMachineSignalFromCwd(cwd)
-            ? ('machine_signal' as const)
-            : ('dialog' as const);
-        await updateRegistry(sessionId, {
-          session_id: sessionId,
-          project,
-          project_dir: cwd ?? '',
-          started_at: ts,
-          last_active: ts,
-          name: null,
-          tags: [],
-          workspace_id: null,
-          status: 'active',
-          source: 'hook',
-          session_kind: teammate.is_subagent ? 'subagent' : 'main',
-          ...(teammate.teammate_id !== undefined && { teammate_id: teammate.teammate_id }),
-          session_class: initial_class,
-        });
-      } else if (eventType === 'stop') {
-        const allEvents = await getSessionEvents(sessionId);
-        const classification = classifySession(allEvents, sessionId, cwd ?? '');
-        // Re-detect teammate in case SessionStart fired before the wrapper was in JSONL.
-        // Then, if not a teammate, check for headless skill subprocess (Mechanism C).
-        // See known-issues.md#subprocess-session-mechanism-3
-        const registry = await readRegistry();
-        const existing = registry[sessionId];
-        const kindUpdate: {
-          session_kind?: 'subagent' | 'subprocess';
-          teammate_id?: string | null;
-        } = {};
-        if (existing?.session_kind === undefined || existing.session_kind === 'main') {
-          const t = detectTeammate(sessionId, cwd);
-          if (t.is_subagent) {
-            kindUpdate.session_kind = 'subagent';
-            kindUpdate.teammate_id = t.teammate_id ?? null;
-          } else if (detectSubprocess(allEvents).is_subprocess) {
-            kindUpdate.session_kind = 'subprocess';
-          }
-        }
-        await updateRegistry(sessionId, {
-          last_active: ts,
-          ...(cwd !== undefined && { project_dir: cwd }),
-          ...classification,
-          ...kindUpdate,
-        });
-      } else if (eventType === 'session_end') {
-        const allEvents = await getSessionEvents(sessionId);
-        const classification = classifySession(allEvents, sessionId, cwd ?? '');
-        // Silent-session filter: no user_prompt → mark junk + override subtype.
-        // Catches T3/OpenCode capability probes, human-opened-and-closed, scheduler
-        // pings — anything where Claude started but no user actually interacted.
-        const hasNoUserPrompt = !allEvents.some((e) => e.event === 'user_prompt');
-        const silentOverride = hasNoUserPrompt
-          ? { is_junk: true, session_subtype: 'meta.silent_session' }
-          : {};
-        // Compute final session_class with full event context. computeSessionClass
-        // returns 'machine_signal' for zero-prompt sessions, so it stays consistent
-        // with the silent_session override above.
-        const registryNow = await readRegistry();
-        const existingNow = registryNow[sessionId];
-        const session_class = computeSessionClass({
-          events: allEvents,
-          cwd,
-          session_kind: existingNow?.session_kind,
-          trigger_command: classification.trigger_command,
-        });
-        await updateRegistry(sessionId, {
-          status: 'ended',
-          last_active: ts,
-          ...classification,
-          session_class,
-          ...silentOverride,
-        });
-        await archiveSession(sessionId);
-        // Back up upstream JSONL before Claude Code purges it — fire-and-forget.
-        // Skip for machine_signal: zero-prompt sessions (AppyCtrl probes etc.)
-        // have no upstream JSONL to back up; the call would just emit "not found"
-        // warnings every ~5 min, drowning real failures in the logs.
-        if (session_class !== 'machine_signal') {
-          backupUpstreamJSONL(sessionId, cwd ?? '').catch((err) =>
-            logger.warn({ err, sessionId }, 'backupUpstreamJSONL failed (non-fatal)')
-          );
-        }
-      } else {
-        await updateRegistry(sessionId, {
-          last_active: ts,
-          ...(cwd !== undefined && { project_dir: cwd }),
-        });
-
-        // On user_prompt: capture first_real_prompt early if not yet set
-        if (eventType === 'user_prompt') {
+        await writeEvent(event);
+        if (eventType === 'session_start') {
+          // Project name: canonicalise harness-hosted sessions (Paperclip, ALS
+          // delamain) so they don't accumulate as UUID/hex pseudo-projects.
+          // Fall through to the default last-path-segment derivation otherwise.
+          const defaultProject =
+            cwd !== undefined && cwd.length > 0
+              ? (cwd.split('/').filter(Boolean).pop() ?? cwd)
+              : '';
+          const project = canonicalProjectFromCwd(cwd) ?? defaultProject;
+          // Detect Mechanism B subagents (Agent Teams). Best-effort at SessionStart —
+          // the JSONL may not yet contain the teammate-message line. Backfill script
+          // catches misses. See known-issues.md#subagent-detection.
+          const teammate = detectTeammate(sessionId, cwd);
+          // Initial session_class — default to 'dialog' so stale-active sessions
+          // (where session_end never fires) still have a usable class. session_end
+          // refinement upgrades to 'agent_run' or 'machine_signal' with full event
+          // context. Deterministic cases (subagent leg, Paperclip cwd) are set
+          // here at session_start so they're never wrong even if session_end runs.
+          const initial_class = teammate.is_subagent
+            ? ('subagent_leg' as const)
+            : detectMachineSignalFromCwd(cwd)
+              ? ('machine_signal' as const)
+              : ('dialog' as const);
+          await updateRegistry(sessionId, {
+            session_id: sessionId,
+            project,
+            project_dir: cwd ?? '',
+            started_at: ts,
+            last_active: ts,
+            name: null,
+            tags: [],
+            workspace_id: null,
+            status: 'active',
+            source: 'hook',
+            session_kind: teammate.is_subagent ? 'subagent' : 'main',
+            ...(teammate.teammate_id !== undefined && { teammate_id: teammate.teammate_id }),
+            session_class: initial_class,
+          });
+        } else if (eventType === 'stop') {
+          const allEvents = await getSessionEvents(sessionId);
+          const classification = classifySession(allEvents, sessionId, cwd ?? '');
+          // Re-detect teammate in case SessionStart fired before the wrapper was in JSONL.
+          // Then, if not a teammate, check for headless skill subprocess (Mechanism C).
+          // See known-issues.md#subprocess-session-mechanism-3
           const registry = await readRegistry();
           const existing = registry[sessionId];
-          if (!existing?.first_real_prompt) {
-            const result = findFirstRealPrompt([event]);
-            if (result !== undefined) {
-              await updateRegistry(sessionId, { first_real_prompt: result });
+          const kindUpdate: {
+            session_kind?: 'subagent' | 'subprocess';
+            teammate_id?: string | null;
+          } = {};
+          if (existing?.session_kind === undefined || existing.session_kind === 'main') {
+            const t = detectTeammate(sessionId, cwd);
+            if (t.is_subagent) {
+              kindUpdate.session_kind = 'subagent';
+              kindUpdate.teammate_id = t.teammate_id ?? null;
+            } else if (detectSubprocess(allEvents).is_subprocess) {
+              kindUpdate.session_kind = 'subprocess';
+            }
+          }
+          await updateRegistry(sessionId, {
+            last_active: ts,
+            ...(cwd !== undefined && { project_dir: cwd }),
+            ...classification,
+            ...kindUpdate,
+          });
+        } else if (eventType === 'session_end') {
+          const allEvents = await getSessionEvents(sessionId);
+          const classification = classifySession(allEvents, sessionId, cwd ?? '');
+          // Silent-session filter: no user_prompt → mark junk + override subtype.
+          // Catches T3/OpenCode capability probes, human-opened-and-closed, scheduler
+          // pings — anything where Claude started but no user actually interacted.
+          const hasNoUserPrompt = !allEvents.some((e) => e.event === 'user_prompt');
+          const silentOverride = hasNoUserPrompt
+            ? { is_junk: true, session_subtype: 'meta.silent_session' }
+            : {};
+          // Compute final session_class with full event context. computeSessionClass
+          // returns 'machine_signal' for zero-prompt sessions, so it stays consistent
+          // with the silent_session override above.
+          const registryNow = await readRegistry();
+          const existingNow = registryNow[sessionId];
+          const session_class = computeSessionClass({
+            events: allEvents,
+            cwd,
+            session_kind: existingNow?.session_kind,
+            trigger_command: classification.trigger_command,
+          });
+          await updateRegistry(sessionId, {
+            status: 'ended',
+            last_active: ts,
+            ...classification,
+            session_class,
+            ...silentOverride,
+          });
+          await archiveSession(sessionId);
+          // Back up upstream JSONL before Claude Code purges it — fire-and-forget.
+          // Skip for machine_signal: zero-prompt sessions (AppyCtrl probes etc.)
+          // have no upstream JSONL to back up; the call would just emit "not found"
+          // warnings every ~5 min, drowning real failures in the logs.
+          if (session_class !== 'machine_signal') {
+            backupUpstreamJSONL(sessionId, cwd ?? '').catch((err) =>
+              logger.warn({ err, sessionId }, 'backupUpstreamJSONL failed (non-fatal)')
+            );
+          }
+        } else {
+          await updateRegistry(sessionId, {
+            last_active: ts,
+            ...(cwd !== undefined && { project_dir: cwd }),
+          });
+
+          // On user_prompt: capture first_real_prompt early if not yet set
+          if (eventType === 'user_prompt') {
+            const registry = await readRegistry();
+            const existing = registry[sessionId];
+            if (!existing?.first_real_prompt) {
+              const result = findFirstRealPrompt([event]);
+              if (result !== undefined) {
+                await updateRegistry(sessionId, { first_real_prompt: result });
+              }
             }
           }
         }
-      }
 
-      io.emit(SOCKET_EVENTS.ANGELEYE_EVENT, event);
-
-      res.status(200).json({ continue: true });
+        io.emit(SOCKET_EVENTS.ANGELEYE_EVENT, event);
+      });
     } catch (err) {
       logger.error({ err }, 'Unexpected error in hooks endpoint — returning continue anyway');
-      res.status(200).json({ continue: true });
+      if (!res.headersSent) res.status(200).json({ continue: true });
     }
   });
 
