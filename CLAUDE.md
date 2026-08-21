@@ -20,14 +20,13 @@ AngelEye has open data-quality issues that are easy to trip over. Before changin
 - **classifier** (`server/src/services/classifier.service.ts`),
 - **enrichment** (`.claude/skills/enrich-subtypes/`),
 
-read `docs/architecture/known-issues.md` first. Highlights as of 2026-05-04:
+read `docs/architecture/known-issues.md` first. Highlights as of 2026-08-21:
 
-- **Subagent detection (Mechanism B / Agent Teams) not yet at ingest** — 33% of raw JSONLs (454/1378) carry `<teammate-message teammate_id="...">` but AngelEye doesn't flag them. They're being treated as primary sessions.
-- **`session_kind` / `teammate_id` schema fields not added yet** — required to filter subagents from enrichment.
+- ~~Subagent detection not at ingest~~ / ~~`session_kind` schema fields missing~~ — **both RESOLVED** (verified 2026-08-21). `hooks.ts` calls `detectTeammate` at SessionStart and again at Stop; `shared/src/angeleye.ts` carries `session_kind` + `teammate_id`; the registry holds 609 main / 102 subagent / 13 subprocess. The teammate-wrapper share of raw JSONLs is now **7.5% (34/455)**, down from 33% — that is corpus turnover under Claude Code's ~30-day purge, **not** a detection regression. Do not "fix" the detector against that number.
 - **Enrichment scripts read raw JSONL only** — should fall back to AngelEye archive (761 archive-only rows would otherwise be invisible).
 - **Upstream JSONLs disappear over time** — likely Claude Code auto-purges old sessions. AngelEye's own archive is the long-term source of truth, not `~/.claude/projects/`.
 
-- **Hook registration excludes WorktreeCreate (hard — breaks worktrees) + MessageDisplay (opt-in only)** — rationale, root-cause reproduction, and "what not to do" in `docs/architecture/hook-transport.md` §"Events we deliberately don't register" and `docs/architecture/worktree-hook-passthrough-fix.md`. Exclusions enforced at `/api/hooks/supported` (register list) and `HOOK_REGISTRATION_EXCLUSIONS` in `server/src/routes/hooks.ts` — 28 events wired, not 30.
+- **Hook registration excludes WorktreeCreate (hard — breaks worktrees) + MessageDisplay (opt-in only)** — rationale, root-cause reproduction, and "what not to do" in `docs/architecture/hook-transport.md` §"Events we deliberately don't register" and `docs/architecture/worktree-hook-passthrough-fix.md`. Exclusions enforced at `/api/hooks/supported` (register list) and `HOOK_REGISTRATION_EXCLUSIONS` in `server/src/routes/hooks.ts` — **31 events known, 29 wired** (`EVENT_MAP` has 31 and matches Claude Code exactly; `~/.claude/settings.json` holds 29). The old "28 of 30" was wrong on both numbers.
 
 Diagnostics view at `/diagnostics` in the running app surfaces live counts. Run `npm run audit:registry` to refresh `~/.claude/angeleye/diagnostics-snapshot.json`.
 
@@ -45,9 +44,10 @@ AngelEye reads and writes Claude Code's own data files. Before implementing anyt
 
 - Session files live at `~/.claude/projects/<encoded-path>/<session_id>.jsonl`
 - `/rename` appends `custom-title` + `agent-name` entries (no `parentUuid` — tree-detached). Write-back by appending a new pair — never mutate existing entries
-- `progress` entries are the most numerous type (~75% in hook-heavy sessions) — skip when parsing for conversation content
-- Subagent detection in this environment: `<teammate-message teammate_id="...">` in the first `type: user` message body — NOT `isSidechain: true` and NOT `agent-*.jsonl` (those don't exist in our corpus, audited 2026-05-04). 454/1378 files (33%) are Agent Teams subagents. Full detail in `~/dev/ad/brains/anthropic-claude/claude-code/observability.md` §"Sub-Agent Sessions — Two Different Mechanisms"
-- Auto-slug (`witty-painting-plum` style) lives in `system/turn_duration` entries — this is NOT the user-assigned name
+- `progress` entries **no longer exist** — 0 occurrences across 136k+ entries in all 455 live JSONLs (census 2026-08-21). The current type census, most to least: `assistant` 41,817 · `attachment` 24,468 · `user` 23,424 · `last-prompt` 7,154 · `permission-mode` 6,481 · `mode` 6,468 · `bridge-session` 6,219 · `system` 4,755 · `ai-title` 4,115 · `custom-title` 2,783 · `agent-name` 2,754 · `file-history-snapshot` 2,209 · `queue-operation` 2,012 · `file-history-delta` 1,376 · `atis-latch` 318 · `pr-link` 55 · `frame-link` 32 · `artifact-comment-monitor` 5
+- Subagent detection in this environment: `<teammate-message teammate_id="...">` in the first `type: user` message body — NOT `isSidechain: true` and NOT `agent-*.jsonl` (those don't exist in our corpus, audited 2026-05-04, re-confirmed 2026-08-21). 34/455 files (7.5%) are Agent Teams subagents — the 33% figure is stale corpus, not a broken detector. Full detail in `~/dev/ad/brains/anthropic-claude/claude-code/observability.md` §"Sub-Agent Sessions — Two Different Mechanisms"
+- Session names come from **two** entry types, and `custom-title` beats `ai-title` — a user's `/rename` must never be overwritten by a regenerated machine title. `{"type":"custom-title","customTitle":…}` (2,783 entries, user-chosen) and `{"type":"ai-title","aiTitle":…}` (4,115, model-chosen). Precedence is implemented in `extractSessionTitle()` in `server/src/services/backfill.service.ts`
+- Auto-slug (`witty-painting-plum` style) is **not a reliable source** — it appears on only 19 of 1,757 `system/turn_duration` entries, across 2 sessions, none above Claude Code 2.1.226. It is also NOT the user-assigned name. Read `ai-title` instead
 
 ## ⚠️ Already Inside an AppyStack Project
 

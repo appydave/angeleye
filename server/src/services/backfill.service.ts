@@ -5,21 +5,51 @@ import type { AngelEyeEvent, RegistryEntry } from '@appystack/shared';
 import { readRegistry, updateRegistry, _sessionsDir } from './registry.service.js';
 import { writeEvent } from './sessions.service.js';
 
-// ── Custom Title Extraction ──────────────────────────────────────────────────────
+// ── Session Title Extraction ─────────────────────────────────────────────────────
+//
+// Claude Code writes a session's name in TWO entry types, and AngelEye read only
+// one of them:
+//
+//   custom-title  {"type":"custom-title","customTitle":"…"}  — user, via /rename
+//   ai-title      {"type":"ai-title","aiTitle":"…"}          — model-generated
+//
+// `ai-title` is not a rename of `custom-title`; both are live. A 2026-08-21 census
+// of the 455 live JSONLs found 2,783 custom-title and 4,115 ai-title entries, and
+// `grep -rn "ai-title\|aiTitle" server/src client/src shared/src` returned nothing
+// — so the majority source of session names was invisible while AngelEye's own
+// enrichment loop derived the same thing from scratch.
+//
+// PRECEDENCE IS EXPLICIT AND DELIBERATE: a user-chosen name always beats a
+// machine-chosen one, no matter which was written last. Within each kind, last
+// wins — that is Claude Code's own behaviour, since /rename appends rather than
+// mutating. Letting a single last-wins loop pick across both kinds would mean an
+// ai-title regenerated after a /rename silently overwrote the user's choice.
 
-function extractCustomTitle(lines: string[]): string | null {
-  let lastTitle: string | null = null;
+export interface ExtractedTitle {
+  title: string;
+  source: 'custom-title' | 'ai-title';
+}
+
+export function extractSessionTitle(lines: string[]): ExtractedTitle | null {
+  let lastCustom: string | null = null;
+  let lastAi: string | null = null;
+
   for (const line of lines) {
     try {
-      const entry = JSON.parse(line);
+      const entry = JSON.parse(line) as Record<string, unknown>;
       if (entry.type === 'custom-title' && typeof entry.customTitle === 'string') {
-        lastTitle = entry.customTitle;
+        lastCustom = entry.customTitle;
+      } else if (entry.type === 'ai-title' && typeof entry.aiTitle === 'string') {
+        lastAi = entry.aiTitle;
       }
     } catch {
       // skip malformed lines
     }
   }
-  return lastTitle; // last wins — same as Claude Code behaviour
+
+  if (lastCustom !== null) return { title: lastCustom, source: 'custom-title' };
+  if (lastAi !== null) return { title: lastAi, source: 'ai-title' };
+  return null;
 }
 
 // ── Transcript Backfill ─────────────────────────────────────────────────────────
@@ -163,9 +193,9 @@ export async function backfillTranscripts(
 
             // Backfill name
             if (registry[sessionId].name === null || registry[sessionId].name === undefined) {
-              const customTitle = extractCustomTitle(lines);
-              if (customTitle) {
-                await updateRegistry(sessionId, { name: customTitle });
+              const extracted = extractSessionTitle(lines);
+              if (extracted) {
+                await updateRegistry(sessionId, { name: extracted.title });
               }
             }
 
@@ -220,8 +250,8 @@ export async function backfillTranscripts(
         const project_dir = cwd;
         const project = cwd.split('/').filter(Boolean).pop() ?? '';
 
-        // Extract /rename custom title if present
-        const customTitle = extractCustomTitle(lines);
+        // Session name: user-chosen /rename title, else the model-generated ai-title
+        const sessionName = extractSessionTitle(lines)?.title ?? null;
 
         // Write to registry
         await updateRegistry(sessionId, {
@@ -232,7 +262,7 @@ export async function backfillTranscripts(
           last_active,
           status: 'ended',
           source: 'transcript',
-          name: customTitle,
+          name: sessionName,
           tags: [],
           workspace_id: null,
         });

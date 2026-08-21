@@ -25,6 +25,10 @@ beforeEach(async () => {
 });
 
 afterEach(async () => {
+  // Deferred hook work must not outlive its temp dir — otherwise a late write
+  // recreates a directory this test file just deleted, and (because _setDataDir
+  // is module-global) can land in the NEXT test file's data dir.
+  await drainHookQueue();
   await rm(testDir, { recursive: true, force: true });
 });
 

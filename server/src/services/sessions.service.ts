@@ -85,17 +85,32 @@ export interface RawTranscript {
 
 // Types seen in upstream Claude Code JSONLs. Any type not in this set is logged
 // to schema-observations.jsonl for discovery.
+//
+// Counts below are from a census of the 455 live JSONLs on 2026-08-21. The nine
+// entries below `system` were all missing, so every one of them was being logged
+// as "unknown" on every scan — 20,600 entries of permanent noise that buried any
+// genuinely new type. `progress`, which this list never had, is now extinct:
+// 0 occurrences across the whole corpus.
 const KNOWN_UPSTREAM_TYPES = new Set([
-  'user',
-  'assistant',
-  'summary',
-  'custom-title',
-  'agent-name',
-  'permission-mode',
-  'attachment',
-  'file-history-snapshot',
-  'last-prompt',
-  'system',
+  'user', // 23,424
+  'assistant', // 41,817
+  'summary', // 0 in the live corpus — kept; older archives still carry it
+  'custom-title', // 2,783 — user-chosen name (/rename)
+  'agent-name', // 2,754
+  'permission-mode', // 6,481
+  'attachment', // 24,468
+  'file-history-snapshot', // 2,209
+  'last-prompt', // 7,154
+  'system', // 4,755
+  'ai-title', // 4,115 — machine-chosen name; see extractSessionTitle()
+  'mode', // 6,468
+  'bridge-session', // 6,219
+  'queue-operation', // 2,012
+  'file-history-delta', // 1,376
+  'atis-latch', // 318
+  'pr-link', // 55
+  'frame-link', // 32
+  'artifact-comment-monitor', // 5
 ]);
 
 export async function getRawTranscript(

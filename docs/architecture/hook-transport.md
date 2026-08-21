@@ -221,7 +221,9 @@ curl -s http://localhost:5051/api/hooks/supported | jq -r '.events[]'
 
 ## Events we deliberately don't register (and why)
 
-AngelEye handles **30 hook events** (canonical spec v2.1.167 — see `~/dev/ad/brains/anthropic-claude/claude-code/hooks/events-reference.md` for the full list with payloads). Of those, **28 are wired as live command hooks** in `~/.claude/settings.json`. Two are deliberately excluded:
+AngelEye handles **31 hook events** (see `~/dev/ad/brains/anthropic-claude/claude-code/hooks/events-reference.md` for the full list with payloads). Of those, **29 are wired as live command hooks** in `~/.claude/settings.json`. Two are deliberately excluded:
+
+> Counts corrected 2026-08-21. This section read "30 … 28 wired" and contradicted §"Mixed-transport state" (29 — correct) in this same file. Verified against the installed Claude Code 2.1.235–2.1.238: `EVENT_MAP` in `server/src/routes/hooks.ts` has 31 entries and matches Claude Code's event set exactly; `~/.claude/settings.json` holds exactly 29 hook keys. The code was right; the doc was wrong on both numbers.
 
 | Event            | Status                        | Reason                                                                                                                                                                                                                                                                                                                                                                    |
 | ---------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -230,7 +232,24 @@ AngelEye handles **30 hook events** (canonical spec v2.1.167 — see `~/dev/ad/b
 
 `WorktreeRemove` IS wired (observer-only, safe — failures are logged but no path/decision output is required).
 
-The exclusions are enforced at the **source of truth**: `GET /api/hooks/supported` returns a `register` list (the 28 safe events) plus an `excluded` list with reasons. The `angeleye-install` skill wires only the `register` list, so a future re-install cannot silently re-introduce the WorktreeCreate bug.
+The exclusions are enforced at the **source of truth**: `GET /api/hooks/supported` returns a `register` list (the 29 safe events) plus an `excluded` list with reasons. The `angeleye-install` skill wires only the `register` list, so a future re-install cannot silently re-introduce the WorktreeCreate bug.
+
+---
+
+## Response contract — `202`, not `200` (since 2026-08-21)
+
+`POST /hooks/:event` now answers **`202 Accepted`** with the same `{ "continue": true }` body,
+then does its registry/JSONL/broadcast work off the response path. See the "Response boundary"
+comment in `server/src/routes/hooks.ts`.
+
+This is invisible to the hooks themselves: they are `curl -s … || true`, curl is not run with
+`-f`, and Claude Code parses only the JSON body from curl's stdout. Nothing keys off the status
+code. `200` is still returned by the two paths that finish synchronously — the `stop_hook_active`
+guard and an unrecognised event name.
+
+What changed for a _consumer_ of this endpoint: a `202` means accepted, **not** persisted. Code
+that POSTs a hook and then immediately reads `~/.claude/angeleye/sessions/…` has a race. The
+server drains its queue on graceful shutdown; tests use the exported `drainHookQueue()`.
 
 ---
 
