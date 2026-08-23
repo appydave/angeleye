@@ -247,6 +247,12 @@ One JSON object per line. Append-only. Written by the hooks handler and the back
 | `payload`         | object                     | no       | Generic bucket for Wave 11 event-specific data                                                                                                                                                                 |
 | `error`           | string                     | no       | Error message (`tool_failure`, `stop_failure` events)                                                                                                                                                          |
 
+> **Before changing the event shape to save space**: read
+> [`proposal-event-store-compaction.md`](proposal-event-store-compaction.md). ~18% of the store is
+> near-constant values repeated per line, and the obvious fix is wrong — `cwd` and `permission_mode`
+> vary within a session, and the self-describing lines are what make `grep` over the store work. The
+> recommendation is to compress `archive/` (76% measured) and leave this schema alone.
+
 ### archive/
 
 Session JSONL files rotated here after `session_end` is received. Same schema as `sessions/`. No automatic cleanup.

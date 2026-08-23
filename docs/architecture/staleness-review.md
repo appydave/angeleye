@@ -314,6 +314,8 @@ So the strip list removed them from the residual payload on the strength of a pr
 
 **Verified on real state, all event classes including Stop.** `598df1f` was committed while a real Stop event had not yet fired, so its message says the Stop path was unit-tested only. That caveat is now closed: a live Stop at `2026-08-23T12:01:25Z` carries `transcript_path` and `permission_mode: "bypassPermissions"` alongside `last_message`, on the same session that made the change. Also confirmed live on `tool_use`, `pre_tool_use`, `post_tool_batch`, `cwd_changed` and `user_prompt` — the fields ride the shared envelope path, so coverage is all 31 events, not just Stop.
 
+**Storage cost of this fix**: `transcript_path` now writes on every event (~110 bytes). Measured at 7.2% of one live session's bytes. Considered and deliberately not optimised — see `../proposal-event-store-compaction.md`, which recommends compressing `archive/` instead of restructuring events, because two of the repeated fields (`cwd`, `permission_mode`) genuinely vary within a session and hoisting them would reintroduce exactly this bug.
+
 **The general lesson — a rename or a drop at the normaliser makes the stored copy unable to answer questions the raw source can.**
 
 This is the failure mode AngelEye exists to catch, so it is worth stating flatly:
