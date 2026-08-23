@@ -69,8 +69,34 @@ export interface AngelEyeEvent {
   prompt_id?: string;
   /** Claude Code's own session title, sent on SessionStart and UserPromptSubmit. */
   session_title?: string;
+  /**
+   * Absolute path to the session's JSONL transcript, as Claude Code itself reports it. Sent on
+   * EVERY hook event (a documented common field), and was silently dropped from Wave 1 until
+   * 2026-08-23 — the strip list discarded it claiming it was "already first-class", which it was
+   * not. Measured 0/17,896 stored session files before the fix.
+   *
+   * This is the AUTHORITATIVE path. Prefer it over reconstructing `~/.claude/projects/<encoded>/`
+   * from `cwd` — that encoding has been wrong at least once already for paths containing a `.`
+   * (staleness-review.md#a1-2), and this field never needs decoding.
+   */
+  transcript_path?: string;
+  /**
+   * Active permission mode for the session: 'default' | 'plan' | 'acceptEdits' | 'auto' |
+   * 'dontAsk' | 'bypassPermissions'. Deliberately typed as `string`, not a union — a
+   * session-observation tool must not reject a mode Claude Code adds later. Common field on every
+   * hook event; dropped from Wave 1 until 2026-08-23 (measured 0/17,896).
+   */
+  permission_mode?: string;
   /** SessionEnd only. Not sent on Stop — the old Stop read measured 0/191. */
   reason?: string;
+  /**
+   * Final assistant text for the turn (`stop` / `subagent_stop`).
+   *
+   * UPSTREAM NAME IS DIFFERENT: Claude Code sends this as `last_assistant_message`. AngelEye has
+   * stored it under `last_message` since Wave 1. The rename was incidental, never deliberate, and
+   * is kept only because 557 stored events already use this key — renaming now would orphan them
+   * for no gain. If you are searching for `last_assistant_message` and landed here, this is it.
+   */
   last_message?: string;
   agent_type?: string;
   // Wave 11 — generic bucket for new event data

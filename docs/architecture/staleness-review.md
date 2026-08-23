@@ -302,6 +302,27 @@ For those five, "David never triggers this" and "the registration or the event n
 
 ---
 
+### A1-17 — A strip list asserted "already first-class" for two fields that were promoted nowhere · **CONFIRMED · FIXED 2026-08-23** · MEDIUM-HIGH
+
+`transcript_path` and `permission_mode` are documented common fields — Claude Code sends them on **every** hook event. Both sat in `STRIP_FROM_PAYLOAD` in `hooks.ts` under the comment `// envelope — already first-class on the event`. Neither was ever read into `event`. Neither existed on `AngelEyeEvent`. They appeared nowhere else in the codebase except the schema auditor's ignore list.
+
+So the strip list removed them from the residual payload on the strength of a promotion that did not exist, and every event dropped them silently. **Measured 0 / 17,896 stored session files.**
+
+**Failure scenario**: A1-2 (the dot-in-path encoding bug) exists because AngelEye re-derives `~/.claude/projects/<encoded>/` from `cwd`. `transcript_path` is the platform handing over that exact path, correct by construction, on every event — and AngelEye was throwing it away on arrival while hand-rolling a derivation that was already known to be wrong.
+
+**Fix**: both promoted to first-class fields on `AngelEyeEvent` and read in the hook handler; they stay in the strip list so the residual does not duplicate them, and the comment is now true. Additive only — no stored record changes shape, and `last_message` is untouched.
+
+**The general lesson — a rename or a drop at the normaliser makes the stored copy unable to answer questions the raw source can.**
+
+This is the failure mode AngelEye exists to catch, so it is worth stating flatly:
+
+- The trigger for this investigation was AngelEye's rename of `last_assistant_message` → `last_message`. That rename turned out to be **cosmetic** — the value is preserved and 557 stored events carry it. It is kept, because renaming it now would orphan those rows to fix nothing.
+- But the rename is what made the stored copy _look_ untrustworthy, and looking closer found two fields genuinely being dropped one line below it. **The cosmetic defect was a true signal about the lossy one.**
+- The structural guard is the residual-payload capture added in `6c2808a`: unclaimed fields survive by default, so a new upstream field is retained without a code change. **Every name added to `STRIP_FROM_PAYLOAD` opts out of that guard** — so a name in the strip list that is not also read into `event` is a silent, permanent drop. That is the invariant to check, and the code comment now says so.
+- A field is only "preserved" if you can read it back off a stored record. Reading the code and seeing an assignment is not the same check — here the code _said_ first-class and the data said absent.
+
+---
+
 ## 3. Axis 2 — structural shape the platform now does better
 
 ### A2-1 — Hook installation mutates the user's `settings.json` instead of shipping a plugin

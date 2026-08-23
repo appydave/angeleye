@@ -225,25 +225,27 @@ The subtype layer uses a three-field model. `subtype_heuristic` is written by th
 
 One JSON object per line. Append-only. Written by the hooks handler and the backfill service.
 
-| Field          | Type                       | Required | Description                                                                                  |
-| -------------- | -------------------------- | -------- | -------------------------------------------------------------------------------------------- |
-| `id`           | string                     | yes      | `crypto.randomUUID()`                                                                        |
-| `session_id`   | string                     | yes      | Matches the registry key                                                                     |
-| `ts`           | string (ISO)               | yes      | Event timestamp                                                                              |
-| `source`       | `'hook'` or `'transcript'` | yes      | Origin of the event                                                                          |
-| `event`        | `AngelEyeEventType`        | yes      | One of the supported event type values (see `AngelEyeEventType` in `shared/src/angeleye.ts`) |
-| `cwd`          | string                     | no       | Working directory at time of event                                                           |
-| `agent_id`     | string                     | no       | Set for subagent events                                                                      |
-| `prompt`       | string                     | no       | User prompt text (`user_prompt` events)                                                      |
-| `tool`         | string                     | no       | Tool name (`tool_use` events)                                                                |
-| `tool_use_id`  | string                     | no       | Claude Code tool use correlation ID                                                          |
-| `tool_summary` | object                     | no       | Structured summary — `file`, `command` etc.                                                  |
-| `result`       | string                     | no       | Tool result snippet                                                                          |
-| `reason`       | string                     | no       | Stop reason                                                                                  |
-| `last_message` | string                     | no       | Last assistant message (`stop` / `subagent_stop` events)                                     |
-| `agent_type`   | string                     | no       | Type of subagent                                                                             |
-| `payload`      | object                     | no       | Generic bucket for Wave 11 event-specific data                                               |
-| `error`        | string                     | no       | Error message (`tool_failure`, `stop_failure` events)                                        |
+| Field             | Type                       | Required | Description                                                                                                                                                                                                    |
+| ----------------- | -------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`              | string                     | yes      | `crypto.randomUUID()`                                                                                                                                                                                          |
+| `session_id`      | string                     | yes      | Matches the registry key                                                                                                                                                                                       |
+| `ts`              | string (ISO)               | yes      | Event timestamp                                                                                                                                                                                                |
+| `source`          | `'hook'` or `'transcript'` | yes      | Origin of the event                                                                                                                                                                                            |
+| `event`           | `AngelEyeEventType`        | yes      | One of the supported event type values (see `AngelEyeEventType` in `shared/src/angeleye.ts`)                                                                                                                   |
+| `cwd`             | string                     | no       | Working directory at time of event                                                                                                                                                                             |
+| `agent_id`        | string                     | no       | Set for subagent events                                                                                                                                                                                        |
+| `prompt`          | string                     | no       | User prompt text (`user_prompt` events)                                                                                                                                                                        |
+| `tool`            | string                     | no       | Tool name (`tool_use` events)                                                                                                                                                                                  |
+| `tool_use_id`     | string                     | no       | Claude Code tool use correlation ID                                                                                                                                                                            |
+| `tool_summary`    | object                     | no       | Structured summary — `file`, `command` etc.                                                                                                                                                                    |
+| `result`          | string                     | no       | Tool result snippet                                                                                                                                                                                            |
+| `reason`          | string                     | no       | Stop reason                                                                                                                                                                                                    |
+| `last_message`    | string                     | no       | Last assistant message (`stop` / `subagent_stop` events). **Upstream name is `last_assistant_message`** — AngelEye stores it under the shorter key (Wave 1, incidental). Value identical; only the key differs |
+| `transcript_path` | string                     | no       | Absolute path to the session JSONL, as Claude Code reports it. Common field on every event. **Authoritative** — prefer over re-deriving the `~/.claude/projects/` encoding from `cwd`                          |
+| `permission_mode` | string                     | no       | Active permission mode (`default`, `plan`, `acceptEdits`, `auto`, `dontAsk`, `bypassPermissions`). Common field on every event                                                                                 |
+| `agent_type`      | string                     | no       | Type of subagent                                                                                                                                                                                               |
+| `payload`         | object                     | no       | Generic bucket for Wave 11 event-specific data                                                                                                                                                                 |
+| `error`           | string                     | no       | Error message (`tool_failure`, `stop_failure` events)                                                                                                                                                          |
 
 ### archive/
 

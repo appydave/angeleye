@@ -269,6 +269,8 @@ describe('POST /hooks/Stop — normal stop', () => {
         session_id: 'ses-stop-1',
         last_assistant_message: 'done',
         prompt_id: 'prm-stop-1',
+        transcript_path: '/Users/me/.claude/projects/-projects-myapp/ses-stop-1.jsonl',
+        permission_mode: 'bypassPermissions',
         background_tasks: [{ id: 'bg-1', status: 'running' }],
         session_crons: [],
         effort: { level: 'high' },
@@ -286,6 +288,22 @@ describe('POST /hooks/Stop — normal stop', () => {
     expect(stopEvt?.payload?.background_tasks).toEqual([{ id: 'bg-1', status: 'running' }]);
     expect(stopEvt?.payload?.session_crons).toEqual([]);
     expect(stopEvt?.payload?.effort).toEqual({ level: 'high' });
+
+    // Regression guard: both of these sat in STRIP_FROM_PAYLOAD under a comment claiming they were
+    // "already first-class on the event" while being promoted nowhere, so every event dropped them
+    // (0/17,896 stored session files). They must be readable off the event, and must NOT be
+    // duplicated into the residual payload.
+    expect(stopEvt?.transcript_path).toBe(
+      '/Users/me/.claude/projects/-projects-myapp/ses-stop-1.jsonl'
+    );
+    expect(stopEvt?.permission_mode).toBe('bypassPermissions');
+    expect(stopEvt?.payload?.transcript_path).toBeUndefined();
+    expect(stopEvt?.payload?.permission_mode).toBeUndefined();
+
+    // The upstream field is `last_assistant_message`; AngelEye stores it as `last_message`. The
+    // value is preserved verbatim — the rename is cosmetic and the raw key is not retained.
+    expect(stopEvt?.last_message).toBe('done');
+    expect((stopEvt as unknown as Record<string, unknown>).last_assistant_message).toBeUndefined();
 
     // Registry updated (last_active changed)
     const registry = await readRegistry();

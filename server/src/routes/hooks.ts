@@ -238,6 +238,15 @@ export function createHooksRouter(io: Server): Router {
       const promptId = typeof body.prompt_id === 'string' ? body.prompt_id : undefined;
       // Claude Code's own session title (SessionStart + UserPromptSubmit).
       const sessionTitle = typeof body.session_title === 'string' ? body.session_title : undefined;
+      // Documented common fields, sent on EVERY hook event. Both were stripped from the residual
+      // payload on the false premise that they were already promoted here — they were not, and
+      // measured 0/17,896 stored session files. `transcript_path` is the authoritative transcript
+      // location straight from the platform, which beats re-deriving the `~/.claude/projects/`
+      // encoding from `cwd` (that derivation has been wrong before — staleness-review.md#a1-2).
+      const transcriptPath =
+        typeof body.transcript_path === 'string' ? body.transcript_path : undefined;
+      const permissionMode =
+        typeof body.permission_mode === 'string' ? body.permission_mode : undefined;
 
       const event: AngelEyeEvent = {
         id: crypto.randomUUID(),
@@ -249,6 +258,8 @@ export function createHooksRouter(io: Server): Router {
         ...(agentId !== undefined && { agent_id: agentId }),
         ...(promptId !== undefined && { prompt_id: promptId }),
         ...(sessionTitle !== undefined && { session_title: sessionTitle }),
+        ...(transcriptPath !== undefined && { transcript_path: transcriptPath }),
+        ...(permissionMode !== undefined && { permission_mode: permissionMode }),
       };
 
       // Attach event-specific payload fields
@@ -294,6 +305,9 @@ export function createHooksRouter(io: Server): Router {
         // No `reason` here — Stop does not carry one (measured 0/191). It is a SessionEnd field,
         // handled below. Stop's real payload (background_tasks, session_crons, effort) now
         // survives via the residual-payload capture.
+        // NAME CHANGES HERE: upstream `last_assistant_message` -> stored `last_message`.
+        // Incidental Wave-1 choice, not a deliberate one, but 557 stored events already use the
+        // short key so it stays. The value is preserved exactly; only the key differs.
         if (typeof body.last_assistant_message === 'string') {
           event.last_message = body.last_assistant_message;
         }
@@ -319,7 +333,13 @@ export function createHooksRouter(io: Server): Router {
       // so new upstream fields survive by default instead of needing a code change to be noticed.
       // See docs/architecture/staleness-review.md#a1-4, #a1-5, #a1-6.
       const STRIP_FROM_PAYLOAD = new Set([
-        // envelope — already first-class on the event
+        // envelope — already first-class on the event.
+        //
+        // `transcript_path` and `permission_mode` sat in this list from Wave 11 while NOT being
+        // promoted anywhere — the comment asserted a first-class field that did not exist, so both
+        // were discarded on every event (0/17,896 stored files). They are promoted above now, so
+        // this line is finally true for them. Before adding anything here, check the field is
+        // actually read into `event` above; a name in this list and nowhere else is a silent drop.
         'session_id',
         'cwd',
         'hook_event_name',
@@ -327,6 +347,7 @@ export function createHooksRouter(io: Server): Router {
         'permission_mode',
         'agent_id',
         'agent_type',
+        // never observable: the handler returns early when this is true, so it is always false here
         'stop_hook_active',
         'prompt_id',
         'session_title',
