@@ -188,6 +188,27 @@ Search for `TODO` to find all customization points:
 - **Client**: Vitest + Testing Library + jsdom (`client/src/test/`)
 - Mocks: Client tests mock `useServerStatus` and `useSocket` hooks
 
+### ⚠️ `npm test` is the ONLY sanctioned command — never `npx vitest` from the repo root
+
+There is deliberately no root `vitest.config.ts`. `npm test` runs each workspace with its own
+config; Playwright is separate (`npm run test:e2e`). A bare `npx vitest run` at the root has **no
+config**, globs everything it can reach, and reports failures that are not real. It has already
+produced one confident, wrong report of "46 pre-existing failures" when the real suite was green.
+
+Three ways it lies, all of which look exactly like genuine breakage:
+
+| What it wrongly collects   | Why it fails                                                                                                                                           |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `e2e/*.test.ts`            | Playwright tests Vitest cannot run. They also `spawn('npm run dev')` — the one thing the Dev Server Management section above forbids from a tool shell |
+| `server/dist/**/*.test.js` | Stale **compiled** copies of tests (gitignored build output), run against current fixtures                                                             |
+| `client/**`                | Loaded without the jsdom setup its own config supplies, so `vi.mocked(fetch)` is undefined and every client test fails                                 |
+
+A root config cannot fix this, and that is the interesting part: server services resolve their
+config from `process.cwd()` on purpose (`workflow-type.service.ts`, `project-config.service.ts` and
+4 more), because `dist/` ships no config dir and nodemon runs with `cwd` = `server/`. Tests like
+_"loads 2 types from actual config dir"_ are therefore **correct to fail** from the root — they are
+reporting the wrong cwd, not broken code. Run `npm test`.
+
 ## Config Inheritance
 
 ESLint config imports from `@appydave/appystack-config/eslint/react` (3-line config — migration complete as of Wave 2).
